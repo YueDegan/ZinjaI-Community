@@ -636,6 +636,8 @@ void mxNewWizard::ProjectCreate() {
 	if (project_dir_files->GetValue())
 		new mxMultipleFileChooser(project->path,true);
 	project->Save();
+	wxCommandEvent evt;
+	main_window->OnHelpProject(evt);
 }
 
 void mxNewWizard::OnButtonNext(wxCommandEvent &event){

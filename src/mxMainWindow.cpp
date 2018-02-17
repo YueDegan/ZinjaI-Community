@@ -406,6 +406,7 @@ BEGIN_EVENT_TABLE(mxMainWindow, wxFrame)
 	EVT_MENU(mxID_HELP_CODE, mxMainWindow::OnHelpCode)
 	EVT_MENU(mxID_HELP_TIP, mxMainWindow::OnHelpTip)
 	EVT_MENU(mxID_HELP_UPDATES, mxMainWindow::OnHelpUpdates)
+	EVT_MENU(mxID_HELP_PROJECT, mxMainWindow::OnHelpProject)
 	
 	EVT_MENU_RANGE(mxID_LAST_ID, mxID_LAST_ID+50,mxMainWindow::OnToolbarMenu)
 		
@@ -4809,6 +4810,12 @@ void mxMainWindow::CompileSource (bool force_compile, GenericAction *action) {
 		if (should_compile) compiler->CompileSource(source,fms_move(action));
 		else if (action) action->Run();
 	}
+}
+
+void mxMainWindow::OnHelpProject(wxCommandEvent & evt) {
+	if (!project || project->help_page.IsEmpty()) return;
+	wxString file = project->help_page;
+	mxHelpWindow::ShowHelp(file);
 }
 
 void mxMainWindow::OnToolbarSettings (wxCommandEvent & evt) {

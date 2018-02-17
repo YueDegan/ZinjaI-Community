@@ -3,6 +3,7 @@
 
 #include "mxCommonConfigControls.h"
 #include "mxCommonPopup.h"
+#include "widgetDisabler.h"
 
 class wxTextCtrl;
 class wxCheckBox;
@@ -20,8 +21,7 @@ private:
 //	wxCheckBox *custom_tab;
 	wxTextCtrl *tab_width;
 	wxCheckBox *tab_use_spaces;
-	wxTextCtrl *default_fext_source;
-	wxTextCtrl *default_fext_header;
+	widgetBinder m_binder;
 public:
 	mxProjectGeneralConfig();
 	wxPanel *CreateTabGeneral(wxNotebook *notebook);

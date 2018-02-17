@@ -357,6 +357,7 @@ public:
 	void OnHelpCode (wxCommandEvent &event);
 	void OnHelpTip (wxCommandEvent &event);
 	void OnHelpUpdates (wxCommandEvent &event);
+	void OnHelpProject(wxCommandEvent &evt);
 
 
 public:
@@ -420,6 +421,7 @@ public:
 	void OnProjectTreeAdd(wxCommandEvent &event);
 	void OnProjectTreeAddMultiple(wxCommandEvent &event);
 	void OnProjectTreeAddSelected(wxCommandEvent &event);
+	
 	
 	void OnToolbarSettings(wxCommandEvent &evt); // click on an item from a popup menu launched from some toolbar buttons (currently only compiling options in project mode to select a profile)
 	void OnToolbarMenu(wxCommandEvent &evt); // click on an item from a popup menu launched from some toolbar buttons (currently only compiling options in project mode to select a profile)

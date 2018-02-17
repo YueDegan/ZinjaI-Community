@@ -229,6 +229,7 @@ ProjectManager::ProjectManager(wxFileName name):custom_tools(MAX_PROJECT_CUSTOM_
 				else if (p.Key()=="current_source") current_source = p.AsString();
 				else if (p.Key()=="path_char") file_path_char = p.AsChar();
 				else if (p.Key()=="project_name") project_name = p.AsString();
+				else if (p.Key()=="help_page") help_page = p.AsString();
 				else if (p.Key()=="autocodes_file") autocodes_file = p.AsString();
 				else if (p.Key()=="macros_file") macros_file = p.AsString();
 				else if (p.Key()=="default_fext_source") default_fext_source = p.AsString();
@@ -823,6 +824,7 @@ bool ProjectManager::Save (bool as_template) {
 	if (main_window->notebook_sources->GetPageCount()>2)
 		CFG_GENERIC_WRITE_DN("files_to_open",main_window->notebook_sources->GetPageCount());
 	CFG_GENERIC_WRITE_DN("project_name",project_name);
+	CFG_GENERIC_WRITE_DN("help_page",help_page);
 	CFG_GENERIC_WRITE_DN("autocodes_file",autocodes_file);
 	CFG_GENERIC_WRITE_DN("macros_file",macros_file);
 	CFG_GENERIC_WRITE_DN("default_fext_source",default_fext_source);
@@ -2997,7 +2999,8 @@ int ProjectManager::GetRequiredVersion() {
 	for (int i=0;i<MAX_PROJECT_CUSTOM_TOOLS;i++) if (custom_tools[i].command.Len()) have_custom_tools=true;
 	
 	version_required=0;
-	if (!inherits_from.IsEmpty()) version_required=20170726;
+	if (!help_page.IsEmpty()) version_required=20180216;
+	else if (!inherits_from.IsEmpty()) version_required=20170726;
 	else if (libs_dont_link) version_required=20160711;
 	else if (use_lto_or_werror) version_required=20160225;
 	else if (inspection_improving_template_to.GetCount()) version_required=20150227;

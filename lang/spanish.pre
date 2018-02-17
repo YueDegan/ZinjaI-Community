@@ -652,6 +652,8 @@ MENUITEM_HELP_CPP
 Referencia C/C++...
 MENUITEM_HELP_ZINJAI
 Ayuda sobre ZinjaI...
+MENUITEM_HELP_PROJECT
+Ayuda del proyecto actual...
 MENUITEM_HELP_FIND_COMMAND
 Buscar y ejecutar comando...
 MENUITEM_HELP_TUTORIALS
@@ -758,6 +760,8 @@ MAINW_PROJECT_FILE_POPUP_ADD_MULTI
 &Agregar Múltiples Archivos...
 MENUITEM_FILE_SET_AS_MASTER
 Ejecutar siempre este fuente
+PREFERENCES_DEBUG_INSPECT_ON_MOUSE_OVER
+Mostrar el valor de una variables al colocar el mouse sobre la misma
 MENUITEM_HIDDEN_PROJECT_CUSTOM_TOOL
 Herramienta personalizada de proyecto <{1}>
 CAPTION_TOOLBAR_FILE
@@ -2526,8 +2530,6 @@ PREFERENCES_DEBUG_ACTIVATE_WINDOW_ON_INTERRUPTION
 Mostrar ZinjaI cuando se interrumpe la ejecución
 PREFERENCES_DEBUG_RETURN_FOCUS_ON_CONTINUE
 Devolver el foco a la aplicación en depuración luego de una pausa
-PREFERENCES_DEBUG_INSPECT_ON_MOUSE_OVER
-Mostrar el valor de una variables al colocar el mouse sobre la misma
 PREFERENCES_DEBUG_ENABLE_CORE_DUMP
 Habilitar volcado de memoria al ejecutar sin depurador
 PREFERENCES_DEBUG_CATCH_THROW
@@ -2950,6 +2952,8 @@ PROJECTGENERAL_INHERITS_FROM
 Heredar archivos de
 PROJECTGENERAL_AUTOCOMP_EXTRA
 Indices de autocompletado adicionales
+PROJECTGENERAL_CUSTOM_HELPPAGE
+Página de ayuda personalizada
 PROJECTGENERAL_AUTOIMPROVE_TEMPLATES
  Mejora de inspecciones según tipo 
 PROJECTGENERAL_COMPILE_AND_RUN

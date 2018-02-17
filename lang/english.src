@@ -650,6 +650,8 @@ MENUITEM_HELP_CPP
 C++ Help...
 MENUITEM_HELP_ZINJAI
 ZinjaI's Help...
+MENUITEM_HELP_PROJECT
+Current project's custom help...
 MENUITEM_HELP_FIND_COMMAND
 Find and run command...
 MENUITEM_HELP_TUTORIALS
@@ -756,6 +758,8 @@ MAINW_PROJECT_FILE_POPUP_ADD_MULTI
 Add Multiple Files..
 MENUITEM_FILE_SET_AS_MASTER
 Always run this file
+PREFERENCES_DEBUG_INSPECT_ON_MOUSE_OVER
+Evaluate a variable by placing the mouse over it.
 MENUITEM_HIDDEN_PROJECT_CUSTOM_TOOL
 Project's custom tool <{1}>
 CAPTION_TOOLBAR_FILE
@@ -2524,8 +2528,6 @@ PREFERENCES_DEBUG_ACTIVATE_WINDOW_ON_INTERRUPTION
 Focus ZinjaI's window when debugging is interrupted
 PREFERENCES_DEBUG_RETURN_FOCUS_ON_CONTINUE
 Return focus to debugged application when continuing after a breakpoint
-PREFERENCES_DEBUG_INSPECT_ON_MOUSE_OVER
-Evaluate a variable by placing the mouse over it.
 PREFERENCES_DEBUG_ENABLE_CORE_DUMP
 Enable core dumps when running without debugger
 PREFERENCES_DEBUG_CATCH_THROW
@@ -2948,6 +2950,8 @@ PROJECTGENERAL_INHERITS_FROM
 Inherit files from:
 PROJECTGENERAL_AUTOCOMP_EXTRA
 Additional autocompletion indexes
+PROJECTGENERAL_CUSTOM_HELPPAGE
+Project's custom help page
 PROJECTGENERAL_AUTOIMPROVE_TEMPLATES
  Inpections improving templates... 
 PROJECTGENERAL_COMPILE_AND_RUN

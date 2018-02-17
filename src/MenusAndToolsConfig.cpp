@@ -345,6 +345,7 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 	menues[mnHELP].Init("help",LANG(MENUITEM_HELP,"A&yuda")); {
 		AddMenuItem(mnHELP, myMenuItem("help_cpp",mxID_HELP_CPP, LANG(MENUITEM_HELP_CPP,"Referencia C/C++...")).ShortCut("Alt+F1").Description("Muestra una completa referencia sobre el lenguaje"));
 		AddMenuItem(mnHELP, myMenuItem("help_ide",mxID_HELP_GUI, LANG(MENUITEM_HELP_ZINJAI,"Ayuda sobre ZinjaI...")).ShortCut("F1").Description("Muestra la ayuda sobre el uso y las caracteristicas de este entorno..."));
+		AddMenuItem(mnHELP, myMenuItem("help_project",mxID_HELP_PROJECT, LANG(MENUITEM_HELP_PROJECT,"Ayuda del proyecto actual...")).Description("Muestra una pagina de ayuda personalizada definida en la configuración del proyecto...").EnableIf(ecPROJECT));
 		AddMenuItem(mnHELP, myMenuItem("find_command",mxID_HELP_FIND_COMMAND, LANG(MENUITEM_HELP_FIND_COMMAND,"Buscar y ejecutar comando...")).ShortCut("Ctrl+F2"));
 		AddMenuItem(mnHELP, myMenuItem("tutorials",mxID_HELP_TUTORIAL, LANG(MENUITEM_HELP_TUTORIALS,"Tutoriales...")).Description("Abre el cuadro de ayuda y muestra el indice de tutoriales disponibles"));
 		AddMenuItem(mnHELP, myMenuItem("shortcuts",mxID_HELP_SHORTCUTS, LANG(MENUITEM_HELP_SHORTCUTS,"Atajos de teclado...")).Description("Muestra en la ventana de ayuda la lista de atajos de teclado disponibles en ZinjaI"));
@@ -957,6 +958,10 @@ void MenusAndToolsConfig::PopulateToolbar(int tb_id) {
 		}
 		if (!have_tool) { // si no hay definidas herramientas personalizadas, muestra el boton para configurarlas
 			myToolbarItem item(menues[mnTOOLS],mxID_TOOLS_PROJECT_TOOLS_SETTINGS);
+			mxUT::AddTool(wx_toolbar,item.wx_id,item.label,ipre+item.icon,item.description,item.checkeable?wxITEM_CHECK:wxITEM_NORMAL);
+		}
+		if (!project->help_page.IsEmpty()) {
+			myToolbarItem item(menues[mnHELP],mxID_HELP_PROJECT);
 			mxUT::AddTool(wx_toolbar,item.wx_id,item.label,ipre+item.icon,item.description,item.checkeable?wxITEM_CHECK:wxITEM_NORMAL);
 		}
 	}

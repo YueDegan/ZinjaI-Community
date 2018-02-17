@@ -536,7 +536,7 @@ public:
 	wxString project_name; ///< el nombre bonito del proyecto
 	wxString filename; ///< el archivo del proyecto
 	wxString path; ///< la carpeta del proyecto
-
+	wxString help_page; ///< página de ayuda específica del proyecto/template
 
 	wxString autocomp_extra; ///< indices de autocompletado adicionales para este proyecto
 	wxString autocodes_file; ///< archivo con definiciones de autocodigos adicionales

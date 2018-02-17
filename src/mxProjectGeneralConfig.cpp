@@ -1,5 +1,6 @@
 #include <wx/dir.h>
 #include <wx/choicdlg.h>
+#include "mxAUI.h"
 #include "mxProjectGeneralConfig.h"
 #include "mxMainWindow.h"
 #include "mxBitmapButton.h"
@@ -16,6 +17,7 @@
 #include "mxMultipleChoiceEditor.h"
 #include "mxBySourceCompilingOpts.h"
 #include "mxInspectionsImprovingEditor.h"
+#include "MenusAndToolsConfig.h"
 
 BEGIN_EVENT_TABLE(mxProjectGeneralConfig, wxDialog)
 	EVT_BUTTON(wxID_OK,mxProjectGeneralConfig::OnOkButton)
@@ -79,10 +81,10 @@ wxPanel *mxProjectGeneralConfig::CreateTabGeneral(wxNotebook *notebook) {
 		.BeginLabel(LANG(PROJECTGENERAL_PREFERRED_EXTENSIONS,"Extensiones preferidas:")).EndLabel()
 		.Space(15)
 		.BeginText(LANG(PROJECTGENERAL_DEFAULT_EXTENSIONS_SOURCE,"Fuentes"))
-			.Value(project->default_fext_source).Short().EndText(default_fext_source)
+			.Bind(m_binder,project->default_fext_source).Short().EndText()
 		.Space(15)
 		.BeginText(LANG(PROJECTGENERAL_DEFAULT_EXTENSIONS_HEADERS,"Cabeceras"))
-			.Value(project->default_fext_header).Short().EndText(default_fext_header)
+			.Bind(m_binder,project->default_fext_header).Short().EndText()
 		.EndLine();
 	
 	sizer.BeginText(LANG(PROJECTGENERAL_INHERITS_FROM,"Heredar archivos de"))
@@ -94,9 +96,10 @@ wxPanel *mxProjectGeneralConfig::CreateTabGeneral(wxNotebook *notebook) {
 		.Value(project->autocodes_file).Button(mxID_AUTOCODES_FILE).EndText(project_autocodes);
 	sizer.BeginText(LANG(PREFERENCES_DEBUG_GDB_MACROS_FILE,"Archivo de macros para gdb"))
 		.Value(project->macros_file).Button(mxID_DEBUG_MACROS).EndText(project_debug_macros);
+	sizer.BeginText(LANG(PROJECTGENERAL_CUSTOM_HELPPAGE,"Página de ayuda personalizada"))
+		.Bind(m_binder,project->help_page)/*.Button(mxID_PROJECT_CONFIG_CUSTOM_HELP)*/.EndText();
 //	tab_width->Enable(custom_tab->GetValue());
 //	tab_use_spaces->Enable(custom_tab->GetValue());
-	sizer.BeginButton(LANG(PROJECTGENERAL_AUTOIMPROVE_TEMPLATES," Mejora de inspecciones según tipo ")).Id(mxID_PROJECT_CONFIG_AUTOIMPROVE_TEMPLATES).Expand().EndButton();
 
 	sizer.SetAndFit();
 	return sizer.GetPanel();
@@ -107,6 +110,7 @@ wxPanel *mxProjectGeneralConfig::CreateTabAdvanced(wxNotebook *notebook) {
 		
 	sizer.BeginButton(LANG(PROJECTGENERAL_COMPILE_AND_RUN," Compilación y Ejecución (generales)... ")).Id(mxID_RUN_CONFIG).Expand().EndButton();
 	sizer.BeginButton(LANG(PROJECTGENERAL_BYSRC_OPTIONS," Opciones de Compilación (por fuente)... ")).Id(mxID_PROJECT_CONFIG_BYSRC).Expand().EndButton();
+	sizer.BeginButton(LANG(PROJECTGENERAL_AUTOIMPROVE_TEMPLATES," Mejora de inspecciones según tipo ")).Id(mxID_PROJECT_CONFIG_AUTOIMPROVE_TEMPLATES).Expand().EndButton();
 	sizer.BeginButton(LANG(PROJECTGENERAL_DOXYGEN," Configuración Doxygen... ")).Id(mxID_TOOLS_DOXY_CONFIG).Expand().EndButton();
 	sizer.BeginButton(LANG(PROJECTGENERAL_CPPCHECK," Configuración CppCheck... ")).Id(mxID_TOOLS_CPPCHECK_CONFIG).Expand().EndButton();
 	sizer.BeginButton(LANG(PROJECTGENERAL_WXFB," Integración con wxFormBuilder... ")).Id(mxID_TOOLS_WXFB_CONFIG).Expand().EndButton();
@@ -159,8 +163,11 @@ void mxProjectGeneralConfig::OnOkButton(wxCommandEvent &evt) {
 		project->autocodes_file = project_autocodes->GetValue();
 		Autocoder::GetInstance()->Reset(DIR_PLUS_FILE(project->path,project->autocodes_file));
 	}
-	project->default_fext_header = default_fext_header->GetValue();
-	project->default_fext_source = default_fext_source->GetValue();
+	m_binder.FromWidgets();
+	if (project) {
+		menu_data->UpdateToolbar(MenusAndToolsConfig::tbPROJECT,true);
+		main_window->m_aui->Update();
+	}
 	Close();
 }
 
