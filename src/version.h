@@ -1,4 +1,4 @@
-#define VERSION 20180216
+#define VERSION 20180221
 
 #ifdef __WIN32__
 #	define ARCHITECTURE "w32"

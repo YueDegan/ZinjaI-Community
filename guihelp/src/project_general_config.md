@@ -22,7 +22,7 @@ En esta pestaña encontrará configuraciones generales propias de este cuadro de d
 
 *  **Archivo de macros para gdb** Puede especificar aquí un archivo de comandos gdb para reemplazar al definido en las [preferencias generales](preferences.html#depuracion) mientras se trabaja con el proyecto. Al iniciar el depurador, *ZinjaI* ejecuta en gdb este archivo antes de inciar la ejecución del programa a depurar. Notar que si bien el nombre del campo sugiere que el archivo debería utilizarse para definir macros gdb, en realidad el archivo puede contener cualquier comando gdb válido que no implique iniciar la ejecución.
 
-*  **Mejora de inspecciones según tipo** Puede definir aquí plantillas adicionales a las definidas en las [preferencias generales](preferences.html#depuracion) para la mejora en la visualización de inspecciones. Puede aprovechar este cuadro para agregar mejoras propias de estructuras de datos específicas de su proyecto, o de bibliotecas no estándar que su proyecto utilice.
+*  **Página de ayuda personalizada** Puede definir aquí un archivo de ayuda para su proyecto. Se podrá acceder al mismo desde el menú ayuda, mediante un ícono adicional en la barra de herramientas de proyecto, y también se mostrará automáticamente si al crear un proyecto si está configurado en la plantilla utilizada. Puede utilizar las variables "${ZINJAI_DIR}" y "${PROJECT_DIR}" para referirse a los directorios de instalación de ZinjaI y del proyecto actual respectivamente. Si se introduce una ruta relativa, se toma como base la del proyecto.
 
 <A name="mas"></A>
 #### Más

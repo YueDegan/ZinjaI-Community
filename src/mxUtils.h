@@ -148,7 +148,8 @@ public:
 	static wxString ToHtml(wxString text, bool full=false);
 	// reemplaza una cadena por otra, pero agregando comillas si necesita para mantener el parametro como uno solo
 	static void ParameterReplace(wxString &str, wxString from, wxString to, bool quotize=true);
-//	void MakeDesktopIcon(wxString desk_dir);
+	// wrapper para ParameterReplace, si le paso ZINJAI reemplaza ${ZINJAI_DIR} y ${ZINJAI_PATH} (y le quita la barra final a dir si la tiene)
+	static void DirParameterReplace(wxString &str, wxString var, wxString dir, bool quotize=true);
 	
 	/** @brief Distancia entre cadenas **/
 	static int Levenshtein(const char *s1, int N1, const char *s2, int N2);

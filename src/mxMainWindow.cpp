@@ -4813,9 +4813,16 @@ void mxMainWindow::CompileSource (bool force_compile, GenericAction *action) {
 }
 
 void mxMainWindow::OnHelpProject(wxCommandEvent & evt) {
-	if (!project || project->help_page.IsEmpty()) return;
+	if (!project) return;
+	if (project->help_page.IsEmpty()) { OnFileProjectConfig(evt); return; }
 	wxString file = project->help_page;
-	mxHelpWindow::ShowHelp(file);
+	if (file.Lower().Contains("://")) {
+		mxUT::OpenInBrowser(file);
+	} else {
+		if (! (file.StartsWith("$")||file.StartsWith("\\")||file.StartsWith("/")||(file.Len()>2&&file[1]==':')) )
+			file = DIR_PLUS_FILE(project->GetPath(),file);
+		mxHelpWindow::ShowHelp(file);
+	}
 }
 
 void mxMainWindow::OnToolbarSettings (wxCommandEvent & evt) {

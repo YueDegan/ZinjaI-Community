@@ -8,9 +8,8 @@
 #include "osdep.h"
 
 void OSDep::AppInit() {
-	
 	HMODULE user32 = LoadLibrary("user32.dll");
-	typedef BOOL (*SetProcessDPIAwareFunc)();
+	typedef BOOL (WINAPI *SetProcessDPIAwareFunc)();
 	SetProcessDPIAwareFunc setDPIAware = (SetProcessDPIAwareFunc)GetProcAddress(user32,"SetProcessDPIAware");
 	if (setDPIAware) setDPIAware();
 	FreeLibrary(user32);
@@ -19,7 +18,7 @@ void OSDep::AppInit() {
 static int GetDPI_impl() {
 	HMODULE shcore = LoadLibrary("Shcore.dll");
 	if (!shcore) return 0;
-	typedef HRESULT (*GetDpiForMonitorFunc)(HMONITOR,DWORD,UINT*,UINT*);
+	typedef HRESULT (WINAPI *GetDpiForMonitorFunc)(HMONITOR,DWORD,UINT*,UINT*);
 	GetDpiForMonitorFunc GetDpiForMonitor = (GetDpiForMonitorFunc)GetProcAddress(shcore,"GetDpiForMonitor");
 	UINT x=0,y=0;
 	if (GetDpiForMonitor)

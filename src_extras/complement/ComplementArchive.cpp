@@ -111,7 +111,7 @@ bool ExtractFiles(bool (*callback)(wxString message, int progress), const wxStri
 				zip.OpenEntry(*entry);
 				if (!zip.CanRead()) return false;
 				if (!callback(wxString(spanish?"Descomprimiendo archivo ":"Uncompressing file ")<<name,2)) return true;
-				wxFileOutputStream file(name);
+				wxFFileOutputStream file(name);
 				if (!file) return false;
 				zip.Read(file);
 			} else
@@ -143,7 +143,7 @@ bool CreateZip(bool (*callback)(wxString message, int progress), const wxString 
 		}
 		if (!wxFileName(aTargetDir+files[i]).IsDir()) {
 			zip.PutNextEntry(files[i]);
-			wxFileInputStream file(aTargetDir+files[i]);
+			wxFFileInputStream file(aTargetDir+files[i]);
 			zip<<file;
 		}
 	}

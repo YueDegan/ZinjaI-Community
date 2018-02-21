@@ -6,19 +6,21 @@
 #include "mxMainWindow.h"
 
 #define ERROR_PAGE(page) wxString("<I>ERROR</I>: La pagina \"")<<page<<"\" no se encuentra. <br><br> La ayuda de <I>ZinjaI</I> aun esta en contruccion."
-#define _index "index"
+#define _index "index.html"
 #include "ids.h"
 #include "mxSizers.h"
 #include "mxReferenceWindow.h"
+#include "ProjectManager.h"
 
 mxHelpWindow *mxHelpWindow::instance=nullptr;
 
 mxHelpWindow::mxHelpWindow(wxString file) : mxGenericHelpWindow(LANG(HELPW_CAPTION,"Ayuda de ZinjaI"),true) { 
+	current_dir = DIR_PLUS_FILE(config->zinjai_dir,"guihelp");
 	ignore_tree_event=false;
 	// populate index tree
-	wxString index_file=DIR_PLUS_FILE(config->Help.guihelp_dir,"index_"+config->Init.language_file);
+	wxString index_file = DIR_PLUS_FILE(current_dir,"index_"+config->Init.language_file);
 	if (!wxFileName::FileExists(index_file))
-		index_file=DIR_PLUS_FILE(config->Help.guihelp_dir,"index_spanish");
+		index_file=DIR_PLUS_FILE(current_dir,"index_spanish");
 	wxTextFile fil(index_file);
 	if (fil.Exists()) {
 		fil.Open();
@@ -40,11 +42,21 @@ mxHelpWindow::mxHelpWindow(wxString file) : mxGenericHelpWindow(LANG(HELPW_CAPTI
 						node=tree->GetItemParent(node);
 					node=tree->AppendItem(tree->GetItemParent(node),_ZS(str.Mid(i+2).AfterFirst(' ')),str[i]-'0');
 				}
-				items[str.Mid(i+2).BeforeFirst(' ')]=node;
+				items[DIR_PLUS_FILE(current_dir,str.Mid(i+2).BeforeFirst(' '))]=node;
 				tabs=i;
 			}
 		}
 		fil.Close();
+		wxArrayString complements;
+		wxString complements_dir = config->GetZinjaiComplementsPath("guihelp");
+		if (mxUT::GetFilesFromDir(complements,complements_dir)) {
+			node = tree->AppendItem(root,"Ayudas de Complementos",0);
+			for(unsigned int i=0;i<complements.GetCount();i++) {
+				wxString page_name = complements[i].BeforeLast('.');
+				wxString file = DIR_PLUS_FILE(complements_dir,complements[i]);
+				items[file] = tree->AppendItem(node,page_name,1);
+			}
+		}
 //		tree->Expand(root);
 		wxTreeItemIdValue cokkie;
 		node = tree->GetFirstChild(root,cokkie);
@@ -55,7 +67,7 @@ mxHelpWindow::mxHelpWindow(wxString file) : mxGenericHelpWindow(LANG(HELPW_CAPTI
 	}
 	
 	if (!file.Len()) file="index"; 
-	LoadHelp(file);
+	LoadPage(file);
 	
 	wxBoxSizer *forum_sizer = new wxBoxSizer(wxHORIZONTAL); wxButton *button;
 	forum_sizer->Add(new wxStaticText(this,wxID_ANY,LANG(HELPW_FORUM_TEXT,"¿Lo que buscas no está en la ayuda, está desactualizado, erróneo o incompleto? ")),sizers->Center);
@@ -96,7 +108,7 @@ void mxHelpWindow::OnSearch(wxString value) {
 			results_title.Add(result_line);
 		} else {
 			// ver si coincide dentro del contenido
-			fname=GetHelpFile(DIR_PLUS_FILE(config->Help.guihelp_dir,fname));
+			fname = GetRealFName(fname);
 			if (fname.IsEmpty()) continue; // some help pages might be missing
 			memset(bfound,0,keywords.GetCount());
 			wxTextFile fil(fname);
@@ -142,7 +154,7 @@ void mxHelpWindow::OnSearch(wxString value) {
 }
 
 void mxHelpWindow::ShowIndex() {
-	LoadHelp(_index);
+	LoadPage(_index);
 }
 
 mxHelpWindow *mxHelpWindow::ShowHelp(wxString page, wxDialog *from_modal) {
@@ -162,24 +174,14 @@ mxHelpWindow *mxHelpWindow::ShowHelp(wxString page, wxDialog *from_modal) {
 		if (!instance->IsShown()) instance->Show(); 
 		else if (instance->IsIconized()) instance->Maximize(false); 
 		else instance->Raise();
-		instance->LoadHelp(page); 
+		instance->LoadPage(page); 
 	} else {
 		instance=new mxHelpWindow(page);
+		instance->Raise();
 	}
 	if (page==_index) instance->search_text->SetFocus();
 	else instance->html->SetFocus();
 	return instance;
-}
-
-
-void mxHelpWindow::LoadHelp(wxString file) {
-	if (file.Len()>5 && file.Mid(0,5)=="http:")
-		mxUT::OpenInBrowser(file);
-	else FixLoadPage(file);
-	SelectTreeItem(file);
-	Show();
-	html->SetFocus();
-	Raise();
 }
 
 bool mxHelpWindow::OnLink (wxString href) {
@@ -200,16 +202,11 @@ bool mxHelpWindow::OnLink (wxString href) {
 		}
 #endif
 	} else if (href.StartsWith("foropen:")) {
-		main_window->NewFileFromTemplate(DIR_PLUS_FILE(config->Help.guihelp_dir,href.AfterFirst(':')),true);
-	} else if (href.StartsWith("http://")) {
+		main_window->NewFileFromTemplate(DIR_PLUS_FILE(current_dir,href.AfterFirst(':')),true);
+	} else if (href.Contains("://")) {
 		mxUT::OpenInBrowser(href);
 	} else {
-		wxString fname=(href+"#").BeforeFirst('#');
-		if (fname.Len()) {
-			SelectTreeItem(fname);
-			FixLoadPage(href);
-		} else
-			return false;
+		LoadPage(href);
 	}
 	return true;
 }
@@ -219,53 +216,64 @@ void mxHelpWindow::OnTree (wxTreeItemId item) {
 	tree->Expand(item);
 	HashStringTreeItem::iterator it = items.begin();
 	while (it!=items.end() && it->second != item) ++it;
-	if (it!=items.end()) FixLoadPage(it->first);
-}
-
-wxString mxHelpWindow::GetHelpFile(wxString file) {
-	wxString post; 
-	if (file.Contains("#")) post<<"#"<<file.BeforeFirst('#');
-	if (file.EndsWith(".html")) file=file.Mid(0,file.Len()-5);
-	if (wxFileName::FileExists(file+"_"+config->Init.language_file+".html"))
-		return file+"_"+config->Init.language_file+".html"+post;
-	else if (wxFileName::FileExists(file+"_spanish.html"))
-		return file+"_spanish.html"+post;
-	else if (wxFileName::FileExists(file+".html"))
-		return file+".html"+post;
-	else
-		return "";
+	if (it!=items.end()) LoadPage(it->first);
 }
 
 void mxHelpWindow::OnForum (wxCommandEvent & event) {
 	mxUT::OpenInBrowser(LANG(HELPW_ADDRESS,"http://zinjai.sourceforge.net/index.php?page=contacto.php"));
 }
 
-void mxHelpWindow::FixLoadPage (const wxString &href) {
-	wxString name, anchor;
-	if (href.Contains("#")) {
-		name = href.BeforeFirst('#'); anchor = wxString("#")+href.AfterFirst('#');
-	} else {
-		name = href;
+wxString mxHelpWindow::FixURL(wxString url, bool set_dir, bool select_tree, bool keep_args) {
+	if (url.Contains("$")) {
+		mxUT::DirParameterReplace(url,"ZINJAI",config->zinjai_dir);
+		if (project)
+			mxUT::DirParameterReplace(url,"PROJECT",project->GetPath());
 	}
-	wxString fname = GetHelpFile(DIR_PLUS_FILE(config->Help.guihelp_dir,name));
-	if (!fname.Len()) html->SetPage(ERROR_PAGE(name));
-	else html->LoadPage(fname+anchor);
+	// cortar ruta, nombre, ext del archivo y argumentos de la url
+	int pos_args = url.Len(), pos_name = 0, pos_ext = -1;
+	for(size_t i=0;i<url.size();i++) { 
+		if (url[i]=='#') { pos_args = i; break; }
+		else if (url[i]=='\\'||url[i]=='/') { pos_name = i+1; pos_ext=-1; }
+		else if (url[i]=='.') pos_ext = i;
+	}
+	wxString args = url.Mid(pos_args);
+	wxString ext = pos_ext==-1 ? "" : url.Mid(pos_ext,pos_args-pos_ext);
+	wxString name = url.Mid(pos_name, (pos_ext==-1?pos_args:pos_ext)-pos_name);
+	wxString path = url.Mid(0,pos_name);
+	// corregir y guardar el directorio actual
+	path = DIR_PLUS_FILE(current_dir,path);
+	if (set_dir) current_dir = path;
+	// seleccionar el item en el arbol
+	if (select_tree) {
+		HashStringTreeItem::iterator it = items.find(path+name+ext+args);
+		if (it==items.end()) it = items.find(path+name+ext);
+		if (it==items.end()) {
+			wxArrayTreeItemIds ta;
+			if (tree->GetSelections(ta)) 
+				tree->SelectItem(tree->GetSelection(),false);
+		} else {
+			ignore_tree_event=true;
+			tree->SelectItem(it->second);
+			ignore_tree_event=false;
+		}
+	}
+	// ver si hay traduccion
+	if (!keep_args) args.Clear();
+	wxString aux = path+name+"_"+config->Init.language_file+ext;
+	if (wxFileExists(aux)) return aux+args;
+	aux = path+name+ext;
+	if (wxFileExists(aux)) return aux+args;
+	return "";
 }
 
-void mxHelpWindow::SelectTreeItem (const wxString &fname) {
-	HashStringTreeItem::iterator it = items.find(fname);
-	if (it==items.end()) {
-		wxArrayTreeItemIds ta;
-		if (tree->GetSelections(ta)) 
-			tree->SelectItem(tree->GetSelection(),false);
-		return;	
-	}
-	ignore_tree_event=true;
-	tree->SelectItem(it->second);
-	ignore_tree_event=false;
+bool mxHelpWindow::LoadPage(wxString url) {
+	wxString s = FixURL(url,true,true,true);
+	if (!s.IsEmpty()) { html->LoadPage(s); return true; }
+	else { html->SetPage(ERROR_PAGE(url)); return false; }
 }
 
-//bool mxHelpWindow::CurrentPageIsHome ( ) {
-//	return html->GetOpenedPageTitle()==);
-//}
+wxString mxHelpWindow::GetRealFName(wxString url) {
+	return FixURL(url,false,false,false);
+}
+
 

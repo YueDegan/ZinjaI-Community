@@ -271,6 +271,8 @@ public:
 	// funciones para consultar directorios comunes
 	wxString GetZinjaiBinDir() const { return DIR_PLUS_FILE(zinjai_dir,"bin"); }
 	wxString GetZinjaiBinPath(const wxString &append_filename) const { return DIR_PLUS_FILE_2(zinjai_dir,"bin",append_filename); }
+	wxString GetZinjaiComplementsDir() const { return DIR_PLUS_FILE(zinjai_dir,"complements"); }
+	wxString GetZinjaiComplementsPath(const wxString &append_filename) const { return DIR_PLUS_FILE_2(zinjai_dir,"complements",append_filename); }
 	wxString GetZinjaiThirdDir() const { return DIR_PLUS_FILE(zinjai_dir,"third"); }
 	wxString GetZinjaiThirdPath(const wxString &append_filename) const { return DIR_PLUS_FILE_2(zinjai_dir,"third",append_filename); }
 	wxString GetZinjaiSamplesDir() const { return DIR_PLUS_FILE(zinjai_dir,"samples"); }

@@ -11,12 +11,17 @@ class mxHelpWindow:public mxGenericHelpWindow {
 	mxHelpWindow(wxString file="");
 	HashStringTreeItem items;
 	
-	wxString GetHelpFile(wxString file);
+	wxString current_dir;
+	wxString FixURL(wxString url, bool set_dir, bool select_tree, bool keep_args);
+	wxString GetRealFName(wxString url);
+	bool LoadPage(wxString url);
+	
+//	wxString GetHelpFile(wxString file);
 	
 public:
 	static mxHelpWindow *ShowHelp(wxString page="", wxDialog *from_modal=nullptr);
 	
-	void LoadHelp(wxString file);
+//	void LoadPage(wxString file);
 	
 	void ShowIndex();
 	void OnTree(wxTreeItemId item);
@@ -26,8 +31,8 @@ public:
 	
 	void OnForum(wxCommandEvent &event);
 	
-	/// @brief Wrapper for wxHtmlWindow::LoadPage that fix href path (it enters relative to current page, but current page's path is not current working directory)
-	void FixLoadPage(const wxString &href); 
+//	/// @brief Wrapper for wxHtmlWindow::LoadPage that fix href path (it enters relative to current page, but current page's path is not current working directory)
+//	void FixLoadPage(const wxString &href); 
 	
 private:
 	bool ignore_tree_event;

@@ -570,6 +570,12 @@ wxString mxUT::ToHtml(wxString text, bool full) {
 	return text;
 }
 
+void mxUT::DirParameterReplace(wxString &str, wxString var, wxString dir, bool quotize) {
+	if (dir.EndsWith("/")||dir.EndsWith("\\")) dir.RemoveLast();
+	ParameterReplace(str,wxString("${")+var+"_PATH}",dir,quotize);
+	ParameterReplace(str,wxString("${")+var+"_DIR}",dir,quotize);
+}
+
 void mxUT::ParameterReplace(wxString &str, wxString from, wxString to, bool quotize) {
 	if (to.Find(' ')==wxNOT_FOUND) {
 		str.Replace(from,to);

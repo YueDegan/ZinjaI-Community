@@ -120,6 +120,9 @@ mxCreateComplementWindow::mxCreateComplementWindow(wxString in_path, wxString ou
 	
 	reset = new wxCheckBox(this,wxID_ANY,spanish?"Requiere reiniciar ZinjaI para completar la instalación":"Requires restarting ZinjaI after installation");
 	sizer->Add(reset,wxSizerFlags().Proportion(0).Expand().Border(wxALL,5));
+
+	check_details = new wxCheckBox(this,wxID_ANY,spanish?"Mostrar detalles durante la compresión":"Show details while generating the zcp file");
+	sizer->Add(check_details,wxSizerFlags().Proportion(0).Expand().Border(wxALL,5));
 	
 	
 	wxBoxSizer *dest_sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -180,6 +183,7 @@ void mxCreateComplementWindow::OnButtonCreate (wxCommandEvent & evt) {
 		if (!dest->GetValue().Len()) { wxMessageBox(spanish?"Falta especificar el archivo de destino.":"You must specify the complement filename.");  _return; }
 		text->SetValue(spanish?"Generando...\n":"Generating...\n");
 		but_create->Enable(false);
+		details = check_details->GetValue();
 		text->Show(); text_en->Hide(); text_es->Hide(); Layout();
 		step=STEP_ANALYSING;
 		info.desc_english=desc_en;
@@ -235,9 +239,11 @@ void mxCreateComplementWindow::OnClose (wxCloseEvent & evt) {
 }
 
 void mxCreateComplementWindow::Notify(const wxString &message) {
-	text->AppendText(message+"\n");
-	int i=text->GetValue().Len()-1;
-	text->SetSelection(i,i);
+	if (details) {
+		text->AppendText(message+"\n");
+		int i=text->GetValue().Len()-1;
+		text->SetSelection(i,i);
+	}
 	wxYield();
 }
 

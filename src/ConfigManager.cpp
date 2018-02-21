@@ -1,5 +1,3 @@
-#include "ConfigManager.h"
-
 #include <wx/wx.h>
 #include <wx/filename.h>
 #include <wx/textfile.h>
@@ -9,6 +7,7 @@
 #	include "mxHelpWindow.h"
 #endif
 
+#include "ConfigManager.h"
 #include "mxUtils.h"
 #include "version.h"
 #include "mxMessageDialog.h"
@@ -1303,7 +1302,7 @@ static wxString stDateTime2String(const wxDateTime &d) {
 * See the other overload of ApplyPatchsFromComplements for format details
 **/
 void ConfigManager::ApplyPatchsFromComplements ( ) {
-	wxString dir = DIR_PLUS_FILE(DIR_PLUS_FILE(config->zinjai_dir,"complements"),"config");
+	wxString dir = GetZinjaiComplementsPath("config");
 	wxArrayString files;
 	if (!mxUT::GetFilesFromDir(files,dir,true)) return;
 	for(unsigned int i=0;i<files.Count();i++) { 

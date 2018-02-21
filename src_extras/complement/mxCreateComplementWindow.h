@@ -8,7 +8,7 @@
 
 class mxCreateComplementWindow : public wxFrame {
 private:
-	bool autoclose;
+	bool autoclose, details;
 	int step;
 	wxTextCtrl *dest;
 	wxTextCtrl *folder;
@@ -18,6 +18,7 @@ private:
 	wxTextCtrl *version;
 	wxCheckBox *close;
 	wxCheckBox *reset;
+	wxCheckBox *check_details;
 	wxButton *but_create;
 	wxButton *but_cancel;
 	complement_info info;

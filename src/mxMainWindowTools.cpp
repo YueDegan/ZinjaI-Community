@@ -404,7 +404,7 @@ void mxMainWindow::OnToolsWxfbHelpWx(wxCommandEvent &event) {
 	
 	wxString help_file = config->Help.wxhelp_index;
 	if (help_file.IsEmpty()) {
-		wxString defb = DIR_PLUS_FILE(DIR_PLUS_FILE(config->zinjai_dir,"complements"),"docs");
+		wxString defb = config->GetZinjaiComplementsPath("docs");
 		wxString def2 = DIR_PLUS_FILE(DIR_PLUS_FILE(defb,"wx2"),"wx_contents.html");
 		wxString def3 = DIR_PLUS_FILE(DIR_PLUS_FILE(defb,"wx3"),"index.html");
 		if (wxFileExists(def3)) help_file = def3; else if (wxFileExists(def2)) help_file = def2;
