@@ -5,13 +5,15 @@
 
 #define UNDEF_VAR "<{[UNDEF]}>" // special value for storing in modified_vars for previously unsetted vars
 #include "mxUtils.h"
+#include "ConfigManager.h"
 
 
 static HashStringString modified_vars; // env vars to be resetted after compiling/running/debugging with their respectives original values
 
 static void store_and_set(const wxString &name, wxString value, bool add=false) {
-	wxString old_value; if (!wxGetEnv(name,&old_value)) old_value=UNDEF_VAR;
-	if (modified_vars.find(old_value)==modified_vars.end()) modified_vars[name]=old_value;
+	wxString old_value; 
+	bool had_value = wxGetEnv(name,&old_value);
+	if (modified_vars.find(old_value)==modified_vars.end()) modified_vars[name]=had_value?old_value:UNDEF_VAR;
 	if (add) value = old_value+value; else value.Replace(wxString("${")+name+"}",old_value);
 	wxSetEnv(name,value);
 }
@@ -61,9 +63,10 @@ void EnvVars::SetMode (EnvVars::mode_t mode) {
 				for(unsigned int i=0;i<array.GetCount();i++) {  
 					if (!array[i].Contains("=")) continue;
 					wxString name = array[i].BeforeFirst('='), value = array[i].AfterFirst('='); 
-					mxUT::ParameterReplace(value,"${MINGW_DIR}",current_toolchain.mingw_dir,false);
-					mxUT::ParameterReplace(value,"${TEMP_DIR}",project->GetTempFolder(),false);
-					mxUT::ParameterReplace(value,"${PROJECT_PATH}",project->path,false);
+					mxUT::DirParameterReplace(value,"ZINJAI",config->zinjai_dir,false);
+					mxUT::DirParameterReplace(value,"MINGW",current_toolchain.mingw_dir,false);
+					mxUT::DirParameterReplace(value,"TEMP",project->GetTempFolder(),false);
+					mxUT::DirParameterReplace(value,"PROJECT",project->path,false);
 					bool add = name.Last()=='+'; 
 					if (add) name.RemoveLast();
 					store_and_set(name,value,add);
