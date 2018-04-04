@@ -637,7 +637,7 @@ void mxNewWizard::ProjectCreate() {
 		new mxMultipleFileChooser(project->path,true);
 	project->Save();
 	wxCommandEvent evt;
-	main_window->OnHelpProject(evt);
+	if (!project->help_page.IsEmpty()) main_window->OnHelpProject(evt);
 }
 
 void mxNewWizard::OnButtonNext(wxCommandEvent &event){
