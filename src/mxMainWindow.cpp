@@ -688,10 +688,8 @@ void mxMainWindow::OnProjectTreePopup(wxTreeEvent &event) {
 		PopulateProjectFilePopupMenu(menu,project->files.FindFromItem(project_tree.selected_item),false); // el if debería ser innecesario en este punto
 	}	
 	menu.AppendSeparator();
-	if (config->Init.fullpath_on_project_tree)
-		menu.Append(mxID_PROJECT_POPUP_TOGGLE_FULLPATH, LANG(MAINW_PROJECT_FILE_POPUP_TOGGLE_FULL_PATH_OFF,"Mostrar solo nombres de archivos"));
-	else
-		menu.Append(mxID_PROJECT_POPUP_TOGGLE_FULLPATH, LANG(MAINW_PROJECT_FILE_POPUP_TOGGLE_FULL_PATH_ON,"Mostrar rutas relativas completas"));
+	menu.AppendCheckItem(mxID_PROJECT_POPUP_TOGGLE_FULLPATH, LANG(MAINW_PROJECT_FILE_POPUP_TOGGLE_FULL_PATH_ON,"Mostrar rutas relativas completas"))
+		->Check(config->Init.fullpath_on_project_tree);
 	menu.Append(mxID_EDIT_GOTO_FILE, LANG(MENUITEM_EDIT_FIND,"&Buscar..."));
 	project_tree.treeCtrl->PopupMenu(&menu,event.GetPoint());
 }
@@ -1513,8 +1511,8 @@ wxTreeCtrl *mxMainWindow::project_tree_struct::Create(wxWindow *parent) {
 
 	treeCtrl->ExpandAll();
 	
-	wxColour fg_colour = treeCtrl->GetItemTextColour(sources);
-//	wxColour bg_colour = treeCtrl->GetItemBackgroundColour(sources); // item background does not works, at least on linux with wx28
+//	GetItemBackgroundColour y GetItemTextColour no funcionan, al menos no con wx28 y en este punto de la inicializacion
+	wxColour fg_colour = treeCtrl->GetForegroundColour();
 	wxColour bg_colour = treeCtrl->GetBackgroundColour();
 	
 	hidden_colour 
