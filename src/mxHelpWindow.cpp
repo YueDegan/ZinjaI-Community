@@ -50,7 +50,8 @@ mxHelpWindow::mxHelpWindow(wxString file) : mxGenericHelpWindow(LANG(HELPW_CAPTI
 		wxArrayString complements;
 		wxString complements_dir = config->GetZinjaiComplementsPath("guihelp");
 		if (mxUT::GetFilesFromDir(complements,complements_dir)) {
-			node = tree->AppendItem(root,"Ayudas de Complementos",0);
+			node = tree->AppendItem(root,LANG(HELPW_COMPLEMENTS_SECTION,"Ayudas de Complementos"),0);
+			items[DIR_PLUS_FILE(current_dir,"complements_section.html")] = node;
 			for(unsigned int i=0;i<complements.GetCount();i++) {
 				wxString page_name = complements[i].BeforeLast('.');
 				wxString file = DIR_PLUS_FILE(complements_dir,complements[i]);
@@ -177,7 +178,7 @@ mxHelpWindow *mxHelpWindow::ShowHelp(wxString page, wxDialog *from_modal) {
 		instance->LoadPage(page); 
 	} else {
 		instance=new mxHelpWindow(page);
-		instance->Raise();
+		instance->Show();
 	}
 	if (page==_index) instance->search_text->SetFocus();
 	else instance->html->SetFocus();
