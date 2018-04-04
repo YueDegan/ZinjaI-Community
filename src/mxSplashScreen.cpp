@@ -17,7 +17,7 @@ BEGIN_EVENT_TABLE(mxSplashScreen, wxFrame)
 	EVT_LEFT_DOWN(mxSplashScreen::OnMouse)
 	EVT_CLOSE(mxSplashScreen::OnClose)
 #ifdef __WXGTK__
-	EVT_WINDOW_CREATE(mxSplashScreen::OnWindowCreate)
+//	EVT_WINDOW_CREATE(mxSplashScreen::OnWindowCreate)
 #endif
 END_EVENT_TABLE()
 
