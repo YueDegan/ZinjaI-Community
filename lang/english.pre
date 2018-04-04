@@ -1796,6 +1796,8 @@ MXGRID_SHOW_COL
 Show "<{1}>" column
 HELPW_CAPTION
 ZinjaI's Help
+HELPW_COMPLEMENTS_SECTION
+Complement's help pages
 HELPW_FORUM_TEXT
 Cannot find what you need here? Is it incomplete, outdated or wrong?  
 HELPW_FORUM_BUTTON
@@ -2954,12 +2956,12 @@ PROJECTGENERAL_AUTOCOMP_EXTRA
 Additional autocompletion indexes
 PROJECTGENERAL_CUSTOM_HELPPAGE
 Project's custom help page
-PROJECTGENERAL_AUTOIMPROVE_TEMPLATES
- Inpections improving templates... 
 PROJECTGENERAL_COMPILE_AND_RUN
  Compiliing and Running... 
 PROJECTGENERAL_BYSRC_OPTIONS
  By src compiling options... 
+PROJECTGENERAL_AUTOIMPROVE_TEMPLATES
+ Inpections improving templates... 
 PROJECTGENERAL_DOXYGEN
  Doxygen's Settings...
 PROJECTGENERAL_CPPCHECK

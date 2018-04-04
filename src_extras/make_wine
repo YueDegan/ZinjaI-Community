@@ -59,6 +59,8 @@ zmkdir zinjai
       cp -u $SRC/imgs/24/* zinjai/imgs/24/
     zmkdir zinjai/imgs/32
       cp -u $SRC/imgs/32/* zinjai/imgs/32/
+    zmkdir zinjai/imgs/48
+      cp -u $SRC/imgs/48/* zinjai/imgs/48/
   zmkdir zinjai/skins
     cp -ru $SRC/skins/* zinjai/skins/
   zmkdir zinjai/samples
