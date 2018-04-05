@@ -547,15 +547,16 @@ void mxSource::OnEditCut (wxCommandEvent &event) {
 }
 
 void mxSource::OnEditCopy (wxCommandEvent &event) {
-//	int ss = GetSelectionStart(), se = GetSelectionEnd();
-//    if (se==ss) return;
-//	if (se<ss) { int aux=ss; ss=se; se=aux; }
+	int ss = GetSelectionStart(), se = GetSelectionEnd();
+    if (se==ss) return;
+	if (se<ss) { int aux=ss; ss=se; se=aux; }
+	mxUT::SetClipboardText(GetTextRange(ss,se));
 //	wxTextDataObject data;
 //	if (wxTheClipboard->Open()) {
 //		wxTheClipboard->SetData( new wxTextDataObject(GetTextRange(ss,se)) );
 //		wxTheClipboard->Close();
 //	}
-    Copy ();
+//    Copy ();
 }
 
 void mxSource::OnEditPaste (wxCommandEvent &event) {

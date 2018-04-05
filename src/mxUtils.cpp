@@ -1197,9 +1197,13 @@ wxString mxUT::GetClipboardText ( ) {
 }
 
 void mxUT::SetClipboardText (const wxString & text) {
+#ifdef ZASKARS_SPECIAL_CLIPBOARD_METHOD
+	wxTheClipboard->SetText(text);
+#else
 	if (!wxTheClipboard->Open()) return;
 	wxTheClipboard->SetData( new wxTextDataObject(text) );
 	wxTheClipboard->Close();
+#endif
 }
 
 //wxString mxUT::GetRunnerCommand (int wait, const wxString &workdir, const wxString &bin, const wxString &args, const wxString &pref) {
