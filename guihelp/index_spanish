@@ -1,131 +1,131 @@
-	0 tutorials.html Tutoriales
-		0 tutor_1.html Descubriendo Zinjai
-			0 t0100.html Mi Primer Programa
-			0 t0200.html Características Especiales
-		0 tutor_2.html Introducción al Uso de Proyectos
-			0 t0600.html Mi primer proyecto
-			0 t0700.html Utilizando bibliotecas externas
-			0 t0800.html Interfaces de usuario con wxFormBuilder
-			0 t0900.html Como construir tu propia biblioteca
-		0 tutor_3.html Nociones Básicas de Depuración
-			0 t0300.html Control básico e inspección de variables
-			0 t0400.html Funciones y ámbitos
-			0 t0500.html Visualización de estructuras de datos
-	0 interfaz.html Interfaz
-		0 main_window.html Ventana Principal
-			0 menus.html Menúes
-				0 menu_archivo.html Menú Archivo
-				0 menu_editar.html Menú Editar
-				0 menu_ver.html Menú Ver
-				0 menu_ejecucion.html Menú Ejecucion
-				0 menu_depuracion.html Menú Depuracion
-				0 menu_herramientas.html Menú Herramientas
-				0 menu_ayuda.html Menú Ayuda
-			0 code_area.html Area de Código
-			0 panels.html Paneles Acoplables
-				0 panel_symbol_tree.html Arbol de Simbolos
-				0 panel_project_tree.html Arbol de Archivos
-				0 panel_explorer.html Explorador de Archivos
-				0 panel_quickhelp.html Ayuda Rapida
-				0 panel_compiler_results.html Resultados del Compilador
-				0 panel_backtrace.html Trazado Inverso
-				0 panel_inspections.html Inspecciones
-		0 dialogs.html Cuadros de diálogo
-			0 new_wizard.html Asistente para Nuevo Archivo o Proyecto
-				0 new_wizard.html#start Hoja Nuevo
-				0 new_wizard.html#templates Hoja Nuevo Desde Plantilla
-				0 new_wizard.html#project Hojas Nuevo Proyecto
-				0 new_wizard.html#on_project Hoja Archivo para Proyecto
-			0 preferences.html Diálogo Preferencias
-				0 preferences.html#general Pestaña General
-				0 preferences.html#programa_simple Pestaña Programa/Proyecto
-					0 toolchain_config.html Personalización de un toolchain
-				0 preferences.html#estilo Pestaña Estilo
-				0 preferences.html#asistencias Pestaña Asistencias
-				0 preferences.html#temas Pestaña Tema de Iconos
-				0 preferences.html#barras Pestaña Barras de Herramientas
-				0 preferences.html#depuracion Pestaña Depuración
-				0 preferences.html#rutas1 Pestaña Rutas 1
-				0 preferences.html#rutas2 Pestaña Rutas 2
-			0 shortcuts_dialog.html Diálogo Atajos de teclado
-			0 custom_tools.html Diálogo Herramientas Personalizadas
-			0 share_source.html Diálogo Compartir Fuente
-			0 open_shared.html Diálogo Abrir Compartido
-			0 project_general_config.html Diálogo Configuración de Proyecto
-			0 compile_config.html Diálogo Opciones de Compilación y Ejecución
-			0 project_config.html Diálogo Opciones de Compilación y Ejecución de Proyecto
-				0 project_config.html#general Pestaña General
-				0 project_config.html#compilacion Pestaña Compilación
-				0 project_config.html#enlazado Pestaña Enlazado
-				0 project_config.html#secuencia Pestaña Secuencia
-				0 compile_extra_steps.html Diálogo Agregar/Editar Paso de Compilación Personalizado
-				0 project_config.html#biblioteca Pestaña Bibliotecas
-				0 lib_to_build.html Diálogo Generar Biblioteca
-			0 makefile.html Diálogo Generar Makefile
-			0 exe_info.html Diálogo Propiedades del Ejecutable
-			0 search_dialog.html Diálogos Buscar y Reemplazar
-				0 regexp.html Expresiones Regulares
-			0 draw_classes.html Diálogo Dibujar Jerarquía de Clases
-			0 inspection_explorer.html Diálogo Explorador de Inspecciones
-			0 inspection_matrix.html Diálogo Matriz de Inspecciones
-			0 breaks_list.html Diálogo Lista de Break/Watch points
-			0 break_options.html Diálogo Propiedades del Breakpoint
-			0 cppcheck_config.html Diálogo de Configuración del Análisis Estático
-	0 caracteristicas.html Características Especiales
-		0 writing_help.html Ayudas en la Escritura
-			0 smart_indent.html Edicion Inteligente
-			0 code_folding.html Plegado de Código
-			0 syntax_colours.html Coloreado de Sintaxis
-			0 autocompletion.html Autocompletado
-			0 calltips.html Ayuda Para Llamadas a Funciones/Métodos
-			0 autocode.html Plantillas de Auto-código
-			0 writing_others.html Otros Complementos
-			0 atajos.html Atajos de Teclado
-		0 simple_programs.html Creación de Programas Simples
-			0 simple_programs.html#simple Introducción a Programas Simples
-			0 simple_programs.html#templates Plantillas de Codigo
-		0 projects.html Manejo de Proyectos
+0 tutorials.html Tutoriales
+	0 tutor_1.html Descubriendo Zinjai
+		0 t0100.html Mi Primer Programa
+		0 t0200.html Características Especiales
+	0 tutor_2.html Introducción al Uso de Proyectos
+		0 t0600.html Mi primer proyecto
+		0 t0700.html Utilizando bibliotecas externas
+		0 t0800.html Interfaces de usuario con wxFormBuilder
+		0 t0900.html Como construir tu propia biblioteca
+	0 tutor_3.html Nociones Básicas de Depuración
+		0 t0300.html Control básico e inspección de variables
+		0 t0400.html Funciones y ámbitos
+		0 t0500.html Visualización de estructuras de datos
+0 interfaz.html Interfaz
+	0 main_window.html Ventana Principal
+		0 menus.html Menúes
+			0 menu_archivo.html Menú Archivo
+			0 menu_editar.html Menú Editar
+			0 menu_ver.html Menú Ver
+			0 menu_ejecucion.html Menú Ejecucion
+			0 menu_depuracion.html Menú Depuracion
+			0 menu_herramientas.html Menú Herramientas
+			0 menu_ayuda.html Menú Ayuda
+		0 code_area.html Area de Código
+		0 panels.html Paneles Acoplables
+			0 panel_symbol_tree.html Arbol de Simbolos
+			0 panel_project_tree.html Arbol de Archivos
+			0 panel_explorer.html Explorador de Archivos
+			0 panel_quickhelp.html Ayuda Rapida
+			0 panel_compiler_results.html Resultados del Compilador
+			0 panel_backtrace.html Trazado Inverso
+			0 panel_inspections.html Inspecciones
+	0 dialogs.html Cuadros de diálogo
+		0 new_wizard.html Asistente para Nuevo Archivo o Proyecto
+			0 new_wizard.html#start Hoja Nuevo
+			0 new_wizard.html#templates Hoja Nuevo Desde Plantilla
+			0 new_wizard.html#project Hojas Nuevo Proyecto
+			0 new_wizard.html#on_project Hoja Archivo para Proyecto
+		0 preferences.html Diálogo Preferencias
+			0 preferences.html#general Pestaña General
+			0 preferences.html#programa_simple Pestaña Programa/Proyecto
+				0 toolchain_config.html Personalización de un toolchain
+			0 preferences.html#estilo Pestaña Estilo
+			0 preferences.html#asistencias Pestaña Asistencias
+			0 preferences.html#temas Pestaña Tema de Iconos
+			0 preferences.html#barras Pestaña Barras de Herramientas
+			0 preferences.html#depuracion Pestaña Depuración
+			0 preferences.html#rutas1 Pestaña Rutas 1
+			0 preferences.html#rutas2 Pestaña Rutas 2
+		0 shortcuts_dialog.html Diálogo Atajos de teclado
+		0 custom_tools.html Diálogo Herramientas Personalizadas
+		0 share_source.html Diálogo Compartir Fuente
+		0 open_shared.html Diálogo Abrir Compartido
+		0 project_general_config.html Diálogo Configuración de Proyecto
+		0 compile_config.html Diálogo Opciones de Compilación y Ejecución
+		0 project_config.html Diálogo Opciones de Compilación y Ejecución de Proyecto
+			0 project_config.html#general Pestaña General
+			0 project_config.html#compilacion Pestaña Compilación
+			0 project_config.html#enlazado Pestaña Enlazado
+			0 project_config.html#secuencia Pestaña Secuencia
+			0 compile_extra_steps.html Diálogo Agregar/Editar Paso de Compilación Personalizado
+			0 project_config.html#biblioteca Pestaña Bibliotecas
+			0 lib_to_build.html Diálogo Generar Biblioteca
+		0 makefile.html Diálogo Generar Makefile
+		0 exe_info.html Diálogo Propiedades del Ejecutable
+		0 search_dialog.html Diálogos Buscar y Reemplazar
+			0 regexp.html Expresiones Regulares
+		0 draw_classes.html Diálogo Dibujar Jerarquía de Clases
+		0 inspection_explorer.html Diálogo Explorador de Inspecciones
+		0 inspection_matrix.html Diálogo Matriz de Inspecciones
+		0 breaks_list.html Diálogo Lista de Break/Watch points
+		0 break_options.html Diálogo Propiedades del Breakpoint
+		0 cppcheck_config.html Diálogo de Configuración del Análisis Estático
+0 caracteristicas.html Características Especiales
+	0 writing_help.html Ayudas en la Escritura
+		0 smart_indent.html Edicion Inteligente
+		0 code_folding.html Plegado de Código
+		0 syntax_colours.html Coloreado de Sintaxis
+		0 autocompletion.html Autocompletado
+		0 calltips.html Ayuda Para Llamadas a Funciones/Métodos
+		0 autocode.html Plantillas de Auto-código
+		0 writing_others.html Otros Complementos
+		0 atajos.html Atajos de Teclado
+	0 simple_programs.html Creación de Programas Simples
+		0 simple_programs.html#simple Introducción a Programas Simples
+		0 simple_programs.html#templates Plantillas de Codigo
+	0 projects.html Manejo de Proyectos
 #			0 projects.html#intro Introducción al uso de Proyectos
-			0 projects.html#config Configuración de Proyectos
-			0 projects.html#portability Portabilidad de Proyectos
-			0 projects.html#templates Plantillas de Proyectos
-			0 project_building_sequence.html Secuencia de Construcción de Proyectos
-			0 libs_generation.html Creación de bibliotecas
-			0 project_inheritance.html Herencia de Proyectos
-		0 source_exploring.html Exploración de Fuentes
-		0 compiler_output.html Analisis de la Salida del Compilador
-		0 quickhelp.html Ayuda Rápida Sobre el Lenguaje
-		0 drawings.html Representaciones Gráficas
-			0 draw_flow.html Diagrama de Flujo
-			0 draw_classes.html Jerarquia de Clases
-			0 proy_graph.html Grafo de Proyecto
-		0 tools.html Otras Herramientas Integradas
-			0 codetools.html Generación de código
-			0 share.html Compartición de Fuentes en una LAN
-			0 diff.html Comparación de Fuentes (diff)
-			0 doxygen.html Generación de Documentación (doxygen)
-			0 gprof.html Perfiles de Ejecución (gprof)
-			0 gcov.html Test de covertura (gcov)
-			0 valgrind.html Análisis Dinámico (Valgrind)
-			0 cppcheck.html Análisis Estático (CppCheck)
-			0 wxformbuilder.html Diseño Rápido de Interfaces (wxFormBuilder)
-			0 objdump.html Desensamblado (objdump)
-		0 toolchains.html Uso de toolchains alternativos
-		0 complements.html Complementos adicionales instalables
-	0 debug.html Depuración en Zinjai
-		0 debug_info.html Informacion de Depuracion
-		0 debug_exec.html Ejecucion en Depuración
-		0 debug_break.html Puntos de Interrupcion
-		0 debug_inspect.html Inspecciones
-		0 debug_backtrace.html Trazado Inverso
-		0 debug_advance.html Características avanzadas
-			0 inspections_improving.html Mejora automática de inspecciones
-			0 debug_patch.html Corrección de un ejecutable durante la depuración
-			0 debug_gdb_panel.html Interfaz directa con gdb
-		0 gdb_on_mac.html Instalación de GDB en Mac OS
-	0 about.html Notas sobre ZinjaI
-		0 license.html Licencias y Contactos
-		0 ChangeLog.html Registro de Cambios
-		0 gcc_help.html Ayuda del Compilador Utilizado (GCC)
-		0 gpl.html General Public License v2
-		0 cucarachasracing.html Cucarachas Racing
+		0 projects.html#config Configuración de Proyectos
+		0 projects.html#portability Portabilidad de Proyectos
+		0 projects.html#templates Plantillas de Proyectos
+		0 project_building_sequence.html Secuencia de Construcción de Proyectos
+		0 libs_generation.html Creación de bibliotecas
+		0 project_inheritance.html Herencia de Proyectos
+	0 source_exploring.html Exploración de Fuentes
+	0 compiler_output.html Analisis de la Salida del Compilador
+	0 quickhelp.html Ayuda Rápida Sobre el Lenguaje
+	0 drawings.html Representaciones Gráficas
+		0 draw_flow.html Diagrama de Flujo
+		0 draw_classes.html Jerarquia de Clases
+		0 proy_graph.html Grafo de Proyecto
+	0 tools.html Otras Herramientas Integradas
+		0 codetools.html Generación de código
+		0 share.html Compartición de Fuentes en una LAN
+		0 diff.html Comparación de Fuentes (diff)
+		0 doxygen.html Generación de Documentación (doxygen)
+		0 gprof.html Perfiles de Ejecución (gprof)
+		0 gcov.html Test de covertura (gcov)
+		0 valgrind.html Análisis Dinámico (Valgrind)
+		0 cppcheck.html Análisis Estático (CppCheck)
+		0 wxformbuilder.html Diseño Rápido de Interfaces (wxFormBuilder)
+		0 objdump.html Desensamblado (objdump)
+	0 toolchains.html Uso de toolchains alternativos
+	0 complements.html Complementos adicionales instalables
+0 debug.html Depuración en Zinjai
+	0 debug_info.html Informacion de Depuracion
+	0 debug_exec.html Ejecucion en Depuración
+	0 debug_break.html Puntos de Interrupcion
+	0 debug_inspect.html Inspecciones
+	0 debug_backtrace.html Trazado Inverso
+	0 debug_advance.html Características avanzadas
+		0 inspections_improving.html Mejora automática de inspecciones
+		0 debug_patch.html Corrección de un ejecutable durante la depuración
+		0 debug_gdb_panel.html Interfaz directa con gdb
+	0 gdb_on_mac.html Instalación de GDB en Mac OS
+0 about.html Notas sobre ZinjaI
+	0 license.html Licencias y Contactos
+	0 ChangeLog.html Registro de Cambios
+	0 gcc_help.html Ayuda del Compilador Utilizado (GCC)
+	0 gpl.html General Public License v2
+	0 cucarachasracing.html Cucarachas Racing

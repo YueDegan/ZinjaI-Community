@@ -5,7 +5,7 @@
 
 class wxDialog;
 
-class mxHelpWindow:public mxGenericHelpWindow {
+class mxHelpWindow : public mxGenericHelpWindow {
 	
 	static mxHelpWindow *instance;
 	mxHelpWindow(wxString file="");
@@ -17,6 +17,8 @@ class mxHelpWindow:public mxGenericHelpWindow {
 	bool LoadPage(wxString url);
 	
 //	wxString GetHelpFile(wxString file);
+	
+	void PopulateIndex(wxTreeItemId root, wxString dir);
 	
 public:
 	static mxHelpWindow *ShowHelp(wxString page="", wxDialog *from_modal=nullptr);

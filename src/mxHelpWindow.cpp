@@ -14,57 +14,71 @@
 
 mxHelpWindow *mxHelpWindow::instance=nullptr;
 
-mxHelpWindow::mxHelpWindow(wxString file) : mxGenericHelpWindow(LANG(HELPW_CAPTION,"Ayuda de ZinjaI"),true) { 
-	current_dir = DIR_PLUS_FILE(config->zinjai_dir,"guihelp");
-	ignore_tree_event=false;
-	// populate index tree
-	wxString index_file = DIR_PLUS_FILE(current_dir,"index_"+config->Init.language_file);
-	if (!wxFileName::FileExists(index_file))
-		index_file=DIR_PLUS_FILE(current_dir,"index_spanish");
+void mxHelpWindow::PopulateIndex(wxTreeItemId node, wxString dir) {
+	wxString index_file = mxUT::WichOne(
+			DIR_PLUS_FILE(dir,"index_"+config->Init.language_file),
+			DIR_PLUS_FILE(dir,"index_spanish"),
+			DIR_PLUS_FILE(dir,"index") );
 	wxTextFile fil(index_file);
 	if (fil.Exists()) {
 		fil.Open();
-		wxTreeItemId root = tree->AddRoot("Temas de Ayuda",0);
-		wxTreeItemId node = root;
-		unsigned int tabs=0;
+		int tabs_prev = -1;
 		for ( wxString str = fil.GetFirstLine(); !fil.Eof(); str = fil.GetNextLine() ) {
 			if (str.IsEmpty()||str[0]=='#') continue;
-			unsigned int i=0;
-			while (i<str.Len() && str[i]=='\t') 
-				i++;
-			if (i!=0 && str.Len()>i+3) {
-				if (i==tabs) {
-					node=tree->AppendItem(tree->GetItemParent(node),_ZS(str.Mid(i+2).AfterFirst(' ')),str[i]-'0');
-				} else if (i>tabs) {
-					node=tree->AppendItem(node,_ZS(str.Mid(i+2).AfterFirst(' ')),str[i]-'0');
+			int tabs_cur = 0; while (tabs_cur<int(str.Len()) && str[tabs_cur]=='\t') tabs_cur++;
+			if (int(str.Len())>tabs_cur+3) {
+				if (tabs_cur==tabs_prev) {
+					node = tree->AppendItem(tree->GetItemParent(node),_ZS(str.Mid(tabs_cur+2).AfterFirst(' ')),str[tabs_cur]-'0');
+				} else if (tabs_cur>tabs_prev) {
+					node = tree->AppendItem(node,_ZS(str.Mid(tabs_cur+2).AfterFirst(' ')),str[tabs_cur]-'0');
 				} else {
-					for (unsigned int j=0;j<tabs-i;j++)
-						node=tree->GetItemParent(node);
-					node=tree->AppendItem(tree->GetItemParent(node),_ZS(str.Mid(i+2).AfterFirst(' ')),str[i]-'0');
+					for (int j=0;j<tabs_prev-tabs_cur;j++)
+						node = tree->GetItemParent(node);
+					node = tree->AppendItem(tree->GetItemParent(node),_ZS(str.Mid(tabs_cur+2).AfterFirst(' ')),str[tabs_cur]-'0');
 				}
-				items[DIR_PLUS_FILE(current_dir,str.Mid(i+2).BeforeFirst(' '))]=node;
-				tabs=i;
+				items[DIR_PLUS_FILE(dir,str.Mid(tabs_cur+2).BeforeFirst(' '))] = node;
+				tabs_prev=tabs_cur;
 			}
 		}
 		fil.Close();
+	}
+}
+
+mxHelpWindow::mxHelpWindow(wxString file) : mxGenericHelpWindow(LANG(HELPW_CAPTION,"Ayuda de ZinjaI"),true) {
+	current_dir = DIR_PLUS_FILE(config->zinjai_dir,"guihelp");
+	ignore_tree_event=false;
+	// populate index tree
+	wxTreeItemId root_node = tree->AddRoot("Temas de Ayuda",0);
+	PopulateIndex(root_node,current_dir);
+	
+	wxTreeItemId complements_node = tree->AppendItem(root_node,LANG(HELPW_COMPLEMENTS_SECTION,"Ayudas de Complementos"),0);
+	items[DIR_PLUS_FILE(current_dir,"complements_section.html")] = complements_node;
+	wxArrayString complements;
+	wxString complements_dir = config->GetZinjaiComplementsPath("guihelp");
+	if (mxUT::GetFilesFromDir(complements,complements_dir,false)) {
+		for(unsigned int i=0;i<complements.GetCount();i++) {
+			PopulateIndex(complements_node, DIR_PLUS_FILE(complements_dir,complements[i]));
+		}
+	}
+		
+	{ // drepecated method, I'll remove this code in the future
 		wxArrayString complements;
 		wxString complements_dir = config->GetZinjaiComplementsPath("guihelp");
 		if (mxUT::GetFilesFromDir(complements,complements_dir)) {
-			node = tree->AppendItem(root,LANG(HELPW_COMPLEMENTS_SECTION,"Ayudas de Complementos"),0);
-			items[DIR_PLUS_FILE(current_dir,"complements_section.html")] = node;
 			for(unsigned int i=0;i<complements.GetCount();i++) {
 				wxString page_name = complements[i].BeforeLast('.');
 				wxString file = DIR_PLUS_FILE(complements_dir,complements[i]);
-				items[file] = tree->AppendItem(node,page_name,1);
+				items[file] = tree->AppendItem(complements_node,page_name,1);
 			}
 		}
-//		tree->Expand(root);
-		wxTreeItemIdValue cokkie;
-		node = tree->GetFirstChild(root,cokkie);
-		while (node.IsOk()) {
-			tree->Expand(node);
-			node = tree->GetNextSibling(node);
-		}
+	}
+	
+	// expand all first level items
+	wxTreeItemIdValue cokkie;
+	wxTreeItemId node = tree->GetFirstChild(root_node,cokkie);
+	while (node.IsOk()) {
+		tree->Expand(node);
+		node = tree->GetNextSibling(node);
 	}
 	
 	if (!file.Len()) file="index"; 
