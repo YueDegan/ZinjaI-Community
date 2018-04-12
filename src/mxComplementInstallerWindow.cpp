@@ -164,9 +164,8 @@ void mxComplementInstallerWindow::Install(wxWindow *parent, wxString fname) {
 	if (!writable) {
 		char *cexe= new char[exe.Len()+1];
 		strcpy(cexe,exe.c_str());
-		char *cargs=new char[caller.Len()+1];
+		char *cargs=new char[args.Len()+1];
 		strcpy(cargs,args.c_str());
-			
 		SHELLEXECUTEINFO sinfo;
 		memset(&sinfo, 0, sizeof(SHELLEXECUTEINFO));
 		sinfo.cbSize       = sizeof(SHELLEXECUTEINFO);
