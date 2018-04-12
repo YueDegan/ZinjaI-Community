@@ -71,7 +71,7 @@ void mxComplementInstallerWindow::OnOkButton (wxCommandEvent & evt) {
 	if (dlg.ShowModal() == wxID_OK) {
 		wxFileName fname=dlg.GetPath();
 		config->Files.last_dir=fname.GetPath();
-		Install(dlg.GetPath());
+		Install(this,dlg.GetPath());
 		Hide();
 		Destroy();
 	}
@@ -93,7 +93,7 @@ void mxComplementInstallerWindow::OnClose (wxCloseEvent & evt) {
 	Destroy();
 }
 
-void mxComplementInstallerWindow::Install(wxString fname) {
+void mxComplementInstallerWindow::Install(wxWindow *parent, wxString fname) {
 	bool writable=true;
 	wxString wtestf=DIR_PLUS_FILE(config->zinjai_dir,"complement.tmp");
 	if (wxFileName::FileExists(wtestf)) {
@@ -117,7 +117,7 @@ void mxComplementInstallerWindow::Install(wxString fname) {
 		;
 	
 	if (!writable) {
-		if (mxMessageDialog(this,LANG(COMPLEMENTS_SUDO_WARNING,"ZinjaI está instalado en un directorio para el cual su usuario no\n"
+		if (mxMessageDialog(parent,LANG(COMPLEMENTS_SUDO_WARNING,"ZinjaI está instalado en un directorio para el cual su usuario no\n"
 							 "tiene permisos de escritura. Se le solicitará confirmación y/o contraseña\n"
 							 "de root/administrador para continuar con la instalación. ¿Continuar?"))
 				.Title(LANG(GENERAL_WARNING,"Advertencia")).IconInfo().Run().no )

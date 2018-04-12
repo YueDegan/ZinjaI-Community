@@ -4,6 +4,7 @@
 #include "mxMainWindow.h"
 #include "mxSource.h"
 #include <wx/msgdlg.h>
+#include "mxComplementInstallerWindow.h"
 
 mxSource *mxDropTarget::current_drag_source=nullptr;
 bool mxDropTarget::last_drag_cancel=false;
@@ -31,9 +32,12 @@ wxDragResult mxDropTarget::OnData(wxCoord x, wxCoord y, wxDragResult def) {
 	if (!src || data->GetReceivedFormat()==wxDF_FILENAME) {
 		wxArrayString files=file_data->GetFilenames(); 
 		int ans=0;
-		if (files.GetCount()==1)
-			main_window->OpenFileFromGui(files[0]);
-		else
+		if (files.GetCount()==1) {
+			if (files[0].Upper().EndsWith(".ZCP"))
+				mxComplementInstallerWindow::Install(main_window,files[0]);
+			else
+				main_window->OpenFileFromGui(files[0]);
+		} else
 			for (unsigned int i=0;i<files.GetCount();i++)
 				main_window->OpenFileFromGui(files[i],&ans);
 	} else if (data->GetReceivedFormat()==wxDF_TEXT && src) {

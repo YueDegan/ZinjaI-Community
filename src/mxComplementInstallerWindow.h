@@ -29,7 +29,7 @@ public:
 	/// @brief Destruye (quita de la memoria) la ventana cuando de cierra
 	void OnClose(wxCloseEvent &evt);
 	/// @brief Instala el complemento invocanto al instalador externo
-	void Install(wxString fname);
+	static void Install(wxWindow *parent, wxString fname);
 	DECLARE_EVENT_TABLE();
 };
 
