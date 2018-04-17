@@ -18,6 +18,7 @@
 #include "mxBySourceCompilingOpts.h"
 #include "mxInspectionsImprovingEditor.h"
 #include "MenusAndToolsConfig.h"
+#include "mxTemplateCombination.h"
 
 BEGIN_EVENT_TABLE(mxProjectGeneralConfig, wxDialog)
 	EVT_BUTTON(wxID_OK,mxProjectGeneralConfig::OnOkButton)
@@ -40,6 +41,7 @@ BEGIN_EVENT_TABLE(mxProjectGeneralConfig, wxDialog)
 	EVT_BUTTON(mxID_AUTOCODES_FILE,mxProjectGeneralConfig::OnAutocodes)
 	EVT_MENU(mxID_AUTOCODES_OPEN,mxProjectGeneralConfig::OnAutocodesOpen)
 	EVT_MENU(mxID_AUTOCODES_EDIT,mxProjectGeneralConfig::OnAutocodesEdit)
+	EVT_BUTTON(mxID_TOOLS_COMBINE_TEMPLATE,mxProjectGeneralConfig::OnCombineTemplates)
 	EVT_BUTTON(mxID_HELP_BUTTON,mxProjectGeneralConfig::OnHelpButton)
 //	EVT_CHECKBOX(mxID_PROJECT_CONFIG_CUSTOM_TABS,mxProjectGeneralConfig::OnCustomTabs)
 END_EVENT_TABLE()
@@ -115,6 +117,7 @@ wxPanel *mxProjectGeneralConfig::CreateTabAdvanced(wxNotebook *notebook) {
 	sizer.BeginButton(LANG(PROJECTGENERAL_CPPCHECK," Configuración CppCheck... ")).Id(mxID_TOOLS_CPPCHECK_CONFIG).Expand().EndButton();
 	sizer.BeginButton(LANG(PROJECTGENERAL_WXFB," Integración con wxFormBuilder... ")).Id(mxID_TOOLS_WXFB_CONFIG).Expand().EndButton();
 	sizer.BeginButton(LANG(PROJECTGENERAL_CUSTOM_TOOLS," Herramientas Personalizadas... ")).Id(mxID_PROJECT_CONFIG_CUSTOM_TOOLS).Expand().EndButton();
+	sizer.BeginButton(LANG(PROJECTGENERAL_COMBINE_TEMPLATE," Combinar/Actualizar Plantilla... ")).Id(mxID_TOOLS_COMBINE_TEMPLATE).Expand().EndButton();
 	
 	sizer.SetAndFit();
 	return sizer.GetPanel();
@@ -287,5 +290,9 @@ void mxProjectGeneralConfig::OnAutoimprovingInspections (wxCommandEvent & evt) {
 
 void mxProjectGeneralConfig::OnInheritsFrom (wxCommandEvent & evt) {
 	CommonPopup(inherits_from).CommaSplit(true).AddEditAsList().AddEditAsText().AddFilename().BasePath(project->path).Caption(LANG(PROJECTGENERAL_INHERITS_FROM,"Heredar archivos de")).Run(this);
+}
+
+void mxProjectGeneralConfig::OnCombineTemplates (wxCommandEvent & evt) {
+	mxTemplateCombination::Run(this);
 }
 

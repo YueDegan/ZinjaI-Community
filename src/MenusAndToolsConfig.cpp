@@ -414,6 +414,8 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 		AddMenuItem(mnHIDDEN, myMenuItem("set_as_master",mxID_FILE_SET_AS_MASTER,LANG(MENUITEM_FILE_SET_AS_MASTER,"Ejecutar siempre este fuente")).EnableIf(ecSOURCE).Checkeable(false));
 		
 		AddMenuItem(mnHIDDEN, myMenuItem("inspect_on_mover",mxID_DEBUG_INSPECT_ON_MOUSE_OVER,LANG(PREFERENCES_DEBUG_INSPECT_ON_MOUSE_OVER,"Mostrar el valor de una variables al colocar el mouse sobre la misma") ).EnableIf(ecDEBUG_PAUSED).Checkeable(true));
+		
+		AddMenuItem(mnHIDDEN, myMenuItem("combine_project_template",mxID_TOOLS_COMBINE_TEMPLATE,LANG(MAINW_TOOLS_COMBINE_TEMPLATES,"Combinar con otra plantilla...") ).EnableIf(ecPROJECT));
 	
 		for(int i=0;i<MAX_PROJECT_CUSTOM_TOOLS;i++) AddMenuItem(mnHIDDEN, myMenuItem(wxString("project_tool_")<<i,mxID_CUSTOM_PROJECT_TOOL_0+i,LANG1(MENUITEM_HIDDEN_PROJECT_CUSTOM_TOOL,"Herramienta personalizada de proyecto <{1}>",wxString()<<i)).ShortCut(""));
 		
@@ -814,7 +816,7 @@ void MenusAndToolsConfig::CreateMenues () {
 	
 	// create some special submenues
 //	main_window->UpdateCustomTools(false);
-	wxString ipre=DIR_PLUS_FILE("16","recent");
+	wxString ipre=DIR_PLUS_FILE(config->HighDPI()?"24":"16","recent");
 	for(int k=0;k<2;k++) { 
 		wxString *cfglast = k==0?config->Files.last_project:config->Files.last_source;
 		wxMenuItem **mnihistory = k==0?menu_data->file_project_history:menu_data->file_source_history;

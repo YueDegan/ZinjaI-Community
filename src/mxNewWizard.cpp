@@ -958,28 +958,11 @@ void mxNewWizard::CreatePanelProject2() {
 	templates.Add(LANG(NEWWIZARD_TEMPLATE_MAIN,"<incluir archivo y funcion main>"));
 	if (project_templates[0]==config->Files.default_project)
 		project_default=0;
+
+	GetProjectTemplates(project_templates,templates);
+	int idx_def = project_templates.Index(config->Files.default_project);
+	if (idx_def!=wxNOT_FOUND) project_default = idx_def;
 	
-	wxArrayString templates_array;
-	mxUT::GetFilesFromBothDirs(templates_array,"templates",false);
-	
-	for(unsigned int i=0;i<templates_array.GetCount();i++) {
-		wxString name = templates_array[i];
-		wxString full = mxUT::WichOne(name,"templates",false);
-		if (wxFileName::FileExists(DIR_PLUS_FILE(full,name+DOT_PROJECT_EXT))) {
-			if (name==config->Files.default_project) project_default=i;
-			wxTextFile file(DIR_PLUS_FILE(full,name+"."+_T(PROJECT_EXT)));
-			file.Open();
-			for (wxString line=file.GetFirstLine();!file.Eof();line=file.GetNextLine()) {
-				if (line.Left(13)=="project_name=") {
-					name = line.Mid(13).Trim(true).Trim(false);
-					break;
-				}
-			}
-			file.Close();
-			project_templates.Add(templates_array[i]);
-			templates.Add(name);
-		}
-	}	
 
 	sizer->Add(new wxStaticText(panel_project_2,wxID_ANY,LANG(NEWWIZARD_USE_TEMPLATE,"Utilizar plantilla"),wxDefaultPosition,wxDefaultSize),sizers->BT10);
 	project_list = new wxListBox(panel_project_2,wxID_ANY,wxDefaultPosition, wxDefaultSize, templates);
@@ -1134,5 +1117,29 @@ void mxNewWizard::SetCurrentPanel(wxPanel *new_panel) {
 	new_panel->Show();
 	sizer_for_panel->Replace(panel,new_panel,false);
 	panel=new_panel;
+}
+
+int mxNewWizard::GetProjectTemplates (wxArrayString &dirs, wxArrayString & names) {
+	
+	unsigned int osize = dirs.GetCount();
+	mxUT::GetFilesFromBothDirs(dirs,"templates",false);
+	
+	for(unsigned int i=osize;i<dirs.GetCount();i++) {
+		wxString name = dirs[i];
+		wxString full = mxUT::WichOne(name,"templates",false);
+		wxString zpr = DIR_PLUS_FILE(full,name+DOT_PROJECT_EXT);
+		wxTextFile file(zpr);
+		if (file.Open()) {
+			for (wxString line=file.GetFirstLine();!file.Eof();line=file.GetNextLine()) {
+				if (line.Left(13)=="project_name=") {
+					name = line.Mid(13).Trim(true).Trim(false);
+					break;
+				}
+			}
+			file.Close();
+		}
+		names.Add(name);
+	}
+	return dirs.GetCount()-osize;
 }
 

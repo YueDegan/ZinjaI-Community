@@ -256,6 +256,7 @@ public:
 	void OnInternalInfo(wxCommandEvent &event);
 	
 	void OnToolsCreateTemplate (wxCommandEvent &event);
+	void OnToolsCombineTemplate (wxCommandEvent &event);
 	
 	void OnToolsCodePoupup(wxCommandEvent &event);
 	void OnToolsCodeCopyFromH (wxCommandEvent &event);

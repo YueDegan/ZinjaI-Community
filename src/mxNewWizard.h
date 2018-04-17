@@ -117,10 +117,15 @@ public:
 	
 	void OnButtonNewFilePath(wxCommandEvent &evt);
 
+public:
+	// funciones reutilizables por otras ventanas
+	static int GetProjectTemplates(wxArrayString &dirs, wxArrayString &names);
+
 private:
 	static mxNewWizard *instance;
 	
 	void SetCurrentPanel(wxPanel *new_panel);
+	
 	
 	DECLARE_EVENT_TABLE()
 

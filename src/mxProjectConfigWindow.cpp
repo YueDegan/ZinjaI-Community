@@ -70,7 +70,7 @@ BEGIN_EVENT_TABLE(mxProjectConfigWindow, wxDialog)
 	
 	EVT_CHECKBOX(mxID_PROJECT_CONFIG_LIBS_DONT_EXE,mxProjectConfigWindow::OnLibsNoExe)
 	
-//	EVT_BUTTON(mxID_PROJECT_CONFIG_IMPORT_LIBS,mxProjectConfigWindow::OnImportLibsButton)
+	EVT_BUTTON(mxID_PROJECT_CONFIG_IMPORT_LIBS,mxProjectConfigWindow::OnImportLibsButton)
 	
 	EVT_CLOSE(mxProjectConfigWindow::OnClose)
 END_EVENT_TABLE()
@@ -693,7 +693,7 @@ wxPanel *mxProjectConfigWindow::CreateLibsPanel (wxNotebook *notebook) {
 //		.BeginLabel(/*LANG(PROJECTCONFIG_USE_LIBS,*/"Utilizar bibliotecas externas: "/*)*/).EndLabel()
 //		.BeginButton( /*LANG(PROJECTCONFIG_IMPORT_LIBS,*/"Importar configuración desde plantilla..."/*)*/ ).Id(mxID_PROJECT_CONFIG_IMPORT_LIBS).EndButton()
 //		.EndLine();
-	
+//	
 	/* cosas a importar:
 		variables de entorno
 		parametros extra comp
@@ -919,9 +919,9 @@ void mxProjectConfigWindow::OnToolchainOptionsButton (wxCommandEvent & evt) {
 	mxToolchainOptions(this,toolchains_combo->GetStringSelection(),configuration).ShowModal();
 }
 
-//void mxProjectConfigWindow::OnImportLibsButton (wxCommandEvent & evt) {
-//	
-// }
+void mxProjectConfigWindow::OnImportLibsButton (wxCommandEvent & evt) {
+	
+}
 
 void mxProjectConfigWindow::OnExecutionMethodButton (wxCommandEvent & evt) {
 	

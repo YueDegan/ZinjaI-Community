@@ -87,6 +87,7 @@
 #include "mxHidenPanel.h"
 #include "ZLog.h"
 #include "osdep.h"
+#include "mxTemplateCombination.h"
 using namespace std;
 
 #define SIN_TITULO (wxString("<")<<LANG(UNTITLED,"sin_titulo_")<<(++untitled_count)<<">")
@@ -317,6 +318,7 @@ BEGIN_EVENT_TABLE(mxMainWindow, wxFrame)
 	
 	EVT_MENU(mxID_TOOLS_MAKEFILE, mxMainWindow::OnToolsExportMakefile)
 	EVT_MENU(mxID_TOOLS_CREATE_TEMPLATE, mxMainWindow::OnToolsCreateTemplate)
+	EVT_MENU(mxID_TOOLS_COMBINE_TEMPLATE, mxMainWindow::OnToolsCombineTemplate)
 	EVT_MENU(mxID_TOOLS_PREPROC_UNMARK_ALL, mxMainWindow::OnToolsPreprocUnMarkAll)
 	EVT_MENU(mxID_TOOLS_PREPROC_MARK_VALID, mxMainWindow::OnToolsPreprocMarkValid)
 	EVT_MENU(mxID_TOOLS_PREPROC_EXPAND_MACROS, mxMainWindow::OnToolsPreprocReplaceMacros)
@@ -1461,7 +1463,7 @@ wxHtmlWindow* mxMainWindow::CreateQuickHelp(wxWindow* parent) {
 wxAuiNotebook *mxMainWindow::CreateNotebookSources() {
 //	wxSize client_size = GetClientSize();
 	notebook_sources = new wxAuiNotebook(this, mxID_NOTEBOOK_SOURCES, wxDefaultPosition, wxDefaultSize, wxAUI_NB_DEFAULT_STYLE | wxAUI_NB_TAB_EXTERNAL_MOVE | wxNO_BORDER | wxAUI_NB_WINDOWLIST_BUTTON);
-//	wxBitmap page_bmp = wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(16,16));
+//	wxBitmap page_bmp = wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(tsize,tsize));
 	return notebook_sources;
 }
 
@@ -1471,14 +1473,16 @@ wxTreeCtrl* mxMainWindow::CreateExplorerTree() {
 
 	explorer_tree.treeCtrl = new mxTreeCtrl(this, mxID_TREE_EXPLORER, wxDefaultPosition, wxSize(lateral_trees_width,100), wxTR_DEFAULT_STYLE | wxNO_BORDER /*| wxTR_HIDE_ROOT*/);
 	
-	wxImageList* imglist = new wxImageList(16, 16,true,5);
-	
-	imglist->Add(bitmaps->GetBitmap("trees/ap_folder.png"));
+	int tsize = config->HighDPI()?24:16;
+	wxImageList* imglist = new wxImageList(tsize,tsize,true,5);
+
+	wxString tdir = config->HighDPI()?"trees/24/":"trees/16/";
+	imglist->Add(bitmaps->GetBitmap(tdir+"ap_folder.png"));
 	imglist->Add(*(bitmaps->files.source));
 	imglist->Add(*(bitmaps->files.header));
 	imglist->Add(*(bitmaps->files.other));
 	imglist->Add(*(bitmaps->files.blank));
-	imglist->Add(bitmaps->GetBitmap("trees/ap_zpr.png"));
+	imglist->Add(bitmaps->GetBitmap(tdir+"ap_zpr.png"));
 	explorer_tree.treeCtrl->AssignImageList(imglist);
 	
 	explorer_tree.show_only_sources = false;
@@ -1492,16 +1496,18 @@ wxTreeCtrl *mxMainWindow::project_tree_struct::Create(wxWindow *parent) {
 	EXPECT(treeCtrl==nullptr);
 	
 	treeCtrl = new mxTreeCtrl(parent, mxID_TREE_PROJECT, wxPoint(0,0), wxSize(lateral_trees_width,100), wxTR_DEFAULT_STYLE | wxNO_BORDER | wxTR_HIDE_ROOT);
-					
-	wxImageList* imglist = new wxImageList(16, 16,true,5);
 	
-	imglist->Add(bitmaps->GetBitmap("trees/ap_folder.png"));
+	int tsize = config->HighDPI()?24:16;
+	wxImageList* imglist = new wxImageList(tsize,tsize,true,5);
+	
+	wxString tdir = config->HighDPI()?"trees/24/":"trees/16/";
+	imglist->Add(bitmaps->GetBitmap(tdir+"ap_folder.png"));
 	imglist->Add(*(bitmaps->files.source));
 	imglist->Add(*(bitmaps->files.header));
 	imglist->Add(*(bitmaps->files.other));
 	imglist->Add(*(bitmaps->files.blank));
-	imglist->Add(bitmaps->GetBitmap("trees/ap_wxfb.png"));
-	imglist->Add(bitmaps->GetBitmap("trees/ap_blacklist.png"));
+	imglist->Add(bitmaps->GetBitmap(tdir+"ap_wxfb.png"));
+	imglist->Add(bitmaps->GetBitmap(tdir+"ap_blacklist.png"));
 	treeCtrl->AssignImageList(imglist);
 	
 	root = treeCtrl->AddRoot("Archivos Abiertos", 0);
@@ -1564,9 +1570,12 @@ void mxMainWindow::project_tree_struct::ClearSelection() {
 
 wxTreeCtrl* mxMainWindow::CreateSymbolsTree() {
 	symbols_tree.treeCtrl = new mxTreeCtrl(this, mxID_TREE_SYMBOLS, wxPoint(0,0), wxSize(lateral_trees_width,100), wxTR_DEFAULT_STYLE | wxNO_BORDER | wxTR_HIDE_ROOT);
-	wxImageList* imglist = new wxImageList(16, 16, true, 15);
-	imglist->Add(bitmaps->GetBitmap("trees/as_folder.png"));
-	imglist->Add(wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(16,16)));
+
+	int tsize = config->HighDPI()?24:16;
+	wxImageList* imglist = new wxImageList(tsize,tsize, true, 15);
+	wxString tdir = config->HighDPI()?"trees/24/":"trees/16/";
+	imglist->Add(bitmaps->GetBitmap(tdir+"as_folder.png"));
+	imglist->Add(wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(tsize,tsize)));
 	
 	imglist->Add(*(bitmaps->parser.icon02_define));
 	imglist->Add(*(bitmaps->parser.icon03_func));
@@ -1600,15 +1609,17 @@ wxPanel* mxMainWindow::CreateCompilerTree() {
 // 	tree_font.SetFaceName("courier");
 // 	compiler_tree.treeCtrl->SetFont(tree_font);
 	
-	wxImageList* imglist = new wxImageList(16, 16, true, 2);
-	imglist->Add(bitmaps->GetBitmap("trees/co_folder.png"));
-	imglist->Add(wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(16,16)));
-	imglist->Add(bitmaps->GetBitmap("trees/co_info.png"));
-	imglist->Add(bitmaps->GetBitmap("trees/co_warning.png"));
-	imglist->Add(bitmaps->GetBitmap("trees/co_error.png"));
-	imglist->Add(bitmaps->GetBitmap("trees/co_err_info.png"));
-	imglist->Add(bitmaps->GetBitmap("trees/co_out.png"));
-	imglist->Add(bitmaps->GetBitmap("trees/co_project_warning.png"));
+	wxString tdir = config->HighDPI()?"trees/24/":"trees/16/";
+	int tsize = config->HighDPI()?24:16;
+	wxImageList* imglist = new wxImageList(tsize,tsize, true, 2);
+	imglist->Add(bitmaps->GetBitmap(tdir+"co_folder.png"));
+	imglist->Add(wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(tsize,tsize)));
+	imglist->Add(bitmaps->GetBitmap(tdir+"co_info.png"));
+	imglist->Add(bitmaps->GetBitmap(tdir+"co_warning.png"));
+	imglist->Add(bitmaps->GetBitmap(tdir+"co_error.png"));
+	imglist->Add(bitmaps->GetBitmap(tdir+"co_err_info.png"));
+	imglist->Add(bitmaps->GetBitmap(tdir+"co_out.png"));
+	imglist->Add(bitmaps->GetBitmap(tdir+"co_project_warning.png"));
 	compiler_tree.treeCtrl->AssignImageList(imglist);
 	
 	compiler_tree.root = compiler_tree.treeCtrl->AddRoot("Resultados de la Compilación:", 0);
@@ -4919,3 +4930,6 @@ void mxMainWindow::OnHelpFindCommand (wxCommandEvent & event) {
 	mxCommandFinder().ShowModal();
 }
 
+void mxMainWindow::OnToolsCombineTemplate (wxCommandEvent &event) {
+	mxTemplateCombination::Run(this);
+}

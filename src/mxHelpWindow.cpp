@@ -5,7 +5,7 @@
 #include "mxMessageDialog.h"
 #include "mxMainWindow.h"
 
-#define ERROR_PAGE(page) wxString("<I>ERROR</I>: La pagina \"")<<page<<"\" no se encuentra. <br><br> La ayuda de <I>ZinjaI</I> aun esta en contruccion."
+#define ERROR_PAGE(page) wxString("<I>ERROR</I>: La pagina \"")<<page<<"\" no se encuentra. <br><br> La ayuda de <I>ZinjaI</I> aún está en contrucción."
 #define _index "index.html"
 #include "ids.h"
 #include "mxSizers.h"
@@ -216,6 +216,15 @@ bool mxHelpWindow::OnLink (wxString href) {
 			wxExecute("\"/Applications/Utilities/Keychain Access.app/Contents/MacOS/Keychain Access\"");
 		}
 #endif
+	} else if (href.StartsWith("explore:")) {
+		wxString path = href.AfterFirst(':');
+#ifdef __WIN32__
+		path.Replace("/","\\",true);
+#endif
+		mxUT::DirParameterReplace(path,"ZINJAI",config->zinjai_dir,false);
+		mxUT::DirParameterReplace(path,"MINGW",current_toolchain.mingw_dir,false);
+		if (project) mxUT::DirParameterReplace(path,"PROJECT",project->GetPath(),false);
+		mxUT::OpenFolder(path);
 	} else if (href.StartsWith("foropen:")) {
 		main_window->NewFileFromTemplate(DIR_PLUS_FILE(current_dir,href.AfterFirst(':')),true);
 	} else if (href.Contains("://")) {
@@ -240,9 +249,9 @@ void mxHelpWindow::OnForum (wxCommandEvent & event) {
 
 wxString mxHelpWindow::FixURL(wxString url, bool set_dir, bool select_tree, bool keep_args) {
 	if (url.Contains("$")) {
-		mxUT::DirParameterReplace(url,"ZINJAI",config->zinjai_dir);
+		mxUT::DirParameterReplace(url,"ZINJAI",config->zinjai_dir,false);
 		if (project)
-			mxUT::DirParameterReplace(url,"PROJECT",project->GetPath());
+			mxUT::DirParameterReplace(url,"PROJECT",project->GetPath(),false);
 	}
 	// cortar ruta, nombre, ext del archivo y argumentos de la url
 	int pos_args = url.Len(), pos_name = 0, pos_ext = -1;

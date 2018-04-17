@@ -22,6 +22,7 @@
 #include "CustomTools.h"
 #include "mxSplashScreen.h"
 #include "IniFile.h"
+#include "osdep.h"
 
 ConfigManager *config;
 
@@ -169,7 +170,8 @@ bool ConfigManager::Load() {
 		
 		if (section=="Styles") {
 			for( IniFileReader::Pair p = fil.GetNextPair(); p.IsOk(); p = fil.GetNextPair() ) {
-				if (p.Key()=="print_size") Styles.print_size = p.AsInt();
+				if (p.Key()=="forced_dpi") Styles.forced_dpi = p.AsInt();
+				else if (p.Key()=="print_size") Styles.print_size = p.AsInt();
 				else if (p.Key()=="font_size") Styles.font_size = p.AsInt();
 				else if (p.Key()=="font_name") Styles.font_name = p.AsString();
 				else if (p.Key()=="colour_theme") Init.colour_theme = p.AsString();
@@ -597,6 +599,7 @@ bool ConfigManager::Save(){
 	fil.AddLine("");
 	
 	fil.AddLine("[Styles]");
+	CFG_GENERIC_WRITE_DN("forced_dpi",Styles.forced_dpi);
 	CFG_GENERIC_WRITE_DN("print_size",Styles.print_size);
 	CFG_GENERIC_WRITE_DN("font_size",Styles.font_size);
 	CFG_GENERIC_WRITE_DN("font_name",Styles.font_name);
@@ -794,6 +797,7 @@ void ConfigManager::LoadDefaults(){
 	Init.beautify_compiler_errors=true;
 	Init.fullpath_on_project_tree=false;
 
+	Styles.forced_dpi=0;
 	Styles.print_size=8;
 	Styles.font_size=10;
 	Styles.font_name=wxFont(10,wxMODERN,wxNORMAL,wxNORMAL).GetFaceName();
@@ -1311,5 +1315,12 @@ void ConfigManager::ApplyPatchsFromComplements ( ) {
 			ApplyPatchsFromComplements(fullname);
 	}
 	Init.complements_timestamp = stDateTime2String(wxDateTime::Now());
+}
+
+int ConfigManager::GetDPI ( ) const {
+	return Styles.forced_dpi>0 ? Styles.forced_dpi : OSDep::GetDPI();
+}
+bool ConfigManager::HighDPI ( ) const {
+	return GetDPI()>=120;
 }
 

@@ -18,45 +18,48 @@ mxArt *bitmaps = nullptr;
 
 mxArt::mxArt(wxString img_dir) {
 	
-	files.source = &(GetBitmap("trees/ap_cpp.png"));
-	files.header = &(GetBitmap("trees/ap_header.png"));
-	files.other = &(GetBitmap("trees/ap_other.png"));
-	files.blank = &(GetBitmap("trees/ap_blank.png"));
+	wxString tdir = config->HighDPI()?"trees/24/":"trees/16/";
+	files.source = &(GetBitmap(tdir+"ap_cpp.png"));
+	files.header = &(GetBitmap(tdir+"ap_header.png"));
+	files.other = &(GetBitmap(tdir+"ap_other.png"));
+	files.blank = &(GetBitmap(tdir+"ap_blank.png"));
 	
-	parser.icon02_define =&(GetBitmap("trees/as_define.png"));
-	parser.icon03_func = &(GetBitmap("trees/as_func.png"));
-	parser.icon04_class = &(GetBitmap("trees/as_class.png"));
-	parser.icon05_att_unk = &(GetBitmap("trees/as_att_unk.png"));
-	parser.icon06_att_pri = &(GetBitmap("trees/as_att_pri.png"));
-	parser.icon07_att_pro = &(GetBitmap("trees/as_att_pro.png"));
-	parser.icon08_att_pub = &(GetBitmap("trees/as_att_pub.png"));
-	parser.icon09_mem_unk = &(GetBitmap("trees/as_met_unk.png"));
-	parser.icon10_mem_pri = &(GetBitmap("trees/as_met_pri.png"));
-	parser.icon11_mem_pro = &(GetBitmap("trees/as_met_pro.png"));
-	parser.icon12_mem_pub = &(GetBitmap("trees/as_met_pub.png"));
-	parser.icon13_none = &(GetBitmap("trees/as_none.png"));
-	parser.icon14_global_var = &(GetBitmap("trees/as_global.png"));
-	parser.icon15_res_word = &(GetBitmap("trees/as_res_word.png"));
-	parser.icon16_preproc = &(GetBitmap("trees/as_preproc.png"));
-	parser.icon17_doxygen = &(GetBitmap("trees/as_doxygen.png"));
-	parser.icon18_typedef = &(GetBitmap("trees/as_typedef.png"));
-	parser.icon19_enum_const = &(GetBitmap("trees/as_enum_const.png"));
-	parser.icon20_argument = &(GetBitmap("trees/as_arg.png"));
-	parser.icon21_local = &(GetBitmap("trees/as_local.png"));
+	parser.icon02_define =&(GetBitmap(tdir+"as_define.png"));
+	parser.icon03_func = &(GetBitmap(tdir+"as_func.png"));
+	parser.icon04_class = &(GetBitmap(tdir+"as_class.png"));
+	parser.icon05_att_unk = &(GetBitmap(tdir+"as_att_unk.png"));
+	parser.icon06_att_pri = &(GetBitmap(tdir+"as_att_pri.png"));
+	parser.icon07_att_pro = &(GetBitmap(tdir+"as_att_pro.png"));
+	parser.icon08_att_pub = &(GetBitmap(tdir+"as_att_pub.png"));
+	parser.icon09_mem_unk = &(GetBitmap(tdir+"as_met_unk.png"));
+	parser.icon10_mem_pri = &(GetBitmap(tdir+"as_met_pri.png"));
+	parser.icon11_mem_pro = &(GetBitmap(tdir+"as_met_pro.png"));
+	parser.icon12_mem_pub = &(GetBitmap(tdir+"as_met_pub.png"));
+	parser.icon13_none = &(GetBitmap(tdir+"as_none.png"));
+	parser.icon14_global_var = &(GetBitmap(tdir+"as_global.png"));
+	parser.icon15_res_word = &(GetBitmap(tdir+"as_res_word.png"));
+	parser.icon16_preproc = &(GetBitmap(tdir+"as_preproc.png"));
+	parser.icon17_doxygen = &(GetBitmap(tdir+"as_doxygen.png"));
+	parser.icon18_typedef = &(GetBitmap(tdir+"as_typedef.png"));
+	parser.icon19_enum_const = &(GetBitmap(tdir+"as_enum_const.png"));
+	parser.icon20_argument = &(GetBitmap(tdir+"as_arg.png"));
+	parser.icon21_local = &(GetBitmap(tdir+"as_local.png"));
 
-	icons.error = &(GetBitmap("dialogs/icon_error.png"));
-	icons.info = &(GetBitmap("dialogs/icon_info.png"));
-	icons.warning = &(GetBitmap("dialogs/icon_warning.png"));
-	icons.question = &(GetBitmap("dialogs/icon_question.png"));
+	wxString idir = config->HighDPI()?"icong/i90/":"dialogs/i60/";  
+	icons.error = &(GetBitmap(idir+"icon_error.png"));
+	icons.info = &(GetBitmap(idir+"icon_info.png"));
+	icons.warning = &(GetBitmap(idir+"icon_warning.png"));
+	icons.question = &(GetBitmap(idir+"icon_question.png"));
 	
-	buttons.ok = &(GetBitmap("dialogs/button_ok.png"));
-	buttons.cancel = &(GetBitmap("dialogs/button_cancel.png"));
-	buttons.help = &(GetBitmap("dialogs/button_help.png"));
-	buttons.find = &(GetBitmap("dialogs/button_find.png"));
-	buttons.replace = &(GetBitmap("dialogs/button_replace.png"));
-	buttons.next = &(GetBitmap("dialogs/button_next.png"));
-	buttons.prev = &(GetBitmap("dialogs/button_prev.png"));
-	buttons.stop = &(GetBitmap("dialogs/button_stop.png"));
+	wxString bdir = config->HighDPI()?"dialogs/b24/":"dialogs/b16/";  
+	buttons.ok = &(GetBitmap(bdir+"button_ok.png"));
+	buttons.cancel = &(GetBitmap(bdir+"button_cancel.png"));
+	buttons.help = &(GetBitmap(bdir+"button_help.png"));
+	buttons.find = &(GetBitmap(bdir+"button_find.png"));
+	buttons.replace = &(GetBitmap(bdir+"button_replace.png"));
+	buttons.next = &(GetBitmap(bdir+"button_next.png"));
+	buttons.prev = &(GetBitmap(bdir+"button_prev.png"));
+	buttons.stop = &(GetBitmap(bdir+"button_stop.png"));
 	
 }
 

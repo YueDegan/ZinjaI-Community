@@ -38,6 +38,7 @@
 #include "mxThreeDotsUtils.h"
 #include "mxAUI.h"
 #include "mxNewWizard.h"
+#include "osdep.h"
 
 static cfgStyles s_old_config_styles; // aquí para evitar tener que hacer el include de ConfigManager en el .h
 
@@ -130,6 +131,7 @@ BEGIN_EVENT_TABLE(mxPreferenceWindow, wxDialog)
 	EVT_COMBOBOX(mxID_PREFERENCES_FONTNAME,mxPreferenceWindow::OnFontChange)
 	EVT_TEXT(mxID_PREFERENCES_FONTSIZE,mxPreferenceWindow::OnFontChange)
 	EVT_CHECKBOX(mxID_PREFERENCES_AUTOHIDE_PANELS,mxPreferenceWindow::OnAutohidePanelsChange)
+	EVT_CHECKBOX(mxID_PREFERENCES_FORCE_DPI,mxPreferenceWindow::OnForceDPIChange)
 END_EVENT_TABLE()
 
 mxPreferenceWindow::mxPreferenceWindow(wxWindow* parent) : 
@@ -150,16 +152,18 @@ mxPreferenceWindow::mxPreferenceWindow(wxWindow* parent) :
 	
 	wxBoxSizer *mySizer = new wxBoxSizer(wxVERTICAL);
 	notebook = new mxBookCtrl(this,wxID_ANY,wxDefaultPosition,wxDefaultSize,wxBK_LEFT);
-	wxImageList* imglist = new wxImageList(32, 32,true,8);
-	imglist->Add(bitmaps->GetBitmap("dialogs/pref_general.png"));
-	imglist->Add(bitmaps->GetBitmap("dialogs/pref_program.png"));
-	imglist->Add(bitmaps->GetBitmap("dialogs/pref_style.png"));
-	imglist->Add(bitmaps->GetBitmap("dialogs/pref_writing.png"));
-	imglist->Add(bitmaps->GetBitmap("dialogs/pref_skin.png"));
-	imglist->Add(bitmaps->GetBitmap("dialogs/pref_toolbars.png"));
-	imglist->Add(bitmaps->GetBitmap("dialogs/pref_debug.png"));
-	imglist->Add(bitmaps->GetBitmap("dialogs/pref_paths.png"));
-	if (config->Help.show_extra_panels) imglist->Add(bitmaps->GetBitmap("dialogs/pref_help.png"));
+	wxString idir = config->HighDPI()?"dialogs/p48/":"dialogs/p32/";
+	int isize = config->HighDPI()?48:32;
+	wxImageList* imglist = new wxImageList(isize, isize,true,8);
+	imglist->Add(bitmaps->GetBitmap(idir+"pref_general.png"));
+	imglist->Add(bitmaps->GetBitmap(idir+"pref_program.png"));
+	imglist->Add(bitmaps->GetBitmap(idir+"pref_style.png"));
+	imglist->Add(bitmaps->GetBitmap(idir+"pref_writing.png"));
+	imglist->Add(bitmaps->GetBitmap(idir+"pref_skin.png"));
+	imglist->Add(bitmaps->GetBitmap(idir+"pref_toolbars.png"));
+	imglist->Add(bitmaps->GetBitmap(idir+"pref_debug.png"));
+	imglist->Add(bitmaps->GetBitmap(idir+"pref_paths.png"));
+	if (config->Help.show_extra_panels) imglist->Add(bitmaps->GetBitmap(idir+"pref_help.png"));
 	notebook->SetImageList(imglist);
 
 	if (config->Help.show_extra_panels) 
@@ -706,6 +710,22 @@ wxPanel *mxPreferenceWindow::CreateSkinPanel (mxBookCtrl *notebook) {
 	sizer->Add(skin_image,sizers->BA10_Exp0);
 	wxButton *apply_button = new mxBitmapButton(panel,mxID_SKIN_APPLY,bitmaps->buttons.ok,LANG(PREFERENCES_SKIN_APPLY,"Aplicar"));
 	sizer->Add(apply_button,sizers->BA10_Exp0_Right);
+	sizer->AddSpacer(15);
+	
+	m_force_dpi_bool = config->Styles.forced_dpi!=0;
+	ReuseSizer(panel,sizer)
+//		.Spacer()
+		.BeginLine()
+			.BeginCheck(LANG(PREFERENCES_STYLE_FORCE_DPI,"Forzar PPI: ")).Id(mxID_PREFERENCES_FORCE_DPI).Bind(m_binder,m_force_dpi_bool).EndCheck(m_force_dpi_check)
+			.BeginText("").Bind(m_binder,config->Styles.forced_dpi).EndText(m_force_dpi_text)
+			.BeginLabel(LANG1(PREFERENCES_STYLE_GUESSED_DPI,"   ( valor por defecto: <{1}> )",wxString()<<OSDep::GetDPI())).EndLabel()
+		.EndLine()
+		.BeginLabel( LANG(PREFERENCES_GENERAL_ASTERIX_WILL_APPLY_NEXT_TIME,"(*) tendrá efecto la proxima vez que inicie ZinjaI") )
+			.Center().EndLabel();
+	
+	m_force_dpi_text->Enable(m_force_dpi_bool);
+	
+	
 	
 	wxCommandEvent ce;
 	OnSkinList(ce);
@@ -811,6 +831,8 @@ void mxPreferenceWindow::OnOkButton(wxCommandEvent &event) {
 	wxString lang_prev = config->Init.language_file;
 	
 	m_binder.FromWidgets();
+	
+	if (!m_force_dpi_bool) config->Styles.forced_dpi=0;
 	
 	bool lang_changed = lang_prev!=config->Init.language_file;
 	if (lang_changed) {
@@ -1253,9 +1275,10 @@ void mxPreferenceWindow::ResetChanges() {
 	}
 	
 	// style
+	m_force_dpi_check->SetValue(config->Styles.forced_dpi!=0);
 	source_edgeColumnCheck->SetValue(config->Source.edgeColumn>0);
 	source_edgeColumnPos->SetValue(wxString()<<abs(config->Source.edgeColumn));
-	wxCommandEvent cmd_evt; OnFontChange(cmd_evt);
+	wxCommandEvent cmd_evt; OnFontChange(cmd_evt); OnForceDPIChange(cmd_evt);
 	
 	// compile
 	wxArrayString cpp_templates; g_templates->GetFilesList(cpp_templates,false,true);
@@ -1415,5 +1438,9 @@ void mxPreferenceWindow::SetToolbarPage(const wxString &edit_one) {
 void mxPreferenceWindow::OnAutohidePanelsChange (wxCommandEvent & evt) {
 	evt.Skip();
 	init_left_panels->Enable(!autohide_panels->GetValue());
+}
+
+void mxPreferenceWindow::OnForceDPIChange (wxCommandEvent & evt) {
+	m_force_dpi_text->Enable(m_force_dpi_check->GetValue());
 }
 

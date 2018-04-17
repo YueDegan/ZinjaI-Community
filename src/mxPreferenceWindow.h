@@ -47,7 +47,10 @@ class mxPreferenceWindow : public mxDialog {
 	widgetBinder m_binder;
 	
 	bool ignore_styles_changes;
-
+	bool m_force_dpi_bool;
+	wxTextCtrl *m_force_dpi_text;
+	wxCheckBox *m_force_dpi_check;
+	
 	wxComboBox *language_combo;
 	
 	wxCheckBox *toolbars_wich_file;
@@ -215,6 +218,7 @@ class mxPreferenceWindow : public mxDialog {
 	void OnCustomizeShortcuts(wxCommandEvent &evt);
 	void EnableOrDisableControls();
 	void OnAutohidePanelsChange(wxCommandEvent &evt);
+	void OnForceDPIChange(wxCommandEvent &evt);
 public:
 	void SetPathsPage(const wxString &select_one="");
 	void SetToolbarPage(const wxString &edit_one="");

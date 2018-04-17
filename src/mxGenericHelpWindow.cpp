@@ -45,6 +45,8 @@ mxGenericHelpWindow::mxGenericHelpWindow(wxString title, bool use_tree):wxFrame 
 	wxBoxSizer *topSizer = new wxBoxSizer(wxHORIZONTAL);
 	bottomSizer = new wxBoxSizer(wxHORIZONTAL);
 		
+	wxString bdir = config->HighDPI()?"dialogs/h32/":"dialogs/h24/";
+	
 	if (use_tree) {
 		index_sash = new wxSashLayoutWindow(this, wxID_ANY,
 			wxDefaultPosition, wxSize(200, 30),
@@ -55,22 +57,22 @@ mxGenericHelpWindow::mxGenericHelpWindow(wxString title, bool use_tree):wxFrame 
 		index_sash->SetSashVisible(wxSASH_RIGHT, true);
 		tree= new wxTreeCtrl(index_sash, wxID_ANY, wxPoint(0,0), wxSize(10,250),wxTR_DEFAULT_STYLE|wxTR_HIDE_ROOT);
 		bottomSizer->Add(index_sash,sizers->Exp0);
-		m_button_tree = new wxBitmapButton(panel, mxID_HELPW_HIDETREE, bitmaps->GetBitmap("dialogs/help_tree.png"));
+		m_button_tree = new wxBitmapButton(panel, mxID_HELPW_HIDETREE, bitmaps->GetBitmap(bdir+"help_tree.png"));
 		m_button_tree->SetToolTip(LANG(HELPW_TOGGLE_TREE,"Mostrar/Ocultar Indice"));
 		topSizer->Add(m_button_tree,sizers->BA2);
 	} else { tree=nullptr; m_button_tree=nullptr; }
 	
-	m_button_index = new wxBitmapButton(panel, mxID_HELPW_HOME, bitmaps->GetBitmap("dialogs/help_index.png"));
+	m_button_index = new wxBitmapButton(panel, mxID_HELPW_HOME, bitmaps->GetBitmap(bdir+"help_index.png"));
 	m_button_index->SetToolTip(LANG(HELPW_INDEX,"Ir a la pagina de incio"));
-	m_button_prev = new wxBitmapButton(panel, mxID_HELPW_PREV, bitmaps->GetBitmap("dialogs/help_prev.png"));
+	m_button_prev = new wxBitmapButton(panel, mxID_HELPW_PREV, bitmaps->GetBitmap(bdir+"help_prev.png"));
 	m_button_prev->SetToolTip(LANG(HELPW_PREVIOUS,"Ir a la pagina anterior"));
-	m_button_next = new wxBitmapButton(panel, mxID_HELPW_NEXT, bitmaps->GetBitmap("dialogs/help_next.png"));
+	m_button_next = new wxBitmapButton(panel, mxID_HELPW_NEXT, bitmaps->GetBitmap(bdir+"help_next.png"));
 	m_button_next->SetToolTip(LANG(HELPW_NEXT,"Ir a la pagina siguiente"));
-	wxBitmapButton *button_copy = new wxBitmapButton(panel, mxID_HELPW_COPY, bitmaps->GetBitmap("dialogs/help_copy.png"));
+	wxBitmapButton *button_copy = new wxBitmapButton(panel, mxID_HELPW_COPY, bitmaps->GetBitmap(bdir+"help_copy.png"));
 	button_copy->SetToolTip(LANG(HELPW_COPY,"Copiar seleccion al portapapeles"));
-	m_button_atop = new wxBitmapButton(panel, mxID_HELPW_ALWAYS_ON_TOP, bitmaps->GetBitmap("dialogs/help_atop.png"));
+	m_button_atop = new wxBitmapButton(panel, mxID_HELPW_ALWAYS_ON_TOP, bitmaps->GetBitmap(bdir+"help_atop.png"));
 	m_button_atop->SetToolTip("Hacer que la ventana de ayuda permanezca siempre visible (siempre sobre las demás ventanas)");
-	wxBitmapButton *button_print = new wxBitmapButton(panel, mxID_HELPW_PRINT, bitmaps->GetBitmap("dialogs/help_print.png"));
+	wxBitmapButton *button_print = new wxBitmapButton(panel, mxID_HELPW_PRINT, bitmaps->GetBitmap(bdir+"help_print.png"));
 	button_print->SetToolTip(LANG(HELPW_PRINT,"Imprimir pagina actual"));
 	topSizer->Add(m_button_index,sizers->BA2);
 	topSizer->Add(m_button_prev,sizers->BA2);
@@ -82,7 +84,7 @@ mxGenericHelpWindow::mxGenericHelpWindow(wxString title, bool use_tree):wxFrame 
 	search_text->SetToolTip(LANG(HELPW_SEARCH_LABEL,"Palabras a buscar"));
 	topSizer->Add(search_text,sizers->BA2_Exp1);
 	
-	m_button_search = new wxBitmapButton(panel, mxID_HELPW_SEARCH, bitmaps->GetBitmap("dialogs/help_search.png"));
+	m_button_search = new wxBitmapButton(panel, mxID_HELPW_SEARCH, bitmaps->GetBitmap(bdir+"help_search.png"));
 	m_button_search->SetToolTip(LANG(HELPW_FIND,"Buscar..."));
 	topSizer->Add(m_button_search,sizers->BA2);
 	panel->SetSizer(topSizer);

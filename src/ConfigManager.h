@@ -57,6 +57,7 @@ struct cfgStyles {
 	wxString font_name;
 	int font_size;
 	int print_size;
+	int forced_dpi; ///< 0=guess
 };
 
 //! Elementos de la configuración relacionados al comportamiento de un fuente
@@ -281,6 +282,9 @@ public:
 	wxString GetUserTempPath(const wxString &append_filename) const { return DIR_PLUS_FILE(temp_dir,append_filename); }
 	wxString GetUserConfigDir() const { return config_dir; }
 	wxString GetUserConfigPath(const wxString &append_filename) const { return DIR_PLUS_FILE(config_dir,append_filename); }
+
+	int GetDPI() const;
+	bool HighDPI() const;
 	
 };
 

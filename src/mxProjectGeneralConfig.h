@@ -43,6 +43,7 @@ public:
 	void OnIndexesButton(wxCommandEvent &evt);
 //	void OnCustomTabs(wxCommandEvent &evt);
 	void OnCustomToolsConfig(wxCommandEvent &evt);
+	void OnCombineTemplates(wxCommandEvent &evt);
 	void OnWxfbConfig(wxCommandEvent &evt);
 	void OnCppCheckConfig(wxCommandEvent &evt);
 	void OnBySrcCompilingOts(wxCommandEvent &evt);

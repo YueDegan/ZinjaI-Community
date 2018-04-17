@@ -31,25 +31,33 @@ wxBitmap mxBitmapButton::GenerateButtonImage(wxString text, const wxBitmap *bmp)
 	if (!background_colour)
 		background_colour = new wxColour(wxButton(nullptr,wxID_ANY,_T("lala")).GetBackgroundColour());
 #endif
-
 	wxColour back_color = wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
-	wxBitmap full(200,100,32);
-	wxMemoryDC *dc=new wxMemoryDC(full);
+	
+	static wxBitmap full(200,100,32);
+	wxMemoryDC dc(full);
 	wxRect r;
-	dc->SetBackground(wxBrush(back_color));
-	dc->Clear();
+	dc.SetBackground(wxBrush(back_color));
+	dc.Clear();
 	int p = text.Find('&');
 	if (p==wxNOT_FOUND) p=-1;
 	else text.Remove(p++,1);
-	dc->SetFont(wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT));
-	dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNTEXT));
-	dc->DrawLabel(wxString(" ")<<text,*bmp,wxRect(wxPoint(0,0),wxPoint(200,100)), wxALIGN_LEFT | wxALIGN_TOP,p,&r);
+	dc.SetFont(wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT));
+	dc.SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNTEXT));
+	dc.DrawLabel(wxString(" ")<<text,*bmp,wxRect(wxPoint(0,0),wxPoint(200,100)), wxALIGN_LEFT | wxALIGN_TOP,p,&r);
 	r.height = r.height>bmp->GetHeight()?r.height:bmp->GetHeight()+1;
 	r.height += r.y+1;
 	r.y = 0;
 	r.width += /*bmp->GetWidth()+*/r.x+1;	
 	r.x = 0;
-	delete dc;
+
+	if (r.GetHeight()>full.GetHeight() || r.GetWidth()>full.GetWidth()) {
+		int w = full.GetWidth(), h = full.GetHeight();
+		if (w<r.GetWidth()) w*=2;
+		if (h<r.GetHeight()) h*=2;
+		full = wxBitmap(w,h,32);
+		return GenerateButtonImage(text,bmp);
+	}
+//	delete dc;
 	wxMask *m=new wxMask();
 	m->Create(full,back_color);
 	full.SetMask(m);
