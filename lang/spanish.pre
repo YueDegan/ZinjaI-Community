@@ -2699,9 +2699,9 @@ PREFERENCES_SKIN_DEFAULT_THEME
 PREFERENCES_SKIN_APPLY
 Aplicar
 PREFERENCES_STYLE_FORCE_DPI
-Forzar DPIs: 
+Forzar PPI: 
 PREFERENCES_STYLE_GUESSED_DPI
-   ( guessed dpi: <{1}> )
+   ( valor por defecto: <{1}> )
 PREFERENCES_PATHS_1
 Rutas 1
 PREFERENCES_PATHS_TEMP
@@ -3104,6 +3104,32 @@ MAINW_CHANGES_CONFIRM_RELOAD
 Hay Cambios sin guardar, desea recargar igualmente la version del disco?
 MAINW_PRESS_ESC_TO_FINISH_RECT_EDIT
 Presione ESC o mueva el cursor de texto a otra linea para volver al modo de edición normal.
+TEMPLATECOMB_CAPTION
+Combine templates
+TEMPLATECOMB_DEST_PROFILE
+Perfil actual
+TEMPLATECOMB_ACTION
+Acción
+TEMPLATECOMB_SRC_PROFILE
+Perfil a importar
+TEMPLATECOMB_ERROR
+Error al abrir el archivo de proyecto
+TEMPLATECOMB_PROFILE_FIELDS
+Campos a combinar/reemplazar por perfil:
+TEMPLATECOMB_CUSTOM_STEPS
+Pasos de compilación personalizados
+TEMPLATECOMB_GENERAL_FIELDS
+Opciones generales a combinar:
+TEMPLATECOMB_ACTION_NONE
+No modificar
+TEMPLATECOMB_ACTION_COMBINE
+Combinar con
+TEMPLATECOMB_ACTION_REPLACE
+Reemplazar con
+TEMPLATECOMB_FROM_ZPR
+<Elegir archivo .zpr>
+TEMPLATECOMB_CHOOSE_TEMPLATE
+Seleccione una plantilla
 THREADS_ID
 Id
 THREADS_FUNCTION

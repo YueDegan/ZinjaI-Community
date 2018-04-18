@@ -1227,6 +1227,13 @@ void CodeHelper::ReloadIndexes(wxString indexes) {
 	}
 }
 
+void CodeHelper::ReloadIndexes() {
+	wxString indexes = config->Help.autocomp_indexes;
+	if (project && !project->autocomp_extra.IsEmpty())
+		indexes << " " << project->autocomp_extra;
+	ReloadIndexes(indexes);
+}
+
 /**
 * Agrega indices de autocompletado. Se encarga además de evitar repetir elementos 
 * en la lista si viniensen dados dos veces, o indices ya cargados en el argumento. 

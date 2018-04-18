@@ -691,7 +691,7 @@ ProjectManager::~ProjectManager() {
 		delete configurations[i];
 	
 	// restaurar los indices de autocompletado
-	g_code_helper->ReloadIndexes(config->Help.autocomp_indexes);
+	g_code_helper->ReloadIndexes();
 	
 	if (valgrind) delete valgrind;
 	if (doxygen) delete doxygen;

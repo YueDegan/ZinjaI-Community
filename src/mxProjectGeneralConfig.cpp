@@ -112,7 +112,7 @@ wxPanel *mxProjectGeneralConfig::CreateTabAdvanced(wxNotebook *notebook) {
 		
 	sizer.BeginButton(LANG(PROJECTGENERAL_COMPILE_AND_RUN," Compilación y Ejecución (generales)... ")).Id(mxID_RUN_CONFIG).Expand().EndButton();
 	sizer.BeginButton(LANG(PROJECTGENERAL_BYSRC_OPTIONS," Opciones de Compilación (por fuente)... ")).Id(mxID_PROJECT_CONFIG_BYSRC).Expand().EndButton();
-	sizer.BeginButton(LANG(PROJECTGENERAL_AUTOIMPROVE_TEMPLATES," Mejora de inspecciones según tipo ")).Id(mxID_PROJECT_CONFIG_AUTOIMPROVE_TEMPLATES).Expand().EndButton();
+	sizer.BeginButton(LANG(PROJECTGENERAL_AUTOIMPROVE_TEMPLATES," Mejora de inspecciones según tipo... ")).Id(mxID_PROJECT_CONFIG_AUTOIMPROVE_TEMPLATES).Expand().EndButton();
 	sizer.BeginButton(LANG(PROJECTGENERAL_DOXYGEN," Configuración Doxygen... ")).Id(mxID_TOOLS_DOXY_CONFIG).Expand().EndButton();
 	sizer.BeginButton(LANG(PROJECTGENERAL_CPPCHECK," Configuración CppCheck... ")).Id(mxID_TOOLS_CPPCHECK_CONFIG).Expand().EndButton();
 	sizer.BeginButton(LANG(PROJECTGENERAL_WXFB," Integración con wxFormBuilder... ")).Id(mxID_TOOLS_WXFB_CONFIG).Expand().EndButton();
@@ -159,7 +159,7 @@ void mxProjectGeneralConfig::OnOkButton(wxCommandEvent &evt) {
 	project->macros_file = project_debug_macros->GetValue();
 	if (project->autocomp_extra != project_autocomp->GetValue()) {
 		project->autocomp_extra = project_autocomp->GetValue();
-		g_code_helper->ReloadIndexes(config->Help.autocomp_indexes+" "+project->autocomp_extra);
+		g_code_helper->ReloadIndexes();
 	}
 //	main_window->menu.tools_wxfb_activate->Check(project->use_wxfb);
 	if (project->autocodes_file != project_autocodes->GetValue()) {

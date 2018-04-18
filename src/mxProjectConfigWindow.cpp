@@ -227,7 +227,7 @@ wxPanel *mxProjectConfigWindow::CreateCompilingPanel (wxNotebook *notebook) {
 		.RegisterIn(wx_extern).EndText(compiling_extra_options);
 						
 		
-	sizer.BeginText( LANG(PROJECTCONFIG_COMPILING_MACROS,"Macros a definir") )
+	sizer.BeginText( LANG(PROJECTCONFIG_COMPILING_MACROS,"Constantes de preprocesador") )
 		.Value(configuration->macros).Button(mxID_PROJECT_CONFIG_COMPILE_MACROS_BUTTON)
 		.RegisterIn(wx_extern).EndText(compiling_macros);
 							

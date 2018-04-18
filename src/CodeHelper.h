@@ -98,6 +98,7 @@ public:
 	
 	//! Recarga los indices de autocompletado
 	void ReloadIndexes(wxString indexes);
+	void ReloadIndexes();
 	
 	//! Agrega indices de autocompletado
 	void AppendIndexes(wxString indexes);

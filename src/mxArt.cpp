@@ -45,7 +45,7 @@ mxArt::mxArt(wxString img_dir) {
 	parser.icon20_argument = &(GetBitmap(tdir+"as_arg.png"));
 	parser.icon21_local = &(GetBitmap(tdir+"as_local.png"));
 
-	wxString idir = config->HighDPI()?"icong/i90/":"dialogs/i60/";  
+	wxString idir = config->HighDPI()?"dialogs/i90/":"dialogs/i60/";  
 	icons.error = &(GetBitmap(idir+"icon_error.png"));
 	icons.info = &(GetBitmap(idir+"icon_info.png"));
 	icons.warning = &(GetBitmap(idir+"icon_warning.png"));

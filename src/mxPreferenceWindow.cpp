@@ -725,8 +725,6 @@ wxPanel *mxPreferenceWindow::CreateSkinPanel (mxBookCtrl *notebook) {
 	
 	m_force_dpi_text->Enable(m_force_dpi_bool);
 	
-	
-	
 	wxCommandEvent ce;
 	OnSkinList(ce);
 	
@@ -904,8 +902,7 @@ void mxPreferenceWindow::OnOkButton(wxCommandEvent &event) {
 	}
 	if (config->Help.autocomp_indexes != autocomp_indexes) {
 		config->Help.autocomp_indexes = autocomp_indexes;
-		if (project) autocomp_indexes<<" "<<project->autocomp_extra;
-		g_code_helper->ReloadIndexes(autocomp_indexes);
+		g_code_helper->ReloadIndexes();
 	}
 	
 	wxAuiNotebook *ns=main_window->notebook_sources;

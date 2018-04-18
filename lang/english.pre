@@ -3104,6 +3104,32 @@ MAINW_CHANGES_CONFIRM_RELOAD
 There are unsaved changes. Do you want to reload the file anyway?
 MAINW_PRESS_ESC_TO_FINISH_RECT_EDIT
 Press ESC or move text caret outside selection to return to regular edition mode.
+TEMPLATECOMB_CAPTION
+Update/combine profiles
+TEMPLATECOMB_DEST_PROFILE
+Profile
+TEMPLATECOMB_ACTION
+Action
+TEMPLATECOMB_SRC_PROFILE
+Profile
+TEMPLATECOMB_ERROR
+Error openning project/template file
+TEMPLATECOMB_PROFILE_FIELDS
+Fields to combine/replace:
+TEMPLATECOMB_CUSTOM_STEPS
+Custom compiling steps
+TEMPLATECOMB_GENERAL_FIELDS
+General project settings to combine:
+TEMPLATECOMB_ACTION_NONE
+Don't modify
+TEMPLATECOMB_ACTION_COMBINE
+Combine with
+TEMPLATECOMB_ACTION_REPLACE
+Replace with
+TEMPLATECOMB_FROM_ZPR
+<Choose another zpr file>
+TEMPLATECOMB_CHOOSE_TEMPLATE
+Choose a project template
 THREADS_ID
 Id
 THREADS_FUNCTION

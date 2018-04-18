@@ -9,17 +9,17 @@ all: ../bin ../bin/updatem.exe ../bin/runner.exe ../bin/shellexecute.exe ../bin/
 	$(MAKE) -f Makefile.wine -C img_viewer
 
 clean:
-	rm -f ../release.w32/xmlres.o ../bin/updatem.exe ../bin/runner.exe ../bin/shellexecute.exe ../bin/lsdeps.exe ../log.exe
+	rm -f ../temp/xmlres.o ../bin/updatem.exe ../bin/runner.exe ../bin/shellexecute.exe ../bin/lsdeps.exe ../log.exe
 	$(MAKE) -f Makefile.wine -C complement clean
 	$(MAKE) -f Makefile.wine -C img_viewer clean
 
-../release.w32:
-	mkdir ../release.w32
+../temp:
+	mkdir ../temp
 
 ../bin:
 	mkdir ../bin
 
-../release.w32/xmlres.o: ../release.w32 manifest.xml xmlres.rc
+../temp/xmlres.o: ../temp manifest.xml xmlres.rc
 	${WINDRES} -i xmlres.rc -o $@
 
 ../bin/lsdeps.exe: lsdeps.cpp itlib.cpp itlib.h peliberr.cpp peliberr.h stdafx.h

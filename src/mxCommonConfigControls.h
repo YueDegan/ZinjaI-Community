@@ -38,7 +38,7 @@ class widgetBinder;
 class mxDialog : public wxDialog {
 protected:
 	void OnCloseDestroy(wxCloseEvent &evt) { Destroy(); }
-	void OnCloseHide(wxCloseEvent &evt) { EndModal(0); Hide(); }
+	void OnCloseHide(wxCloseEvent &evt) { /*EndModal(0); */Hide(); }
 	wxString GetCaption() { return GetTitle(); }
 public:
 	

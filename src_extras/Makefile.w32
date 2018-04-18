@@ -8,17 +8,17 @@ all: ..\bin ..\bin\updatem.exe ..\bin\runner.exe ..\bin\shellexecute.exe ..\bin\
 	$(MAKE) -f Makefile.w32 -C img_viewer
 
 clean:
-	del ..\release.w32\xmlres.o ..\bin\updatem.exe ..\bin\runner.exe ..\bin\shellexecute.exe ..\bin\lsdeps.exe ..\log.exe
+	del ..\temp\xmlres.o ..\bin\updatem.exe ..\bin\runner.exe ..\bin\shellexecute.exe ..\bin\lsdeps.exe ..\log.exe
 	$(MAKE) -f Makefile.w32 -C complement clean
 	$(MAKE) -f Makefile.w32 -C img_viewer clean
 
 ..\bin:
 	mkdir ..\bin
 
-..\release.w32:
-	mkdir ..\release.w32
+..\temp:
+	mkdir ..\temp
 
-..\release.w32\xmlres.o: ..\release.w32 xmlres.rc manifest.xml
+..\temp\xmlres.o: ..\temp xmlres.rc manifest.xml
 	${WINDRES} -i xmlres.rc -o xmlres.o
 
 ..\bin\lsdeps.exe: lsdeps.cpp itlib.cpp itlib.h peliberr.cpp peliberr.h stdafx.h
@@ -30,7 +30,7 @@ clean:
 ..\bin\shellexecute.exe: shellexecute.cpp
 	${GPP} -s -static-libgcc -static-libstdc++ -mwindows shellexecute.cpp -o $@
 
-..\bin\updatem.exe: updatem.cpp zockets.cpp zockets.h ..\release.w32\xmlres.o
+..\bin\updatem.exe: updatem.cpp zockets.cpp zockets.h ..\temp\xmlres.o
 	${GPP} ${FLAGS} -mwindows updatem.cpp zockets.cpp -lwsock32 xmlres.o -o $@
 
 ..\log.exe: log-w32.cpp
