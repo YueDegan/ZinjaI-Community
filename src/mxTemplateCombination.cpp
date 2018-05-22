@@ -25,9 +25,9 @@ mxTemplateCombination::mxTemplateCombination(wxWindow *parent, wxString other_zp
 	m_sizer_profiles = new wxFlexGridSizer(1,3,15,5);
 	m_sizer_profiles->AddGrowableCol(0,1);
 	m_sizer_profiles->AddGrowableCol(2,1);
-	m_sizer_profiles->Add(new wxStaticText(this,wxID_ANY,LANG(TEMPLATECOMB_DEST_PROFILE,"Perfil actual"),wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE),sizers->Exp1);
-	m_sizer_profiles->Add(new wxStaticText(this,wxID_ANY,LANG(TEMPLATECOMB_ACTION,"Acción"),wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE),sizers->Exp1);
-	m_sizer_profiles->Add(new wxStaticText(this,wxID_ANY,LANG(TEMPLATECOMB_SRC_PROFILE,"Perfil a importar"),wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE),sizers->Exp1);
+	m_sizer_profiles->Add(new wxStaticText(this,wxID_ANY,project->project_name,wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE),sizers->Exp0);
+	m_sizer_profiles->Add(new wxStaticText(this,wxID_ANY,LANG(TEMPLATECOMB_ACTION,"Acción"),wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE),sizers->Exp0);
+	m_sizer_profiles->Add(new wxStaticText(this,wxID_ANY,GetName(other_zpr),wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE),sizers->Exp0);
 	
 	int pc = GetProfiles(other_zpr,m_other_profiles);
 	if (pc<=0) mxMessageDialog(parent,LANG(TEMPLATECOMB_ERROR,"Error al abrir el archivo de proyecto")).Title(other_zpr).IconError().Run();
@@ -66,9 +66,9 @@ mxTemplateCombination::mxTemplateCombination(wxWindow *parent, wxString other_zp
 }
 
 void mxTemplateCombination::AddProfile (wxString name/*, bool original*/) {
-	wxTextCtrl *text_orig = new wxTextCtrl(this,wxID_ANY,name);
-	/*if (original) */text_orig->SetEditable(false);
-	m_sizer_profiles->Add(text_orig,sizers->Exp1);
+	wxStaticText *text_orig = new wxStaticText(this,wxID_ANY,name);
+//	/*if (original) */text_orig->SetEditable(false);
+	m_sizer_profiles->Add(text_orig,sizers->BA5_Center);
 	wxArrayString opts; 
 //	if (original) {
 		opts.Add(LANG(TEMPLATECOMB_ACTION_NONE,"No modificar"));
@@ -86,6 +86,20 @@ void mxTemplateCombination::AddProfile (wxString name/*, bool original*/) {
 	m_names_this.push_back(text_orig);
 	m_actions.push_back(combo_actions);
 	m_names_other.push_back(combo_other);
+}
+
+wxString mxTemplateCombination::GetName (const wxString zpr_path) {
+	IniFileReader fil(zpr_path);
+	if (fil.IsOk()) {
+		for ( wxString section = fil.GetNextSection(); !section.IsEmpty(); section = fil.GetNextSection() ) {
+			if (section=="general") {
+				for( IniFileReader::Pair p = fil.GetNextPair(); p.IsOk(); p = fil.GetNextPair() ) {
+					if (p.Key()=="project_name") return p.AsString();
+				}
+			}
+		}
+	}
+	return wxFileName(zpr_path).GetName();
 }
 
 int mxTemplateCombination::GetProfiles (const wxString zpr_path, wxArrayString &profiles_names) {
@@ -201,22 +215,23 @@ void mxTemplateCombination::OnButtonOk (wxCommandEvent & evt) {
 	opts_prof.lib_dirs = m_merge_lib_dirs->GetValue();
 	opts_prof.libraries = m_merge_libraries->GetValue();
 	opts_prof.macros = m_merge_macros->GetValue();
+#ifdef _ZINJAI_DEBUG
 	opts_prof.custom_steps = m_merge_custom_steps->GetValue();
+#endif
 	for(size_t i=0;i<m_names_this.size();i++) {
 		int iaction = m_actions[i]->GetSelection();
 		if (iaction==0) continue;
-		wxString this_name = m_names_this[i]->GetValue();
+		wxString this_name = m_names_this[i]->GetLabel();
 		wxString other_name = m_names_other[i]->GetStringSelection();
-		if (iaction==1) 
-			CombineProfile(this_name, m_zpr_path, other_name, opts_prof,true);
-		else
-			CombineProfile(this_name, m_zpr_path, other_name, opts_prof,false);
+		CombineProfile(this_name, m_zpr_path, other_name, opts_prof,iaction==2);
 	}
 	
 	CombineOptsGeneral opts_general;
-	opts_general.custom_tools = m_merge_custom_tools->GetValue();
 	opts_general.autocomp = m_merge_autocomp->GetValue();
+#ifdef _ZINJAI_DEBUG
+	opts_general.custom_tools = m_merge_custom_tools->GetValue();
 	opts_general.inspections = m_merge_inspections->GetValue();
+#endif
 	CombineGeneralOpts(m_zpr_path,opts_general);
 	
 	Close();
@@ -274,7 +289,7 @@ void mxTemplateCombination::CombineProfile (wxString dest_pname, wxString zpr_pa
 		if (section=="config") {
 			for( IniFileReader::Pair p = fil.GetNextPair(); p.IsOk(); p = fil.GetNextPair() ) {
 				if (p.Key()=="name" && p.AsString()!=src_pname) continue;
-				else if (p.Key()=="env_vars")     Mix(opts.env_vars,    replace, conf->env_vars,p.AsString());
+				else if (p.Key()=="env_vars")     Mix(opts.env_vars,    replace, conf->env_vars,        p.AsString());
 				else if (p.Key()=="comp_extra")   Mix(opts.comp_extra,  replace, conf->compiling_extra, p.AsString());
 				else if (p.Key()=="link_extra")   Mix(opts.link_extra,  replace, conf->linking_extra,   p.AsString());
 				else if (p.Key()=="headers")      Mix(opts.headers,     replace, conf->headers_dirs,    p.AsString());

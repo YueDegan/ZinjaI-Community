@@ -19,7 +19,7 @@ class mxTemplateCombination : public mxDialog {
 	wxCheckBox *m_merge_custom_tools;
 	wxCheckBox *m_merge_autocomp;
 	wxCheckBox *m_merge_inspections;
-	std::vector<wxTextCtrl*> m_names_this;
+	std::vector<wxStaticText*> m_names_this;
 	std::vector<wxChoice*> m_actions;
 	std::vector<wxChoice*> m_names_other;
 	wxString m_zpr_path;
@@ -48,7 +48,8 @@ public:
 	static void CombineGeneralOpts(wxString zpr_path, CombineOptsGeneral opts);
 
 private:
-	int GetProfiles(const wxString zpr_path, wxArrayString &profiles_names);
+	static wxString GetName(const wxString zpr_path);
+	static int GetProfiles(const wxString zpr_path, wxArrayString &profiles_names);
 	void OnCombo(wxCommandEvent &evt);
 	void OnButtonOk(wxCommandEvent &evt);
 	void OnButtonCancel(wxCommandEvent &evt);

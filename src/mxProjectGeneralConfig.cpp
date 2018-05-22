@@ -294,5 +294,6 @@ void mxProjectGeneralConfig::OnInheritsFrom (wxCommandEvent & evt) {
 
 void mxProjectGeneralConfig::OnCombineTemplates (wxCommandEvent & evt) {
 	mxTemplateCombination::Run(this);
+	project_autocomp->SetValue(project->autocomp_extra);
 }
 
