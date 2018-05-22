@@ -276,13 +276,21 @@ public:
 	void ShowDiffChange();
 	void GotoDiffChange(bool forward);
 	
+	struct StcTypeInfo { 
+		int pos, dims; 
+		wxString type,scope; 
+		StcTypeInfo():pos(-1){} 
+		bool IsOk() const { return pos!=-1 && !type.IsEmpty(); } 
+	};
 	bool AddInclude(wxString header, wxString optional_namespace="");
 	int GetStatementStartPos(int pos, bool skip_coma=false, bool skip_white=true, bool first_stop=false); ///< given an absolute text position, finds where that statements starts (skipping comments and indentation at the begginning unless skip_whites=false)
 	int FindTextEx(int pfrom, int pto, const wxString &text, int flags=0);
-	wxString FindTypeOfByKey(wxString &key, int &pos, bool include_template_spec=false); // en pos retorna los asteriscos y en key el scope de la funcion
-	wxString FindTypeOfByPos(int pos, int &dims, bool include_template_spec=false, bool first_call=true);
+	wxString FindTypeOfByKey_impl(wxString &key, int &pos, bool include_template_spec=false); // en pos retorna los asteriscos y en key el scope de la funcion
+	wxString FindTypeOfByPos_impl(int pos, int &dims, bool include_template_spec=false, bool first_call=true);
 	wxString FindScope(int pos, wxString *args=nullptr, bool full_scope=false, int *scope_start=nullptr, bool local_start=false);
 	wxString WhereAmI();
+	StcTypeInfo FindTypeOfByKey(const wxString &key, int pos, bool include_template_spec=false); // en pos retorna los asteriscos y en key el scope de la funcion
+	StcTypeInfo FindTypeOfByPos(int pos, bool include_template_spec=false);
 	
 	
 private:

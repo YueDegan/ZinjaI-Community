@@ -3019,19 +3019,19 @@ void mxMainWindow::OnEditInsertInclude(wxCommandEvent &event) {
 				if (keyw_start>2 && source->GetCharAt(keyw_start-1)==':'&&source->GetCharAt(keyw_start-2)==':')
 					optional_namespace.Clear(); // [some] namespace already present
 			} else {
-				int s = keyw_start, e = keyw_end;
-				wxString bkey=key, type = source->FindTypeOfByPos(e-1,s);
-				if ( s!=SRC_PARSING_ERROR && type.Len() ) {
-					header = g_code_helper->GetInclude(source->sin_titulo?wxString(""):source->source_filename.GetPathWithSep(),type,&optional_namespace);
+				mxSource::StcTypeInfo tinfo = source->FindTypeOfByPos(keyw_end-1);
+				if ( tinfo.IsOk() ) {
+					header = g_code_helper->GetInclude(source->sin_titulo?wxString(""):source->source_filename.GetPathWithSep(),tinfo.type,&optional_namespace);
 					optional_namespace.Clear();
 				} else { // buscar el scope y averiguar si es algo de la clase
-					type = source->FindScope(s);
+					wxString type = source->FindScope(keyw_start);
+					int s;
 					if (type.Len()) {
-						type = g_code_helper->GetAttribType(type,bkey,s);
+						type = g_code_helper->GetAttribType(type,key,s);
 						if (!type.Len())
-							type=g_code_helper->GetGlobalType(bkey,s);
+							type=g_code_helper->GetGlobalType(key,s);
 					} else {
-						type=g_code_helper->GetGlobalType(bkey,s);
+						type=g_code_helper->GetGlobalType(key,s);
 					}
 					if (type.Len()) {
 						header=g_code_helper->GetInclude(source->sin_titulo?wxString(""):source->source_filename.GetPathWithSep(),type);
@@ -3041,7 +3041,7 @@ void mxMainWindow::OnEditInsertInclude(wxCommandEvent &event) {
 			}
 			if (header.Len()) {
 				if (mxUT::GetFileType(header)==FT_SOURCE) {
-					mxMessageDialog(main_window,key+LANG(MAINW_INSERT_HEADIR_CPP," esta declarada en un archivo fuente."
+					mxMessageDialog(main_window,key+LANG(MAINW_INSERT_HEADIR_CPP," esta declarada en un archivo fuente.\n"
 														 "Solo deben realizarse #includes para archivos de cabecera."))
 						.Title(LANG(GENERAL_ERROR,"Error")).IconInfo().Run();
 				} else {

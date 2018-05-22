@@ -146,6 +146,7 @@ void NavigationHistory::Next() {
 
 #define STYLE_IS_CONSTANT(s) (s==wxSTC_C_STRING || s==wxSTC_C_STRINGEOL || s==wxSTC_C_CHARACTER || s==wxSTC_C_REGEX || s==wxSTC_C_NUMBER)
 #define STYLE_IS_COMMENT(s) (s==wxSTC_C_COMMENT || s==wxSTC_C_COMMENTLINE || s==wxSTC_C_COMMENTLINEDOC || s==wxSTC_C_COMMENTDOC || s==wxSTC_C_COMMENTDOCKEYWORD || s==wxSTC_C_COMMENTDOCKEYWORDERROR)
+#define STYLE_IS_KEYWORD(s) (s==wxSTC_C_WORD || s==wxSTC_C_WORD2)
 
 static const wxChar* s_reserved_keywords =
 	"and asm auto break case catch class const const_cast "
@@ -1405,15 +1406,14 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
 		} else if (chr=='>') {
 			int p=GetCurrentPos()-2;
 			if (GetCharAt(p)=='-') {
-				int dims;
-				wxString type = FindTypeOfByPos(p-1,dims);
-				if (dims==SRC_PARSING_ERROR) {
-					if (type.Len()!=0)
-						ShowBaloon(type);
-				} else if (dims==1)
-					g_code_helper->AutocompleteScope(this,type,"",true,false);
-				else if (type.Len()!=0 && dims==0)
+				StcTypeInfo tinfo = FindTypeOfByPos(p-1);
+				if (!tinfo.IsOk()) {
+					if (!tinfo.type.IsEmpty()) ShowBaloon(tinfo.type);
+				} else if (tinfo.dims==1)
+					g_code_helper->AutocompleteScope(this,tinfo.type,"",true,false);
+				else if (!tinfo.type.IsEmpty() && tinfo.dims==0) {
 					ShowBaloon(LANG(SOURCE_TIP_NO_DEREFERENCE,"Tip: Probablemente no deba desreferenciar este objeto."));
+				}
 			}
 		} else if (chr=='.') {
 			bool shouldComp=true;
@@ -1426,14 +1426,13 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
 				shouldComp = (c=='_' || ( (c|32)>='a' && (c|32)<='z' ) );
 			}
 			if (shouldComp) {
-				int dims;
-				wxString type = FindTypeOfByPos(p,dims);
-				if (dims==SRC_PARSING_ERROR) {
-					if (type.Len()!=0)
-						ShowBaloon(type);
-				} else	if (dims==0)
-					g_code_helper->AutocompleteScope(this,type,"",true,false);
-				else if (type.Len()!=0 && dims>0)
+				StcTypeInfo tinfo = FindTypeOfByPos(p);
+				if (!tinfo.IsOk()) {
+					if (!tinfo.type.IsEmpty())
+						ShowBaloon(tinfo.type);
+				} else	if (tinfo.dims==0)
+					g_code_helper->AutocompleteScope(this,tinfo.type,"",true,false);
+				else if (!tinfo.type.IsEmpty() && tinfo.dims>0)
 					ShowBaloon(LANG(SOURCE_TIP_DO_DEREFERENCE,"Tip: Probablemente deba desreferenciar este objeto."));
 			}
 		} else {
@@ -1494,25 +1493,24 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
 					g_code_helper->AutocompleteDoxygen(this,key);
 					return;
 				}
-				int dims;
 				p--;
 				II_BACK(p,II_IS_NOTHING_4(p));
 				if (c=='.') {
-					wxString type = FindTypeOfByPos(p-1,dims);
-					if (dims==0) {
+					StcTypeInfo tinfo = FindTypeOfByPos(p-1);
+					if (tinfo.IsOk() && tinfo.dims==0) {
 						if (chr=='(' && config_source.callTips)
-							g_code_helper->ShowFunctionCalltip(ctp,this,type,key);
+							g_code_helper->ShowFunctionCalltip(ctp,this,tinfo.type,key);
 						else if ( II_IS_KEYWORD_CHAR(chr) )
-							g_code_helper->AutocompleteScope(this,type,key,true,false);
+							g_code_helper->AutocompleteScope(this,tinfo.type,key,true,false);
 					}
 				} else if (c=='>' && GetCharAt(p-1)=='-') {
 					p--;
-					wxString type = FindTypeOfByPos(p-1,dims);
-					if (dims==1) {
+					StcTypeInfo tinfo = FindTypeOfByPos(p-1);
+					if (tinfo.IsOk() && tinfo.dims==1) {
 						if (chr=='(' && config_source.callTips)
-							g_code_helper->ShowFunctionCalltip(ctp,this,type,key);
+							g_code_helper->ShowFunctionCalltip(ctp,this,tinfo.type,key);
 						else if ( II_IS_KEYWORD_CHAR(chr) )
-							g_code_helper->AutocompleteScope(this,type,key,true,false);
+							g_code_helper->AutocompleteScope(this,tinfo.type,key,true,false);
 					}
 				} else if (c==':' && GetCharAt(p-1)==':') {
 					p-=2;
@@ -1540,9 +1538,9 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
 							if (!g_code_helper->ShowConstructorCalltip(ctp,this,GetTextRange(p1,p))) {
 								if (!g_code_helper->ShowConstructorCalltip(ctp,this,key)) {
 									// mostrar sobrecarga del operador()
-									wxString type=FindTypeOfByKey(key,p1);
-									if (type.Len()) {
-										g_code_helper->ShowFunctionCalltip(ctp,this,type,"operator()",true);
+									StcTypeInfo tinfo = FindTypeOfByKey(key,p1);
+									if (tinfo.IsOk()) {
+										g_code_helper->ShowFunctionCalltip(ctp,this,tinfo.type,"operator()",true);
 									}
 								}
 							}
@@ -2041,8 +2039,8 @@ void mxSource::PopulatePopupMenuCodeTools(wxMenu &menu) {
 	if (key.Len()!=0) {
 		if (s==wxSTC_C_IDENTIFIER||s==wxSTC_C_GLOBALCLASS||s==wxSTC_C_DEFAULT) { // no se porque el primer char es default y los demas identifier????
 			mxUT::AddItemToMenu(&menu,_menu_item_2(mnEDIT,mxID_EDIT_INSERT_HEADER),LANG1(SOURCE_POPUP_INSERT_INCLUDE,"Insertar #incl&ude correspondiente a \"<{1}>\"",key));
-			int aux; wxString type = FindTypeOfByPos(p,aux,true);
-			if ( aux==SRC_PARSING_ERROR || !type.Len() ) {
+			StcTypeInfo tinfo = FindTypeOfByPos(p,true);
+			if ( !tinfo.IsOk() ) {
 				mxUT::AddItemToMenu(&menu,_menu_item_2(mnTOOLS,mxID_TOOLS_CODE_GENERATE_FUNCTION_DEC));
 				mxUT::AddItemToMenu(&menu,_menu_item_2(mnTOOLS,mxID_TOOLS_CODE_GENERATE_FUNCTION_DEF));
 			}
@@ -2088,6 +2086,13 @@ int mxSource::FindTextEx(int pfrom, int pto, const wxString &text, int flags) {
 	return p;
 }
 	
+mxSource::StcTypeInfo mxSource::FindTypeOfByKey(const wxString &key, int pos, bool include_template_spec) {
+	StcTypeInfo r;
+	r.scope = key; r.dims = pos; // in-out params for impl
+	r.type = FindTypeOfByKey_impl(r.scope,r.dims,include_template_spec);
+	r.pos = r.dims==SRC_PARSING_ERROR ? -1 : 0;
+	return r;
+}
 	
 /**
 * Averigua el tipo de una variable dentro de un contexto. 
@@ -2097,7 +2102,7 @@ int mxSource::FindTextEx(int pfrom, int pto, const wxString &text, int flags) {
 * clase, para que al final si no encontró nada le pueda preguntar al parser
 * por esa clase
 **/
-wxString mxSource::FindTypeOfByKey(wxString &key, int &pos, bool include_template_spec) {
+wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_template_spec) {
 	
 	int dims=0;
 	bool notSpace=true;
@@ -2127,34 +2132,35 @@ wxString mxSource::FindTypeOfByKey(wxString &key, int &pos, bool include_templat
 			}
 			e--; II_BACK(e,II_IS_NOTHING_4(e));
 		}
-		int dims=WordStartPosition(e,true);
-		wxString space = GetTextRange(dims,e+1);
-		wxString type = FindTypeOfByKey(space,dims,include_template_spec);
-		dims-=ddims;
+		wxString aux_key = GetTextRange(dims,e+1);
+		int aux_pos = WordStartPosition(e,true);
+		StcTypeInfo tinfo = FindTypeOfByKey(aux_key,aux_pos,include_template_spec);
+//		wxString type = FindTypeOfByKey(space,dims,include_template_spec);
+		dims-=tinfo.dims;
 		if (dims==0) {
 			pos=-1;
-			type = g_code_helper->GetAttribType(type,key,pos);
-			key = space;
-			return type;
+			tinfo.type = g_code_helper->GetAttribType(tinfo.type,key,pos);
+			key = tinfo.scope;
+			return tinfo.type;
 		}
 	} else if (c=='>' && e!=0 && GetCharAt(e-1)=='-') {
 		e-=2;
 		II_BACK(e,II_IS_NOTHING_4(e));
-		wxString space = FindTypeOfByPos(e,dims,include_template_spec);
-		if (space.Len()) { // codigo nuevo, usar el otro FindTypeOf
-			pos=dims-1; // pos es argumento de entrada(posicion) y salida(dimension)
-			wxString type=g_code_helper->GetAttribType(space,key,pos);
-			key=type; // key es argumento de entrada (nombre de var a buscar) y salida (scope)
+		StcTypeInfo tinfo = FindTypeOfByPos(e,include_template_spec);
+		if (!tinfo.scope.IsEmpty()) { // codigo nuevo, usar el otro FindTypeOf
+			pos = tinfo.dims-1; // pos es argumento de entrada(posicion) y salida(dimension)
+			wxString type = g_code_helper->GetAttribType(tinfo.scope,key,pos);
+			key = type; // key es argumento de entrada (nombre de var a buscar) y salida (scope)
 			return type;
 		} else {// fin codigo nuevo, empieza codigo viejo, si no funca que siga como antes (todo: analizar si vale la pena o si con el nuevo ya reemplaza todo)
-			int dims=WordStartPosition(e,true);
-			wxString space = GetTextRange(dims,e+1);
-			wxString type = FindTypeOfByKey(space,dims,include_template_spec);
-			if (dims==1) {
+			int aux_pos = WordStartPosition(e,true);
+			wxString aux_key = GetTextRange(dims,e+1);
+			StcTypeInfo tinfo = FindTypeOfByKey(aux_key,aux_pos,include_template_spec);
+			if (tinfo.dims==1) {
 				pos=-1;
-				type = g_code_helper->GetAttribType(type,key,pos);
-				key = space;
-				return type;
+				tinfo.type = g_code_helper->GetAttribType(tinfo.type,key,pos);
+				key = tinfo.scope;
+				return tinfo.type;
 			}
 		}
 	} else if (c==':' && e!=0 && GetCharAt(e-1)==':') {
@@ -2433,7 +2439,15 @@ void mxSource::ShowBaloon(wxString str, int p) {
 	ZLINF("Source","ShowBaloon wxYield:out");
 }
 	
-wxString mxSource::FindTypeOfByPos(int p,int &dims, bool include_template_spec, bool first_call) {
+mxSource::StcTypeInfo mxSource::FindTypeOfByPos(int pos, bool include_template_spec) {
+	StcTypeInfo r;
+	r.type = FindTypeOfByPos_impl(pos,r.dims,include_template_spec,true);
+	r.pos = r.dims==SRC_PARSING_ERROR ? -1 : 0;
+	return r;
+}
+
+
+wxString mxSource::FindTypeOfByPos_impl(int p,int &dims, bool include_template_spec, bool first_call) {
 	if (first_call)
 		dims=0;
 	int s; char c;
@@ -2501,20 +2515,23 @@ wxString mxSource::FindTypeOfByPos(int p,int &dims, bool include_template_spec, 
 				--p; II_BACK(p,II_IS_NOTHING_4(p));
 				if (GetCharAt(p)=='.') {
 					--p; II_BACK(p,II_IS_NOTHING_4(p));
-					scope=FindTypeOfByPos(p,dims,include_template_spec);
+					StcTypeInfo tinfo = FindTypeOfByPos(p,include_template_spec);
+					scope = tinfo.type;
 				} else if (p&& GetCharAt(p)==':' && GetCharAt(p-1)==':') {
 					p-=2; II_BACK(p,II_IS_NOTHING_4(p));
-					scope=GetTextRange(WordStartPosition(p,true),p+1);
+					scope = GetTextRange(WordStartPosition(p,true),p+1);
 				} else if (GetCharAt(p)=='>' && p && GetCharAt(p-1)=='-') {
 					p-=2; II_BACK(p,II_IS_NOTHING_4(p));
-					scope=FindTypeOfByPos(p,dims,include_template_spec); dims--;
+					StcTypeInfo tinfo = FindTypeOfByPos(p,include_template_spec); dims--;
+					scope = tinfo.type;
 				} else {
 					scope = FindScope(p+1);
 				}
-				wxString type=g_code_helper->GetCalltip(scope,func_name,false,true);
+				wxString type = g_code_helper->GetCalltip(scope,func_name,false,true);
 				if (!type.Len()) { // sera sobrecarga del operator() ?
-					type=FindTypeOfByKey(func_name,p0_name,include_template_spec);
-					type=g_code_helper->GetCalltip(type,"operator()",true,true);
+					StcTypeInfo tinfo = FindTypeOfByKey(func_name,p0_name,include_template_spec);
+					type = tinfo.type;
+					type = g_code_helper->GetCalltip(type,"operator()",true,true);
 				}
 				if (type.Len()) {
 					while(type.Last()=='*') { dims++; type.RemoveLast(); }
@@ -2563,13 +2580,13 @@ wxString mxSource::FindTypeOfByPos(int p,int &dims, bool include_template_spec, 
 			dims=SRC_PARSING_ERROR;
 			return "";
 		}
-		wxString ans = FindTypeOfByPos(p,dims,include_template_spec,false);
-		return ans;
+		wxString ans = FindTypeOfByPos_impl(p,dims,include_template_spec,false);
+		if (dims!=SRC_PARSING_ERROR) return ans;
 	} else {
 		if ( ( (c|32)>='a' && (c|32)<='z' ) || c=='_' ) {
 			s=p;
 			wxString key=GetTextRange(p,WordEndPosition(p,true));
-			wxString ans=FindTypeOfByKey(key,s,include_template_spec);
+			wxString ans = FindTypeOfByKey_impl(key,s,include_template_spec);
 			if (ans.Len() && dims<0 && s==0) {
 				wxString type=g_code_helper->GetCalltip(ans,"operator[]",true,true);				
 				if (type.Len()) { 
@@ -2785,35 +2802,35 @@ void mxSource::OnToolTipTime (wxStyledTextEvent &event) {
 		if (!config_source.toolTips)
 			return;
 		int s;
-		if (II_SHOULD_IGNORE(p)) 
+		if (II_SHOULD_IGNORE(p) || STYLE_IS_KEYWORD(s)) 
 			return;
 		int e = WordEndPosition(p,true);
 		s = WordStartPosition(p,true);
 		if (s!=e) {
 			wxString key = GetTextRange(s,e);
 			// buscar en la funcion/metodo
-			wxString bkey=key, type = FindTypeOfByPos(e-1,s,true);
-			if ( s!=SRC_PARSING_ERROR && type.Len() ) {
-				while (s>0) {
-					type<<_("*");
-					s--;
+			StcTypeInfo tinfo = FindTypeOfByPos(e-1,true);
+			if ( tinfo.IsOk() ) {
+				while (tinfo.dims>0) {
+					tinfo.type<<_("*");
+					tinfo.dims--;
 				}
-				ShowBaloon ( bkey +": "+type , p );
+				ShowBaloon ( key +": "+tinfo.type , p );
 			} else { // buscar el scope y averiguar si es algo de la clase
-				type = FindScope(s);
+				wxString type = FindScope(s);
 				if (type.Len()) {
-					type = g_code_helper->GetAttribType(type,bkey,s);
+					type = g_code_helper->GetAttribType(type,key,s);
 					if (!type.Len())
-						type=g_code_helper->GetGlobalType(bkey,s);
+						type=g_code_helper->GetGlobalType(key,s);
 				} else {
-					type=g_code_helper->GetGlobalType(bkey,s);
+					type=g_code_helper->GetGlobalType(key,s);
 				}
 				if (type.Len()) {
 					while (s>0) {
 						type<<_("*");
 						s--;
 					}
-					ShowBaloon ( bkey +": "+type , p );
+					ShowBaloon ( key +": "+type , p );
 				}
 			}
 		}
@@ -2932,14 +2949,13 @@ void mxSource::OnEditForceAutoComplete(wxCommandEvent &evt) {
 			ShowBaloon(LANG(SOURCE_UNDEFINED_SCOPE_AUTOCOMPLETION,"No se pudo determinar el ambito a autocompletar"));
 	} else if (chr=='>' && p>1 && GetCharAt(p-2)=='-') {
 		p-=2;
-		int dims;
-		wxString type = FindTypeOfByPos(p-1,dims);
-		if (dims==SRC_PARSING_ERROR) {
+		StcTypeInfo tinfo = FindTypeOfByPos(p-1);
+		if (!tinfo.IsOk()) {
 			ShowBaloon(LANG(SOURCE_UNDEFINED_SCOPE_AUTOCOMPLETION,"No se pudo determinar el ambito a autocompletar"));
-		} else if (dims==1) {
-			if (!g_code_helper->AutocompleteScope(this,type,"",true,false))
-				ShowBaloon(wxString(LANG(SOURCE_NO_ITEMS_FOR_AUTOCOMPLETION,"No se encontraron elementos para autocompletar el ambito "))<<type);
-		} else if (type.Len()!=0 && dims==0) {
+		} else if (tinfo.dims==1) {
+			if (!g_code_helper->AutocompleteScope(this,tinfo.type,"",true,false))
+				ShowBaloon(wxString(LANG(SOURCE_NO_ITEMS_FOR_AUTOCOMPLETION,"No se encontraron elementos para autocompletar el ambito "))<<tinfo.type);
+		} else if (tinfo.dims==0) {
 			ShowBaloon(LANG(SOURCE_TIP_NO_DEREFERENCE,"Tip: Probablemente no deba desreferenciar este objeto."));
 		} else
 			ShowBaloon(LANG(SOURCE_UNDEFINED_SCOPE_AUTOCOMPLETION,"No se pudo determinar el ambito a autocompletar"));
@@ -2955,14 +2971,13 @@ void mxSource::OnEditForceAutoComplete(wxCommandEvent &evt) {
 			shouldComp = (c=='_' || ( (c|32)>='a' && (c|32)<='z' ) );
 		}
 		if (shouldComp) {
-			int dims;
-			wxString type = FindTypeOfByPos(p,dims);
-			if (dims==SRC_PARSING_ERROR) {
+			StcTypeInfo tinfo = FindTypeOfByPos(p);
+			if (!tinfo.IsOk()) {
 				ShowBaloon(LANG(SOURCE_UNDEFINED_SCOPE_AUTOCOMPLETION,"No se pudo determinar el ambito a autocompletar"));
-			} else	if (dims==0) {
-				if (!g_code_helper->AutocompleteScope(this,type,"",true,false))
-					ShowBaloon(wxString(LANG(SOURCE_NO_ITEMS_FOR_AUTOCOMPLETION,"No se encontraron elementos para autocompletar el ambito "))<<type);
-			} else if (type.Len()!=0 && dims>0)
+			} else	if (tinfo.dims==0) {
+				if (!g_code_helper->AutocompleteScope(this,tinfo.type,"",true,false))
+					ShowBaloon(wxString(LANG(SOURCE_NO_ITEMS_FOR_AUTOCOMPLETION,"No se encontraron elementos para autocompletar el ambito "))<<tinfo.type);
+			} else if (tinfo.dims>0)
 				ShowBaloon(LANG(SOURCE_TIP_DO_DEREFERENCE,"Tip: Probablemente deba desreferenciar este objeto."));
 			else
 				ShowBaloon(LANG(SOURCE_UNDEFINED_SCOPE_AUTOCOMPLETION,"No se pudo determinar el ambito a autocompletar"));
@@ -3003,25 +3018,24 @@ void mxSource::OnEditForceAutoComplete(wxCommandEvent &evt) {
 			return;
 		}
 		if ((e-p+1 && key.Len()>1) || !(key[0]==' ' || key[0]=='\t' || key[0]=='\n' || key[0]=='\r')) {
-			int dims;
 			p--;
 			II_BACK(p,II_IS_NOTHING_4(p));
 			if (c=='.') {
-				wxString type = FindTypeOfByPos(p-1,dims);
-				if (dims==0) {
+				StcTypeInfo tinfo = FindTypeOfByPos(p-1);
+				if (tinfo.IsOk() && tinfo.dims==0) {
 					if (chr=='('/* && config_source.callTips*/)
-						g_code_helper->ShowFunctionCalltip(ctp,this,type,key);
+						g_code_helper->ShowFunctionCalltip(ctp,this,tinfo.type,key);
 					else if ( II_IS_KEYWORD_CHAR(chr) )
-						g_code_helper->AutocompleteScope(this,type,key,true,false);
+						g_code_helper->AutocompleteScope(this,tinfo.type,key,true,false);
 				}
 			} else if (c=='>' && GetCharAt(p-1)=='-') {
 				p--;
-				wxString type = FindTypeOfByPos(p-1,dims);
-				if (dims==1) {
+				StcTypeInfo tinfo = FindTypeOfByPos(p-1);
+				if (tinfo.IsOk() && tinfo.dims==1) {
 					if (chr=='('/* && config_source.callTips*/)
-						g_code_helper->ShowFunctionCalltip(ctp,this,type,key);
+						g_code_helper->ShowFunctionCalltip(ctp,this,tinfo.type,key);
 					else if ( II_IS_KEYWORD_CHAR(chr) )
-						g_code_helper->AutocompleteScope(this,type,key,true,false);
+						g_code_helper->AutocompleteScope(this,tinfo.type,key,true,false);
 				}
 			} else if (c==':' && GetCharAt(p-1)==':') {
 				p-=2;
@@ -3049,9 +3063,9 @@ void mxSource::OnEditForceAutoComplete(wxCommandEvent &evt) {
 						wxString key = GetTextRange(p1,p);
 						if (!g_code_helper->ShowConstructorCalltip(ctp,this,key)) {
 							// mostrar sobrecarga del operador()
-							wxString type = FindTypeOfByKey(key,p1);
-							if (type.Len()) {
-								g_code_helper->ShowFunctionCalltip(ctp,this,type,"operator()",true);
+							StcTypeInfo tinfo = FindTypeOfByKey(key,p1);
+							if (tinfo.IsOk()) {
+								g_code_helper->ShowFunctionCalltip(ctp,this,tinfo.type,"operator()",true);
 							}
 						}
 					}
@@ -4159,13 +4173,13 @@ bool mxSource::GetCurrentCall (wxString &ftype, wxString &fname, wxArrayString &
 					}
 					// find out argument type
 					if (one_arg!="" && type=="") {
-						int dims=0;
-						type = FindTypeOfByPos(p-1,dims,true);
-						if (type=="") type="???";
-						else if (dims>0) { // array or ptr
+						StcTypeInfo tinfo = FindTypeOfByPos(p-1,true);
+						if (!tinfo.IsOk()) tinfo.type="???";
+						else if (tinfo.dims>0) { // array or ptr
 							one_arg = wxString("*")+one_arg;
-							while (--dims>0) if (one_arg.Last()==']') one_arg = wxString("*")+one_arg; else one_arg<<"[]";
-						} else if (dims<0) type="???";
+							while (--tinfo.dims>0) if (one_arg.Last()==']') one_arg = wxString("*")+one_arg; else one_arg<<"[]";
+						} else if (tinfo.dims<0) tinfo.type="???";
+						type = tinfo.type;
 					}
 					one_arg = type+" "+one_arg;
 					args.Add(one_arg);
@@ -4214,8 +4228,8 @@ bool mxSource::GetCurrentCall (wxString &ftype, wxString &fname, wxArrayString &
 	} else if (c=='=') { // assigment, lvalue type
 		int p=p0-1; II_BACK(p,II_IS_NOTHING_4(p));
 		wxString key = GetCurrentKeyword(p);
-		ftype = FindTypeOfByKey(key,++p,true);
-		if (ftype=="") ftype="???";
+		StcTypeInfo tinfo = FindTypeOfByKey(key,++p,true);
+		ftype = tinfo.IsOk() ? tinfo.type : "???";
 	} else if (c==';'||c=='{'||c=='}') {
 		ftype="void";
 	};
