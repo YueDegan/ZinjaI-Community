@@ -252,6 +252,7 @@ public:
 	void OnDebugEnableInverseExecution (wxCommandEvent &event);
 	void OnDebugInverseExecution (wxCommandEvent &event);
 	void OnDebugInspectOnMouseOver(wxCommandEvent &event);
+	void OnDebugReturnFocusOnContinue(wxCommandEvent &event);
 	
 	void OnInternalInfo(wxCommandEvent &event);
 	

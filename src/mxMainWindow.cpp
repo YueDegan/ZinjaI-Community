@@ -266,6 +266,7 @@ BEGIN_EVENT_TABLE(mxMainWindow, wxFrame)
 	EVT_MENU(mxID_DEBUG_DO_THAT, mxMainWindow::OnDebugDoThat)
 	EVT_MENU(mxID_DEBUG_ENABLE_INVERSE_EXEC, mxMainWindow::OnDebugEnableInverseExecution)
 	EVT_MENU(mxID_DEBUG_INVERSE_EXEC, mxMainWindow::OnDebugInverseExecution)
+	EVT_MENU(mxID_DEBUG_RETURN_FOCUS_ON_CONTINUE, mxMainWindow::OnDebugReturnFocusOnContinue)
 	EVT_MENU(mxID_DEBUG_INSPECT_ON_MOUSE_OVER, mxMainWindow::OnDebugInspectOnMouseOver)
 	EVT_MENU(mxID_DEBUG_LOG_PANEL, mxMainWindow::OnDebugShowLogPanel)
 
@@ -3399,6 +3400,7 @@ void mxMainWindow::PrepareGuiForDebugging(bool debug_mode) {
 		_get_toolbar(tbDEBUG)->ToggleTool(mxID_DEBUG_ENABLE_INVERSE_EXEC,false);
 #endif
 		_get_toolbar(tbDEBUG)->ToggleTool(mxID_DEBUG_INSPECT_ON_MOUSE_OVER,config->Debug.inspect_on_mouse_over);
+		_get_toolbar(tbDEBUG)->ToggleTool(mxID_DEBUG_RETURN_FOCUS_ON_CONTINUE,config->Debug.return_focus_on_continue);
 		
 		if (!config->Debug.allow_edition) { // no permitir editar los fuentes durante la depuracion
 			for (unsigned int i=0;i<notebook_sources->GetPageCount();i++) 
@@ -4183,6 +4185,12 @@ void mxMainWindow::OnDebugInspectOnMouseOver (wxCommandEvent &event) {
 	wxToolBar *toolbar_debug = _get_toolbar(tbDEBUG);
 	config->Debug.inspect_on_mouse_over = !config->Debug.inspect_on_mouse_over;
 	toolbar_debug->ToggleTool(mxID_DEBUG_INSPECT_ON_MOUSE_OVER,config->Debug.inspect_on_mouse_over);
+}
+
+void mxMainWindow::OnDebugReturnFocusOnContinue (wxCommandEvent &event) {
+	wxToolBar *toolbar_debug = _get_toolbar(tbDEBUG);
+	config->Debug.return_focus_on_continue = !config->Debug.return_focus_on_continue;
+	toolbar_debug->ToggleTool(mxID_DEBUG_RETURN_FOCUS_ON_CONTINUE,config->Debug.return_focus_on_continue);
 }
 
 void mxMainWindow::OnDebugEnableInverseExecution (wxCommandEvent &event) {

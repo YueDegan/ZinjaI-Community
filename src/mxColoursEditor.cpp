@@ -14,6 +14,7 @@
 #include "mxSizers.h"
 #include "ConfigManager.h"
 #include "mxSource.h"
+#include "mxWelcomePanel.h"
 
 color_theme *g_ctheme = nullptr;
 
@@ -231,6 +232,7 @@ void mxColoursEditor::OnButtonPicker (wxCommandEvent & evt) {
 
 void mxColoursEditor::OnButtonApply (wxCommandEvent & evt) {
 	main_window->UpdateStylesInSources();
+	if (g_welcome_panel) g_welcome_panel->Reload();
 }
 
 

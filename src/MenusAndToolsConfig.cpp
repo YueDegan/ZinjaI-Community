@@ -413,7 +413,8 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 		AddMenuItem(mnHIDDEN, myMenuItem("attach_multiple_files",mxID_PROJECT_POPUP_ADD_MULTI,LANG(MAINW_PROJECT_FILE_POPUP_ADD_MULTI,"&Agregar Múltiples Archivos...")).EnableIf(ecPROJECT));
 		AddMenuItem(mnHIDDEN, myMenuItem("set_as_master",mxID_FILE_SET_AS_MASTER,LANG(MENUITEM_FILE_SET_AS_MASTER,"Ejecutar siempre este fuente")).EnableIf(ecSOURCE).Checkeable(false));
 		
-		AddMenuItem(mnHIDDEN, myMenuItem("inspect_on_mover",mxID_DEBUG_INSPECT_ON_MOUSE_OVER,LANG(PREFERENCES_DEBUG_INSPECT_ON_MOUSE_OVER,"Mostrar el valor de una variables al colocar el mouse sobre la misma") ).EnableIf(ecDEBUG_PAUSED).Checkeable(true));
+		AddMenuItem(mnHIDDEN, myMenuItem("inspect_on_mover",mxID_DEBUG_INSPECT_ON_MOUSE_OVER,LANG(PREFERENCES_DEBUG_INSPECT_ON_MOUSE_OVER,"Mostrar el valor de una variables al colocar el mouse sobre la misma") ).Checkeable(true));
+		AddMenuItem(mnHIDDEN, myMenuItem("return_focus_on_continue",mxID_DEBUG_RETURN_FOCUS_ON_CONTINUE,LANG(PREFERENCES_DEBUG_RETURN_FOCUS_ON_CONTINUE,"Devolver el foco a la aplicación en depuración luego de una pausa") ).Checkeable(true));
 		
 		AddMenuItem(mnHIDDEN, myMenuItem("combine_project_template",mxID_TOOLS_COMBINE_TEMPLATE,LANG(MAINW_TOOLS_COMBINE_TEMPLATES,"Combinar con otra plantilla...") ).EnableIf(ecPROJECT));
 	
@@ -565,6 +566,7 @@ void MenusAndToolsConfig::LoadToolbarsData ( ) {
 		AddToolbarItem(tbDEBUG,myToolbarItem(menues[mnDEBUG],mxID_DEBUG_PATCH));
 #endif
 		AddToolbarItem(tbDEBUG,myToolbarItem(menues[mnHIDDEN],mxID_DEBUG_INSPECT_ON_MOUSE_OVER).Visible().Checkeable());
+		AddToolbarItem(tbDEBUG,myToolbarItem(menues[mnHIDDEN],mxID_DEBUG_RETURN_FOCUS_ON_CONTINUE).Checkeable());
 	}
 	
 	

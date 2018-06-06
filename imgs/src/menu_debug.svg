@@ -14,7 +14,7 @@
    height="1052.3622"
    id="svg14643"
    version="1.1"
-   inkscape:version="0.92+devel (a137093a10, 2017-11-17)"
+   inkscape:version="0.92+devel (4ef70073ad, 2018-05-26)"
    sodipodi:docname="menu_debug.svg"
    viewBox="0 0 744.09448 1052.3622">
   <defs
@@ -792,9 +792,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8503042"
-     inkscape:cx="-38.601581"
-     inkscape:cy="-405.78885"
+     inkscape:zoom="0.81425162"
+     inkscape:cx="-297.90319"
+     inkscape:cy="-470.13996"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1289,6 +1289,10 @@
          x="-158.17015"
          sodipodi:role="line">Habilitar/deshabilitar mostrar valores como tooltips</tspan><tspan
          y="1538.6226"
+         x="-158.17015"
+         sodipodi:role="line"
+         id="tspan409">Habilitar/deshabilitar cambio de foco al continuar</tspan><tspan
+         y="1588.6226"
          x="-158.17015"
          sodipodi:role="line"
          id="tspan1212" /></text>
@@ -2857,9 +2861,9 @@
          y="1484.8302"
          style="stroke-width:0.38859317">42</tspan></text>
     <rect
-       style="opacity:0.56699997;fill:#ffff00;stroke:none;stroke-width:0.67459768;stroke-linecap:round;stroke-linejoin:round"
+       style="opacity:0.56699997;fill:#ffff00;stroke:none;stroke-width:0.67402023;stroke-linecap:round;stroke-linejoin:round"
        id="rect1275"
-       width="20.778109"
+       width="20.742552"
        height="13.782981"
        x="-203.64598"
        y="1472.6079" />
@@ -2890,5 +2894,36 @@
        id="path8390"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccccc" />
+    <rect
+       inkscape:export-ydpi="42.029999"
+       inkscape:export-xdpi="42.029999"
+       inkscape:export-filename="/mnt/ex/zinjai/imgs/16/debug_registers.png"
+       y="1496.0503"
+       x="-216.5249"
+       height="36.547398"
+       width="36.547398"
+       id="id_return_focus_on_continue"
+       style="opacity:0.75;fill:none;stroke:none" />
+    <path
+       inkscape:connector-curvature="0"
+       style="fill:#00a800;fill-opacity:1;stroke:none;stroke-width:1.60777342;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m -203.92982,1506.2925 c -2.25251,0.029 -1.70263,13.0874 0.40865,15.8468 4.01821,1.1825 12.25902,-2.2076 13.68926,-7.5687 -0.40865,-3.0746 -9.80726,-9.6183 -14.09791,-8.2781 z"
+       id="path11185-7-3"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="/mnt/ex/zinjai/imgs/doxy_run.png"
+       inkscape:export-xdpi="36.837387"
+       inkscape:export-ydpi="36.837387" />
+    <path
+       style="fill:none;stroke:#0000ff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m -211.41678,1510.5014 v -9.2407 h 9.30986"
+       id="path482"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path1307"
+       d="m -185.35129,1517.7407 v 9.2407 h -8.74201"
+       style="fill:none;stroke:#0000ff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       sodipodi:nodetypes="ccc" />
   </g>
 </svg>
