@@ -16,6 +16,7 @@
 #include "mxHelpWindow.h"
 #include <wx/settings.h>
 #include "mxAUI.h"
+#include "mxColoursEditor.h"
 
 mxWelcomePanel *g_welcome_panel = nullptr;
 
@@ -60,6 +61,11 @@ void mxWelcomePanel::Reload(bool reread_source) {
 	text.Replace(_T("${PROJECT:03}"),config->Files.last_project[2]);
 	text.Replace(_T("${PROJECT:04}"),config->Files.last_project[3]);
 	text.Replace(_T("${PROJECT:05}"),config->Files.last_project[4]);
+	text.Replace(_T("${IMAGE:TITLE}"),g_ctheme->inverted?"title_inverted.png":"title.png");
+	text.Replace(_T("${COLOR:DEFAULT_FORE}"),g_ctheme->DEFAULT_FORE.GetAsString(wxC2S_HTML_SYNTAX));
+	text.Replace(_T("${COLOR:DEFAULT_BACK}"),g_ctheme->DEFAULT_BACK.GetAsString(wxC2S_HTML_SYNTAX));
+	text.Replace(_T("${COLOR:WORD2_FORE}"),g_ctheme->WORD2_FORE.GetAsString(wxC2S_HTML_SYNTAX));
+	text.Replace(_T("${COLOR:COMMENT_FORE}"),g_ctheme->COMMENT_FORE.GetAsString(wxC2S_HTML_SYNTAX));
 	if (file.IsOpened()) {
 		wxString tip;
 		while (!tip.Len())
