@@ -386,6 +386,7 @@ bool ConfigManager::Load() {
 		
 	}
 	
+	if (Init.version<20180614 && Debug.macros_file=="debug_macros.gdb") Debug.macros_file = DIR_PLUS_FILE("samples","debug_macros.gdb");
 #ifdef __APPLE__
 	if (Init.version<20170926 && Files.debugger_command=="gdb") Files.debugger_command = "~/.zinjai/gdb.bin";
 	if (Init.version<20170605) Files.terminal_command = DIR_PLUS_FILE("bin","mac-terminal-wrapper.bin"); // some installations still have an invalid configuration
@@ -867,7 +868,7 @@ void ConfigManager::LoadDefaults(){
 	Debug.raise_main_window = true;
 	Debug.compile_again = true;
 	Debug.format = "";
-	Debug.macros_file = "debug_macros.gdb";
+	Debug.macros_file = DIR_PLUS_FILE("samples","debug_macros.gdb");
 	Debug.inspections_on_right = false;
 	Debug.inspect_on_mouse_over = true;
 	Debug.show_thread_panel = false;
