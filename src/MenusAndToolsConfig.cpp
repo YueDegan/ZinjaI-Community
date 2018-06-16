@@ -59,6 +59,7 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 	menues[mnEDIT].Init("edit",LANG(MENUITEM_EDIT,"&Edición")); {
 		AddMenuItem(mnEDIT, myMenuItem("undo",mxID_EDIT_UNDO, LANG(MENUITEM_EDIT_UNDO,"&Deshacer")).ShortCut("Ctrl+Z").Description("Deshacer el ultimo cambio").EnableIf(ecSOURCE));
 		AddMenuItem(mnEDIT, myMenuItem("redo",mxID_EDIT_REDO, LANG(MENUITEM_EDIT_REDO,"&Rehacer")).ShortCut("Ctrl+Shift+Z").Description("Rehacer el ultimo cambio desecho").EnableIf(ecSOURCE));
+		AddMenuItem(mnEDIT, myMenuItem("undo_history",mxID_EDIT_UNDO_HISTORY, LANG(MENUITEM_EDIT_UNDO_HISTORY,"Historial de cambios..."))/*.ShortCut("Ctrl+Shift+Z").Description("Rehacer el ultimo cambio desecho")*/.EnableIf(ecSOURCE));
 		AddSeparator(mnEDIT);
 		AddMenuItem(mnEDIT, myMenuItem("cut",mxID_EDIT_CUT, LANG(MENUITEM_EDIT_CUT,"C&ortar")).ShortCut("Ctrl+X").Description("Cortar la selección al portapapeles").EnableIf(ecSOURCE));
 		AddMenuItem(mnEDIT, myMenuItem("copy",mxID_EDIT_COPY, LANG(MENUITEM_EDIT_COPY,"&Copiar")).ShortCut("Ctrl+C").Description("Copiar la selección al portapapeles").EnableIf(ecSOURCE));

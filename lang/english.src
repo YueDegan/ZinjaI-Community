@@ -270,6 +270,8 @@ MENUITEM_EDIT_UNDO
 Undo
 MENUITEM_EDIT_REDO
 Redo
+MENUITEM_EDIT_UNDO_HISTORY
+Changes history...
 MENUITEM_EDIT_CUT
 Cut
 MENUITEM_EDIT_COPY
@@ -760,6 +762,8 @@ MENUITEM_FILE_SET_AS_MASTER
 Always run this file
 PREFERENCES_DEBUG_INSPECT_ON_MOUSE_OVER
 Evaluate a variable by placing the mouse over it.
+PREFERENCES_DEBUG_RETURN_FOCUS_ON_CONTINUE
+Return focus to debugged application when continuing after a breakpoint
 MAINW_TOOLS_COMBINE_TEMPLATES
 Combine project templates...
 MENUITEM_HIDDEN_PROJECT_CUSTOM_TOOL
@@ -2166,6 +2170,8 @@ MAINW_RUN_HEADER_WARNING
 You are trying to run a header file. It is probably a mistake\nand you might want to run a source file that includes this one\ninstead. Continue anyway?\n\nNote: you can force ZinjaI to run always the same source no\nmatter which one has the focus with right-click on its tab.\n
 MAINW_RUN_HEADER_CHECK
 Do not show this message again
+MAINW_UNDO_HISTORY
+Changes History
 COMP_ARG_GENERIC_INFO
 In order to generate the required profilling information for <{1}>,\nsome additional arguments need to be added to the compile command,\nand then rebuild the project/program (if you want to do it later use the\n"Clean" command from "Run" menu), and finally run the program.
 MAINW_EXTERN_TOOL_ERROR
@@ -2528,8 +2534,6 @@ PREFERENCES_DEBUG_ORGANIZE_TOOLBARS
 Reorganize toolbars on debug start/stop
 PREFERENCES_DEBUG_ACTIVATE_WINDOW_ON_INTERRUPTION
 Focus ZinjaI's window when debugging is interrupted
-PREFERENCES_DEBUG_RETURN_FOCUS_ON_CONTINUE
-Return focus to debugged application when continuing after a breakpoint
 PREFERENCES_DEBUG_ENABLE_CORE_DUMP
 Enable core dumps when running without debugger
 PREFERENCES_DEBUG_CATCH_THROW
@@ -3104,12 +3108,8 @@ MAINW_PRESS_ESC_TO_FINISH_RECT_EDIT
 Press ESC or move text caret outside selection to return to regular edition mode.
 TEMPLATECOMB_CAPTION
 Update/combine profiles
-TEMPLATECOMB_DEST_PROFILE
-Profile
 TEMPLATECOMB_ACTION
 Action
-TEMPLATECOMB_SRC_PROFILE
-Profile
 TEMPLATECOMB_ERROR
 Error openning project/template file
 TEMPLATECOMB_PROFILE_FIELDS

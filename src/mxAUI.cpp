@@ -386,3 +386,10 @@ bool mxAUI::OnKeyEscape (wxWindow *who) {
 	return false;
 }
 
+bool mxAUI::Close(wxWindow *win) {
+	wxAuiPaneInfo &pi = m_wxaui.GetPane(win);
+	if (!pi.IsOk()) return false;
+	m_wxaui.ClosePane(pi);
+	m_wxaui.Update();
+	return true;
+}

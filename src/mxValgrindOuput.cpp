@@ -169,7 +169,7 @@ void mxValgrindOuput::OnOpen(wxCommandEvent  &evt) {
 		source->SetTreeItem(tree_item);
 	}
 	source->SetModify(false);
-	source->SetReadOnlyMode(ROM_SPECIAL);
+	source->SetReadOnlyMode(ROM_SPECIAL,true);
 	source->SetFocus();
 }
 

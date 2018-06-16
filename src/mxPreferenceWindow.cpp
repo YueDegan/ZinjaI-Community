@@ -912,7 +912,7 @@ void mxPreferenceWindow::OnOkButton(wxCommandEvent &event) {
 	
 	if (debug->IsDebugging()) {
 		for (unsigned int i=0;i<ns->GetPageCount();i++)
-			((mxSource*)(ns->GetPage(i)))->SetReadOnlyMode(config->Debug.allow_edition?ROM_DEBUG:ROM_ADD_DEBUG);
+			((mxSource*)(ns->GetPage(i)))->SetReadOnlyMode(ROM_DEBUG,!config->Debug.allow_edition);
 	}
 	Autocoder::GetInstance()->Reset(project?project->autocodes_file:"");
 	config->Debug.blacklist = temp_debug_blacklist;

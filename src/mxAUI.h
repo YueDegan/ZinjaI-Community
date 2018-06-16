@@ -172,6 +172,7 @@ public:
 	mxAUIPaneInfo AttachGenericPane(wxWindow *ctrl, wxString title, bool handle_deletion=true);
 	void RecreatePanes();
 	bool IsVisible(PaneId::type id) const;
+	bool Close(wxWindow *win);		
 private:
 	void Freeze(); ///< use mxAUIFreezeGuard instead
 	void Thaw(); ///< use mxAUIFreezeGuard instead

@@ -160,6 +160,7 @@ public:
 	void OnEditInsertInclude (wxCommandEvent &event);
 	void OnEditListMarks (wxCommandEvent &event);
 	void OnSourceGotoDefinition (wxCommandEvent &event);
+	void OnEditUndoHistory (wxCommandEvent &event);
 	
 	void OnViewDuplicateTab (wxCommandEvent &event);
 	void OnViewBeginnerPanel (wxCommandEvent &event);

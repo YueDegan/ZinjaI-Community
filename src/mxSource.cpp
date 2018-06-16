@@ -29,6 +29,7 @@
 #include "mxInspectionBaloon.h"
 #include "LocalRefactory.h"
 #include "mxSourceParsingAux.h"
+#include "mxSourceUndoHistory.h"
 //#include "linStuff.h"
 #include "mxMiniSource.h"
 using namespace std;
@@ -251,7 +252,7 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 	source_time_dont_ask = false; source_time_reload = false;
 	diff_brother=nullptr; first_diff_info=last_diff_info=nullptr;
 	
-	readonly_mode = ROM_NONE;
+	readonly_mode = ROM_NONE; m_undo_history_panel = nullptr;
 	
 	LoadSourceConfig();
 	
@@ -260,7 +261,7 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 //		m_extras->ToSource(this); // not here, mxSource is still empty!!!
 		m_owns_extras=false;
 		treeId=fitem->GetTreeItem();
-		if (fitem->IsReadOnly()) SetReadOnlyMode(ROM_ADD_PROJECT);
+		if (fitem->IsReadOnly()) SetReadOnlyMode(ROM_PROJECT,true);
 	} else {
 		m_owns_extras=true;
 		m_extras = new SourceExtras();
@@ -394,7 +395,7 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 //	SetTwoPhaseDraw (false);
 	SetMouseDwellTime(_DWEEL_TIME_); // mis tooltips bizarros (con showbaloon = calltip)
 	
-	if (debug->IsDebugging() && !config->Debug.allow_edition) SetReadOnlyMode(ROM_ADD_DEBUG);
+	if (debug->IsDebugging() && !config->Debug.allow_edition) SetReadOnlyMode(ROM_DEBUG,true);
 
 	er_register_source(this);
 	
@@ -402,6 +403,7 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 
 
 mxSource::~mxSource () {
+	if (m_undo_history_panel) m_undo_history_panel->OnSourceClose();
 	HideCalltip(); if (calltip) { calltip->Destroy(); calltip=nullptr; }
 	
 	bool only_view=next_source_with_same_file==this; // there can be more than one view of the same source
@@ -919,11 +921,11 @@ bool mxSource::LoadFile (const wxFileName &filename) {
 		binary_filename="binary_filename_not_seted";
 	else
 		binary_filename=source_filename.GetPathWithSep()+source_filename.GetName()+_T(BINARY_EXTENSION);
-	SetReadOnly(false); // para que wxStyledTextCtrl::LoadFile pueda modificarlo
+	TemporaryDisableReadOnly rom_guard(this);
+	wxStyledTextCtrl::SetReadOnly(false); // para que wxStyledTextCtrl::LoadFile pueda modificarlo
 	ClearAll ();
 	sin_titulo=!wxStyledTextCtrl::LoadFile(source_filename.GetFullPath());
 	EmptyUndoBuffer();
-	if (readonly_mode!=ROM_NONE) SetReadOnly(true);
 	config_source.wrapMode = config->Init.wrap_mode==2||(config->Init.wrap_mode==1&&(lexer!=wxSTC_LEX_CPP||!config_source.syntaxEnable));
 	SetWrapMode (config_source.wrapMode?wxSTC_WRAP_WORD: wxSTC_WRAP_NONE);
 	SetLineNumbers();
@@ -2214,13 +2216,14 @@ wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_te
 					p_from=p;
 				} while (true);
 				if (p_to==wxSTC_INVALID_POSITION) break;
-				
+				int p_begin_of_args_list = p_to;
+					
 				if (GetStyleAt(p)!=wxSTC_C_WORD || (p>2 && GetTextRange(p-2,p+1)=="for")) { // si estamos en el prototipo de la funcion
 					p=FindText(p_from,p_to,key,wxSTC_FIND_WHOLEWORD|wxSTC_FIND_MATCHCASE);
 					if (p!=wxSTC_INVALID_POSITION) { // si es un parametro
 						p_to=p;
 						int template_level=0; // sino se confunde la , de un map<int,int> con el final del argumento
-						while (p_to>0 && (!(II_IS_2(p_to,',','(')||(c==':'&&(GetCharAt(p_to-1)!=':'||GetCharAt(p_to+1)!=':')))||template_level)) {
+						while (p_to>p_begin_of_args_list && (!(II_IS_2(p_to,',','(')||(c==':'&&(GetCharAt(p_to-1)!=':'||GetCharAt(p_to+1)!=':')))||template_level)) {
 							if (c=='>') template_level++;
 							else if (c=='<') template_level--;
 							p_to--;
@@ -2240,7 +2243,10 @@ wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_te
 								p--;
 							}
 						}
-						if (p_ocur!=p_type) break;
+						// la 1er cond del if es por si falla la parte templates en el while de arriba 
+						// (cuando estamos en un for, y dice algo como i<v.size(), y buscamos v... el '<'
+						// no es de template...
+						if (p_to>p_begin_of_args_list && p_ocur!=p_type) break;
 					}
 					// buscar el scope de la funcion actual
 					p=p_to-1;
@@ -3483,7 +3489,7 @@ void mxSource::OnModifyOnRO (wxStyledTextEvent &event) {
 				.Title(LANG(GENERAL_WARNING,"Advertencia")).IconWarning().Run();
 		if (ans.check1) {
 			config->Debug.allow_edition=true;
-			SetReadOnlyMode(ROM_NONE);
+			SetReadOnlyMode(ROM_DEBUG,false);
 			event.Skip();
 		}
 	} else {
@@ -3790,25 +3796,9 @@ void mxSource::UpdateExtras ( ) {
 	m_extras->FromSource(this);
 }
 
-void mxSource::SetReadOnlyMode (ReadOnlyModeEnum mode) {
-	if (mode>ROM_SPECIALS) {
-		if (mode==ROM_ADD_DEBUG) {
-			if (readonly_mode==ROM_NONE) readonly_mode=ROM_DEBUG;
-			else if (readonly_mode==ROM_PROJECT) readonly_mode=ROM_PROJECT_AND_DEBUG;
-		} else if (mode==ROM_DEL_DEBUG) {
-			if (readonly_mode==ROM_DEBUG) readonly_mode=ROM_NONE;
-			else if (readonly_mode==ROM_PROJECT_AND_DEBUG) readonly_mode=ROM_PROJECT;
-		} else if (mode==ROM_ADD_PROJECT) {
-			if (readonly_mode==ROM_NONE) readonly_mode=ROM_PROJECT;
-			else if (readonly_mode==ROM_DEBUG) readonly_mode=ROM_PROJECT_AND_DEBUG;
-		} else if (mode==ROM_DEL_PROJECT) {
-			if (readonly_mode==ROM_PROJECT) readonly_mode=ROM_NONE;
-			else if (readonly_mode==ROM_PROJECT_AND_DEBUG) readonly_mode=ROM_DEBUG;
-		}
-	} else {
-		readonly_mode=mode;
-	}
-	SetReadOnly(readonly_mode!=ROM_NONE);
+void mxSource::SetReadOnlyMode (ReadOnlyModeEnum mode, bool active) {
+	if (active) readonly_mode |= mode; else readonly_mode &= ~mode;
+	wxStyledTextCtrl::SetReadOnly(readonly_mode!=ROM_NONE);
 }
 
 void mxSource::OnMacroAction (wxStyledTextEvent & evt) {

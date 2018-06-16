@@ -24,6 +24,7 @@ class wxTreeItemId;
 class DiffInfo;
 class mxCalltip;
 class mxInspectionBaloon;
+class mxSourceUndoHistory;
 
 enum MXS_MARKER {
 //	mxSTC_MARK_CURRENT=0, 	///< resaltar la linea actual en el editor (fondo celeste)
@@ -40,16 +41,10 @@ enum MXS_MARKER {
 };
 
 enum ReadOnlyModeEnum { 
-	ROM_NONE, ///< not readonly, can edit
-	ROM_PROJECT, ///< setted as readonly in project_file_item props
-	ROM_DEBUG, ///< currently debugging, and preferences say don't edit while debug
-	ROM_PROJECT_AND_DEBUG, ///< currently debugging, and preferences say don't edit while debug, and also setted in project_file_item
-	ROM_SPECIAL, ///< special file, such as full compiler output
-	ROM_SPECIALS, ///< dummy item to split real states and special flags
-	ROM_ADD_DEBUG, ///< not a real state, just used for telling SetReadOnlyMode "change to some debugging state"
-	ROM_DEL_DEBUG, ///< not a real state, just used for telling SetReadOnlyMode "change to some non-debugging state"
-	ROM_ADD_PROJECT, ///< not a real state, just used for telling SetReadOnlyMode "ProjectManager says you're read-only"
-	ROM_DEL_PROJECT, ///< not a real state, just used for telling SetReadOnlyMode "ProjectManager says you're not read-only"
+	ROM_NONE=0, ///< not readonly, can edit
+	ROM_PROJECT =1<<0, ///< setted as readonly in project_file_item props
+	ROM_DEBUG   =1<<1, ///< currently debugging, and preferences say don't edit while debug
+	ROM_SPECIAL =1<<2, ///< special file, such as full compiler output
 };
 
 class mxSource;
@@ -151,15 +146,25 @@ public:
 
 private:
 	bool ro_quejado;
-	ReadOnlyModeEnum readonly_mode;
+	int readonly_mode;
 	void OnModifyOnRO(wxStyledTextEvent &event);
+	void SetReadOnly(bool b) { wxStyledTextCtrl::SetReadOnly(b); } // private so we are force to use SetReadOnlyMode from outside
+	friend struct TemporaryDisableReadOnly;
 public:
-	void SetReadOnlyMode(ReadOnlyModeEnum mode);
+	void SetReadOnlyMode(ReadOnlyModeEnum mode, bool active);
+	
+	struct TemporaryDisableReadOnly {
+		TemporaryDisableReadOnly(mxSource *src) : m_src(src) { m_src->SetReadOnly(false); }
+		~TemporaryDisableReadOnly() { m_src->SetReadOnly(m_src->readonly_mode!=ROM_NONE); }
+	private:
+		mxSource *m_src;
+	};
 
 	void OnPainted(wxStyledTextEvent &event);
 	
 	void CheckForExternalModifications(); ///< checks if the file has changed, if it did, enqueue a call to ThereAreExternalModifications for the end of the main_window event loop
 	void ThereAreExternalModifications(); ///< show the warning dialog or reload the file when we know it has changed
+	mxSourceUndoHistory *m_undo_history_panel;
 	mxSource *diff_brother;
 	DiffInfo *first_diff_info, *last_diff_info;
 	wxString page_text;

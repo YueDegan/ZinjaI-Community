@@ -3659,7 +3659,7 @@ wxfb_configuration * ProjectManager::GetWxfbConfiguration (bool create_activated
 void ProjectManager::SetFileReadOnly (project_file_item * item, bool read_only) {
 	item->SetReadOnly(read_only);
 	mxSource *src = main_window->IsOpen(item->GetTreeItem());
-	if (src) src->SetReadOnlyMode(read_only?ROM_ADD_PROJECT:ROM_DEL_PROJECT);
+	if (src) src->SetReadOnlyMode(ROM_PROJECT,read_only);
 }
 
 void ProjectManager::SetFileHideSymbols (project_file_item * item, bool hide_symbols) {

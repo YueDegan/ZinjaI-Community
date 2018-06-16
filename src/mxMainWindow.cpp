@@ -88,6 +88,7 @@
 #include "ZLog.h"
 #include "osdep.h"
 #include "mxTemplateCombination.h"
+#include "mxSourceUndoHistory.h"
 using namespace std;
 
 #define SIN_TITULO (wxString("<")<<LANG(UNTITLED,"sin_titulo_")<<(++untitled_count)<<">")
@@ -184,6 +185,7 @@ BEGIN_EVENT_TABLE(mxMainWindow, wxFrame)
 	EVT_MENU(mxID_EDIT_SELECT_ALL, mxMainWindow::OnEditNeedFocus)
 	EVT_MENU(mxID_EDIT_UNDO, mxMainWindow::OnEdit)
 	EVT_MENU(mxID_EDIT_REDO, mxMainWindow::OnEdit)
+	EVT_MENU(mxID_EDIT_UNDO_HISTORY, mxMainWindow::OnEditUndoHistory)
 	EVT_MENU(mxID_EDIT_MAKE_LOWERCASE, mxMainWindow::OnEdit)
 	EVT_MENU(mxID_EDIT_MAKE_UPPERCASE, mxMainWindow::OnEdit)
 	EVT_MENU(mxID_EDIT_COPY, mxMainWindow::OnEditNeedFocus)
@@ -729,7 +731,7 @@ void mxMainWindow::ShowSpecilaUnnamedSource(const wxString &tab_name, const wxAr
 		source->SetTreeItem( tree_item );
 	}
 	source->SetModify(false);
-	source->SetReadOnlyMode(ROM_SPECIAL);
+	source->SetReadOnlyMode(ROM_SPECIAL,true);
 	source->SetFocus();
 }
 
@@ -3404,7 +3406,7 @@ void mxMainWindow::PrepareGuiForDebugging(bool debug_mode) {
 		
 		if (!config->Debug.allow_edition) { // no permitir editar los fuentes durante la depuracion
 			for (unsigned int i=0;i<notebook_sources->GetPageCount();i++) 
-				((mxSource*)(notebook_sources->GetPage(i)))->SetReadOnlyMode(ROM_ADD_DEBUG);
+				((mxSource*)(notebook_sources->GetPage(i)))->SetReadOnlyMode(ROM_DEBUG,true);
 		}
 
 		if (config->Debug.autohide_toolbars) { // reacomodar las barras de herramientas
@@ -3434,7 +3436,7 @@ void mxMainWindow::PrepareGuiForDebugging(bool debug_mode) {
 		
 		// reestablecer la edicion de fuentes
 		for (unsigned int i=0;i<notebook_sources->GetPageCount();i++)
-			((mxSource*)(notebook_sources->GetPage(i)))->SetReadOnlyMode(ROM_DEL_DEBUG);
+			((mxSource*)(notebook_sources->GetPage(i)))->SetReadOnlyMode(ROM_DEBUG,false);
 		
 		if (config->Debug.autohide_toolbars) { // reacomodar las barras de herramientas
 			m_aui->GetPane(_get_toolbar(tbSTATUS)).Hide();
@@ -4940,4 +4942,12 @@ void mxMainWindow::OnHelpFindCommand (wxCommandEvent & event) {
 
 void mxMainWindow::OnToolsCombineTemplate (wxCommandEvent &event) {
 	mxTemplateCombination::Run(this);
+}
+
+void mxMainWindow::OnEditUndoHistory (wxCommandEvent &event) {
+	IF_THERE_ISNT_SOURCE return;
+	mxSource *src = CURRENT_SOURCE;
+	if (src->m_undo_history_panel) return; // ya tiene un panel de historial
+	mxSourceUndoHistory *undo_history = new mxSourceUndoHistory(this,CURRENT_SOURCE);
+	m_aui->AttachGenericPane(undo_history,LANG(MAINW_UNDO_HISTORY,"Historial de cambios"),true)->Bottom().Dock();;
 }
