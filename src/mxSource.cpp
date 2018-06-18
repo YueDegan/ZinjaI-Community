@@ -2591,7 +2591,7 @@ wxString mxSource::FindTypeOfByPos_impl(int p,int &dims, bool include_template_s
 	} else {
 		if ( ( (c|32)>='a' && (c|32)<='z' ) || c=='_' ) {
 			s=p;
-			wxString key=GetTextRange(p,WordEndPosition(p,true));
+			wxString key = GetTextRange(p,WordEndPosition(p,true));
 			wxString ans = FindTypeOfByKey_impl(key,s,include_template_spec);
 			if (ans.Len() && dims<0 && s==0) {
 				wxString type=g_code_helper->GetCalltip(ans,"operator[]",true,true);				

@@ -133,8 +133,10 @@ inline int GetTypeEnd(mxSource *src, int pos, int max_pos) {
 /// @brief given a type specification, removes all leading scopes
 inline wxString StripNamespaces(const wxString &type) {
 	int pfrom = 0;
-	for(size_t i=1;i<type.Len();i++)
+	for(size_t i=1;i<type.Len();i++) {
 		if (type[i]==':' && type[i-1]==':') pfrom = i+1;
+		if (type[i]=='<') break;
+	}
 	return type.Mid(pfrom);
 }
 
