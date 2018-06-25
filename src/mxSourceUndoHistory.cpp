@@ -51,7 +51,7 @@ void mxSourceUndoHistory::Set (mxSource * src) {
 	// we are back at the state we started
 	m_src->Thaw(); m_original_pos = m_undo_count;
 	m_src->SetReadOnlyMode(ROM_SPECIAL,true);
-	m_scrollbar->SetScrollbar(m_undo_count,1,m_redo_count+m_undo_count,(m_redo_count+m_undo_count)/10,true);
+	m_scrollbar->SetScrollbar(m_undo_count,1,m_redo_count+m_undo_count+1,(m_redo_count+m_undo_count)/10,true);
 }
 
 void mxSourceUndoHistory::OnScroll (wxScrollEvent & evt) {
@@ -59,7 +59,10 @@ void mxSourceUndoHistory::OnScroll (wxScrollEvent & evt) {
 }
 
 mxSourceUndoHistory::~mxSourceUndoHistory ( ) {
-	if (m_src) m_src->SetReadOnlyMode(ROM_SPECIAL,false);
+	if (m_src) {
+		m_src->m_undo_history_panel = nullptr;
+		m_src->SetReadOnlyMode(ROM_SPECIAL,false);
+	}
 }
 
 void mxSourceUndoHistory::OnButtonReset (wxCommandEvent & evt) {
