@@ -8,15 +8,17 @@
 #include "ConfigManager.h"
 #include "CodeHelper.h"
 #include "Language.h"
+#include "mxHelpWindow.h"
 
 BEGIN_EVENT_TABLE(mxTemplateCombination,wxDialog)
 	EVT_CHOICE(wxID_ANY,mxTemplateCombination::OnCombo)
 	EVT_BUTTON(wxID_OK,mxTemplateCombination::OnButtonOk)
 	EVT_BUTTON(wxID_CANCEL,mxTemplateCombination::OnButtonCancel)
+	EVT_BUTTON(mxID_HELP_BUTTON,mxTemplateCombination::OnButtonHelp)
 END_EVENT_TABLE()
 
 mxTemplateCombination::mxTemplateCombination(wxWindow *parent, wxString other_zpr) 
-	: mxDialog(parent,LANG(TEMPLATECOMB_CAPTION,"Combine templates")), m_zpr_path(other_zpr)
+	: mxDialog(parent,LANG(TEMPLATECOMB_CAPTION,"Combinar Plantillas")), m_zpr_path(other_zpr)
 {
 	CreateSizer sizer(this);
 	
@@ -300,5 +302,9 @@ void mxTemplateCombination::CombineProfile (wxString dest_pname, wxString zpr_pa
 			}
 		}
 	}
+}
+
+void mxTemplateCombination::OnButtonHelp (wxCommandEvent & evt) {
+	mxHelpWindow::ShowHelp("templates_combination.html",this);
 }
 

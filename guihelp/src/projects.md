@@ -29,11 +29,16 @@ La portabilidad de un proyecto es una de los aspectos más cuidados en el manejo 
 <A name="templates"/>
 #### Utilización de Plantillas de Proyecto
 
-*ZinjaI* permite crear un nuevo proyecto a partir de una plantilla. Cualquier subdirectorio que se encuentre en el directorio de plantillas (ver <A href="preferences.html">Diálogo de Preferencias</A>) será tomado como plantilla de proyecto. Crear un proyecto a partir de una plantilla implica copiar el contenido de la carpeta del proyecto plantilla a la carpeta del nuevo proyecto. Este contenido puede incluir archivos fuentes, cabeceras u otros incluidos en el proyecto, todas las configuraciones del mismo, etc. Para crear una nueva plantilla, simplemente cree un nuevo proyecto y copie el directorio correspondiente al directorio de plantillas (puede que deba reiniciar *ZinjaI* luego). Se incluyen alguna plantillas de ejemplo (proyecto que utilice las librerías *wxWidgets*, y proyecto que utilice *OpenGL*).
+*ZinjaI* permite crear un nuevo proyecto a partir de una plantilla. Cualquier subdirectorio que se encuentre en el directorio de plantillas (ver [Diálogo de Preferencias](preferences.html)) será tomado como plantilla de proyecto. Crear un proyecto a partir de una plantilla implica copiar el contenido de la carpeta del proyecto plantilla a la carpeta del nuevo proyecto. Este contenido puede incluir archivos fuentes, cabeceras u otros incluidos en el proyecto, todas las configuraciones del mismo, etc. Se incluyen alguna plantillas de ejemplo (por ej, una preconfigurada para utilizar las bibliotecas *OpenGL* y *FreeGLUT*).
+
+Puede obtener nuevas plantillas configuradas para utilizar bibliotecas externas instalando [complementos](complements.html); o crear sus propias plantillas desde el [menú Herramientas](menu_herramientas.html#guardar_como_plantilla). Para crear una nueva plantilla, simplemente cree un nuevo proyecto y copie el directorio correspondiente al directorio de plantillas (puede que deba reiniciar *ZinjaI* luego).
+
+Además, una vez creado un proyecto con una plantilla, puede combinarla con otro, o actualizar su configuración si la plantilla cambia mediante el cuadro de [Combinación de Plantillas](templates_combination.html).
 
 
 #### Temas relacionados
 
+*  [Combinación de Plantillas](templates_combination.html)
 *  [Secuencia de compilación de un proyecto](project_building_sequence.html)
 *  [Toolchains alternativos](toolchains.html)
 *  [Creación de bibliotecas](libs_generation.html)

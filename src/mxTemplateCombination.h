@@ -53,6 +53,7 @@ private:
 	void OnCombo(wxCommandEvent &evt);
 	void OnButtonOk(wxCommandEvent &evt);
 	void OnButtonCancel(wxCommandEvent &evt);
+	void OnButtonHelp(wxCommandEvent &evt);
 	DECLARE_EVENT_TABLE();
 };
 
