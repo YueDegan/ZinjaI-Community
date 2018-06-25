@@ -34,22 +34,24 @@ wxBitmap mxBitmapButton::GenerateButtonImage(wxString text, const wxBitmap *bmp)
 	wxColour back_color = wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
 	
 	static wxBitmap full(200,100,32);
-	wxMemoryDC dc(full);
 	wxRect r;
-	dc.SetBackground(wxBrush(back_color));
-	dc.Clear();
-	int p = text.Find('&');
-	if (p==wxNOT_FOUND) p=-1;
-	else text.Remove(p++,1);
-	dc.SetFont(wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT));
-	dc.SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNTEXT));
-	dc.DrawLabel(wxString(" ")<<text,*bmp,wxRect(wxPoint(0,0),wxPoint(200,100)), wxALIGN_LEFT | wxALIGN_TOP,p,&r);
-	r.height = r.height>bmp->GetHeight()?r.height:bmp->GetHeight()+1;
-	r.height += r.y+1;
-	r.y = 0;
-	r.width += /*bmp->GetWidth()+*/r.x+1;	
-	r.x = 0;
-
+	{
+		wxMemoryDC dc(full);
+		dc.SetBackground(wxBrush(back_color));
+		dc.Clear();
+		int p = text.Find('&');
+		if (p==wxNOT_FOUND) p=-1;
+		else text.Remove(p++,1);
+		dc.SetFont(wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT));
+		dc.SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNTEXT));
+		dc.DrawLabel(wxString(" ")<<text,*bmp,wxRect(wxPoint(0,0),wxPoint(200,100)), wxALIGN_LEFT | wxALIGN_TOP,p,&r);
+		r.height = r.height>bmp->GetHeight()?r.height:bmp->GetHeight()+1;
+		r.height += r.y+1;
+		r.y = 0;
+		r.width += /*bmp->GetWidth()+*/r.x+1;	
+		r.x = 0;
+	} // to destroy the dc, otherwise there are problems (that manifest only on Windows?)
+		
 	if (r.GetHeight()>full.GetHeight() || r.GetWidth()>full.GetWidth()) {
 		int w = full.GetWidth(), h = full.GetHeight();
 		if (w<r.GetWidth()) w*=2;
@@ -57,7 +59,6 @@ wxBitmap mxBitmapButton::GenerateButtonImage(wxString text, const wxBitmap *bmp)
 		full = wxBitmap(w,h,32);
 		return GenerateButtonImage(text,bmp);
 	}
-//	delete dc;
 	wxMask *m=new wxMask();
 	m->Create(full,back_color);
 	full.SetMask(m);
