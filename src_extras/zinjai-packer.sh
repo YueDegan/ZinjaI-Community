@@ -75,9 +75,9 @@ elif [ "$1" = "update" ]; then
   scp $2/zinjai/imgs/32/*							zinjai/imgs/32/
   scp $2/zinjai/imgs/48/*							zinjai/imgs/48/
   scp $2/zinjai/imgs/src/*							zinjai/imgs/src/
-  scp $2/zinjai/imgs/welcome/*						zinjai/imgs/welcome/
-  scp $2/zinjai/imgs/trees/*						zinjai/imgs/trees/
-  scp $2/zinjai/imgs/dialogs/*						zinjai/imgs/dialogs/
+  scp -r $2/zinjai/imgs/welcome/*						zinjai/imgs/welcome/
+  scp -r $2/zinjai/imgs/trees/*						zinjai/imgs/trees/
+  scp -r $2/zinjai/imgs/dialogs/*						zinjai/imgs/dialogs/
   scp -r $2/zinjai/imgs/icons/*						zinjai/imgs/icons/
   scp -r $2/zinjai/skins/*							zinjai/skins/
 

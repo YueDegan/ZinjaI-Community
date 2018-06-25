@@ -31,8 +31,8 @@ clean:
 ../bin/shellexecute.exe: shellexecute.cpp
 	${GPP} -s -O0 -mwindows shellexecute.cpp -o $@
 
-../bin/updatem.exe: updatem.cpp zockets.cpp zockets.h ../release.w32/xmlres.o
-	${GPP} ${FLAGS} -O0 -mwindows updatem.cpp zockets.cpp -lwsock32 xmlres.o -o $@
+../bin/updatem.exe: updatem.cpp zockets.cpp zockets.h ../temp/xmlres.o
+	${GPP} ${FLAGS} -O0 -mwindows updatem.cpp zockets.cpp -lwsock32 ../temp/xmlres.o -o $@
 
 ../log.exe: log-w32.cpp
-	${GPP} -mwindows log-w32.cpp -o $@
+	${GPP} ${EXT_FLAGS} -mwindows log-w32.cpp -o $@

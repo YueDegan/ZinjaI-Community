@@ -1,5 +1,5 @@
 If this is the first time you run ZinjaI, you can press F1 key to display help system and tutorials.
-Welcome to a new ZinjaI release. Among the most relevant changes you'll find a better support for HiDIP screens, and a much faster complements installer.<BR><BR>Read the <A href="help:ChangeLog.html">full changelog</A>.
+Welcome to a new ZinjaI release. Among the most relevant changes you'll find a new feature for combining or updating settings of existing proyects with an updated template, a item in <I>Edit</I> menu for traversing the undo/redo history, and many other minor new features and fixes. <BR><BR>Read the <A href="help:ChangeLog.html">full changelog</A>.
 These tips can be very anoying for some users. You can disable them by clicking the checkbox in to bottom of this window.
 
 You can change code zoom quickly by scrolling mouse will with Ctrl key down, or pressin +/- key also with ctrl key down.
@@ -71,3 +71,4 @@ You can define a special kind of breakpoint that will make ZinjaI update all ins
 There are three methods available to filter the results shown in the autocompletion menu: you could see only options starting exactly as the typed part of the identifier, options that contain the type part as substring, or even options that contains a similar substring (this can tolerate a few typing errors). You can switch methods from <I>Writting</I> tab in <I>Preferences</I> dialog.
 When openning a project, what takes the most time to load before letting the user interact are the oppened source files. If you keep the number of open tabs low, the project will load much faster so you can start working sooner.
 A project can inherit the list of files from another project, and that list will be automatically updated every time you open it (<A href="help:project_inheritance.html">read more...</A>).
+If you don't know or remember where to find a command or feature, you can access a global search dialog  hitting <I>Ctrl+F2</I> (or from <I>Help</I> menu).

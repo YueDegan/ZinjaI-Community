@@ -44,15 +44,16 @@ zmkdir zinjai
     zmkdir zinjai/imgs
     cp -u $SRC/imgs/descripcion.txt zinjai/imgs/
     cp -u $SRC/imgs/*.png zinjai/imgs/
+    cp -u $SRC/imgs/*.ico zinjai/imgs/
 #    cp -u $SRC/imgs/*.html zinjai/imgs/
 #    zmkdir fuentes/imgs
 #    cp -u $SRC/imgs/*.ico fuentes/imgs/
     zmkdir zinjai/imgs/welcome
-      cp -u $SRC/imgs/welcome/* zinjai/imgs/welcome/
+      cp -ru $SRC/imgs/welcome/* zinjai/imgs/welcome/
     zmkdir zinjai/imgs/dialogs
-      cp -u $SRC/imgs/dialogs/* zinjai/imgs/dialogs/
+      cp -ru $SRC/imgs/dialogs/* zinjai/imgs/dialogs/
     zmkdir zinjai/imgs/trees
-      cp -u $SRC/imgs/trees/* zinjai/imgs/trees/
+      cp -ru $SRC/imgs/trees/* zinjai/imgs/trees/
     zmkdir zinjai/imgs/16
       cp -u $SRC/imgs/16/* zinjai/imgs/16/
     zmkdir zinjai/imgs/24

@@ -3,6 +3,7 @@ echo Updating Files...
 mkdir -p zinjai.app
 mkdir -p zinjai.app/Contents
 mkdir -p zinjai.app/Contents/Resources
+cp -u /mnt/ex/zinjai/zinjai.dir zinjai.app/Contents/Resources/
 cp -u /mnt/ex/zinjai/compiling.txt zinjai.app/Contents/Resources/
 cp -u /mnt/ex/zinjai/readme.txt zinjai.app/Contents/Resources/
 mkdir -p zinjai.app/Contents/Resources/templates
@@ -43,19 +44,21 @@ cp -u /mnt/ex/zinjai/third/gprof2dot/* zinjai.app/Contents/Resources/third/gprof
 mkdir -p zinjai.app/Contents/Resources/imgs
 cp -u /mnt/ex/zinjai/imgs/* zinjai.app/Contents/Resources/imgs/
 mkdir -p zinjai.app/Contents/Resources/imgs/welcome
-cp -u /mnt/ex/zinjai/imgs/welcome/* zinjai.app/Contents/Resources/imgs/welcome/
+cp -ru /mnt/ex/zinjai/imgs/welcome/* zinjai.app/Contents/Resources/imgs/welcome/
 mkdir -p zinjai.app/Contents/Resources/imgs/dialogs
-cp -u /mnt/ex/zinjai/imgs/dialogs/* zinjai.app/Contents/Resources/imgs/dialogs/
+cp -ru /mnt/ex/zinjai/imgs/dialogs/* zinjai.app/Contents/Resources/imgs/dialogs/
 mkdir -p zinjai.app/Contents/Resources/imgs/trees
-cp -u /mnt/ex/zinjai/imgs/trees/* zinjai.app/Contents/Resources/imgs/trees/
+cp -ru /mnt/ex/zinjai/imgs/trees/* zinjai.app/Contents/Resources/imgs/trees/
 cp -u /mnt/ex/zinjai/imgs/descripcion.txt zinjai.app/Contents/Resources/imgs/
 cp -u /mnt/ex/zinjai/imgs/*.ico zinjai.app/Contents/Resources/imgs/
 mkdir -p zinjai.app/Contents/Resources/imgs/16
-cp -u /mnt/ex/zinjai/imgs/16/* zinjai.app/Contents/Resources/imgs/16/
+cp -ru /mnt/ex/zinjai/imgs/16/* zinjai.app/Contents/Resources/imgs/16/
 mkdir -p zinjai.app/Contents/Resources/imgs/24
-cp -u /mnt/ex/zinjai/imgs/24/* zinjai.app/Contents/Resources/imgs/24/
+cp -ru /mnt/ex/zinjai/imgs/24/* zinjai.app/Contents/Resources/imgs/24/
 mkdir -p zinjai.app/Contents/Resources/imgs/32
-cp -u /mnt/ex/zinjai/imgs/32/* zinjai.app/Contents/Resources/imgs/32/
+cp -ru /mnt/ex/zinjai/imgs/32/* zinjai.app/Contents/Resources/imgs/32/
+mkdir -p zinjai.app/Contents/Resources/imgs/48
+cp -ru /mnt/ex/zinjai/imgs/32/* zinjai.app/Contents/Resources/imgs/48/
 
 mkdir -p zinjai.app/Contents/Resources/skins
 cp -ru /mnt/ex/zinjai/skins/* zinjai.app/Contents/Resources/skins/
@@ -79,11 +82,19 @@ export PATH=/opt/mac/bin:/opt/mac/wx/bin:$PATH
 
 VERSION=$(cat zinjai.app/Contents/Resources/src/version.h |grep VERSION|cut -d ' ' -f 3)
 
+rm -f zinjai.app/Contents/MacOS/zinjai
+rm -f zinjai.app/Contents/Resources/bin/img_viewer.bin
+rm -f zinjai.app/Contents/Resources/bin/complement.bin
+rm -f zinjai.app/Contents/Resources/bin/complement_wrap.bin
+rm -f zinjai.app/Contents/Resources/bin/cbrowser
+rm -f zinjai.app/Contents/Resources/bin/runner.bin
+rm -f zinjai.app/Contents/Resources/bin/mac-terminal-wrapper.bin
+rm -f zinjai.app/Contents/Resources/bin/updatem.bin
+make -f Makefile.m32 -C zinjai.app/Contents/Resources/src || exit 1
+make -f Makefile.m32 -C zinjai.app/Contents/Resources/src_extras || exit 1
+make -f Makefile.m32 -C zinjai.app/Contents/Resources/parser || exit 1
+tar -czvf zinjai-m32-$VERSION.tgz zinjai.app
 
-if mount|grep mnt; then sudo umount mnt; fi
-dd if=/dev/zero of=zinjai-ppc-$VERSION.dmg bs=512k count=74
-mkfs.hfsplus -v ZinjaI zinjai-ppc-$VERSION.dmg
-sudo mount -o loop zinjai-ppc-$VERSION.dmg mnt || exit 1
 rm -f zinjai.app/Contents/MacOS/zinjai
 rm -f zinjai.app/Contents/Resources/bin/img_viewer.bin
 rm -f zinjai.app/Contents/Resources/bin/complement.bin
@@ -96,27 +107,7 @@ make -f Makefile.ppc -C zinjai.app/Contents/Resources/src || exit 1
 make -f Makefile.ppc -C zinjai.app/Contents/Resources/src_extras || exit 1
 make -f Makefile.ppc -C zinjai.app/Contents/Resources/parser || exit 1
 echo Creating Package...
-sudo cp -r zinjai.app mnt/ || exit 1
-sudo umount mnt
-
-if mount|grep mnt; then sudo umount mnt; fi
-dd if=/dev/zero of=zinjai-m32-$VERSION.dmg bs=512k count=74
-mkfs.hfsplus -v ZinjaI zinjai-m32-$VERSION.dmg
-sudo mount -o loop zinjai-m32-$VERSION.dmg mnt || exit 1
-rm -f zinjai.app/Contents/MacOS/zinjai
-rm -f zinjai.app/Contents/Resources/bin/img_viewer.bin
-rm -f zinjai.app/Contents/Resources/bin/complement.bin
-rm -f zinjai.app/Contents/Resources/bin/complement_wrap.bin
-rm -f zinjai.app/Contents/Resources/bin/cbrowser
-rm -f zinjai.app/Contents/Resources/bin/runner.bin
-rm -f zinjai.app/Contents/Resources/bin/mac-terminal-wrapper.bin
-rm -f zinjai.app/Contents/Resources/bin/updatem.bin
-make -f Makefile.m32 -C zinjai.app/Contents/Resources/src || exit 1
-make -f Makefile.m32 -C zinjai.app/Contents/Resources/src_extras || exit 1
-make -f Makefile.m32 -C zinjai.app/Contents/Resources/parser || exit 1
-echo Creating Package...
-sudo cp -r zinjai.app mnt/ || exit 1
-sudo umount mnt
+tar -czvf zinjai-ppc-$VERSION.tgz zinjai.app
 
 echo
 echo All done.
