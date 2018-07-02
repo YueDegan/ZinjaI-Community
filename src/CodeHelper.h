@@ -88,6 +88,7 @@ public:
 	wxString UnMacro(wxString name);
 	wxString UnMacro(wxString name,int &dims);
 	void UnTemplate(wxString &var);
+	void UnConst(wxString &type);
 	void AddReservedWords(wxString &typed/*, int max_str_dist=3*/);
 	bool AutocompleteFromArray(mxSource *source, CodeHelperSpecialArray &words, wxString typed);
 	bool AutocompletePreprocesorDirective(mxSource *source, wxString typed="");

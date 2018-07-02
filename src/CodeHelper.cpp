@@ -92,7 +92,7 @@ bool CodeHelper::AutocompleteFromArray(mxSource *source, CodeHelperSpecialArray 
 
 // key es en realidad scope??
 bool CodeHelper::AutocompleteScope(mxSource *source, wxString &key, wxString typed, bool consider_inherit, bool add_reserved_words/*, int max_str_dist*/) {
-	UnTemplate(key);
+	UnTemplate(key); UnConst(key); 
 	if (IsOptionalNamespace(key)) return typed.IsEmpty()?false:AutocompleteGeneral(source,key,typed);
 	unsigned int len=typed.Len();
 	typed.MakeLower();
@@ -1480,3 +1480,8 @@ void CodeHelper::AutocompleteLocals (mxSource * source, wxString typed, int scop
 bool CodeHelper::IsOptionalNamespace (const wxString &opt_namespace) const {
 	return optional_namespaces.Index(opt_namespace)!=wxNOT_FOUND;
 }
+
+void CodeHelper::UnConst(wxString & type) {
+	if (type.StartsWith("const ")) type = type.Mid(6);
+}
+
