@@ -2134,8 +2134,8 @@ wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_te
 			}
 			e--; II_BACK(e,II_IS_NOTHING_4(e));
 		}
-		wxString aux_key = GetTextRange(dims,e+1);
 		int aux_pos = WordStartPosition(e,true);
+		wxString aux_key = GetTextRange(aux_pos,e+1);
 		StcTypeInfo tinfo = FindTypeOfByKey(aux_key,aux_pos,include_template_spec);
 //		wxString type = FindTypeOfByKey(space,dims,include_template_spec);
 		dims-=tinfo.dims;
@@ -2218,18 +2218,19 @@ wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_te
 				if (p_to==wxSTC_INVALID_POSITION) break;
 				int p_begin_of_args_list = p_to;
 					
+				int p_aux = p_from; p_from = p;
 				if (GetStyleAt(p)!=wxSTC_C_WORD || (p>2 && GetTextRange(p-2,p+1)=="for")) { // si estamos en el prototipo de la funcion
-					p=FindText(p_from,p_to,key,wxSTC_FIND_WHOLEWORD|wxSTC_FIND_MATCHCASE);
+//					bool in_for_init = GetStyleAt(p)==wxSTC_C_WORD;
+					p=FindText(p_aux,p_to,key,wxSTC_FIND_WHOLEWORD|wxSTC_FIND_MATCHCASE);
 					if (p!=wxSTC_INVALID_POSITION) { // si es un parametro
 						p_to=p;
 						int template_level=0; // sino se confunde la , de un map<int,int> con el final del argumento
-						while (p_to>p_begin_of_args_list && (!(II_IS_2(p_to,',','(')||(c==':'&&(GetCharAt(p_to-1)!=':'||GetCharAt(p_to+1)!=':')))||template_level)) {
+						while (p_to>p_begin_of_args_list && (!(II_IS_3(p_to,',','(',';')||(c==':'&&(GetCharAt(p_to-1)!=':'||GetCharAt(p_to+1)!=':')))||template_level)) {
 							if (c=='>') template_level++;
 							else if (c=='<') template_level--;
 							p_to--;
 						}
-						p_type=p_to+1;
-						p_ocur=p;
+						if (template_level==0 || c==';') { p_type=p_to+1; p_ocur=p; }
 						// contar las dimensiones (asteriscos)
 						p--;
 						while (II_IS_NOTHING_4(p) || II_SHOULD_IGNORE(p)) {
@@ -2245,8 +2246,9 @@ wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_te
 						}
 						// la 1er cond del if es por si falla la parte templates en el while de arriba 
 						// (cuando estamos en un for, y dice algo como i<v.size(), y buscamos v... el '<'
-						// no es de template...
-						if (p_to>p_begin_of_args_list && p_ocur!=p_type) break;
+						// no es de template... la 2da da false cuando es en un for
+						if (p_to>=p_begin_of_args_list && p_ocur!=p_type) break;
+						else p_ocur = p_type = -1; // si era un for en lugar de una func, hay que resetear
 					}
 					// buscar el scope de la funcion actual
 					p=p_to-1;
@@ -2273,8 +2275,6 @@ wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_te
 							notSpace=false;
 						}
 					}
-				} else {
-					p_from=p;
 				}
 			}
 			
