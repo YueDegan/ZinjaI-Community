@@ -393,7 +393,7 @@ void mxNewWizard::OnProjectCreate() {
 			for(unsigned int i=0;i<virtual_methods.GetCount();i++) 
 				if (virtual_methods[i].StartsWith("public "))
 					h_file.AddLine(wxString("\t")+virtual_methods[i].AfterFirst(' ')
-								   + ( project->active_configuration->std_cpp.Contains("++1") ? " override" : "") + ";");
+								   + ( project->GetCurrentStd()>=2011 ? " override" : "") + ";");
 			
 			bool has_protected = false; 
 			for(unsigned int i=0;i<virtual_methods.GetCount();i++) 

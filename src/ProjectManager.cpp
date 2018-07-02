@@ -3267,14 +3267,14 @@ bool ProjectManager::WxfbUpdateClass(wxString wxfb_class, wxString user_class) {
 			.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
 		return false;
 	}
-	wxTextFile fil(pdc_son->file->name);
-	fil.Open();
+	wxTextFile fheader(pdc_son->file->name);
+	fheader.Open();
 	bool add_visibility=false;
-	int lines=fil.GetLineCount(),curpos=pdc_son->line,inspos=-1, pubpos=-1; // linea en la cual agregar los metodos
+	int lines=fheader.GetLineCount(),curpos=pdc_son->line,inspos=-1, pubpos=-1; // linea en la cual agregar los metodos
 	wxString str;
 	wxString tabs_pro, tabs_pub;
 	while (curpos<lines) {
-		str = fil.GetLine(curpos);
+		str = fheader.GetLine(curpos);
 		int i=0; while (str[i]==' '||str[i]=='\t') i++;
 		if (str.Len()-i>=10 && str.Mid(i,10)=="protected:") {
 			inspos=curpos;
@@ -3299,8 +3299,8 @@ bool ProjectManager::WxfbUpdateClass(wxString wxfb_class, wxString user_class) {
 		add_visibility=true;
 	} else inspos++; // linea siguiente a "protected:"
 	if (add_visibility) {
-		fil.InsertLine(tabs_pro+"protected:",inspos++);
-		fil.InsertLine(tabs_pro,inspos);
+		fheader.InsertLine(tabs_pro+"protected:",inspos++);
+		fheader.InsertLine(tabs_pro,inspos);
 	}
 	
 	tabs_pro+="\t";
@@ -3311,10 +3311,10 @@ bool ProjectManager::WxfbUpdateClass(wxString wxfb_class, wxString user_class) {
 	
 	bool modified=false;
 	
-	wxTextFile fil2(cfile);
-	fil2.Open();
-	if (fil2.GetLastLine().Len())
-		fil2.AddLine("");
+	wxTextFile fsource(cfile);
+	fsource.Open();
+	if (fsource.GetLastLine().Len())
+		fsource.AddLine("");
 	
 	for (unsigned int i=0;i<methods.GetCount();i++) {
 		wxString mname = methods[i].BeforeFirst('(');
@@ -3325,20 +3325,20 @@ bool ProjectManager::WxfbUpdateClass(wxString wxfb_class, wxString user_class) {
 		ML_ITERATE(pdm_son)	if (pdm_son->name==mname) { found=true; break; }
 		if (!found) {
 			modified=true;
-			fil.InsertLine(tabs_pro+methods[i]+";",inspos++);
-			fil2.AddLine(methods[i].BeforeFirst(' ')+" "+user_class+"::"+methods[i].AfterFirst(' ')+" {");
-			fil2.AddLine("\tevent.Skip();");
-			fil2.AddLine("}");
-			fil2.AddLine("");
+			fheader.InsertLine(tabs_pro+methods[i]+(GetCurrentStd()>=2011?" override;":";"),inspos++);
+			fsource.AddLine(methods[i].BeforeFirst(' ')+" "+user_class+"::"+methods[i].AfterFirst(' ')+" {");
+			fsource.AddLine("\tevent.Skip();");
+			fsource.AddLine("}");
+			fsource.AddLine("");
 		}
 	}
 	
 	if (modified) {
-		fil.Write();
-		fil.Close();
+		fheader.Write();
+		fheader.Close();
 		
-		fil2.Write();
-		fil2.Close();
+		fsource.Write();
+		fsource.Close();
 		
 		mxSource *src_h=main_window->IsOpen(pdc_son->file->name);
 		mxSource *src_c=main_window->IsOpen(cfile);
@@ -3355,8 +3355,8 @@ bool ProjectManager::WxfbUpdateClass(wxString wxfb_class, wxString user_class) {
 			parser->ParseFile(cfile);
 		}
 	} else {
-		fil.Close();
-		fil2.Close();
+		fheader.Close();
+		fsource.Close();
 	}
 	
 	return true;
@@ -3598,7 +3598,7 @@ bool ProjectManager::WxfbNewClass(wxString base_name, wxString name) {
 	h_file.AddLine("\t");
 	h_file.AddLine("protected:");
 	for (unsigned int i=0;i<methods.GetCount();i++)
-		h_file.AddLine(wxString("\t")<<methods[i]+";");
+		h_file.AddLine(wxString("\t")<<methods[i]+(GetCurrentStd()>=2011?" override;":";"));
 	h_file.AddLine("\t");
 	h_file.AddLine("public:");
 	h_file.AddLine(wxString("\t")+name+"(wxWindow *parent=NULL);");
@@ -3710,5 +3710,27 @@ wxString project_file_item::GetBinName (const wxString & temp_dir) const {
 	ret.Replace("${SRC_DIR}",mxFilename::GetPath(m_relative_path,true));
 	ret.Replace("${SRC_FNAME}",mxFilename::GetFileName(m_relative_path,false));
 	return ret;
+}
+
+int ProjectManager::GetCurrentStd (bool cpp) const {
+	if (cpp) {
+		if (active_configuration->std_cpp.Contains("98")) return 1998;
+		if (active_configuration->std_cpp.Contains("03")) return 2003;
+		if (active_configuration->std_cpp.Contains("0x")) return 2011;
+		if (active_configuration->std_cpp.Contains("1x")) return 2011;
+		if (active_configuration->std_cpp.Contains("11")) return 2011;
+		if (active_configuration->std_cpp.Contains("1y")) return 2014;
+		if (active_configuration->std_cpp.Contains("14")) return 2014;
+		if (active_configuration->std_cpp.Contains("1z")) return 2017;
+		if (active_configuration->std_cpp.Contains("17")) return 2017;
+		if (active_configuration->std_cpp.Contains("2a")) return 2020;
+		if (active_configuration->std_cpp.Contains("20")) return 2020;
+		return 1998; // safe default
+	} else {
+		if (active_configuration->std_c.Contains("90")) return 1990;
+		if (active_configuration->std_c.Contains("99")) return 1999;
+		if (active_configuration->std_c.Contains("11")) return 2011;
+		return 1999; // safe default
+	}
 }
 

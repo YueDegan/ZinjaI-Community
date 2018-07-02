@@ -748,6 +748,9 @@ public:
 	
 	/// @brief Defines with project_configuration is the active one and inform main window to adecuate gui
 	void SetActiveConfiguration(project_configuration *aconf);
+	
+	/// @brief Returns the year of the standard version defined for the currently selected profile (as 1999, 2011, 2014, etc)
+	int GetCurrentStd(bool cpp=true) const;
 
 };
 
