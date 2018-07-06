@@ -1,11 +1,11 @@
-#include "Toolchain.h"
-#include "mxUtils.h"
+#include <iostream>
 #include <wx/arrstr.h>
 #include <wx/textfile.h>
+#include <wx/msgdlg.h>
 #include "ConfigManager.h"
 #include "ProjectManager.h"
-#include <wx/msgdlg.h>
-#include <iostream>
+#include "Toolchain.h"
+#include "mxUtils.h"
 #include "ZLog.h"
 using namespace std;
 
@@ -255,12 +255,18 @@ bool Toolchain::CheckVersion(bool cpp, int _v, int _s) {
 }
 
 wxString Toolchain::FixArgument (bool cpp, wxString arg) {
-	if (type!=TC_GCC) return arg;
-	if (arg=="-Og" && !CheckVersion(cpp,4,8)) return "-O0";
-	if (arg=="-std=c++11" && !CheckVersion(cpp,4,7)) return "-std=c++0x";
-	if (arg=="-std=gnu++11" && !CheckVersion(cpp,4,7)) return "-std=gnu++0x";
-	if (arg=="-std=c++14" && !CheckVersion(cpp,4,9)) return "-std=c++1y";
-	if (arg=="-std=gnu++14" && !CheckVersion(cpp,4,9)) return "-std=gnu++1y";
+	if (type==TC_GCC) {
+		if (arg=="-Og" && !CheckVersion(cpp,4,8)) return "-O0";
+		if (arg=="-std=c++11" && !CheckVersion(cpp,4,7)) return "-std=c++0x";
+		if (arg=="-std=gnu++11" && !CheckVersion(cpp,4,7)) return "-std=gnu++0x";
+		if (arg=="-std=c++14" && !CheckVersion(cpp,4,9)) return "-std=c++1y";
+		if (arg=="-std=gnu++14" && !CheckVersion(cpp,4,9)) return "-std=gnu++1y";
+	} else if (type==TC_CLANG) {
+		if (arg=="-std=c++14" && !CheckVersion(cpp,3,4)) return "-std=c++1y";
+		if (arg=="-std=gnu++14" && !CheckVersion(cpp,3,4)) return "-std=gnu++1y";
+		if (arg=="-std=c++17" && !CheckVersion(cpp,5,0)) return "-std=c++1z";
+		if (arg=="-std=gnu++17" && !CheckVersion(cpp,5,0)) return "-std=gnu++1z";
+	}
 	return arg;
 }
 
