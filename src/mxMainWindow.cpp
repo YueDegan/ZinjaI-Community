@@ -3585,11 +3585,11 @@ void mxMainWindow::SetExplorerPath(wxString path) {
 //	explorer_tree.treeCtrl->DeleteChildren(explorer_tree.root);
 	explorer_tree.treeCtrl->DeleteAllItems();
 	explorer_tree.root = explorer_tree.treeCtrl->AddRoot("Archivos Abiertos", 0);
-	if (!wxFileName(path).DirExists()) { // corregir si no existe
-		wxFileName fn(path);
-		while (fn.GetDirCount()>0 && !fn.DirExists()) fn.RemoveLastDir();
+	{ // fix dir if it doesn't exists
+		wxFileName fn(DIR_PLUS_FILE(path,"."));
+		while (fn.GetDirCount()>0 && !fn.DirExists()) fn.RemoveLastDir(); 
 		if (fn.GetDirCount()==0) fn = (project?project->path:wxFileName::GetHomeDir());
-		path=fn.GetFullPath();
+		path = fn.GetPath();
 	}
 	explorer_tree.treeCtrl->SetItemText(explorer_tree.root,path);
 	explorer_tree.path = path;
@@ -3597,20 +3597,16 @@ void mxMainWindow::SetExplorerPath(wxString path) {
 	if ( dir.IsOpened() ) {
 		wxString filename;
 		wxString spec;
-		bool cont = dir.GetFirst(&filename, spec , wxDIR_DIRS);
 		wxArrayString as;
-		while ( cont ) {
+		for( bool cont = dir.GetFirst(&filename, spec , wxDIR_DIRS); cont ; cont = dir.GetNext(&filename) ) {
 			as.Add(filename);
-			cont = dir.GetNext(&filename);
 		}	
 		as.Sort();
 		for (unsigned int i=0;i<as.GetCount();i++)
 			explorer_tree.treeCtrl->AppendItem(explorer_tree.root,as[i],0);
 		as.Clear();
-		cont = dir.GetFirst(&filename, spec , wxDIR_FILES);
-		while ( cont ) {
+		for (bool cont = dir.GetFirst(&filename, spec , wxDIR_FILES); cont; cont = dir.GetNext(&filename)) {
 			as.Add(filename);
-			cont = dir.GetNext(&filename);
 		}
 		as.Sort();
 		for (unsigned int i=0;i<as.GetCount();i++) {
@@ -3632,20 +3628,19 @@ void mxMainWindow::SetExplorerPath(wxString path) {
 
 void mxMainWindow::OnSelectExplorerItem (wxTreeEvent &event) {
 	explorer_tree.selected_item = event.GetItem();
-	
 	if (explorer_tree.selected_item==explorer_tree.root) {
-		
 		wxDirDialog dlg(this,"Seleccione la ubicación:",explorer_tree.path);
 		if (wxID_OK==dlg.ShowModal()) {
 			SetExplorerPath(dlg.GetPath());
 			config->Files.last_dir = dlg.GetPath();
 		}
-		
 	} else {
-		
-		wxCommandEvent evt;
-		OnExplorerTreeOpenOneZinjaI(evt);
-		
+		if (explorer_tree.treeCtrl->GetChildrenCount(explorer_tree.selected_item)) {
+			SetExplorerPath(GetExplorerItemPath(explorer_tree.selected_item));
+		} else {
+			wxCommandEvent evt;
+			OnExplorerTreeOpenOneZinjaI(evt);
+		}
 	}
 	
 }
@@ -3717,7 +3712,6 @@ void mxMainWindow::OnExplorerTreePathUp(wxCommandEvent &evy) {
 }
 
 void mxMainWindow::OnExplorerTreeOpenOneZinjaI(wxCommandEvent &evt) {
-	
 	
 	wxString path = GetExplorerItemPath(explorer_tree.selected_item);
 	if (explorer_tree.treeCtrl->GetItemImage(explorer_tree.selected_item)) {
