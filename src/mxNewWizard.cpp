@@ -365,8 +365,7 @@ void mxNewWizard::OnProjectCreate() {
 				wxString aux = onproject_inherit_class[i]->GetValue();
 				if (aux.Len()) {
 					aux = g_code_helper->GetIncludeForClass(folder,aux);
-					if (aux.Len())
-						h_file.AddLine(aux);
+					if (aux.Len()) h_file.AddLine(wxString("#include ") + aux);
 				}
 			}
 			h_file.AddLine("");

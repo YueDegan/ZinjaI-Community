@@ -1,15 +1,14 @@
+#include <map>
+#include <wx/ffile.h>
+#include <wx/textfile.h>
+#include <wx/choicdlg.h>
 #include "CodeHelper.h"
 #include "mxSource.h"
 #include "mxUtils.h"
-#include <wx/string.h>
-#include <wx/textfile.h>
 #include "Parser.h"
 #include "parserData.h"
-#include <wx/ffile.h>
 #include "ProjectManager.h"
 #include "Autocoder.h"
-#include <map>
-#include <wx/choicdlg.h>
 #include "mxMainWindow.h"
 #include "mxMessageDialog.h"
 #include "mxCalltip.h"
@@ -946,98 +945,75 @@ bool CodeHelper::LoadData(wxString index) {
 	return true;
 }
 
+static wxString simplify_include(wxString path, wxString fname) {
+	wxFileName fn(fname); fn.MakeRelativeTo(path);
+	if (project) {
+		wxArrayString header_dirs_array;
+		mxUT::Split(project->active_configuration->headers_dirs,header_dirs_array,true,false);
+		for(unsigned int i=0;i<header_dirs_array.GetCount();i++) { 
+			wxFileName fn2(fname);
+			fn2.MakeRelativeTo( DIR_PLUS_FILE(project->GetPath(),header_dirs_array[i]) );
+			wxString aux = fn2.GetFullPath();
+			if (fn2.GetFullPath().Len()<fn.GetFullPath().Len()) fn = fn2;
+		}
+	}
+	return wxString(_T("\""))+fn.GetFullPath()+"\"";	
+}
+
 wxString CodeHelper::GetInclude(wxString path, wxString key, wxString *namespace_placeholder) {
-	pd_class *aux_class = parser->first_class->next;
-	while (aux_class) {
+	for(pd_class *aux_class = parser->first_class->next; aux_class; aux_class = aux_class->next) {
 		if (aux_class->name==key) {
 			if (!aux_class->prev) {
 				if (namespace_placeholder) (*namespace_placeholder)=aux_class->file->opt_namespace;
 				return aux_class->file->name;
 			}
 			else if (aux_class->file) {
-				wxFileName fn(aux_class->file->name);
-				if (project) {
-					wxArrayString header_dirs_array;
-					mxUT::Split(project->active_configuration->headers_dirs,header_dirs_array,true,false);
-					unsigned int i;
-					for (i=0;i<header_dirs_array.GetCount();i++) {
-						if (wxFileName(DIR_PLUS_FILE_2(project->path,header_dirs_array[i],fn.GetFullName()))==fn)
-							return wxString("\"")+fn.GetFullName()+"\"";
-					}
-				}
-				if (path.Len())
-					fn.MakeRelativeTo(path);
-				return wxString("\"")+fn.GetFullPath()+"\"";
+				return simplify_include(path,aux_class->file->name);
 			}
 		}
-		aux_class = aux_class->next;
 	}
-	pd_func *aux_func = parser->first_function->next;
-	while (aux_func) {
+	for (pd_func *aux_func = parser->first_function->next; aux_func; aux_func = aux_func->next) {
 		if (aux_func->name==key) {
 			if (!aux_func->prev) {
 				if (namespace_placeholder) (*namespace_placeholder)=aux_func->file_dec->opt_namespace;
 				return aux_func->file_dec->name;
 			} else if (aux_func->file_dec) {
-				wxFileName fn(aux_func->file_dec->name);
-				if (path.Len())
-					fn.MakeRelativeTo(path);
-				return wxString("\"")+fn.GetFullPath()+"\"";
+				return simplify_include(path,aux_func->file_dec->name);
 			} else if (aux_func->file_def) {
-				wxFileName fn(aux_func->file_def->name);
-				if (path.Len())
-					fn.MakeRelativeTo(path);
-				return wxString("\"")+fn.GetFullPath()+"\"";
+				return simplify_include(path,aux_func->file_def->name);
 			}
 		}
-		aux_func = aux_func->next;
 	}
-	pd_var *aux_var = parser->first_global->next;
-	while (aux_var) {
+	for(pd_var *aux_var = parser->first_global->next; aux_var; aux_var = aux_var->next) {
 		if (aux_var->name==key) {
 			if (!aux_var->prev) {
 				if (namespace_placeholder) (*namespace_placeholder)=aux_var->file->opt_namespace;
 				return aux_var->file->name;
 			} else {
-				wxFileName fn(aux_var->file->name);
-				if (path.Len())
-					fn.MakeRelativeTo(path);
-				return wxString("\"")+fn.GetFullPath()+"\"";
+				return simplify_include(path,aux_var->file->name);
 			}
 		}
-		aux_var = aux_var->next;
 	}
-	pd_macro *aux_macro = parser->first_macro->next;
-	while (aux_macro) {
+	for(pd_macro *aux_macro = parser->first_macro->next; aux_macro; aux_macro = aux_macro->next) {
 		if (aux_macro->name==key) {
 			if (!aux_macro->prev) {
 				return aux_macro->file->name;
 			} else {
-				wxFileName fn(aux_macro->file->name);
-				if (path.Len())
-					fn.MakeRelativeTo(path);
-				return wxString("\"")+fn.GetFullPath()+"\"";
+				return simplify_include(path,aux_macro->file->name);
 			}
 		}
-		aux_macro = aux_macro->next;
 	}
 	return "";
 }
 
 wxString CodeHelper::GetIncludeForClass(wxString path, wxString key) {
-	pd_class *aux_class = parser->first_class->next;
-	while (aux_class) {
+	for(pd_class *aux_class = parser->first_class->next; aux_class; aux_class = aux_class->next) {
 		if (aux_class->name==key) {
 			if (!aux_class->prev)
-				return wxString(_T("#include "))+aux_class->file->name;
-			else if (aux_class->file) {
-				wxFileName fn(aux_class->file->name);
-				if (path.Len())
-					fn.MakeRelativeTo(path);
-				return wxString(_T("#include \""))+fn.GetFullPath()+"\"";
-			}
+				return aux_class->file->name;
+			else if (aux_class->file)
+				return simplify_include(path,aux_class->file->name);
 		}
-		aux_class = aux_class->next;
 	}
 	return "";
 }
@@ -1381,7 +1357,7 @@ void CodeHelper::TryToSuggestTemplateSolutionForLinkingErrors (const wxArrayStri
 		if (ans.check1) dont_check=false;
 		return;
 	}
-	wxString cual=wxGetSingleChoice("Seleccione una plantilla","Parametros extra para el compilador",vals,main_window);
+	wxString cual = wxGetSingleChoice("Seleccione una plantilla","Parametros extra para el compilador",vals,main_window);
 	if (cual.Len()==0) return;
 	source->SetCompilerOptions(candidatos[cual]);
 	wxCommandEvent evt;
