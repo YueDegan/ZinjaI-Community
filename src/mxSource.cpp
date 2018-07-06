@@ -2156,7 +2156,7 @@ wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_te
 			return type;
 		} else {// fin codigo nuevo, empieza codigo viejo, si no funca que siga como antes (todo: analizar si vale la pena o si con el nuevo ya reemplaza todo)
 			int aux_pos = WordStartPosition(e,true);
-			wxString aux_key = GetTextRange(dims,e+1);
+			wxString aux_key = GetTextRange(aux_pos,e+1);
 			StcTypeInfo tinfo = FindTypeOfByKey(aux_key,aux_pos,include_template_spec);
 			if (tinfo.dims==1) {
 				pos=-1;
