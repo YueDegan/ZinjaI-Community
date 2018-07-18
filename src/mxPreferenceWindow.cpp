@@ -357,6 +357,9 @@ wxPanel *mxPreferenceWindow::CreateDebugPanel2 (wxNotebook *notebook) {
 		.Bind(m_binder,config->Debug.no_debug_heap).EndCheck();
 #endif
 	
+	sizer.BeginCheck( LANG(PREFERENCES_DEBUG_VALIDATE_BREAKPOINT_ADDRESS,"Validar dirección antes de colocar un punto de interrupción") )
+		.Bind(m_binder,config->Debug.validate_breakpoint_address).EndCheck();
+	
 	sizer.SetAndFit();
 	return sizer.GetPanel();
 }

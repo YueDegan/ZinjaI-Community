@@ -216,6 +216,7 @@ bool ConfigManager::Load() {
 				else if (p.Key()=="always_debug") Debug.always_debug = p.AsBool();
 //				else if (p.Key()=="close_on_normal_exit") Debug.close_on_normal_exit = p.AsBool();
 				else if (p.Key()=="show_do_that") Debug.show_do_that = p.AsBool();
+				else if (p.Key()=="validate_breakpoint_address") Debug.validate_breakpoint_address = p.AsBool();
 				else if (p.Key()=="catch_throw") Debug.catch_throw = p.AsBool();
 				else if (p.Key()=="auto_solibs") Debug.auto_solibs = p.AsBool();
 				else if (p.Key()=="readnow") Debug.readnow = p.AsBool();
@@ -580,6 +581,7 @@ bool ConfigManager::Save(){
 		CFG_GENERIC_WRITE_DN("blacklist",Debug.blacklist[i]);
 	CFG_GENERIC_WRITE_DN("macros_file",Debug.macros_file);
 	CFG_BOOL_WRITE_DN("show_do_that",Debug.show_do_that);
+	CFG_BOOL_WRITE_DN("validate_breakpoint_address",Debug.validate_breakpoint_address);
 	CFG_BOOL_WRITE_DN("show_thread_panel",Debug.show_thread_panel);
 	CFG_BOOL_WRITE_DN("show_log_panel",Debug.show_log_panel);
 	CFG_BOOL_WRITE_DN("inspections_on_right",Debug.inspections_on_right);
@@ -877,6 +879,7 @@ void ConfigManager::LoadDefaults(){
 	Debug.auto_solibs = false;
 	Debug.readnow = false;
 	Debug.show_do_that = false;
+	Debug.validate_breakpoint_address = true;
 	Debug.return_focus_on_continue = true;
 	Debug.improve_inspections_by_type = true;
 #ifdef __linux__

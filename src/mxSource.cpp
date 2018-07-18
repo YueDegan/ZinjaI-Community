@@ -681,7 +681,7 @@ void mxSource::OnMarginClick (wxStyledTextEvent &event) {
 		
 		// si hay que poner un breakpoint nuevo
 		} else { 
-			if (IsEmptyLine(l)) { // no dejar poner un pto de interrupción en una línea que no tiene código
+			if (config->Debug.validate_breakpoint_address && IsEmptyLine(l)) { 
 				mxMessageDialog(main_window,LANG(DEBUG_NO_BREAKPOINT_ON_EMPTY_LINE,""
 												 "Los puntos de interrupcion no pueden colocarse en lineas vacias\n"
 												 " que contengan solo comentarios o directivas de preprocesador"))

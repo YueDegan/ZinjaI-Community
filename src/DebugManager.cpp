@@ -693,7 +693,11 @@ int DebugManager::LiveSetBreakPoint(BreakPointInfo *_bpi) {
 int DebugManager::SetBreakPoint(BreakPointInfo *_bpi, bool quiet) {
 	if (waiting || !debugging) return 0;
 	wxString adr = GetAddress(_bpi->fname,_bpi->line_number);
-	if (!adr.Len()) { _bpi->SetStatus(BPS_ERROR_SETTING); if (!quiet) ShowBreakPointLocationErrorMessage(_bpi); return -1;  }
+	if (config->Debug.validate_breakpoint_address && !adr.Len()) { 
+		_bpi->SetStatus(BPS_ERROR_SETTING); 
+		if (!quiet) ShowBreakPointLocationErrorMessage(_bpi); 
+		return -1;  
+	}
 	wxString ans = SendCommand(wxString("-break-insert \"\\\"")<<_bpi->fname<<":"<<_bpi->line_number+1<<"\\\"\"").result;
 	wxString num = GetSubValueFromAns(ans,"bkpt","number",true);
 	if (!num.Len()) { // a veces hay que poner dos barras (//) antes del nombre del archivo en vez de una (en los .h? ¿por que?)
@@ -1646,48 +1650,6 @@ void DebugManager::LiveSetBreakPointEnable(BreakPointInfo *_bpi) {
 		SetBreakPointEnable(_bpi);
 	}
 }
-
-// //**
-//* @brief find a BreakPointInfo that matches a gdb_id or zinjai_id
-//*
-//* If use_gdb finds a breakpoint that matches gdb_id, else 
-//* finds a breakpoint that matches zinjai_id. If there's no match
-//* returns nullptr.
-//*
-//* This method searchs first in opened files (main_window->notebook_sources)
-//* starting by the current source, then searchs in project's files if there
-//* is a project.
-//**/
-//BreakPointInfo *DebugManager::FindBreakInfoFromNumber(int _id, bool use_gdb_id) {
-//	int sc = main_window->notebook_sources->GetPageCount();
-//	if (sc) {
-//		// buscar primero en el fuente acutal (siempre deberia estar ahi)
-//		mxSource *source = (mxSource*)(main_window->notebook_sources->GetPage(main_window->notebook_sources->GetSelection()));
-//		BreakPointInfo *bpi= *source->breaklist;
-//		while (bpi && ((use_gdb_id&&bpi->gdb_id!=_id)||(!use_gdb_id&&bpi->zinjai_id!=_id))) bpi=bpi->Next();
-//		if (bpi) return bpi;
-//		// si no lo encontro buscar en el resto de los fuentes abiertos
-//		for (int i=0;i<sc;i++) {
-//			source = (mxSource*)(main_window->notebook_sources->GetPage(i));
-//			bpi = *source->breaklist;
-//			while (bpi && bpi->gdb_id!=_id) bpi=bpi->Next();
-//			if (bpi) return bpi;
-//		}
-//	}
-//	if (project) {
-//		for(int i=0;i<2;i++) { 
-//			file_item *file =i==0?project->first_source:project->first_header;
-//			ML_ITERATE(file) {
-//				BreakPointInfo *bpi = file->breaklist;
-//				while (bpi && bpi->gdb_id!=_id)
-//					bpi = bpi->Next();
-//				if (bpi) return bpi;
-//				file = file->next;
-//			}
-//		}
-//	}
-//	return nullptr;
-// }
 
 int DebugManager::GetBreakHitCount(int num) {
 	long l=0;
