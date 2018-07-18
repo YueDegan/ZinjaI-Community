@@ -7,7 +7,8 @@
 !define PRODUCT_WEB_SITE "http://zinjai.sourceforge.net"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\ZinjaI"
 
-SetCompressor lzma
+SetCompressor /SOLID lzma
+SetCompressorDictSize 32
 
 ; MUI 1.67 compatible ------
 !include "MUI.nsh"

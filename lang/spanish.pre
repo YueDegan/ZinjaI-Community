@@ -273,7 +273,7 @@ MENUITEM_EDIT_UNDO
 MENUITEM_EDIT_REDO
 &Rehacer
 MENUITEM_EDIT_UNDO_HISTORY
-Historial de cambios
+Historial de cambios...
 MENUITEM_EDIT_CUT
 C&ortar
 MENUITEM_EDIT_COPY
@@ -2566,6 +2566,8 @@ PREFERENCES_DEBUG_BLACKLIST_BUTTON
 Configurar...
 PREFERENCES_DEBUG_NO_DEBUG_HEAP
 Deshabilitar heap especial de widondows para deburación
+PREFERENCES_DEBUG_VALIDATE_BREAKPOINT_ADDRESS
+Validar dirección antes de colocar un punto de interrupción
 PREFERENCES_TOOLBARS_WICH
 Barra de herramientas a utilizar:
 PREFERENCES_TOOLBARS_DOCK_TOP
@@ -3109,7 +3111,7 @@ Hay Cambios sin guardar, desea recargar igualmente la version del disco?
 MAINW_PRESS_ESC_TO_FINISH_RECT_EDIT
 Presione ESC o mueva el cursor de texto a otra linea para volver al modo de edición normal.
 TEMPLATECOMB_CAPTION
-Combine templates
+Combinar Plantillas
 TEMPLATECOMB_ACTION
 Acción
 TEMPLATECOMB_ERROR
