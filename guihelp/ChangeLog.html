@@ -6,11 +6,15 @@
 <!--<I>Note 1: A more detailed and English changelog can be found in the <A href="http://sourceforge.net/p/zinjai/code/ci/master/log/?path=" target="_blank">git repository's history</A>.</I><BR><BR>
 <I>Nota 2: Nuevo código para categorizar los cambios: New=nueva funcionalidad, Imp=mejora sobre una funcionalidad existente, Fix=corrección de un bug</I><BR><UL>-->
 
+</UL><BR><B>Release 201808xx</B><BR><UL>
+	<LI>Imp: Si están deshabilitadas las inspecciones de variables al colocar el mouse sobre las mismas, se puede mantener presionada la tecla shift para habilitarlas temporalmente.</LI>
+
+
 </UL><BR><B>Release 20180718</B><BR><UL>
 	<LI>Imp: Al insertar un #include automáticamente, se tienen en cuenta los directorios adicionales de cabeceras del proyecto para simplificar la ruta.</LI>
 	<LI>Imp: Se puede definir una nueva raíz en el panel del explorador con doble enter o doble click en una subcarpeta del mismo.</LI>
-	<LI>Imp: Evitar el mensaje de error de wx si se intenta inicializar el panel del explorador en una runta que ya no existe.</LI>
-	<LI>Imp: Corregir las versiones del estándar de c++ en el arguemnto de compilación para clang si se configura una demasiado reciente para la versión de clang detectada.</LI>
+	<LI>Imp: Corrección para evitar el mensaje de error de wx si se intenta inicializar el panel del explorador en una runta que ya no existe.</LI>
+	<LI>Imp: Se corrigen automáticamente las versiones del estándar de c++ en el argumento de compilación para clang si se configura una versión demasiado reciente para la versión de clang detectada (ej: cambiar c++17 por c++1y).</LI>
 	<LI>Imp: Nueva opción en las preferencias para omitir la validación de ubicaciones al colocar puntos de interrupción.</LI>
 	<LI>Fix: Varias correcciones a bugs de la última release en la detección de tipos para el autocompletado.</LI>
 	

@@ -2843,7 +2843,7 @@ void mxSource::OnToolTipTime (wxStyledTextEvent &event) {
 	} else 
 	// si se esta depurando, evaluar la inspeccion	
 	if (debug->IsPaused()) {
-		if (!config->Debug.inspect_on_mouse_over) return;
+		if (!config->Debug.inspect_on_mouse_over && !wxGetKeyState(WXK_SHIFT)) return;
 		int e = GetSelectionEnd();
 		int s = GetSelectionStart();
 		if (e==s || p<s || p>e) {
@@ -3544,7 +3544,7 @@ void mxSource::OnKeyDown(wxKeyEvent &evt) {
 			}
 		}
 	}
-	if (evt.GetKeyCode()==WXK_ESCAPE) {
+	if (key_code==WXK_ESCAPE) {
 		if (multi_sel) multi_sel.End(this);
 		if (calltip_mode!=MXS_NULL) {
 			HideCalltip();
@@ -3552,9 +3552,9 @@ void mxSource::OnKeyDown(wxKeyEvent &evt) {
 			wxCommandEvent evt;
 			main_window->OnEscapePressed(evt);
 		}
-	} else if (config_source.autotextEnabled && evt.GetKeyCode()==WXK_TAB && ApplyAutotext()){
+	} else if (config_source.autotextEnabled && key_code==WXK_TAB && ApplyAutotext()){
 		return;
-	} else if (evt.GetKeyCode()==WXK_RETURN && multi_sel && multi_sel.ProcessEnter()) {
+	} else if (key_code==WXK_RETURN && multi_sel && multi_sel.ProcessEnter()) {
 			multi_sel.End(this); return;
 	} else {
 		evt.Skip();
