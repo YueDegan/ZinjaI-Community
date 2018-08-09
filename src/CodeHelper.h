@@ -1,17 +1,14 @@
 #ifndef CODE_HELPER_H
 #define CODE_HELPER_H 
 
+#include <iostream>
 #include <wx/string.h>
 #include <wx/arrstr.h>
+#include "Cpp11.h"
 
-//#define CODE_HELP_MAP(c) (c>='a' && c<='z')?c-'a':((c>='A' && c<='Z')?c-'A':26)
 
 class mxSource;
 class GenericAction;
-
-#include <iostream>
-#include "Cpp11.h"
-using namespace std;
 
 
 class MyAutocompList {

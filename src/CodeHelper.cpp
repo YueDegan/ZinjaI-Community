@@ -488,12 +488,13 @@ bool CodeHelper::AutocompleteGeneral(mxSource *source, wxString scope, wxString 
 }
 
 bool CodeHelper::AutocompleteAutocode(mxSource *source, wxString typed/*, int max_str_dist*/) {
-	g_autocomp_list.Init(); int t=0, len=typed.Len();
+	g_autocomp_list.Init(); int len=typed.Len();
 	HashStringAutoCode::iterator it = Autocoder::GetInstance()->m_list.begin();
 	while (it!=Autocoder::GetInstance()->m_list.end()) {
-//		wxString &aux=it->first;
-//		int CH_COMPARE(typed,aux,i,l,max_str_dist);
-		if (ShouldAddToAutocomp(typed,len,it->first)) { ++t; g_autocomp_list.Add(it->first,"",""); }
+		if (ShouldAddToAutocomp(typed,len,it->first)) {
+			wxString desc = it->second.description.IsEmpty() ? it->second.code : it->second.description;
+			g_autocomp_list.Add(it->first,"",desc); 
+		}
 		++it;
 	}
 	
@@ -1108,8 +1109,7 @@ bool CodeHelper::GenerateAutocompletionIndex(wxString path, wxString filename) {
 	wxString autocomp_dir = DIR_PLUS_FILE(config->config_dir,"autocomp");
 	if (!wxFileName::DirExists(autocomp_dir)) wxFileName::Mkdir(autocomp_dir);
 	wxFFile idx(DIR_PLUS_FILE(autocomp_dir,filename),_T("w+"));
-	if (!idx.IsOpened()) 
-		return false;
+	if (!idx.IsOpened()) return false;
 	
 	pd_file *fil = parser->last_file->next;
 	while (fil) {
