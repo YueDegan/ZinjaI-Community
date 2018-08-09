@@ -29,8 +29,8 @@ using namespace std;
 
 
 const char *lang_debug_finished[] = {
-	"<< La depuracion ha finalizado >>",
-	"<< Debugging session has finished >>"
+	"<< La depuracion ha finalizado: código de salida: ",
+	"<< Debugging session has finished: exit code: "
 };
 
 const char *lang_program_finished[] = {
@@ -60,19 +60,6 @@ const char *lang_error_creating_process[] = {
 
 int lang_idx=0;
 
-// void on_quit(int sig) {
-// 	cerr<<endl<<endl<<lang_debug_finished[lang_idx]<<endl<<lang_press_key_to_close[lang_idx];
-// 	cout<<"\033[?25l"<<flush;
-// 	struct termios oldt,newt;
-// 	tcgetattr( STDIN_FILENO, &oldt );
-// 	newt = oldt;
-// 	newt.c_lflag &= ~( ICANON | ECHO );
-// 	tcsetattr( STDIN_FILENO, TCSANOW, &newt );
-// 	char buf[256];
-// 	read(STDIN_FILENO,buf,255);
-// 	tcsetattr( STDIN_FILENO, TCSANOW, &oldt );
-// 	exit(0);
-// }
 
 #if defined(_WIN32) || defined(__WIN32__)
 #else
@@ -132,7 +119,7 @@ int main(int argc, char *argv[]) {
 			enable_core_dump();
 #endif
 		} else if (strcmp(argv[i],"-debug-end")==0) {
-			cerr<<endl<<endl<<lang_debug_finished[lang_idx];
+			cerr<<endl<<endl<<lang_debug_finished[lang_idx]<<argv[++i]<<" >>";
 #ifndef __APPLE__
 			cerr<<endl<<lang_press_key_to_close[lang_idx];
 			do_waitkey();

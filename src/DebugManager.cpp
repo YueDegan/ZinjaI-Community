@@ -432,7 +432,7 @@ bool DebugManager::LoadCoreDump(wxString core_file, mxSource *source) {
 	return false;
 }
 
-bool DebugManager::Stop(bool waitkey) {
+bool DebugManager::Stop(bool waitkey, wxString exit_code) {
 #ifndef __WIN32__
 	if (status==DBGST_WAITINGKEY) {
 		ZLINF2("DebugManager","Stop, Enviando SIGKILL a tty_pid:"<<tty_pid);
@@ -455,15 +455,22 @@ bool DebugManager::Stop(bool waitkey) {
 	if (gdb_pid) {
 		last_command=_T("-gdb-exit\n");
 #ifndef __WIN32__
-#warning VER DE MOSTRAR EL CODIGO DE SALIDA QUE DA GDB (buscar exit-code)
 		if (waitkey && !tty_dev.IsEmpty()) {
-			wxString cmd; 
+			wxString cmd;
 			status = DBGST_WAITINGKEY; // to be able to kill it with Stop button
+			if (!exit_code.IsEmpty()) {
+				int c=0;
+				for(size_t i=0;i<exit_code.Len();i++) { 
+					c = c*8 + exit_code[i]-'0';
+				}
+				exit_code.Clear(); exit_code << c;
+			}
+			else exit_code="x"; 
 			cmd 
 				<< "shell " 
 				<< mxUT::Quotize(config->Files.runner_command)
 				<< " -lang \"" << config->Init.language_file << "\""
-				<< " -debug-end <> " 
+				<< " -debug-end " << exit_code <<" <> " 
 				<< tty_dev << " >&0 2>&1";
 			SendCommandNW(cmd);
 		}
@@ -498,7 +505,8 @@ wxString DebugManager::HowDoesItRuns(bool raise_zinjai_window) {
 	MarkCurrentPoint();
 	
 	while (true) { // para que vuelva a este punto cuando llega a un break point que no debe detener la ejecucion
-		wxString ans = WaitAnswer(true).async; retval += last_answer.full;
+		GDBAnswer full_answer = WaitAnswer(true);
+		wxString ans = full_answer.async; retval += last_answer.full;
 		wxString state_text=LANG(DEBUG_STATUS_UNKNOWN,"Estado desconocido"); 
 		if (!process || status==DBGST_STOPPING) return retval;
 		int st_pos = ans.Find(_T("*stopped"));
@@ -624,6 +632,7 @@ wxString DebugManager::HowDoesItRuns(bool raise_zinjai_window) {
 #	ifndef __APPLE__
 				&&(wait_for_key_policy==WKEY_ALWAYS||(wait_for_key_policy==WKEY_ON_ERROR&&how=="exited"))
 #	endif
+				 ,GetValueFromAns(full_answer.full,"exit-code",true)
 #endif
 			);
 		}
