@@ -66,15 +66,21 @@ bool mxApplication::OnInit() {
 		cout << "   --last-source   opens the first file from Recent Files' list" << endl;
 		cout << "   --last-project  opens the first file from Recent Projects' list" << endl;
 		cout << "   --cerr          use std::cerr as internal logging output" << endl;
+		cout << "   --no-splash     do not show splash window" << endl;
+		cout << "   --no-singleton  disable singleton mode for that instance" << endl;
 		cout << "   --log <fame>    write internal logging output to file <fname>" << endl;
 		return false;
 	}
+	
+	bool allow_singleton = true;
 	
 	for(int i=1;i<argc;i++) { 
 		if (wxString(argv[i])=="--cerr") {
 			new ZLogCerr();
 		} else if (wxString(argv[i])=="--log") {
 			new ZLogOstream(argv[++i]);
+		} else if (wxString(argv[i])=="--no-singleton") {
+			allow_singleton = false;
 		}
 	}
 	
@@ -140,7 +146,7 @@ bool mxApplication::OnInit() {
 	if (first_run || config->Init.version==20160420) SelectLanguage();
 	
 	// si delega la carga a otra instancia termina inmediatamente
-	if (InitSingleton(cmd_path)) return false;
+	if (allow_singleton && InitSingleton(cmd_path)) return false;
 
 	ZLINF("Application","Initializing art...");
 	
