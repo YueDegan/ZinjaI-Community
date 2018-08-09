@@ -317,7 +317,7 @@ struct project_configuration {
 		exec_method=EMETHOD_REGULAR;
 		wait_for_key=WKEY_ALWAYS;
 		temp_folder=cname;
-		output_file=DIR_PLUS_FILE(cname,pname+_T(BINARY_EXTENSION));
+		output_file=DIR_PLUS_FILE("${TEMP_DIR}",pname+_T(BINARY_EXTENSION));
 		compiling_extra="";
 		macros="";
 		headers_dirs="";

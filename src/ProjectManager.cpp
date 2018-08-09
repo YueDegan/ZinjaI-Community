@@ -894,8 +894,12 @@ bool ProjectManager::Save (bool as_template) {
 		fil.AddLine("[config]");
 		CFG_GENERIC_WRITE_DN("name",configurations[i]->name);
 		CFG_GENERIC_WRITE_DN("toolchain",configurations[i]->toolchain);
-		for(int j=0;j<TOOLCHAIN_MAX_ARGS;j++)
-			fil.AddLine(wxString("toolchain_argument_")<<j<<"="<<configurations[i]->toolchain_arguments[j]);
+		bool toolchan_config_is_default = true;
+		for(int j=0;j<TOOLCHAIN_MAX_ARGS;j++) if (configurations[i]->toolchain_arguments[j])!="${DEFAULT}") toolchan_config_is_default = false;
+		if(!toolchan_config_is_default) {
+			for(int j=0;j<TOOLCHAIN_MAX_ARGS;j++)
+				fil.AddLine(wxString("toolchain_argument_")<<j<<"="<<configurations[i]->toolchain_arguments[j]);
+		}
 		CFG_GENERIC_WRITE_DN("working_folder",configurations[i]->working_folder);
 		CFG_BOOL_WRITE_DN("always_ask_args",configurations[i]->always_ask_args);
 		CFG_GENERIC_WRITE_DN("args",configurations[i]->args);
