@@ -218,27 +218,12 @@ bool DebugManager::Start(wxString workdir, wxString exe, wxString args, bool sho
 	if (gdb_pid>0) {
 		input = process->GetInputStream();
 		output = process->GetOutputStream();
-		GDBAnswer &hello = WaitAnswer(true); // true para que no salte el watchdog, la carga de libs puede tardar bastante 
-		if (hello.stream.Find("no debugging symbols found")!=wxNOT_FOUND) {
-			mxMessageDialog(main_window,LANG(DEBUG_NO_SYMBOLS,""
-											 "El ejecutable que se intenta depurar no contiene informacion de depuracion.\n"
-											 "Compruebe que en las opciones de depuracion este activada la informacion de\n"
-											 "depuracion, verifique que no este seleccionada la opcion \"stripear el ejecutable\"\n"
-											 "en las opciones de enlazado, y recompile el proyecto si es necesario (Ejecucion->Limpiar\n"
-											 "y luego Ejecucion->Compilar)."))
-				.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
-			SendCommandNW(_T("-gdb-exit"));
-			debugging = false; has_symbols=false;
-			main_window->SetCompilingStatus(LANG(DEBUG_STATUS_INIT_ERROR,"Error al iniciar depuracion"));
-			return false;
-		}
-		Start_ConfigureGdb();
 		// configure debugger
+		if (!Start_ConfigureGdb()) return false;
 #ifdef __WIN32__
 		SendCommand(_T("-gdb-set new-console on"));
 #endif
 		if (args.Len()) SendCommand("set args ",args);
-//		SendCommand(_T(BACKTRACE_MACRO));
 		SendCommand(wxString(_T("-environment-cd "))<<mxUT::EscapeString(workdir,true));
 		main_window->PrepareGuiForDebugging(gui_is_prepared=true);
 		return true;
@@ -313,22 +298,8 @@ bool DebugManager::SpecialStart(mxSource *source, const wxString &gdb_command, c
 	if (gdb_pid>0) {
 		input = process->GetInputStream();
 		output = process->GetOutputStream();
-		GDBAnswer &hello = WaitAnswer();
-		if (hello.stream.Find("no debugging symbols found")!=wxNOT_FOUND) {
-			mxMessageDialog(main_window,LANG(DEBUG_NO_SYMBOLS,""
-											 "El ejecutable que se intenta depurar no contiene informacion de depuracion.\n"
-											 "Compruebe que en las opciones de depuracion este activada la informacion de\n"
-											 "depuracion, verifique que no este seleccionada la opcion \"stripear el ejecutable\"\n"
-											 "en las opciones de enlazado, y recompile el proyecto si es necesario (Ejecucion->Limpiar\n"
-											 "y luego Ejecucion->Compilar)."))
-				.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
-			SendCommandNW("-gdb-exit");
-			debugging = false;
-			return false;
-		}
 		// configure debugger
-		Start_ConfigureGdb();
-//		SendCommand(_T(BACKTRACE_MACRO));
+		if (!Start_ConfigureGdb()) return false;
 		main_window->PrepareGuiForDebugging(gui_is_prepared=true);
 		// mostrar el backtrace y marcar el punto donde corto
 		GDBAnswer &ans = SendCommand(gdb_command);
@@ -403,28 +374,12 @@ bool DebugManager::LoadCoreDump(wxString core_file, mxSource *source) {
 	if (gdb_pid>0) {
 		input = process->GetInputStream();
 		output = process->GetOutputStream();
-		/*wxString hello =*/ WaitAnswer();
-		/// @todo: el mensaje puede aparecer por las bibliotecas, ver como diferenciar
-//		if (hello.Find(_T("no debugging symbols found"))!=wxNOT_FOUND) {
-//			mxMessageDialog(main_window,LANG(DEBUG_NO_SYMBOLS,"El ejecutable que se intenta depurar no contiene informacion de depuracion.\nCompruebe que en las opciones de depuracion que este activada la informacion de depuracion,\nverifique que no este seleccionada la opcion \"stripear el ejecutable\" en las opciones de enlazado,\n y recompile el proyecto si es necesario (Ejecucion->Limpiar y luego Ejecucion->Compilar).")).Title(LANG(GENERAL_ERROR,"Error").IconError().Run();
-//			SendCommandNW(_T("-gdb-exit"));
-//			debugging = false;
-//			return false;
-//		}
 		// configure debugger
-		Start_ConfigureGdb();
-//		SendCommand(_T(BACKTRACE_MACRO));
+		Start_ConfigureGdb(false);
 		main_window->PrepareGuiForDebugging(gui_is_prepared=true);
 		// mostrar el backtrace y marcar el punto donde corto
 		UpdateBacktrace(true,true);
 		DebuggerInspection::OnDebugPause();
-//		long line;
-//		main_window->backtrace_ctrl->GetCellValue(0,BG_COL_LINE).ToLong(&line);
-//		wxString file = main_window->backtrace_ctrl->GetCellValue(0,BG_COL_FILE);
-//		if (file.Len()) {
-//			debug->MarkCurrentPoint(file,line,mxSTC_MARK_STOP);
-//			debug->SelectFrame(-1,0);
-//		}
 		return true;
 	}
 	gdb_pid=0;
@@ -1920,7 +1875,32 @@ bool DebugManager::SetSignalHandling (SignalHandlingInfo & si, int i) {
 	return true;
 }
 
-void DebugManager::Start_ConfigureGdb ( ) {
+bool DebugManager::Start_ConfigureGdb (bool check_for_symbols) {
+	
+	bool auto_solibs = config->Debug.auto_solibs;
+	
+	GDBAnswer &hello = WaitAnswer(true); // true para que no salte el watchdog, la carga de libs puede tardar bastante 
+	if (check_for_symbols && hello.stream.Find("no debugging symbols found")!=wxNOT_FOUND) {
+		mxMessageDialog::mdAns ans 
+			= mxMessageDialog(main_window,LANG(DEBUG_NO_SYMBOLS,""
+											   "El ejecutable que se intenta depurar no contiene informacion de depuracion.\n"
+											   "Compruebe que en las opciones de depuracion este activada la informacion de\n"
+											   "depuracion, verifique que no este seleccionada la opcion \"stripear el ejecutable\"\n"
+											   "en las opciones de enlazado, y recompile el proyecto si es necesario (Ejecucion->Limpiar\n"
+											   "y luego Ejecucion->Compilar)."))
+			.Check1(LANG(DEBUG_RUN_ANYWAY,"Ejecutar de todas fomas"),false)
+			.Check2(auto_solibs?"":LANG(PREFERENCES_DEBUG_LOAD_SHARED_LIBS_INFO,"Cargar información de depuracion de bibliotecas externas"),true)
+			.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
+		if (!ans.check1) {
+			SendCommandNW(_T("-gdb-exit"));
+			debugging = false; has_symbols=false;
+			main_window->SetCompilingStatus(LANG(DEBUG_STATUS_INIT_ERROR,"Error al iniciar depuracion"));
+			return false;
+		} else {
+			auto_solibs = ans.check2;
+		}
+	}
+	
 	// averiguar la version de gdb
 	gdb_version = 0;
 	wxString ver = SendCommand("-gdb-version").stream;
@@ -1955,7 +1935,7 @@ void DebugManager::Start_ConfigureGdb ( ) {
 	}
 	// otras configuraciones varias
 	if (config->Debug.catch_throw) SendCommand("catch throw");
-	if (!config->Debug.auto_solibs) SendCommand("set auto-solib-add off");
+	if (!auto_solibs) SendCommand("set auto-solib-add off");
 //	SendCommand("set print addr off"); // necesito las direcciones para los helpers de los arreglos
 	SendCommand(_T("set print repeats 0"));
 #ifdef __APPLE__
@@ -1976,6 +1956,8 @@ void DebugManager::Start_ConfigureGdb ( ) {
 	// reiniciar sistema de inspecciones
 	DebuggerInspection::OnDebugStart();
 	for(int i=0;i<backtrace_consumers.GetSize();i++) backtrace_consumers[i]->OnDebugStart();
+	
+	return true;
 }
 
 void DebugManager::Initialize() {

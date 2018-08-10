@@ -70,8 +70,6 @@ BEGIN_EVENT_TABLE(mxProjectConfigWindow, wxDialog)
 	
 	EVT_CHECKBOX(mxID_PROJECT_CONFIG_LIBS_DONT_EXE,mxProjectConfigWindow::OnLibsNoExe)
 	
-	EVT_BUTTON(mxID_PROJECT_CONFIG_IMPORT_LIBS,mxProjectConfigWindow::OnImportLibsButton)
-	
 	EVT_CLOSE(mxProjectConfigWindow::OnClose)
 END_EVENT_TABLE()
 
@@ -687,25 +685,6 @@ wxPanel *mxProjectConfigWindow::CreateStepsPanel (wxNotebook *notebook) {
 wxPanel *mxProjectConfigWindow::CreateLibsPanel (wxNotebook *notebook) {
 	CreatePanelAndSizer sizer(notebook); wxPanel *panel = sizer.GetPanel();
 	
-
-//#warning LA FUNCIONALIDAD DEL BOTON PARA IMPORTAR BIBLIOTECAS NO ESTA IMPLEMENTADA
-//	sizer.BeginLine()
-//		.BeginLabel(/*LANG(PROJECTCONFIG_USE_LIBS,*/"Utilizar bibliotecas externas: "/*)*/).EndLabel()
-//		.BeginButton( /*LANG(PROJECTCONFIG_IMPORT_LIBS,*/"Importar configuración desde plantilla..."/*)*/ ).Id(mxID_PROJECT_CONFIG_IMPORT_LIBS).EndButton()
-//		.EndLine();
-//	
-	/* cosas a importar:
-		variables de entorno
-		parametros extra comp
-		macros a definir
-		directorios adicionales hs
-		parametros extra link
-		directorios adicionales libs
-		bibliotecas a enlazar
-		indices de autocompletado?
-	*/
-	
-	
 	sizer.BeginLabel( LANG(PROJECTCONFIG_LIBS_TO_GENERATE,"Bibliotecas a generar*") ).RegisterIn(wx_extern).EndLabel();
 	
 	libtobuild_list = new wxListBox(panel,wxID_ANY);
@@ -917,10 +896,6 @@ void mxProjectConfigWindow::OnComboToolchainChange(wxCommandEvent &evt) {
 
 void mxProjectConfigWindow::OnToolchainOptionsButton (wxCommandEvent & evt) {
 	mxToolchainOptions(this,toolchains_combo->GetStringSelection(),configuration).ShowModal();
-}
-
-void mxProjectConfigWindow::OnImportLibsButton (wxCommandEvent & evt) {
-	
 }
 
 void mxProjectConfigWindow::OnExecutionMethodButton (wxCommandEvent & evt) {

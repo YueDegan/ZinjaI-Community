@@ -191,7 +191,7 @@ public:
 	bool Start(mxSource *source); ///< starts debugging for a simple program
 	bool Start(wxString workdir, wxString exe, wxString args, bool show_console, int wait_for_key); ///< common code Starting a program (the other two Starts will end up calling this one)
 	bool SpecialStart(mxSource *source, const wxString &gdb_command, const wxString &status_message, bool should_continue);
-	void Start_ConfigureGdb(); ///< sends commands to gdb to set its initial state (common code for Start, Attach and LoadCoreDump)
+	bool Start_ConfigureGdb(bool check_for_symbols=true); ///< sends commands to gdb to set its initial state (common code for Start, Attach and LoadCoreDump)
 	bool Stop(bool waitkey=false, wxString exit_code="");
 	bool Run();
 	bool ToggleAutoStep();

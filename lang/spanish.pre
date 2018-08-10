@@ -66,6 +66,8 @@ DEBUG_STATUS_INIT_ERROR
 Error al iniciar depuracion
 DEBUG_NO_SYMBOLS
 El ejecutable que se intenta depurar no contiene informacion de depuracion.\nCompruebe que en las opciones de depuracion este activada la informacion de\ndepuracion, verifique que no este seleccionada la opcion \"stripear el ejecutable\"\nen las opciones de enlazado, y recompile el proyecto si es necesario (Ejecucion->Limpiar\ny luego Ejecucion->Compilar).
+DEBUG_RUN_ANYWAY
+Ejecutar de todas fomas
 DEBUG_ERROR_STATING_GDB
 Ha ocurrido un error al ejecutar el depurador.
 DEBUG_ERROR_STARTING_GDB_LINUX
@@ -2912,10 +2914,6 @@ PROJECTCONFIG_STEPS_WARNING_APPLY_NOW_LINE_1
 Nota: estos cambios se aplican inmediatamente,
 PROJECTCONFIG_STEPS_WARNING_APPLY_NOW_LINE_2
 aunque luego seleccione cancelar
-PROJECTCONFIG_USE_LIBS
-/
-PROJECTCONFIG_IMPORT_LIBS
-/
 PROJECTCONFIG_LIBS_TO_GENERATE
 Bibliotecas a generar*
 PROJECTCONFIG_LIBS_ADD

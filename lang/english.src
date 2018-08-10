@@ -64,6 +64,8 @@ DEBUG_STATUS_INIT_ERROR
 Failed to start debugging
 DEBUG_NO_SYMBOLS
 The file you're trying to debug has no debugging symbols.\nCheck in debugging options that debug information is enable,\nand verify that the field "Strip executable" is not checked\nin "Linking" tab. Then recompile the project if it's needed\n(Run -> Clean, Run -> Compile).
+DEBUG_RUN_ANYWAY
+Run anyway
 DEBUG_ERROR_STATING_GDB
 There's been an error starting debugger.
 DEBUG_ERROR_STARTING_GDB_LINUX

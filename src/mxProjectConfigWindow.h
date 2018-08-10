@@ -123,7 +123,6 @@ public:
 	void OnStepsEdit(wxCommandEvent &evt);
 	void OnToolchainOptionsButton(wxCommandEvent &evt);
 	void OnComboToolchainChange(wxCommandEvent &evt);
-	void OnImportLibsButton(wxCommandEvent &evt);
 	void OnLibsAdd(wxCommandEvent &evt);
 	void OnLibsEdit(wxCommandEvent &evt);
 	void OnLibsDel(wxCommandEvent &evt);
