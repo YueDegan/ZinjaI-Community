@@ -146,7 +146,7 @@ bool mxApplication::OnInit() {
 	if (first_run || config->Init.version==20160420) SelectLanguage();
 	
 	// si delega la carga a otra instancia termina inmediatamente
-	if (allow_singleton && InitSingleton(cmd_path)) return false;
+	if (InitSingleton(cmd_path,allow_singleton)) return false;
 
 	ZLINF("Application","Initializing art...");
 	
@@ -254,10 +254,10 @@ void mxApplication::SelectLanguage ( ) {
 	}
 }
 
-bool mxApplication::InitSingleton(const wxString &cmd_path) {
+bool mxApplication::InitSingleton(const wxString &cmd_path, bool allow_singleton) {
 	// inicialize singleton manager
 	g_singleton = new mxSingleton; // siempre debe existir la instancia...
-	if (!config->Init.singleton) return false; // ...aunque no se use
+	if (!config->Init.singleton || !allow_singleton) return false; // ...aunque no se use
 	g_singleton->Start();
 	if (g_singleton->IsRunning() || argc==1) return false; // si no hay otra instancia o no hay argumentos
 	// intentar cargar todo en la otra instancia

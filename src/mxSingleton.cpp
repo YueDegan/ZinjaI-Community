@@ -76,7 +76,7 @@ void mxSingleton::ProcessToOpenQueue() {
 }
 
 void mxSingleton::Stop() {
-	if (m_server) delete m_server;
+	delete m_server;
 	m_server=nullptr;
 }
 

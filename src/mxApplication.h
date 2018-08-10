@@ -5,7 +5,7 @@
 
 class mxApplication : public wxApp {
 	void SelectLanguage();
-	bool InitSingleton(const wxString &cmd_path);
+	bool InitSingleton(const wxString &cmd_path, bool allow_singleton);
 	void ShowSplash();
 	void LoadFilesOrWelcomePanel(const wxString &cmd_path);
 public:
