@@ -2220,17 +2220,24 @@ wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_te
 					
 				int p_aux = p_from; p_from = p;
 				if (GetStyleAt(p)!=wxSTC_C_WORD || (p>2 && GetTextRange(p-2,p+1)=="for")) { // si estamos en el prototipo de la funcion
-//					bool in_for_init = GetStyleAt(p)==wxSTC_C_WORD;
-					p=FindText(p_aux,p_to,key,wxSTC_FIND_WHOLEWORD|wxSTC_FIND_MATCHCASE);
+					bool in_for = GetStyleAt(p)==wxSTC_C_WORD, first_arg = true;
+					p=FindText(p_to,p_aux,key,wxSTC_FIND_WHOLEWORD|wxSTC_FIND_MATCHCASE);
 					if (p!=wxSTC_INVALID_POSITION) { // si es un parametro
 						p_to=p;
 						int template_level=0; // sino se confunde la , de un map<int,int> con el final del argumento
-						while (p_to>p_begin_of_args_list && (!(II_IS_3(p_to,',','(',';')||(c==':'&&(GetCharAt(p_to-1)!=':'||GetCharAt(p_to+1)!=':')))||template_level)) {
-							if (c=='>') template_level++;
+						// corta en el '(' si es una lista de args de función; o en el ';'/':' si es parte de un for (solo vale si somos la 1er parte)
+						while (p_to>p_begin_of_args_list && (!(II_IS_2(p_to,'(',';')||(c==':'&&(GetCharAt(p_to-1)!=':'&&GetCharAt(p_to+1)!=':')))||template_level)) {
+							// ',', '=' y first_arg son para distinguir si es la var declarada, o está en la expresión con que se inicializa
+							if (c==',') { if (in_for) first_arg = false; else break; } // en una func, cada var tiene su tipo... en un for puede haber varias para el mismo
+							else if (c=='=') { if (first_arg) { p_to=wxSTC_INVALID_POSITION; break; } }
+							// el ')' es para salter funciones y expresiones cuando otra que está antes en la lista tiene una expresión que la inicializa
+							else if (c==')') { p_to = BraceMatch(p_to); if (p_to==wxSTC_INVALID_POSITION) break; }
+							// tratar de saltear templates... se puede confundir con lo operador <, >, << y >>
+							else if (c=='>') template_level++;
 							else if (c=='<') template_level--;
 							p_to--;
 						}
-						if (template_level==0 || c==';') { p_type=p_to+1; p_ocur=p; }
+						if (p_to!=wxSTC_INVALID_POSITION && template_level==0) { p_type=p_to+1; p_ocur=p; }
 						// contar las dimensiones (asteriscos)
 						p--;
 						while (II_IS_NOTHING_4(p) || II_SHOULD_IGNORE(p)) {
