@@ -492,7 +492,15 @@ bool CodeHelper::AutocompleteAutocode(mxSource *source, wxString typed/*, int ma
 	HashStringAutoCode::iterator it = Autocoder::GetInstance()->m_list.begin();
 	while (it!=Autocoder::GetInstance()->m_list.end()) {
 		if (ShouldAddToAutocomp(typed,len,it->first)) {
-			wxString desc = it->second.description.IsEmpty() ? it->second.code : it->second.description;
+			wxString desc = it->first;
+			if(it->second.args.GetCount()) {
+				for(size_t i=0;i<it->second.args.GetCount();i++) {
+					desc << (i?",":"(") << it->second.args[i];
+				}
+				desc << ")";
+			}
+			desc << "\n" << (it->second.description.IsEmpty() ? it->second.code : it->second.description);
+			desc.Replace("\n","\n  ",true);
 			g_autocomp_list.Add(it->first,"",desc); 
 		}
 		++it;
