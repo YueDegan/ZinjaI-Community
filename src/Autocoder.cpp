@@ -168,14 +168,13 @@ bool Autocoder::Apply(mxSource *src, auto_code *ac, bool args) {
 		}
 	} else 
 		if (args) return false; // sobran los argumentos
-	int p;
-	while ( (p=code.find("#typeof("))!=wxNOT_FOUND ) {
+	for(int p;(p=code.find("#typeof("))!=wxNOT_FOUND; ) {
 		int p2 = p+8; while(p2<int(code.Len())&&code[p2]!='#') ++p2;
 		if (p2==int(code.Len())) break;
 		int aux_pos = src->GetCurrentPos();
 		wxString key = code.Mid(p+8,p2-p-9);
 		wxString type = StripQualifiers( src->FindTypeOfByKey(key,aux_pos,true).type );
-		code=code.Mid(0,p)+(type.IsEmpty()?type:"???")+code.Mid(p2+1);
+		code=code.Mid(0,p)+(type.IsEmpty()?"???":type)+code.Mid(p2+1);
 	}
 	int pos_cursor=code.Find("#here#");
 	if (pos_cursor!=wxNOT_FOUND) code=code.Mid(0,pos_cursor)+code.Mid(pos_cursor+6);
