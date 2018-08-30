@@ -513,7 +513,7 @@ bool CodeHelper::AutocompleteAutocode(mxSource *source, wxString typed/*, int ma
 }
 
 bool CodeHelper::ShowFunctionCalltip(int p, mxSource *source, wxString scope, wxString key, bool onlyScope) {
-	wxString result=GetCalltip(scope,key,onlyScope);
+	wxString result = GetCalltip(scope,key,onlyScope);
 	if (result.Len()) source->ShowCallTip(p,p-key.Len(),result);
 	return result.Len();
 }
@@ -632,6 +632,7 @@ wxString CodeHelper::GetCalltip(wxString scope, wxString key, bool onlyScope, bo
 			}
 		}
 	}
+	if (text.IsEmpty() && IsOptionalNamespace(scope)) return GetCalltip("",key,onlyScope,only_type);	
 	return text;
 }
 
@@ -968,6 +969,8 @@ static wxString simplify_include(wxString path, wxString fname) {
 	}
 	return wxString(_T("\""))+fn.GetFullPath()+"\"";	
 }
+
+#warning DEVOLVERLOS TODOS Y QUE EL PRINGAO ELIJA
 
 wxString CodeHelper::GetInclude(wxString path, wxString key, wxString *namespace_placeholder) {
 	for(pd_class *aux_class = parser->first_class->next; aux_class; aux_class = aux_class->next) {
