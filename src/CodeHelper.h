@@ -71,7 +71,7 @@ public:
 	static void Initialize();
 	bool LoadData(wxString index);
 	void ResetStdData();
-	wxString GetInclude(wxString path, wxString key, wxString *optional_namespaces=nullptr);
+	wxString GetInclude(wxString path, wxString key, bool with_namespaces=false, wxArrayString *all_includes=nullptr);
 	wxString GetIncludeForClass(wxString path, wxString key);
 	bool AutocompleteAutocode(mxSource *source, wxString key/*, int max_str_dist=3*/);
 	bool AutocompleteGeneral(mxSource *source, wxString scope, wxString key, wxString *args=nullptr, int scope_start=-1);

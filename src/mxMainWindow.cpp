@@ -1161,19 +1161,21 @@ void mxMainWindow::OnSelectError (wxTreeEvent &event) {
 	} else if (item_text.StartsWith(EN_COMPOUT_EXE_RUNNING_PRE) && item_text.StartsWith(EN_COMPOUT_EXE_RUNNING_POST)) {
 		LoadInQuickHelpPanel(DIR_PLUS_FILE(config->Help.guihelp_dir,"zerror_cannotopenoutputfile.html"),false); return;
 	} else if (item_text.Contains(EN_COMPOUT_FILE_NOT_RECOGNIZED)) {
-		wxString obj_name = item_text.Mid(0,item_text.Find(EN_COMPOUT_FILE_NOT_RECOGNIZED));
+		wxString obj_name = item_text.Mid(0,item_text.Find(EN_COMPOUT_FILE_NOT_RECOGNIZED)+2);
+		if (obj_name.Contains("ld: ")) obj_name = obj_name.AfterFirst(' ');
 		LocalListIterator<project_file_item*> fi(&project->files.sources);
 		while(fi.IsValid()) {
-			project_file_item *p = *fi;
-			if (obj_name == wxFileName(p->GetRelativePath()).GetName()) {
+#warning VER SI ANTES ERA SOLO EL NOMBRE DEL OBJ
+			wxString bin_name = fi->GetBinName(project->GetTempFolder(false));
+			if (obj_name == bin_name) {
 				mxMessageDialog::mdAns ans = 
 					mxMessageDialog(main_window,LANG1(MAINW_SAVE_LINK_ERROR_TRUNCATED_FILE,""
 													  "Este error puede deberse a compilaciones interrumpidas, o a la presencia\n"
 													  "de objetos compilados en otros sistemas. Si este fuera el caso, podría\n"
 													  "solucionarse simplemente recompilando el fuente asociado. ¿Desea recompilar\n"
-													  "\"<{1}>\" ahora?",p->GetRelativePath()))
-						.Title(p->GetRelativePath()).ButtonsYesNo().IconQuestion().Run();
-				if (ans.yes) { AuxCompileOne(p); return; }
+													  "\"<{1}>\" ahora?",fi->GetRelativePath()))
+						.Title(fi->GetRelativePath()).ButtonsYesNo().IconQuestion().Run();
+				if (ans.yes) { AuxCompileOne(*fi); return; }
 				break;
 			}
 			fi.Next();
@@ -2980,6 +2982,30 @@ void mxMainWindow::OnFoldHideAll(wxCommandEvent &event) {
 		CURRENT_SOURCE->SetFolded(0,true);
 }
 
+static wxString GetOneInclude(const wxString &path, const wxString &key, wxString *match_this_namespace, wxString *namespace_out) {
+	wxArrayString headers;
+	g_code_helper->GetInclude(path,key,true,&headers);
+	if (!headers.GetCount()) return "";
+	int cual = -1;
+	if (match_this_namespace && !match_this_namespace->IsEmpty()) {
+		// si hay varios, ver si en alguno coincide el namespace y si no dar a elegir
+		for(size_t i=0;i<headers.GetCount();i++) {
+			if (*match_this_namespace==headers[i].AfterFirst('|')) {
+				cual = i; break;
+			}
+		}
+	}
+	if (cual==-1 && headers.GetCount()>1) {
+		// si no matcheo ninguno, o hay mas de uno, dar a elegir
+		wxArrayString vaux; for(size_t i=0;i<headers.GetCount();i++) vaux.Add(headers[i].BeforeFirst('|'));
+		wxString res = wxGetSingleChoice("Select header","Insert #include",vaux,main_window);
+		if (res.IsEmpty()) return "";
+		cual = vaux.Index(res);
+	} else cual = 0;
+	if (namespace_out) (*namespace_out) = headers[cual].AfterFirst('|'); 
+	return headers[cual].BeforeFirst('|');
+}
+
 /// @brief inserta el include correspondiente a la palabra sobre el cursor si lo conoce y no estaba
 void mxMainWindow::OnEditInsertInclude(wxCommandEvent &event) {
 	_record_this_action_in_macro(event.GetId());
@@ -3016,16 +3042,19 @@ void mxMainWindow::OnEditInsertInclude(wxCommandEvent &event) {
 				.Title(LANG(GENERAL_ERROR,"Error")).IconInfo().Run();
 			return;
 		} else { // conseguir el h y darselo al source para que haga lo que corresponda
-			wxString optional_namespace;
-			wxString header = g_code_helper->GetInclude(source->sin_titulo?wxString(""):source->source_filename.GetPathWithSep(),key,&optional_namespace);
-			if (header.Len()) {
-				if (keyw_start>2 && source->GetCharAt(keyw_start-1)==':'&&source->GetCharAt(keyw_start-2)==':')
-					optional_namespace.Clear(); // [some] namespace already present
+			
+			wxString user_namespace; // si el código tiene explícito el namespace, va aca
+			if (keyw_start>2 && source->GetCharAt(keyw_start-1)==':'&&source->GetCharAt(keyw_start-2)==':')
+				user_namespace = source->GetTextRange(source->WordStartPosition(keyw_start-3,true),keyw_start-2);
+			wxString path = source->sin_titulo?wxString(""):source->source_filename.GetPathWithSep();
+			
+			wxString optional_namespace, header = GetOneInclude(path,key,&user_namespace,&optional_namespace);
+			if (!header.IsEmpty()) {
+				if (user_namespace==optional_namespace) optional_namespace.Clear();
 			} else {
 				mxSource::StcTypeInfo tinfo = source->FindTypeOfByPos(keyw_end-1);
 				if ( tinfo.IsOk() ) {
-					header = g_code_helper->GetInclude(source->sin_titulo?wxString(""):source->source_filename.GetPathWithSep(),tinfo.type,&optional_namespace);
-					optional_namespace.Clear();
+					header = GetOneInclude(path,tinfo.type,nullptr,nullptr);
 				} else { // buscar el scope y averiguar si es algo de la clase
 					wxString type = source->FindScope(keyw_start);
 					int s;
@@ -3036,10 +3065,7 @@ void mxMainWindow::OnEditInsertInclude(wxCommandEvent &event) {
 					} else {
 						type=g_code_helper->GetGlobalType(key,s);
 					}
-					if (type.Len()) {
-						header=g_code_helper->GetInclude(source->sin_titulo?wxString(""):source->source_filename.GetPathWithSep(),type);
-						optional_namespace.Clear();
-					}
+					if (type.Len()) header = GetOneInclude(path,type,nullptr,nullptr);
 				}
 			}
 			if (header.Len()) {
@@ -3588,7 +3614,7 @@ void mxMainWindow::SetExplorerPath(wxString path) {
 	{ // fix dir if it doesn't exists
 		wxFileName fn(DIR_PLUS_FILE(path,"."));
 		while (fn.GetDirCount()>0 && !fn.DirExists()) fn.RemoveLastDir(); 
-		if (fn.GetDirCount()==0) fn = (project?project->path:wxFileName::GetHomeDir());
+//		if (fn.GetDirCount()==0) fn = (project?project->path:wxFileName::GetHomeDir());
 		path = fn.GetPath();
 	}
 	explorer_tree.treeCtrl->SetItemText(explorer_tree.root,path);

@@ -970,52 +970,63 @@ static wxString simplify_include(wxString path, wxString fname) {
 	return wxString(_T("\""))+fn.GetFullPath()+"\"";	
 }
 
-#warning DEVOLVERLOS TODOS Y QUE EL PRINGAO ELIJA
 
-wxString CodeHelper::GetInclude(wxString path, wxString key, wxString *namespace_placeholder) {
+wxString CodeHelper::GetInclude(wxString path, wxString key, bool with_namespaces, wxArrayString *all_includes) {
+#define _join_user(fname) (with_namespaces ? simplify_include(path,fname)+"|" : simplify_include(path,fname))
+#define _join_ns(ns,fname) (with_namespaces ? fname+"|"+ns : fname)
+#define _return_user(fname) if (all_includes) all_includes->Add(_join_user(fname)); else return _join_user(fname);
+#define _return_ns(ns,fname) if (all_includes) all_includes->Add(_join_ns(ns,fname)); else return _join_ns(ns,fname);
 	for(pd_class *aux_class = parser->first_class->next; aux_class; aux_class = aux_class->next) {
 		if (aux_class->name==key) {
 			if (!aux_class->prev) {
-				if (namespace_placeholder) (*namespace_placeholder)=aux_class->file->opt_namespace;
-				return aux_class->file->name;
+				_return_ns( aux_class->file->opt_namespace, aux_class->file->name);
 			}
 			else if (aux_class->file) {
-				return simplify_include(path,aux_class->file->name);
+				_return_user( aux_class->file->name );
 			}
 		}
 	}
 	for (pd_func *aux_func = parser->first_function->next; aux_func; aux_func = aux_func->next) {
 		if (aux_func->name==key) {
 			if (!aux_func->prev) {
-				if (namespace_placeholder) (*namespace_placeholder)=aux_func->file_dec->opt_namespace;
-				return aux_func->file_dec->name;
+				_return_ns( aux_func->file_dec->opt_namespace, aux_func->file_dec->name );
 			} else if (aux_func->file_dec) {
-				return simplify_include(path,aux_func->file_dec->name);
+				_return_user( aux_func->file_dec->name );
 			} else if (aux_func->file_def) {
-				return simplify_include(path,aux_func->file_def->name);
+				_return_user( aux_func->file_def->name );
 			}
 		}
 	}
 	for(pd_var *aux_var = parser->first_global->next; aux_var; aux_var = aux_var->next) {
 		if (aux_var->name==key) {
 			if (!aux_var->prev) {
-				if (namespace_placeholder) (*namespace_placeholder)=aux_var->file->opt_namespace;
-				return aux_var->file->name;
+				_return_ns( aux_var->file->opt_namespace, aux_var->file->name );
 			} else {
-				return simplify_include(path,aux_var->file->name);
+				_return_user( aux_var->file->name );
 			}
 		}
 	}
 	for(pd_macro *aux_macro = parser->first_macro->next; aux_macro; aux_macro = aux_macro->next) {
 		if (aux_macro->name==key) {
 			if (!aux_macro->prev) {
-				return aux_macro->file->name;
+				_return_ns( wxString(""), aux_macro->file->name );
 			} else {
-				return simplify_include(path,aux_macro->file->name);
+				_return_user( aux_macro->file->name );
 			}
 		}
 	}
+	if (all_includes) {
+		all_includes->Sort(); size_t i=0; 
+		while(i+1<all_includes->GetCount())
+			if ((*all_includes)[i]==(*all_includes)[i+1])
+				all_includes->RemoveAt(i,1);
+			else ++i;
+	}
 	return "";
+#undef _join_user
+#undef _join_ns
+#undef _return_user
+#undef _return_ns
 }
 
 wxString CodeHelper::GetIncludeForClass(wxString path, wxString key) {
