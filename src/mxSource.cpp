@@ -2228,7 +2228,7 @@ wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_te
 						// corta en el '(' si es una lista de args de función; o en el ';'/':' si es parte de un for (solo vale si somos la 1er parte)
 						while (p_to>p_begin_of_args_list && (!(II_IS_2(p_to,'(',';')||(c==':'&&(GetCharAt(p_to-1)!=':'&&GetCharAt(p_to+1)!=':')))||template_level)) {
 							// ',', '=' y first_arg son para distinguir si es la var declarada, o está en la expresión con que se inicializa
-							if (c==',') { if (in_for) first_arg = false; else break; } // en una func, cada var tiene su tipo... en un for puede haber varias para el mismo
+							if (c==',') { if (in_for) first_arg = false; else if (template_level==0) break; } // en una func, cada var tiene su tipo... en un for puede haber varias para el mismo
 							else if (c=='=') { if (first_arg) { p_to=wxSTC_INVALID_POSITION; break; } }
 							// el ')' es para salter funciones y expresiones cuando otra que está antes en la lista tiene una expresión que la inicializa
 							else if (c==')') { p_to = BraceMatch(p_to); if (p_to==wxSTC_INVALID_POSITION) break; }
