@@ -138,7 +138,7 @@ void ProjectManager::ReloadFatherProjects() {
 			// warning: in *this al project_file_item paths are relative, 
 			// but ReadProjectFilesList puts full paths in project_file_item::m_relative_path
 			for (GlobalListIterator<project_file_item*> it(&flist.all); it.IsValid(); it.Next()) {
-				project_file_item *item = FindFromFullPath(it->m_relative_path);
+				project_file_item *item = FindFromRelativePath(it->m_relative_path);
 				if (!item) item = AddFile(it->GetCategory(),it->GetRelativePath(),false);
 				else if (!item->IsInherited()) continue; // si ya estaba en el proyecto como propio, dejarlo así
 				item->SetFatherProject(zpr_relative_path);
