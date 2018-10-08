@@ -1222,6 +1222,8 @@ COLOURS_ITALIC
 Italic
 COLOURS_BOLD
 Bold
+COLOURS_ZOOM
+Zoom
 COLORS_HELP
 You can enter colors with HTML format or use the three dots button to display a graphic colour selector. HTML format is "#ABCDEF" where AB, CD and EF are hexadecimal values for R, G and B.
 COLORS_ID_DEFAULT

@@ -11,7 +11,7 @@ class wxCheckBox;
 class wxRichTextCtrl;
 class wxComboBox;
 
-#define CTDeclare(NAME) wxColour NAME##_FORE, NAME##_BACK; bool NAME##_ITALIC, NAME##_BOLD;
+#define CTDeclare(NAME) wxColour NAME##_FORE, NAME##_BACK; bool NAME##_ITALIC, NAME##_BOLD; int NAME##_ZOOM;
 #define CTDeclare0(NAME) wxColour NAME##_FORE, NAME##_BACK;
 #define CTDeclare1(NAME) wxColour NAME;
 
@@ -62,9 +62,10 @@ class mxStaticText : public wxPanel {
 	wxString text;
 	wxColour *fore,*back;
 	bool *italic , *bold;
+	int *zoom;
 public:
 	mxStaticText (wxWindow *parent, wxString text);
-	void SetData(wxColour *fore, wxColour *back, bool *italic, bool *bold);
+	void SetData(wxColour *fore, wxColour *back, bool *italic, bool *bold, int *zoom);
 	void OnPaint(wxPaintEvent &evt);
 	DECLARE_EVENT_TABLE();
 };
@@ -73,18 +74,24 @@ public:
 
 class mxColoursEditor:public wxDialog {
 	wxScrolledWindow *scroll;
+	
 	wxString lnames[MAX_STYLES]; ///< items for wich style should be defined
 	mxStaticText *llabel[MAX_STYLES]; ///< text sample with item name
-	wxColour *lvalfor[MAX_STYLES]; ///< foreground colours
-	wxColour *lvalbak[MAX_STYLES]; ///< background colours
+	
 	wxTextCtrl *ltfore[MAX_STYLES]; ///< foreground colour text controls (hex colour)
 	wxTextCtrl *ltback[MAX_STYLES]; ///< background colour text controls (hex colour)
 	wxButton *lbfore[MAX_STYLES]; ///< foreground colour buttons (...)
 	wxButton *lbback[MAX_STYLES]; ///< background colour buttons(...)
 	wxCheckBox *lbold[MAX_STYLES]; ///< bold text checkboxs
 	wxCheckBox *lcur[MAX_STYLES]; ///< italic text checkboxs
+	wxTextCtrl *ltzoom[MAX_STYLES]; ///< zoom factor for font size
+	
+	wxColour *lvalfor[MAX_STYLES]; ///< foreground colours
+	wxColour *lvalbak[MAX_STYLES]; ///< background colours
 	bool *lvalita[MAX_STYLES]; ///< italic values
 	bool *lvalbol[MAX_STYLES]; ///< bold values
+	int *lvalzoom[MAX_STYLES]; ///< zoom values
+	
 	wxFlexGridSizer *sizer;
 	int lcount;
 	wxComboBox *combo;
@@ -96,7 +103,7 @@ class mxColoursEditor:public wxDialog {
 public:
 	mxColoursEditor(wxWindow *parent);
 	void LoadList();
-	void Add(wxString name, wxColour *fore, wxColour *back, bool *italic, bool *bold);
+	void Add(wxString name, wxColour *fore, wxColour *back, bool *italic, bool *bold, int *zoom);
 	void OnClose(wxCloseEvent &evt);
 	void OnButtonOk(wxCommandEvent &evt);
 	void OnButtonCancel(wxCommandEvent &evt);

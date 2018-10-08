@@ -1222,6 +1222,8 @@ COLOURS_ITALIC
 Cursiva
 COLOURS_BOLD
 Negrita
+COLOURS_ZOOM
+ZOOM
 COLORS_HELP
 Puede ingresar los colores con formato HTML o utilizando el boton de los tres punto para inciar un selector grafico. El formato html es \"#ABCDEF\" donde AB, CD y EF son los valores en notación hexadecimal para R, G y B.
 COLORS_ID_DEFAULT

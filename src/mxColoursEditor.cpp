@@ -32,7 +32,10 @@ BEGIN_EVENT_TABLE(mxColoursEditor,wxDialog)
 END_EVENT_TABLE()
 
 
-mxColoursEditor::mxColoursEditor(wxWindow *aparent):wxDialog(main_window,wxID_ANY,LANG(COLORS_CAPTION,"Definir Colores"),wxDefaultPosition,wxSize(700,400),wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER) {
+mxColoursEditor::mxColoursEditor(wxWindow *aparent)
+	: wxDialog(main_window,wxID_ANY,LANG(COLORS_CAPTION,"Definir Colores"),wxDefaultPosition,
+			   wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER) 
+{
 	old_theme=custom_theme=*g_ctheme;
 	parent=aparent; setting=true;
 	
@@ -71,13 +74,14 @@ mxColoursEditor::mxColoursEditor(wxWindow *aparent):wxDialog(main_window,wxID_AN
 	bottomSizer->Add(ok_button,sizers->BA5);
 	
 	scroll = new wxScrolledWindow(this,wxID_ANY);
-	sizer = new wxFlexGridSizer(5);
+	sizer = new wxFlexGridSizer(6);
 	sizer->SetFlexibleDirection(wxBOTH);
 	sizer->Add(new wxStaticText(scroll,wxID_ANY,""));
 	sizer->Add(new wxStaticText(scroll,wxID_ANY,LANG(COLOURS_FRONT,"Color de Frente")),sizers->BA5_Center);
 	sizer->Add(new wxStaticText(scroll,wxID_ANY,LANG(COLOURS_BACK,"Color de Fondo")),sizers->BA5_Center);
 	sizer->Add(new wxStaticText(scroll,wxID_ANY,LANG(COLOURS_ITALIC,"Cursiva")),sizers->BA5_Center);
 	sizer->Add(new wxStaticText(scroll,wxID_ANY,LANG(COLOURS_BOLD,"Negrita")),sizers->BA5_Center);
+	sizer->Add(new wxStaticText(scroll,wxID_ANY,LANG(COLOURS_ZOOM,"Zoom")),sizers->BA5_Center);
 	scroll->SetScrollRate(10,10);
 	scroll->SetSizer(sizer);
 	sizer->AddGrowableCol(0);
@@ -88,21 +92,26 @@ mxColoursEditor::mxColoursEditor(wxWindow *aparent):wxDialog(main_window,wxID_AN
 		"Puede ingresar los colores con formato HTML o utilizando el boton de "
 		"los tres punto para inciar un selector grafico. El formato html es \"#ABCDEF\" "
 		"donde AB, CD y EF son los valores en notación hexadecimal para R, G y B."));
+	helpt->SetMinSize(wxSize(10,-1));
 	mySizer->Add(helpt,sizers->BA5_Exp0);
 	mySizer->Add(scroll,sizers->BA5_Exp1);
 	mySizer->Add(inverted,sizers->BA5_Center);
 	mySizer->Add(bottomSizer,sizers->BA5_Exp0);
-	SetSizer(mySizer);
+	
+	mySizer->SetMinSize(wxSize(600,500)); 
+	SetSizerAndFit(mySizer);
+	
 	setting=false;
 	Show();
 }
 
-void mxColoursEditor::Add(wxString name, wxColour *fore, wxColour *back, bool *italic, bool *bold) {
+void mxColoursEditor::Add(wxString name, wxColour *fore, wxColour *back, bool *italic, bool *bold, int *zoom) {
 	
 	lvalfor[lcount]=fore;
 	lvalbak[lcount]=back;
 	lvalita[lcount]=italic;
 	lvalbol[lcount]=bold;
+	lvalzoom[lcount]=zoom;
 
 	sizer->Add(llabel[lcount] = new mxStaticText(scroll,name),sizers->BA5_Exp0);
 	llabel[lcount]->SetToolTip(name);
@@ -138,26 +147,34 @@ void mxColoursEditor::Add(wxString name, wxColour *fore, wxColour *back, bool *i
 		lcur[lcount]->SetValue(*italic);
 		lbold[lcount] = new wxCheckBox(scroll,wxID_ANY,"  ");
 		lbold[lcount]->SetValue(*bold);
-		sizer->Add(lcur[lcount],sizers->BA5_Right);
-		sizer->Add(lbold[lcount],sizers->BA5_Right);
+		sizer->Add(lcur[lcount],sizers->BA5);
+		sizer->Add(lbold[lcount],sizers->BA5);
 	} else {
 		sizer->Add(new wxStaticText(scroll,wxID_ANY,""));
 		sizer->Add(new wxStaticText(scroll,wxID_ANY,""));
 	}
 	
+	if (zoom) {
+		ltzoom[lcount]=new wxTextCtrl(scroll,wxID_ANY,wxString()<<*zoom);
+		sizer->Add(ltzoom[lcount],sizers->BA5_Right);
+	} else {
+		sizer->Add(new wxStaticText(scroll,wxID_ANY,""));
+	}
+	
 	llabel[lcount]->SetData(
-		fore?fore:&(g_ctheme->DEFAULT_FORE),
-		back?back:&(g_ctheme->DEFAULT_BACK),
-		italic,bold);
+		fore ? fore : &(g_ctheme->DEFAULT_FORE),
+		back ? back : &(g_ctheme->DEFAULT_BACK),
+		italic,bold,
+		zoom ? zoom: &(g_ctheme->DEFAULT_ZOOM));
 	
 	lcount++;
 }
 
 
-#define MXCAdd(id,text) Add(text,&(g_ctheme->id##_FORE),&(g_ctheme->id##_BACK),&(g_ctheme->id##_ITALIC),&(g_ctheme->id##_BOLD));
-#define MXCAdd0(id,text) Add(text,&(g_ctheme->id##_FORE),&(g_ctheme->id##_BACK),nullptr,nullptr);
-#define MXCAdd1(id,text) Add(text,&(g_ctheme->id),nullptr,nullptr,nullptr);
-#define MXCAdd2(id,text) Add(text,nullptr,&(g_ctheme->id),nullptr,nullptr);
+#define MXCAdd(id,text) Add(text,&(g_ctheme->id##_FORE),&(g_ctheme->id##_BACK),&(g_ctheme->id##_ITALIC),&(g_ctheme->id##_BOLD),&(g_ctheme->id##_ZOOM));
+#define MXCAdd0(id,text) Add(text,&(g_ctheme->id##_FORE),&(g_ctheme->id##_BACK),nullptr,nullptr,nullptr);
+#define MXCAdd1(id,text) Add(text,&(g_ctheme->id),nullptr,nullptr,nullptr,nullptr);
+#define MXCAdd2(id,text) Add(text,nullptr,&(g_ctheme->id),nullptr,nullptr,nullptr);
 
 void mxColoursEditor::LoadList ( ) {
 	lcount=0;
@@ -245,9 +262,9 @@ color_theme::color_theme (wxString file) {
 }
 
 #define ctSet0(id,f,b) id##_FORE=f; id##_BACK=b;
-#define ctSet(id,f,b) id##_FORE=f; id##_BACK=b; id##_BOLD=false; id##_ITALIC=false;
-#define ctSetI(id,f,b) id##_FORE=f; id##_BACK=b; id##_BOLD=false; id##_ITALIC=true;
-#define ctSetB(id,f,b) id##_FORE=f; id##_BACK=b; id##_BOLD=true; id##_ITALIC=false;
+#define ctSet(id,f,b) id##_FORE=f; id##_BACK=b; id##_BOLD=false; id##_ITALIC=false; id##_ZOOM=100;
+#define ctSetI(id,f,b) id##_FORE=f; id##_BACK=b; id##_BOLD=false; id##_ITALIC=true; id##_ZOOM=100;
+#define ctSetB(id,f,b) id##_FORE=f; id##_BACK=b; id##_BOLD=true; id##_ITALIC=false; id##_ZOOM=100;
 
 void color_theme::SetDefaults (bool inverted) {
 	this->inverted = inverted;
@@ -394,7 +411,7 @@ void mxStaticText::OnPaint(wxPaintEvent &evt) {
 	wxPaintDC dc(this);
 	PrepareDC(dc);
 	dc.SetBackground(*back);
-	wxFont f(config->Styles.font_size, wxMODERN, wxNORMAL, wxNORMAL,false,config->Styles.font_name);
+	wxFont f((config->Styles.font_size*(*zoom))/100, wxMODERN, wxNORMAL, wxNORMAL,false,config->Styles.font_name);
 	f.SetWeight((bold&&*bold)?wxFONTWEIGHT_BOLD:wxFONTWEIGHT_NORMAL);
 	f.SetStyle((italic&&*italic)?wxFONTFLAG_ITALIC:wxFONTFLAG_DEFAULT);
 	dc.Clear(); dc.SetFont(f);
@@ -405,11 +422,12 @@ void mxStaticText::OnPaint(wxPaintEvent &evt) {
 	dc.DrawLabel(text,wxRect(10,0,w-10,h),wxALIGN_LEFT);
 }
 
-void mxStaticText::SetData (wxColour * fore, wxColour * back, bool * italic, bool * bold) {
+void mxStaticText::SetData (wxColour * fore, wxColour * back, bool * italic, bool * bold, int *zoom) {
 	this->bold=bold;
 	this->italic=italic;
 	this->fore=fore;
 	this->back=back;
+	this->zoom=zoom;
 }
 
 void color_theme::Initialize() {
@@ -469,6 +487,10 @@ void mxColoursEditor::OnText (wxCommandEvent & evt) {
 	for (int i=0;i<lcount;i++)
 		if (w==ltfore[i]) (*lvalfor[i])=wxColour(ltfore[i]->GetValue());
 		else if (w==ltback[i]) (*lvalbak[i])=wxColour(ltback[i]->GetValue());
+		else if (w==ltzoom[i]) {
+			long l=100; ltzoom[i]->GetValue().ToLong(&l);
+			(*lvalzoom[i])= l>=10 && l<=1000 ? l : 100;
+		}
 	if (!setting) { 
 		combo->SetSelection(combo->GetCount()-1); 
 		custom_theme=*g_ctheme;
