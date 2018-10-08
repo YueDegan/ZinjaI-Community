@@ -259,6 +259,8 @@ public:
 	
 	/// open a file with the system preferred application for this file type (shell_execute on windows, xdg-open on linux)
 	static bool ShellExecute(const wxString &path, const wxString &workdir="");
+	
+	static wxString MakeCaption(int lang_id);
 
 };
 

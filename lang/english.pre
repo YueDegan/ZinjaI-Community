@@ -64,10 +64,6 @@ DEBUG_ERROR_WITH_TERMINAL
 There's been an error starting the terminal for debugging.\nCheck if field "Console Application" in tab "Paths 2"\nin Preference's dialog" is correct.
 DEBUG_STATUS_INIT_ERROR
 Failed to start debugging
-DEBUG_NO_SYMBOLS
-The file you're trying to debug has no debugging symbols.\nCheck in debugging options that debug information is enable,\nand verify that the field "Strip executable" is not checked\nin "Linking" tab. Then recompile the project if it's needed\n(Run -> Clean, Run -> Compile).
-DEBUG_RUN_ANYWAY
-Run anyway
 DEBUG_ERROR_STATING_GDB
 There's been an error starting debugger.
 DEBUG_ERROR_STARTING_GDB_LINUX
@@ -128,6 +124,12 @@ DEBUG_BAD_BREAKPOINT_WARNING_LOCATION
 Posible causes are:\n* Some breakpoints are placed in files that do not belong to the project.\n* Some breakpoints are placed in lines that don't generate executable code (comments, empty lines, ...)\n* Missing or outdated debugging information. Use Clean item from Run menu before\n  debugging.\n* Spaces or special characters in files' paths. If that is the case, try moving\n  the project or renaming the directories.
 DEBUG_BAD_BREAKPOINT_WARNING_CONDITION
 Breakpoint's condition is not valid.
+DEBUG_NO_SYMBOLS
+The file you're trying to debug has no debugging symbols.\nCheck in debugging options that debug information is enable,\nand verify that the field "Strip executable" is not checked\nin "Linking" tab. Then recompile the project if it's needed\n(Run -> Clean, Run -> Compile).
+DEBUG_RUN_ANYWAY
+Run anyway
+PREFERENCES_DEBUG_LOAD_SHARED_LIBS_INFO
+Load shared libs debugging symbols
 PARSERHELP_DEFINED_IN_POST
 line
 PARSERHELP_UNION
@@ -512,12 +514,14 @@ MENUITEM_TOOLS_COMMON_HELP
 Help...
 MENUITEM_TOOLS_COMMENTS
 Comments
-MENUITEM_TOOLS_COMMENTS_ALIGN_COMMENTS
-Align Comments...
 MENUITEM_TOOLS_COMMENTS_COMMENT
 Comment Lines
 MENUITEM_TOOLS_COMMENTS_UNCOMMENT
 Uncomment Lines
+MENUITEM_TOOLS_COMMENTS_ALIGN_COMMENTS
+Align Comments...
+MENUITEM_TOOLS_COMMENTS_WRAP_COMMENT
+&Wrap comment...
 MENUITEM_TOOLS_COMMENTS_DELETE_COMMENTS
 Delete All Comments
 MENUITEM_TOOLS_PREPROC
@@ -2544,8 +2548,6 @@ PREFERENCES_DEBUG_CATCH_THROW
 Pause when exception is thrown
 PREFERENCES_DEBUG_LOAD_ALL_DEBUG_INFO
 Load all debugging symbols before running
-PREFERENCES_DEBUG_LOAD_SHARED_LIBS_INFO
-Load shared libs debugging symbols
 PREFERENCES_DEBUG_RECOMPILE_AUTOMATICALLY
 Rebuild automatically before debugging
 PREFERENCES_DEBUG_STOP_DEBBUGING_ON_ABNORMAL_TERMINATION
@@ -2914,10 +2916,6 @@ PROJECTCONFIG_STEPS_WARNING_APPLY_NOW_LINE_1
 Note: this changes will apply inmediatly, even if
 PROJECTCONFIG_STEPS_WARNING_APPLY_NOW_LINE_2
 you press Cancel button later.
-PROJECTCONFIG_USE_LIBS
-
-PROJECTCONFIG_IMPORT_LIBS
-
 PROJECTCONFIG_LIBS_TO_GENERATE
 Libraries to generate
 PROJECTCONFIG_LIBS_ADD
@@ -3246,6 +3244,8 @@ CONFIG_EXPLORER
 File's Explorer
 MAINW_GRAPHVIZ_ERROR
 There was an error while processing the graph
+lang_id
+ZinjaI
 VALGRIND_OUTPUT_MISSING
 Dynamic analysis' information was not found.\nIn order to generate it go to ZinjaI's help.
 VALGRIND_RELOAD_TREE

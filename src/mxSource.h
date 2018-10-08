@@ -175,6 +175,8 @@ public:
 	bool IsComment(int pos);
 	bool IsEmptyLine(int l, bool ignore_comments=true, bool ignore_preproc=true);
 
+	void DeleteText(int pfrom, int len);
+		
 	mxSource(wxWindow *parent, wxString ptext, project_file_item *fitem=nullptr);
 	
 	~mxSource ();
@@ -369,9 +371,6 @@ public:
 	wxString exec_args;
 	bool sin_titulo, cpp_or_just_c; // para un programa simple sin_titulo, la segunda bandera indica si compilar con g++ (true) o gcc (false), si tiene título se usa la extensión
 	bool IsCppOrJustC();
-	
-	void RemoveComments();
-	void AlignComments(int c);
 
 private:
 	wxTreeItemId treeId;

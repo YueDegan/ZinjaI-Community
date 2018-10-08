@@ -276,6 +276,7 @@ public:
 	void OnToolsExeProps (wxCommandEvent &event);
 	void OnToolsProjectStatistics (wxCommandEvent &event);
 	
+	void OnToolsWrapComment (wxCommandEvent &event);
 	void OnToolsAlignComments (wxCommandEvent &event);
 	void OnToolsRemoveComments (wxCommandEvent &event);
 	void OnToolsShareShare (wxCommandEvent &event);

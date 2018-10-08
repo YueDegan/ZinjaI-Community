@@ -50,6 +50,7 @@
 #include "mxCompilerArgEnabler.h"
 #include "mxAUI.h"
 #include "ZLog.h"
+#include "mxSourceComments.h"
 using namespace std;
 
 /// @brief Muestra el cuadro de configuración de cppcheck (mxCppCheckConfigDialog)
@@ -446,27 +447,46 @@ void mxMainWindow::OnToolsWxfbUpdateInherit(wxCommandEvent &event) {
 }
 
 void mxMainWindow::OnToolsRemoveComments (wxCommandEvent &event) {
-	IF_THERE_IS_SOURCE CURRENT_SOURCE->RemoveComments();
+	IF_THERE_IS_SOURCE {
+		mxSource *src = CURRENT_SOURCE;
+		mxSource::UndoActionGuard undo_action(src);
+		int min,max; src->GetSelectedLinesRange(min,max);
+		mxSourceComments::RemoveComments(src,min,max);
+	};
 }
 
 void mxMainWindow::OnToolsAlignComments (wxCommandEvent &event) {
 	IF_THERE_IS_SOURCE {
-		mxSource *src=CURRENT_SOURCE;
 		long l=-1;
-		wxString input=mxGetTextFromUser("Alinear Comentarios","Nro de Columna:",wxString()<<config->Source.alignComments,this);
-		if (input.Len() && input.ToLong(&l) && l>=0) 
-			src->AlignComments(config->Source.alignComments=l);
+		wxString input = mxGetTextFromUser(mxUT::MakeCaption(LANG_MENUITEM_TOOLS_COMMENTS_ALIGN_COMMENTS),"Col:",wxString()<<config->Source.alignComments,this);
+		if (input.Len() && input.ToLong(&l) && l>=0) {
+			mxSource *src = CURRENT_SOURCE;
+			mxSource::UndoActionGuard undo_action(src);
+			int min,max; src->GetSelectedLinesRange(min,max);
+			mxSourceComments::AlignComments(src,min,max,config->Source.alignComments=l);
+		}
+	}
+}
+
+void mxMainWindow::OnToolsWrapComment (wxCommandEvent &event) {
+	IF_THERE_IS_SOURCE {
+		long l=-1;
+		wxString input = mxGetTextFromUser(mxUT::MakeCaption(LANG_MENUITEM_TOOLS_COMMENTS_WRAP_COMMENT),"Width/Ancho:",wxString()<<config->Source.alignComments,this);
+		if (input.Len() && input.ToLong(&l) && l>=0) {
+			mxSource *src = CURRENT_SOURCE;
+			mxSource::UndoActionGuard undo_action(src);
+			int min,max; src->GetSelectedLinesRange(min,max);
+			mxSourceComments::WrapComment(src,min,max,config->Source.alignComments=l);
+		}
 	}
 }
 
 void mxMainWindow::OnToolsDiffPrevMark(wxCommandEvent &event) {
-	IF_THERE_IS_SOURCE
-		CURRENT_SOURCE->GotoDiffChange(false);
+	IF_THERE_IS_SOURCE CURRENT_SOURCE->GotoDiffChange(false);
 }
 
 void mxMainWindow::OnToolsDiffNextMark(wxCommandEvent &event) {
-	IF_THERE_IS_SOURCE
-		CURRENT_SOURCE->GotoDiffChange(true);
+	IF_THERE_IS_SOURCE CURRENT_SOURCE->GotoDiffChange(true);
 }
 
 void mxMainWindow::OnToolsDiffTwoSources(wxCommandEvent &event) {

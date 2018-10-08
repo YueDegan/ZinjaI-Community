@@ -380,6 +380,7 @@ BEGIN_EVENT_TABLE(mxMainWindow, wxFrame)
 	EVT_MENU(mxID_TOOLS_GCOV_SHOW, mxMainWindow::OnToolsGcovShow)
 	EVT_MENU(mxID_TOOLS_GCOV_RESET, mxMainWindow::OnToolsGcovReset)
 	EVT_MENU(mxID_TOOLS_GCOV_HELP, mxMainWindow::OnToolsGcovHelp)
+	EVT_MENU(mxID_TOOLS_WRAP_COMMENT, mxMainWindow::OnToolsWrapComment)
 	EVT_MENU(mxID_TOOLS_ALIGN_COMMENTS, mxMainWindow::OnToolsAlignComments)
 	EVT_MENU(mxID_TOOLS_REMOVE_COMMENTS, mxMainWindow::OnToolsRemoveComments)
 	EVT_MENU(mxID_TOOLS_CPPCHECK_RUN, mxMainWindow::OnToolsCppCheckRun)
@@ -2759,7 +2760,7 @@ mxSource *mxMainWindow::NewFileFromTemplate(wxString filename, bool is_full_path
 }
 
 void mxMainWindow::OnFileSaveProject (wxCommandEvent &event) {
-	project->Save();
+	if (project) project->Save();
 }
 
 void mxMainWindow::OnFileSave (wxCommandEvent &event) {

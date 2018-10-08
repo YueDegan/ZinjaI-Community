@@ -62,10 +62,6 @@ DEBUG_ERROR_WITH_TERMINAL
 Ha ocurrido un error al iniciar la terminal para la ejecucion.\nCompruebe que el campo \"Comando del terminal\" de la pestaña\n\"Rutas 2\" del cuadro de \"Preferencias\" sea correcto.
 DEBUG_STATUS_INIT_ERROR
 Error al iniciar depuracion
-DEBUG_NO_SYMBOLS
-El ejecutable que se intenta depurar no contiene informacion de depuracion.\nCompruebe que en las opciones de depuracion este activada la informacion de\ndepuracion, verifique que no este seleccionada la opcion \"stripear el ejecutable\"\nen las opciones de enlazado, y recompile el proyecto si es necesario (Ejecucion->Limpiar\ny luego Ejecucion->Compilar).
-DEBUG_RUN_ANYWAY
-Ejecutar de todas fomas
 DEBUG_ERROR_STATING_GDB
 Ha ocurrido un error al ejecutar el depurador.
 DEBUG_ERROR_STARTING_GDB_LINUX
@@ -126,6 +122,12 @@ DEBUG_BAD_BREAKPOINT_WARNING_LOCATION
 Las posibles causas son:\n* Fue colocado en un archivo que no se compila en el proyecto/programa.\n* Fue colocado en una linea que no genera codigo ejecutable (ej: comentario).\n* Información de depuración desactualizada o inexistente. Intente recompilar\n   completamente el programa/proyecto, utilizando el item Limpiar del menu Ejecucion\n   antes de depurar.\n* Espacios o acentos en las rutas de los archivos fuente. Si sus directorios contienen\n   espacios o acentos en sus nombres pruebe renombrarlos o mover el proyecto.
 DEBUG_BAD_BREAKPOINT_WARNING_CONDITION
 La condición ingresada no es válida.
+DEBUG_NO_SYMBOLS
+El ejecutable que se intenta depurar no contiene informacion de depuracion.\nCompruebe que en las opciones de depuracion este activada la informacion de\ndepuracion, verifique que no este seleccionada la opcion \"stripear el ejecutable\"\nen las opciones de enlazado, y recompile el proyecto si es necesario (Ejecucion->Limpiar\ny luego Ejecucion->Compilar).
+DEBUG_RUN_ANYWAY
+Ejecutar de todas fomas
+PREFERENCES_DEBUG_LOAD_SHARED_LIBS_INFO
+Cargar información de depuracion de bibliotecas externas
 PARSERHELP_DEFINED_IN_POST
 en la linea
 PARSERHELP_UNION
@@ -510,12 +512,14 @@ MENUITEM_TOOLS_COMMON_HELP
 A&yuda...
 MENUITEM_TOOLS_COMMENTS
 Coment&arios
-MENUITEM_TOOLS_COMMENTS_ALIGN_COMMENTS
-&Alinear Comentarios...
 MENUITEM_TOOLS_COMMENTS_COMMENT
 &Comentar
 MENUITEM_TOOLS_COMMENTS_UNCOMMENT
 &Descomentar
+MENUITEM_TOOLS_COMMENTS_ALIGN_COMMENTS
+&Alinear Comentarios...
+MENUITEM_TOOLS_COMMENTS_WRAP_COMMENT
+Ajuste de &Lineas...
 MENUITEM_TOOLS_COMMENTS_DELETE_COMMENTS
 &Eliminar Comentarios
 MENUITEM_TOOLS_PREPROC
@@ -2542,8 +2546,6 @@ PREFERENCES_DEBUG_CATCH_THROW
 Detenerse al lanzar una excepción (throw)
 PREFERENCES_DEBUG_LOAD_ALL_DEBUG_INFO
 Cargar toda la información de depuracion antes de comenzar
-PREFERENCES_DEBUG_LOAD_SHARED_LIBS_INFO
-Cargar información de depuracion de bibliotecas externas
 PREFERENCES_DEBUG_RECOMPILE_AUTOMATICALLY
 Recompilar automaticamente antes de depurar si es necesario
 PREFERENCES_DEBUG_STOP_DEBBUGING_ON_ABNORMAL_TERMINATION
@@ -3240,6 +3242,8 @@ CONFIG_EXPLORER
 Explorador de archivos
 MAINW_GRAPHVIZ_ERROR
 Ha ocurrido un error al procesar el grafo
+lang_id
+ZinjaI
 VALGRIND_OUTPUT_MISSING
 No se encontro el archivo de salida.\nPara saber como generarlo consulte la ayuda.
 VALGRIND_RELOAD_TREE

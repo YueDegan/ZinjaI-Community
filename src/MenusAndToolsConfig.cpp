@@ -210,9 +210,10 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 		EndSubMenu(mnTOOLS);
 		
 		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_COMMENTS,"Coment&arios")).Description("Permite alinear o quitar los comentarios del codigo").Icon("comments.png").EnableIf(ecSOURCE));
-			AddMenuItem(mnTOOLS, myMenuItem("align_comments",mxID_TOOLS_ALIGN_COMMENTS, LANG(MENUITEM_TOOLS_COMMENTS_ALIGN_COMMENTS,"&Alinear Comentarios...")).Description("Mueve todos los comentarios hacia una determinada columna"));
 			AddMenuItem(mnTOOLS, myMenuItem("comment",mxID_EDIT_COMMENT, LANG(MENUITEM_TOOLS_COMMENTS_COMMENT,"&Comentar")).Description("Convierte el texto seleccionado en comentario anadiendo \"//\" a cada linea"));
 			AddMenuItem(mnTOOLS, myMenuItem("uncomment",mxID_EDIT_UNCOMMENT, LANG(MENUITEM_TOOLS_COMMENTS_UNCOMMENT,"&Descomentar")).Description("Descomente el texto seleccionado eliminando \"//\" de cada linea"));
+			AddMenuItem(mnTOOLS, myMenuItem("align_comments",mxID_TOOLS_ALIGN_COMMENTS, LANG(MENUITEM_TOOLS_COMMENTS_ALIGN_COMMENTS,"&Alinear Comentarios...")).Description("Mueve todos los comentarios hacia una determinada columna"));
+			AddMenuItem(mnTOOLS, myMenuItem("wrap_comments",mxID_TOOLS_WRAP_COMMENT, LANG(MENUITEM_TOOLS_COMMENTS_WRAP_COMMENT,"Ajuste de &Lineas...")).Description("Reacomoda el flujo de un comentario multilineas para que cada renglon no sobrepase un ancho máximo"));
 			AddMenuItem(mnTOOLS, myMenuItem("remove_comments",mxID_TOOLS_REMOVE_COMMENTS, LANG(MENUITEM_TOOLS_COMMENTS_DELETE_COMMENTS,"&Eliminar Comentarios")).Description("Quita todos los comentarios del codigo fuente o de la selección"));
 		EndSubMenu(mnTOOLS);
 		

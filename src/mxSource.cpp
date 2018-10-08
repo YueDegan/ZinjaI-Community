@@ -32,6 +32,7 @@
 #include "mxSourceUndoHistory.h"
 //#include "linStuff.h"
 #include "mxMiniSource.h"
+#include "mxSourceComments.h"
 using namespace std;
 
 // dwell time for margins
@@ -794,105 +795,21 @@ void mxSource::OnComment (wxCommandEvent &event) {
 	int ss = GetSelectionStart(), se = GetSelectionEnd();
 	int min,max; GetSelectedLinesRange(min,max);
 	if (min==max && se!=ss) {
-		ReplaceSelection(wxString("/*")<<GetSelectedText()<<"*/");
-		SetSelection(ss,se+4);
-		return;
-	}
-	UndoActionGuard undo_action(this);
-	if (cpp_or_just_c) {
-		for (int i=min;i<=max;i++) {
-			//if (GetLine(i).Left(2)!="//") {
-			SetTargetStart(PositionFromLine(i));
-			SetTargetEnd(PositionFromLine(i));
-			ReplaceTarget("//");
-		}	
+		int chars_added = mxSourceComments::CommentWord(this,ss,se);
+		SetSelection(ss,se+chars_added);
 	} else {
-		for (int i=min;i<=max;i++) {
-			int lp=PositionFromLine(i), ll=GetLineEndPosition(i); 
-			while (true) {
-				int s; char c; // para los II_*
-				int l0=lp;
-				while (lp<ll && II_IS_2(lp,' ','\t')) lp++;
-				if (lp==ll) break;
-				if (II_IS_COMMENT(lp)) {
-					while (lp<ll && II_IS_COMMENT(lp)) lp++;
-					if (lp==ll) break;
-				} else {
-					int le=lp;
-					while (le<ll && !II_IS_COMMENT(le)) le++;
-					SetTargetStart(le); SetTargetEnd(le); ReplaceTarget("*/");
-					SetTargetStart(l0); SetTargetEnd(l0); ReplaceTarget("/*");
-					lp=le+4; ll+=4;
-				}
-			}
-		}
+		UndoActionGuard undo_action(this);
+		mxSourceComments::CommentLines(this,min,max);
 	}
 }
 
 void mxSource::OnUncomment (wxCommandEvent &event) {
-	int ss = GetSelectionStart();
 	int min,max; GetSelectedLinesRange(min,max);
 	UndoActionGuard undo_action(this);
-	bool did_something=false;
-	for (int i=min;i<=max;i++) {
-		int s, p=GetLineIndentPosition(i); char c=GetCharAt(p+1); // s y c se reutilizan para II_*
-		if (II_IS_COMMENT(p)) {
-			bool remove_asterisco_barra=false, add_barra_asterisco=false;
-			if (GetCharAt(p)=='/' && (c=='/' || c=='*')) {
-				SetTargetStart(p);
-				SetTargetEnd(p+2);
-				ReplaceTarget("");
-				remove_asterisco_barra = c=='*';
-			} else if (i>0) {
-				p=GetLineEndPosition(i-1);
-				SetTargetStart(p);
-				SetTargetEnd(p);
-				ReplaceTarget("*/");
-				p+=2;
-				remove_asterisco_barra=add_barra_asterisco=true;
-			}
-			if (remove_asterisco_barra||add_barra_asterisco) {
-				int p2=p,pl=GetLineEndPosition(i);
-				while (p2<pl && !(GetCharAt(p2)=='*' && GetCharAt(p2+1)=='/') ) p2++;
-				if (p2!=pl) {
-					SetTargetStart(p2);
-					SetTargetEnd(p2+2);
-					ReplaceTarget("");
-					Colourise(p,p2);
-				} else if (add_barra_asterisco && i+1<GetLineCount()) {
-					p=PositionFromLine(i+1);
-					SetTargetStart(p);
-					SetTargetEnd(p);
-					ReplaceTarget("/*");
-				}
-				did_something=true; // can we just return now?
-			} 
-		}
-	}
-	
-	// si no hizo nada por linea, recupera el funcionamiento original para comentarios con /* y */ dentro de una linea
-	if (!did_something && GetStyleAt(ss)==wxSTC_C_COMMENT && GetLine(min).Left((GetLineIndentPosition(min))-PositionFromLine(min)+2).Right(2)!="//") {
-		int se=ss, l=GetLength();
-		while (ss>0 && (GetCharAt(ss)!='/' || GetCharAt(ss+1)!='*') )
-			ss--;
-		if (!se) 
-			se++;
-		while (se<l && (GetCharAt(se-1)!='*' || GetCharAt(se)!='/') )
-			se++;
-		if (GetCharAt(se)=='/' && GetCharAt(se-1)=='*') {
-			SetTargetStart(se-1);
-			SetTargetEnd(se+1);
-			ReplaceTarget("");
-		}
-		if (GetCharAt(ss)=='/' && GetCharAt(ss+1)=='*') {
-			SetTargetStart(ss);
-			SetTargetEnd(ss+2);
-			ReplaceTarget("");
-		}
-		SetSelection(ss,se-3);
-		return;
-	}
-	
+	if (mxSourceComments::UnCommentLines(this,min,max)) return;
+	int ss = GetSelectionStart();
+	if (GetStyleAt(ss)==wxSTC_C_COMMENT && GetLine(min).Left((GetLineIndentPosition(min))-PositionFromLine(min)+2).Right(2)!="//")
+		mxSourceComments::UnCommentWord(this,ss,true);
 }
 
 
@@ -3335,90 +3252,8 @@ void mxSource::Reload() {
 	m_extras->ToSource(this);
 }
 
-void mxSource::AlignComments (int col) {
-	UndoActionGuard undo_action(this);
-	config_source.alignComments=col;
-	int ss = GetSelectionStart();
-	int se = GetSelectionEnd();
-	if (ss>se) { int aux=ss; ss=se; se=aux; }
-	bool sel = se>ss; char c;
-	int line_ss=sel?LineFromPosition(ss):0, line_se=sel?LineFromPosition(se):GetLineCount();
-	int p3,pl=PositionFromLine(line_ss);
-	bool prev=false;
-	for (int i=line_ss;i<line_se;i++) {
-		int p1=pl, s;
-		int p2=PositionFromLine(i+1);
-		if (!II_IS_COMMENT(p1) || prev) {
-			if (!II_IS_COMMENT(p1)) {
-				while (p1<p2 && !II_IS_COMMENT(p1)) p1++;
-				p3=p1;
-				while (p3<p2 && II_IS_NOTHING_2(p3) ) p3++;
-			} else {
-				while (p1<p2 && II_IS_2(p1,' ','\t')) p1++;
-				p3=p2;
-			}
-			if (p1<p2 && p3==p2) {
-				prev=true;
-				int cp=GetColumn(p1);
-				if (cp<col) {
-					InsertText(p1,wxString(wxChar(' '),col-cp));
-				} else if (col<cp) {
-					SetTargetEnd(p1);
-					p1--;
-					while (p1>pl && II_IS_NOTHING_2(p1)) p1--;
-					SetTargetStart(p1+1);
-					cp=GetColumn(p1);
-					if (col>=cp)
-						ReplaceTarget(wxString(wxChar(' '),col-cp));
-					else
-						ReplaceTarget(" ");
-				} else
-					prev=false;
-				p2=PositionFromLine(i+1);
-			} else {
-				prev=false;
-				if (p3<p2) { p2=p3;  i--; }
-			}
-		}
-		pl=p2;
-	}
-}
-
-void mxSource::RemoveComments () {
-	UndoActionGuard undo_action(this);
-	int ss = GetSelectionStart();
-	int se = GetSelectionEnd();
-	if (ss>se) { int aux=ss; ss=se; se=aux; }
-	bool sel = se>ss;
-	int line_ss=sel?LineFromPosition(ss):0, line_se=sel?LineFromPosition(se):GetLineCount();
-	int p1,p2;
-	for (int i=line_ss;i<line_se;i++) {
-
-		int p3=ss=PositionFromLine(i), s;
-		se=PositionFromLine(i+1);
-		
-		while (p3<se && !II_IS_COMMENT(p3)) p3++;
-		if (p3>=se) continue;
-		p1=p3;
-		while (p3<se && II_IS_COMMENT(p3)) p3++;
-		p2=p3;
-		if (p1<=GetLineIndentPosition(i) && p2>se-2)  { // si es toda la linea de comentario, borrar entera
-			p1=PositionFromLine(i);
-			p2=PositionFromLine(i+1);
-			line_se--;
-		} else if (p2==se) {
-			i++; p2--;
-		}
-		SetTargetEnd(p2);
-		SetTargetStart(p1);
-		ReplaceTarget("");
-		i--;
-	}
-}
-
 bool mxSource::IsComment(int pos) {
-	int s;
-	return II_IS_COMMENT(pos);
+	int s; return II_IS_COMMENT(pos);
 }
 
 
@@ -4327,3 +4162,8 @@ mxMiniSource *mxSource::GetMinimap(mxMiniMapPanel *panel) {
 	return m_minimap.get();
 }
 
+void mxSource::DeleteText(int pfrom, int len) {
+	SetTargetStart(pfrom);
+	SetTargetEnd(pfrom+len);
+	ReplaceTarget("");
+}

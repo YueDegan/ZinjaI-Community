@@ -1270,3 +1270,10 @@ void mxUT::RemoveCharInplace (wxString & s, char c) {
 	s.Remove(l-d);
 }
 
+wxString mxUT::MakeCaption (int lang_id) {
+	wxString s = LANG(lang_id,"ZinjaI");
+	s.Replace("&","",true);
+	if (s.EndsWith("...")) s.Remove(s.Len()-3,3);
+	return s;
+}
+
