@@ -125,7 +125,7 @@ void mxSourceComments::RemoveComments (mxSource *src, int lfrom, int lto) {
 		while (p1<pe && src->IsComment(p1)) p1++;
 		// si es toda la linea de comentario, borrar entera
 		if (p0<=src->GetLineIndentPosition(i) && p1==pe)  { 
-			p0 = src->PositionFromLine(i);
+			p0 = src->PositionFromLine(i); p1++;
 			--lto;
 		}
 		// borrar comentario
