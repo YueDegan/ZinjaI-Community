@@ -6,14 +6,12 @@ active_configuration=Debug_Linux
 custom_tabs=0
 tab_use_spaces=0
 use_wxfb=0
-current_source=Readme.txt
+current_source=main.cpp
 path_char=/
+help_page=${ZINJAI_DIR}/complements/guihelp/opengl/opengl.html
 [source]
 path=main.cpp
 cursor=21
-[other]
-path=Readme.txt
-cursor=0
 open=true
 [config]
 name=Debug_Linux
