@@ -3,6 +3,7 @@
 #include <wx/dialog.h>
 #include <wx/process.h>
 #include <wx/timer.h>
+#include <wx/frame.h>
 #include "mxValgrindOuput.h"
 
 class wxTextCtrl;
@@ -11,6 +12,7 @@ class wxTimer;
 class wxStaticText;
 class mxBitmapButton;
 class wxFile;
+class wxGauge;
 
 enum mxOVmode {
 	mxOV_EXTRA_NULL,
@@ -18,17 +20,19 @@ enum mxOVmode {
 	mxOV_EXTRA_URL,
 };
 
-class mxOutputView : public wxDialog {
+class mxOutputView : public wxFrame {
 private:
 	wxTextCtrl *ctrl_std;
 	wxTextCtrl *ctrl_err;
 	wxStaticText *state;
+	wxGauge *progress_bar;
 	wxProcess *process;
 	wxTimer *timer;
 	int pid;
 	mxOVmode extra_mode;
 	wxString extra_command;
 	wxString extra_label;
+	wxString win_caption;
 	mxBitmapButton *extra_button;
 	mxBitmapButton *close_button;
 	bool working;

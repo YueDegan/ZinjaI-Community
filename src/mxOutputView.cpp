@@ -11,7 +11,7 @@
 #include "mxUtils.h"
 #include "Language.h"
 
-BEGIN_EVENT_TABLE(mxOutputView, wxDialog)
+BEGIN_EVENT_TABLE(mxOutputView, wxFrame)
 	EVT_BUTTON(wxID_OK,mxOutputView::OnOkButton)
 	EVT_BUTTON(wxID_CANCEL,mxOutputView::OnExtraButton)
 	EVT_CLOSE(mxOutputView::OnClose)
@@ -27,7 +27,10 @@ END_EVENT_TABLE()
 * @param output_mode   mode for openning results pannel in main_window (mxOV_OUTPUT_*)
 * @param output_file   if output_mode!=mxVO_NULL, the full path for the output file
 **/
-mxOutputView::mxOutputView(wxString caption, mxOVmode extra_mode, wxString extra_label, wxString extra_command, mxVOmode output_mode, wxString output_file) : wxDialog(main_window, wxID_ANY, caption, wxDefaultPosition, wxSize(600,500) ,wxALWAYS_SHOW_SB | wxALWAYS_SHOW_SB | wxDEFAULT_FRAME_STYLE | wxSUNKEN_BORDER) {
+mxOutputView::mxOutputView(wxString caption, mxOVmode extra_mode, wxString extra_label, wxString extra_command, mxVOmode output_mode, wxString output_file) 
+//	: wxDialog(main_window, wxID_ANY, caption, wxDefaultPosition, wxSize(600,500) ,wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER ) 
+	: wxFrame(main_window, wxID_ANY, caption, wxDefaultPosition, wxSize(600,500) /*,wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER*/ ) 
+{
 	process = nullptr;
 	working = false;
 	this->extra_mode=extra_mode;
@@ -35,6 +38,7 @@ mxOutputView::mxOutputView(wxString caption, mxOVmode extra_mode, wxString extra
 	this->extra_command=extra_command;
 	this->output_mode=output_mode;
 	this->output_file=output_file;
+	this->win_caption = caption;
 	
 	if (output_mode!=mxVO_NULL) {
 		textfile=new wxFile(output_file,wxFile::write);
@@ -52,13 +56,21 @@ mxOutputView::mxOutputView(wxString caption, mxOVmode extra_mode, wxString extra
 	ctrl_err = new wxTextCtrl(this,wxID_ANY,"",wxDefaultPosition,wxDefaultSize,wxTE_MULTILINE|wxTE_READONLY);
 	mySizer->Add(ctrl_err,sizers->BA5_Exp1);
 	
-	mySizer->Add(state = new wxStaticText(this,wxID_ANY,LANG(LAUNCH_STATUS_STARTING,"Estado: Comenzando")),sizers->BA5_Exp0);
+	wxBoxSizer *statusSizer = new wxBoxSizer(wxHORIZONTAL);
+	statusSizer->Add(state = new wxStaticText(this,wxID_ANY,LANG(LAUNCH_STATUS_STARTING,"Estado: Comenzando")),sizers->BA5_Exp1);
+	if (output_mode==mxVO_CPPCHECK) {
+		statusSizer->Add(progress_bar = new wxGauge(this,wxID_ANY,100) ,sizers->BA5_Exp1);
+	} else {
+		progress_bar = nullptr;
+	}
+	
+	mySizer->Add(statusSizer,sizers->BA5_Exp0);
 	
 	
 	wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 	
 	close_button= new mxBitmapButton (this,wxID_OK,bitmaps->buttons.ok,LANG(GENERAL_CLOSE_BUTTON,"&Cerrar"));
-	SetEscapeId(wxID_OK);
+//	SetEscapeId(wxID_OK);
 	close_button->SetDefault(); 
 	close_button->Enable(false);
 	
@@ -172,6 +184,14 @@ void mxOutputView::GetProcessOutput() {
 		if (c!='\r') line<<c;
 	}
 	ctrl_std->AppendText(line);
+	if (progress_bar && line.Contains("% done")) {
+		long p;
+		wxString aux1=line.Mid(0,line.Find("% done"));
+		if (line.Mid(0,line.Find("% done")).AfterLast(' ').ToLong(&p)) {
+			progress_bar->SetValue(p);
+			this->SetTitle(wxString(win_caption)<<" ("<<p<<"%)");
+		}
+	}
 	ctrl_std->ShowPosition(ctrl_std->GetLastPosition());
 	line.Clear();
 	while (process->IsErrorAvailable()) {
