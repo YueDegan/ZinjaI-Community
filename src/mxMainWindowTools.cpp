@@ -686,7 +686,7 @@ void mxMainWindow::OnToolsGprofShow (wxCommandEvent &event) {
 	// procesar salida con gprof2dot para obtener el grafo
 	status_bar->SetStatusText(LANG(MAINW_GPROF_DRAWING,"Dibujando grafo..."));
 	wxString pout = DIR_PLUS_FILE(config->temp_dir,"gprof.dot");
-	wxString command = mxUT::Quotize( config->GetZinjaiBinPath(_if_win32("gprof2dot/gprof2dot.exe","gprof2dot/gprof2dot.py")) );
+	wxString command = mxUT::Quotize( config->GetZinjaiThirdPath(_if_win32("gprof2dot/gprof2dot.exe","gprof2dot/gprof2dot.py")) );
 	nodt.ToDouble(&edge_tres); edgt.ToDouble(&node_tres);
 	command<<" "<<mxUT::Quotize(gout)<<" -e "<<edge_tres<<" -n "<<node_tres<<" -o "<<mxUT::Quotize(pout);
 	int retval=mxExecute(command,wxEXEC_NODISABLE|wxEXEC_SYNC);
