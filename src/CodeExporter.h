@@ -21,7 +21,6 @@ private:
 	} m_styles[128];
 	void DefineStyles(int lexer);
 public:
-	CodeExporter();
 	bool ExportHtml(mxSource *src, wxString title, wxString fname);
 	void SetStyle(int idx, int fontSize, const wxChar *foreground, const wxChar *background, int fontStyle);
 	

@@ -4,8 +4,6 @@
 #include <wx/timer.h>
 #include <wx/listctrl.h>
 
-class wxListCtrl;
-class wxListBox;
 class wxTextCtrl;
 class wxCheckBox;
 class wxButton;

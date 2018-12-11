@@ -1,6 +1,5 @@
 #include <wx/sizer.h>
 #include <wx/arrstr.h>
-#include <wx/textctrl.h>
 #include <wx/listbox.h>
 #include <wx/stattext.h>
 #include "mxOpenRecentDialog.h"

@@ -5,10 +5,6 @@
 #include <wx/ffile.h>
 #include "Language.h"
 
-CodeExporter::CodeExporter() {
-	
-}
-
 bool CodeExporter::ExportHtml(mxSource *src, wxString title, wxString fname) {
 	
 	wxFFile fil(fname,_T("w+"));
@@ -23,7 +19,6 @@ bool CodeExporter::ExportHtml(mxSource *src, wxString title, wxString fname) {
 	
 	header=_T("\t\t.SSD { color:#FFFFFF; background-color:#000000; }\n");
 	fil.Write(header);
-
 	
 	DefineStyles(src->lexer);
 	for (int i=0;i<128;i++) {
