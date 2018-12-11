@@ -300,14 +300,14 @@ void mxCompiler::ParseSomeExternErrors(compile_and_run_struct_single *compile_an
 		error_line=input1.ReadLine();
 		if (error_line.Len()==0) continue;
 		errors_manager->AddExtraOutput(compile_and_run->m_cem_state,error_line);
-		main_window->extern_compiler_output->AddLine("< ",error_line);
+		main_window->extern_compiler_output->AddLine(mxExternCompilerOutput::Std,error_line);
 	}
 	wxTextInputStream input2(*(process->GetErrorStream()));	
 	while ( process->IsErrorAvailable() ) {
 		error_line=input2.ReadLine();
 		if (error_line.Len()==0) continue;
 		errors_manager->AddExtraOutput(compile_and_run->m_cem_state,error_line);
-		main_window->extern_compiler_output->AddLine("!! ",error_line);
+		main_window->extern_compiler_output->AddLine(mxExternCompilerOutput::Err,error_line);
 	}
 }
 

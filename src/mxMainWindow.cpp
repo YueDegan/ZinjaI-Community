@@ -3547,7 +3547,11 @@ void mxMainWindow::OnToolbarFindEnter (wxCommandEvent &evt) {
 		OnRunRun(evt);
 		return;
 	}
-	if (!project && stext=="moonwalk") { // are you looking for a duck?
+	if (stext=="vim mode") {
+		GetMenuBar()->GetMenu(0)->Remove(mxID_FILE_EXIT);
+		EnableCloseButton(false);
+		wxMessageBox("Vim mode activated");
+	} else if (!project && stext=="moonwalk") { // are you looking for a duck?
 		NewFileFromText("\n\n\n\n\n\n\n");
 		parser_timer->Stop();
 		wxYield();
@@ -4466,7 +4470,7 @@ void mxMainWindow::SetToolchainMode (bool is_extern) {
 }
 
 void mxMainWindow::SetCompilingStatus (const wxString &message, bool also_statusbar) {
-	if (current_toolchain.IsExtern()) extern_compiler_output->AddLine("= ",message);
+	if (current_toolchain.IsExtern()) extern_compiler_output->AddLine(mxExternCompilerOutput::Status,message);
 	else {
 		compiler_tree.treeCtrl->SetItemText(compiler_tree.state,message);
 		if (also_statusbar) main_window->compiler_tree.treeCtrl->SelectItem(main_window->compiler_tree.state);
@@ -4509,6 +4513,11 @@ void mxMainWindow::OnSelectErrorCommon (const wxString & error, const wxString &
 	if ( preline.BeforeFirst(':').ToLong(&line) ) {
 		// ver si esta abierto
 		wxString sthe_one(error[1]!=':' ?error.BeforeFirst(':'):(error.Mid(0,2)+error.AfterFirst(':').BeforeFirst(':')));
+		if (error.Last()==':') {
+			// Mensajes previos al error como "In file included from foo.cpp:42:" o "foo.cpp: in function foo()"
+			if      (sthe_one.StartsWith(EN_COMPOUT_IN_FILE_INCLUDED_FROM)) sthe_one = sthe_one.Mid(wxString(EN_COMPOUT_IN_FILE_INCLUDED_FROM).Len());
+			else if (sthe_one.StartsWith(ES_COMPOUT_IN_FILE_INCLUDED_FROM)) sthe_one = sthe_one.Mid(wxString(ES_COMPOUT_IN_FILE_INCLUDED_FROM).Len());
+		}
 		wxFileName the_one;
 		if (project)             the_one=sthe_one=DIR_PLUS_FILE(project->path,sthe_one);
 		else IF_THERE_IS_SOURCE  the_one=sthe_one=DIR_PLUS_FILE(CURRENT_SOURCE->source_filename.GetPath(),sthe_one);

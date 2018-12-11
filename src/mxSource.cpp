@@ -794,11 +794,11 @@ void mxSource::OnEditToggleLinesDown (wxCommandEvent &event) {
 void mxSource::OnComment (wxCommandEvent &event) {
 	int ss = GetSelectionStart(), se = GetSelectionEnd();
 	int min,max; GetSelectedLinesRange(min,max);
+	UndoActionGuard undo_action(this);
 	if (min==max && se!=ss) {
 		int chars_added = mxSourceComments::CommentWord(this,ss,se);
 		SetSelection(ss,se+chars_added);
 	} else {
-		UndoActionGuard undo_action(this);
 		mxSourceComments::CommentLines(this,min,max);
 	}
 }

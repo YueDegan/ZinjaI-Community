@@ -298,6 +298,7 @@ struct project_configuration {
 	wxString linking_extra; ///< parametros adicionales para el enlazador (se llama a travez de gcc/g++, no directo)
 	wxString libraries_dirs; ///< rutas adicionales para buscar librerias (para pasar con -L)
 	wxString libraries; ///< librearias para enlazar (para pasar con -l)
+	wxString libs_to_use; ///< librearias para "usar" (pkg-config/-framework)
 	int strip_executable; ///< que hacer durante el enlazado con la info de depuracion (las opciones estan en el enum DebugSymbolsAction)
 	bool console_program; ///< marcar como programa de consola (sino, no usar el runner y compilar con -mwindows)
 	JavaVector<compile_extra_step> extra_steps; ///< lista de pasos adicionales para la compilacion (sin primer nodo ficticio), nullptr si no hay pasos extra

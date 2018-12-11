@@ -135,7 +135,7 @@ public:
 	/// devuelve verdadero si el dato value empieza con '1','V','v','T','t','S' o 's'
 	static bool IsTrue(const wxString &value) { return (value[0]=='1' || value[0]=='V' || value[0]=='v' || value[0]=='s' || value[0]=='S' || value[0]=='T' || value[0]=='t'); }
 	static wxString UnSplit(const wxArrayString &array, const wxString &sep=" ", bool add_quotes=false); ///< joins all strins in array into a single string using a single space as separator
-	static wxString Split(wxString str, wxString pre);
+	static wxString Split(wxString str, wxString pre, wxString post="");
 	static int Split(wxString str, wxArrayString &array, bool coma_splits=true,bool keep_quotes=true);
 	static int Execute(wxString path, wxString command, int sync);
 	static int Execute(wxString path, wxString command, int sync, wxProcess *&process);

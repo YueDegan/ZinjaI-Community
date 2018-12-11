@@ -481,6 +481,7 @@ void mxProjectConfigWindow::LoadValues() {
 	compiling_enable_lto->SetValue(configuration->enable_lto);
 	
 	ReloadSteps();
+	libs_to_use->SetValue(configuration->libs_to_use);
 	ReloadLibs();
 	libtobuild_noexec->SetValue(configuration->dont_generate_exe);
 	// set toolchains combo value
@@ -582,6 +583,8 @@ bool mxProjectConfigWindow::SaveValues() {
 	configuration->toolchain=toolchains_combo->GetStringSelection();
 	if (configuration->toolchain=="<default>") configuration->toolchain="";
 
+	configuration->libs_to_use=libs_to_use->GetValue();
+	
 	return true;
 	
 }
@@ -684,6 +687,11 @@ wxPanel *mxProjectConfigWindow::CreateStepsPanel (wxNotebook *notebook) {
 
 wxPanel *mxProjectConfigWindow::CreateLibsPanel (wxNotebook *notebook) {
 	CreatePanelAndSizer sizer(notebook); wxPanel *panel = sizer.GetPanel();
+	
+	sizer.BeginText( LANG(PROJECTCONFIG_LIBS_TO_USE,"Bibliotecas del sistema a utilizar") )
+		.Value(configuration->libs_to_use)/*.Button(mxID_PROJECT_CONFIG_LIBS_TO_USE_BUTTON)*/
+		.RegisterIn(wx_extern).EndText(libs_to_use);
+	
 	
 	sizer.BeginLabel( LANG(PROJECTCONFIG_LIBS_TO_GENERATE,"Bibliotecas a generar*") ).RegisterIn(wx_extern).EndLabel();
 	

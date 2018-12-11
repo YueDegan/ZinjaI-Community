@@ -2,7 +2,6 @@
 #define MX_PROJECT_CONFIG_WINDOW_H
 
 #include <wx/dialog.h>
-#include <wx/listctrl.h>
 #include "widgetDisabler.h"
 #include "mxCommonPopup.h"
 #include "mxCommonConfigControls.h"
@@ -72,6 +71,7 @@ class mxProjectConfigWindow : public mxDialog {
 	wxComboBox *toolchains_combo;
 	
 	// pestaña bibliotecas
+	wxTextCtrl *libs_to_use;
 	wxListBox *libtobuild_list;
 	wxCheckBox *libtobuild_noexec;
 	

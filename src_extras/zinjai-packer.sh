@@ -42,6 +42,9 @@ if [ "$1" = "prepare" ]; then
   mkdir -p zinjai/src_extras/complement
   mkdir -p zinjai/src_extras/img_viewer
   mkdir -p zinjai/libs
+  mkdir -p zinjai/complements
+  mkdir -p zinjai/complements/guihelp
+  mkdir -p zinjai/complements/guihelp/opengl
 
 elif [ "$1" = "update" ]; then
 
@@ -99,6 +102,7 @@ elif [ "$1" = "update" ]; then
   rsync -i -pt $2/zinjai/lang/tools/mxLangTool/*.h			zinjai/lang/tools/mxLangTool/
   rsync -i -pt $2/zinjai/lang/tools/mxLangTool/*.zpr		zinjai/lang/tools/mxLangTool/
   rsync -i -pt $2/zinjai/libs/*.txt						zinjai/libs/
+  rsync -i -pt $2/zinjai/complements/guihelp/opengl/*						zinjai/complements/guihelp/opengl/
 
 elif [ "$1" = "compile" ]; then
 

@@ -30,6 +30,10 @@ cp -ru /mnt/ex/zinjai/parser/hyper/* zinjai.app/Contents/Resources/parser/hyper/
 mkdir -p zinjai.app/Contents/Resources/parser/misc
 cp -ru /mnt/ex/zinjai/parser/misc/* zinjai.app/Contents/Resources/parser/misc/
 
+mkdir -p zinjai.app/Contents/Resources/complements/guihelp/opengl
+cp -ru /mnt/ex/zinjai/complements/guihelp/opengl/* zinjai.app/Contents/Resources/complements/guihelp/opengl/
+
+
 mkdir -p zinjai.app/Contents/Resources/autocomp
 cp -u /mnt/ex/zinjai/autocomp/* zinjai.app/Contents/Resources/autocomp/
 mkdir -p zinjai.app/Contents/Resources/colours

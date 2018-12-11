@@ -327,6 +327,7 @@ ProjectManager::ProjectManager(wxFileName name):custom_tools(MAX_PROJECT_CUSTOM_
 				else if (p.Key()=="linking_extra") active_configuration->linking_extra = p.AsString();
 				else if (p.Key()=="libraries_dirs") active_configuration->libraries_dirs = p.AsString();
 				else if (p.Key()=="libraries") active_configuration->libraries = p.AsString();
+				else if (p.Key()=="libs_to_use") active_configuration->libs_to_use = p.AsString();
 				else if (p.Key()=="strip_executable") active_configuration->strip_executable = p.AsInt();
 				else if (p.Key()=="console_program") active_configuration->console_program = p.AsBool();
 				else if (p.Key()=="dont_generate_exe") active_configuration->dont_generate_exe = p.AsBool();
@@ -925,6 +926,7 @@ bool ProjectManager::Save (bool as_template) {
 		CFG_GENERIC_WRITE_DN("linking_extra",configurations[i]->linking_extra);
 		CFG_GENERIC_WRITE_DN("libraries_dirs",configurations[i]->libraries_dirs);
 		CFG_GENERIC_WRITE_DN("libraries",configurations[i]->libraries);
+		CFG_GENERIC_WRITE_DN("libs_to_use",configurations[i]->libs_to_use);
 		CFG_GENERIC_WRITE_DN("strip_executable",configurations[i]->strip_executable);
 		CFG_BOOL_WRITE_DN("console_program",configurations[i]->console_program);
 		CFG_BOOL_WRITE_DN("dont_generate_exe",configurations[i]->dont_generate_exe);
@@ -2218,6 +2220,13 @@ void ProjectManager::AnalizeConfig(wxString path, bool exec_comas, wxString ming
 	if (active_configuration->enable_lto) co_optim<<" -flto";
 	compiling_options<<co_optim<<" ";
 	
+	// opciones de compilación para libs del sistema
+#  ifdef __APPLE__
+	linking_options<<mxUT::Split(active_configuration->libs_to_use,"-framework ")<<" ";
+#  else
+	linking_options<<mxUT::Split(active_configuration->libs_to_use,"`pkg-config --cflags ","`")<<" ";
+#  endif
+	
 	
 	// headers_dirs
 	wxString co_includes;
@@ -2270,7 +2279,7 @@ void ProjectManager::AnalizeConfig(wxString path, bool exec_comas, wxString ming
 	if (active_configuration->strip_executable==DBSACTION_STRIP)
 		linking_options<<"-s ";
 	// directorios para bibliotecas
-	linking_options<<mxUT::Split(active_configuration->libraries_dirs,"-L");
+	linking_options<<mxUT::Split(active_configuration->libraries_dirs,"-L")<<" ";
 	// bibliotecas
 	linking_options<<mxUT::Split(active_configuration->libraries,"-l");
 	// reemplazar variables
@@ -2283,6 +2292,16 @@ void ProjectManager::AnalizeConfig(wxString path, bool exec_comas, wxString ming
 	mxUT::ParameterReplace(linking_extra,"${TEMP_DIR}",temp_folder_short);
 	mxUT::ParameterReplace(linking_extra,"${PROJECT_PATH}",project->path);
 	mxUT::ParameterReplace(linking_extra,"${ZINJAI_DIR}",project->path);
+
+	// bibliotecas
+#ifndef __WIN32__
+#  ifdef __APPLE__
+	linking_extra<<mxUT::Split(active_configuration->libs_to_use,"-framework ")<<" ";
+#  else
+	linking_extra<<mxUT::Split(active_configuration->libs_to_use,"`pkg-config --libs ","`")<<" ";
+#  endif
+#endif
+	
 	// reemplazar subcomandos y agregar extras
 	if (exec_comas)
 		linking_options<<" "<<mxUT::ExecComas(path,linking_extra);
@@ -2856,7 +2875,7 @@ long int ProjectManager::CompileWithExternToolchain(compile_and_run_struct_singl
 	compile_and_run->output_type=MXC_EXTERN;
 	compile_and_run->compiling=true;
 	compile_and_run->m_cem_state = errors_manager->InitExtern(command);
-	main_window->extern_compiler_output->AddLine("> ",command);
+	main_window->extern_compiler_output->AddLine(mxExternCompilerOutput::Cmd,command);
 	return mxUT::Execute(path,command, wxEXEC_ASYNC/*|(step->hide_window?0:wxEXEC_NOHIDE)*/,compile_and_run->process);
 }
 

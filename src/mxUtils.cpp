@@ -369,7 +369,7 @@ wxString mxUT::UnSplit(const wxArrayString &array, const wxString &sep, bool add
 	return ret;
 }
 
-wxString mxUT::Split(wxString str, wxString pre) {
+wxString mxUT::Split(wxString str, wxString pre, wxString post) {
 	/// @todo: reescribir este método reusando el otro Split
 	int i=0, l=str.Len();
 	wxString ret;
@@ -386,7 +386,7 @@ wxString mxUT::Split(wxString str, wxString pre) {
 			i++;
 		}
 		if (s<i)
-			ret<<pre<<str.Mid(s,i-s)<<" ";
+			ret<<pre<<str.Mid(s,i-s)<<post<<" ";
 	}
 	return ret;
 }

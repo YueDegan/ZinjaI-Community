@@ -1225,7 +1225,7 @@ Cursiva
 COLOURS_BOLD
 Negrita
 COLOURS_ZOOM
-ZOOM
+Zoom
 COLORS_HELP
 Puede ingresar los colores con formato HTML o utilizando el boton de los tres punto para inciar un selector grafico. El formato html es \"#ABCDEF\" donde AB, CD y EF son los valores en notación hexadecimal para R, G y B.
 COLORS_ID_DEFAULT
@@ -2918,6 +2918,8 @@ PROJECTCONFIG_STEPS_WARNING_APPLY_NOW_LINE_1
 Nota: estos cambios se aplican inmediatamente,
 PROJECTCONFIG_STEPS_WARNING_APPLY_NOW_LINE_2
 aunque luego seleccione cancelar
+PROJECTCONFIG_LIBS_TO_USE
+Bibliotecas a utilizar:
 PROJECTCONFIG_LIBS_TO_GENERATE
 Bibliotecas a generar*
 PROJECTCONFIG_LIBS_ADD
