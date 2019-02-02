@@ -2738,10 +2738,7 @@ bool ProjectManager::WxfbGenerate(wxString fbp_file, wxString fbase, bool force_
 		if (src) src->Reload();
 	}
 	
-	wxTextFile fil(fflag);
-	if (!fil.Exists()) fil.Create();
-	fil.Open();
-	if (!fil.IsOpened()) {
+	if (!CreateWxfbFlagFile(fflag)) {
 		if (osd) osd->Hide();
 		wxString message = LANG1(PROJMNGR_REGENERATING_ERROR_1,"No se pudo actualizar automáticamente el código generado a partir de:\n<{1}>",fbp_file);
 		message << "\n" << LANG(PROJMNGR_REGENERATING_ERROR_4,"(probablemente no se pueda escribir en la carpeta de proyecto).");
@@ -2754,12 +2751,20 @@ bool ProjectManager::WxfbGenerate(wxString fbp_file, wxString fbase, bool force_
 		mxMessageDialog(main_window,message).Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
 		return true;
 	}
+	
+	return true;
+}
+	
+bool ProjectManager::CreateWxfbFlagFile(wxString flag_file_full_path) {
+	wxTextFile fil(flag_file_full_path);
+	if (!fil.Exists()) fil.Create();
+	fil.Open();
+	if (!fil.IsOpened()) return false;
 	fil.Clear();
 	fil.AddLine("Este archivo se utiliza para determinar la fecha y hora de la última compilación del proyecto wxFormBuilder homónimo.");
 	fil.AddLine("This is a dummy file to be used as timestamp for the generation of a wxFormBuilder project.");
 	fil.Write();
 	fil.Close();
-
 	return true;
 }
 

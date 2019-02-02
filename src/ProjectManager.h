@@ -676,6 +676,9 @@ public:
 	/// Regenerar proyectos o actualizar clases de wxFormBuilder si es necesario (parte 2)
 	void WxfbAutoCheckStep2(WxfbAutoCheckData *old_data);
 	
+	/// Crea el archivo de control que indica que un proyecto wxfb ya ha sido renegenerado
+	bool CreateWxfbFlagFile(wxString flag_file_full_path);
+		
 	/// Agrega al proyecto un clase heredada de alguna de las diseñadas en wxFormBuilder
 	bool WxfbNewClass(wxString base_name, wxString name);
 	/// Actualiza una clase heredada de alguna de las diseñadas en wxFormBuilder
@@ -756,5 +759,7 @@ public:
 };
 
 extern ProjectManager *project;
+
+#warning LIBS LINUX TO WIN (Q2)
 
 #endif

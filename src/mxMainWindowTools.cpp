@@ -330,9 +330,10 @@ void mxMainWindow::OnToolsWxfbNewRes(wxCommandEvent &event) {
 			fbp_file.Write();
 			fbp_file.Close();
 		}
+		// evitar que se regenere, puede terminar en deadlock si al abrirlo se queda preguntando por el cambio de version
+		project->CreateWxfbFlagFile(fbase+".flg");
 		
 		// asociar al proyecto y abrir
-		
 		wxfb_configuration *wxfb = project->GetWxfbConfiguration();
 		
 		project_file_item *item=project->FindFromFullPath(cpp_name);
@@ -347,7 +348,7 @@ void mxMainWindow::OnToolsWxfbNewRes(wxCommandEvent &event) {
 		
 		if (!project->FindFromFullPath(fname)) project->AddFile(FT_OTHER,fname);
 		
-		main_window->OpenFile(fname,false);
+		main_window->OpenFile(fname,false); 
 		return;
 	}
 }
@@ -389,7 +390,7 @@ void mxMainWindow::OnToolsWxfbLoadRes(wxCommandEvent &event) {
 }
 
 void mxMainWindow::OnToolsWxfbRegen(wxCommandEvent &event) {
-	if (project && project->GetWxfbActivated()) {
+	if (project && project->GetWxfbActivated(true)) {
 		status_bar->SetStatusText("Regenerando proyectos wxFormBuilder...");
 		project->WxfbGenerate();
 //		parser->Parse();
