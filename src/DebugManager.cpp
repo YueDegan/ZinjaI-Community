@@ -769,7 +769,6 @@ bool DebugManager::UpdateBacktrace(const BTInfo &stack, bool is_current) {
 		} else {
 			main_window->backtrace_ctrl->SetCellValue(cant_levels,BG_COL_FUNCTION,func);
 			wxString fname = GetValueFromAns(s,"fullname",true,true);
-//			if (!fname.IsEmpty()&&!fname.EndsWith(".cpp")) asm("int3");
 			if (!fname.Len()) fname = GetValueFromAns(s,"file",true,true);
 			fname.Replace("\\\\",sep,true);
 			fname.Replace("//",sep,true);

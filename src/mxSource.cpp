@@ -815,7 +815,7 @@ void mxSource::OnUncomment (wxCommandEvent &event) {
 
 bool mxSource::LoadFile (const wxFileName &filename) {
 	wxString ext = filename.GetExt().MakeLower();
-	if (mxUT::ExtensionIsCpp(ext) || mxUT::ExtensionIsH(ext)) {
+	if (config->ExtIsHeader(ext)||config->ExtIsSource(ext)||config->ExtIsExtra(ext)) {
 		SetStyle(wxSTC_LEX_CPP);
 	} else if (ext=="htm" || ext=="html") {
 		SetStyle(wxSTC_LEX_HTML);

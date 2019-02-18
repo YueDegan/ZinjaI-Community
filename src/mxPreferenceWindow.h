@@ -64,7 +64,6 @@ class mxPreferenceWindow : public mxDialog {
 	wxCheckBox *toolbars_wich_tools;
 	
 	wxComboBox *toolbars_side_file;
-//	wxComboBox *toolbars_side_project;
 	wxComboBox *toolbars_side_edit;
 	wxComboBox *toolbars_side_view;
 	wxComboBox *toolbars_side_run;
@@ -117,9 +116,6 @@ class mxPreferenceWindow : public mxDialog {
 	wxCheckBox *debug_no_debug_heap;
 #endif
 	wxTextCtrl *debug_macros_file;
-//#ifdef __WIN32__
-//	wxTextCtrl *files_mingw_dir;
-//#endif
 	
 	wxComboBox *toolbar_icon_size;
 	
@@ -169,9 +165,7 @@ class mxPreferenceWindow : public mxDialog {
 	void OnSkinButton(wxCommandEvent &event);
 	void OnProjectButton(wxCommandEvent &event);
 	void OnTempButton(wxCommandEvent &event);
-#ifdef __WIN32__
-//	void OnMingwButton(wxCommandEvent &event);
-#else
+#ifndef __WIN32__
 	void OnExplorerButton(wxCommandEvent &event);
 	void OnExplorerNautilus(wxCommandEvent &event);
 	void OnExplorerDolphin(wxCommandEvent &event);

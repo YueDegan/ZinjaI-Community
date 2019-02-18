@@ -2,6 +2,7 @@
 #include <wx/textctrl.h>
 #include <wx/process.h>
 #include <wx/txtstrm.h>
+#include <wx/gauge.h>
 #include "mxOutputView.h"
 #include "mxMainWindow.h"
 #include "mxBitmapButton.h"

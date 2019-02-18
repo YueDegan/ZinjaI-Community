@@ -186,6 +186,7 @@ struct cfgFiles {
 	wxString doxygen_command;
 	wxString wxfb_command;
 	wxString autocodes_file;
+	wxString source_file_extensions, header_file_extensions, extra_file_extensions;
 };
 
 struct cfgCols {
@@ -213,8 +214,6 @@ public:
 	wxString m_filename; ///< zinjai_dir+"/config.here" if exists, home_dir+"/config" by default
 	wxString config_dir; ///< path for user's settings (zinjai_dir+"/config.here" if exists, or ~/.zinjai by default)
 	wxString zinjai_dir; ///< zinjai's installation path
-//	wxString zinjai_bin_dir; ///< zinjai's own binaries path (zinjai_dir+"/bin")
-//	wxString zinjai_third_dir; ///< zinjai's third-part binaries path (zinjai_dir+"/third")
 	wxString temp_dir; ///< path for temporary files (home_dir+"/tmp")
 	cfgSource Source;
 	cfgRunning Running;
@@ -252,7 +251,6 @@ private:
 	
 	/// returns a message for the checkbox in mxMessageDialog when saying that some package is not found and the check offers to install it (only if apt-get is available)
 	wxString GetTryToInstallCheckboxMessage();
-		
 	
 public:
 	/// @brief arma las cadenas (paths) que no se graban en la configuracion, pero que dependen de esta (ejemplo: temp_dir)
@@ -286,6 +284,12 @@ public:
 
 	int GetDPI() const;
 	bool HighDPI() const;
+	
+	bool ExtInList(const wxString &list, const wxString &ext) const;
+	
+	bool ExtIsSource(const wxString &lcase_ext) const { return ExtInList(Files.source_file_extensions,lcase_ext); }
+	bool ExtIsHeader(const wxString &lcase_ext) const { return ExtInList(Files.header_file_extensions,lcase_ext); }
+	bool ExtIsExtra(const wxString &lcase_ext) const { return ExtInList(Files.extra_file_extensions,lcase_ext); }
 	
 };
 

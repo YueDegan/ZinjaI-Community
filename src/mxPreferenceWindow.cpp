@@ -321,9 +321,6 @@ wxPanel *mxPreferenceWindow::CreateDebugPanel2 (wxNotebook *notebook) {
 	sizer.BeginCheck( LANG(PREFERENCES_DEBUG_RECOMPILE_AUTOMATICALLY,"Recompilar automaticamente antes de depurar si es necesario") )
 		.Bind(m_binder,config->Debug.compile_again).EndCheck();
 	
-//	sizer.BeginCheck( LANG(PREFERENCES_DEBUG_STOP_DEBBUGING_ON_ABNORMAL_TERMINATION,"Salir del modo depuración si el programa finaliza normalmente") )
-//		.Bind(m_binder,config->Debug.close_on_normal_exit).EndCheck();
-
 	sizer.BeginCheck( LANG(PREFERENCES_DEBUG_ALWAYS_RUN_IN_DEBUGGER,"Siempre ejecutar en el depurador") )
 		.Bind(m_binder,config->Debug.always_debug).EndCheck();
 	
@@ -463,6 +460,13 @@ wxPanel *mxPreferenceWindow::CreateCompilePanelProject (wxBookCtrl *notebook) {
 			.Id(mxID_PREFERENCES_CLEAR_SUBCMD_CACHE).EndButton()
 		.EndLine();
 	
+	sizer.BeginText( LANG(PREFERENCES_FILE_EXTENSION_SOURCE,"Extensiones de archivo considerados fuentes") )
+		.Bind(m_binder,config->Files.source_file_extensions).Short().EndText();
+	
+	sizer.BeginText( LANG(PREFERENCES_FILE_EXTENSION_HEADER,"Extensiones de archivo considerados cabeceras") )
+		.Bind(m_binder,config->Files.header_file_extensions).Short().EndText();
+	
+	
 	sizer.SetAndFit();
 	return sizer.GetPanel();
 }
@@ -533,6 +537,9 @@ wxPanel *mxPreferenceWindow::CreateStylePanel (mxBookCtrl *notebook) {
 		.Add(LANG(PREFERENCES_STYLE_WRAP_ALWAYS,"Siempre"))
 		.Bind(m_binder,config->Init.wrap_mode).EndCombo();
 
+	sizer.BeginText( LANG(PREFERENCES_FILE_EXTENSION_EXTRA,"Extensiones adicionales a colorear como fuentes") )
+		.Bind(m_binder,config->Files.extra_file_extensions).Short().EndText();
+	
 	sizer.BeginCheck( LANG(PREFERENCES_STYLE_SHOW_EOF_AND_WHITE_SPACES,"Mostrar espacios y caracteres de fin de linea") )
 		.Bind(m_binder,config->Source.whiteSpace).EndCheck();
 		
@@ -1408,7 +1415,7 @@ void mxPreferenceWindow::SetPathsPage (const wxString & select_one) {
 	auxSelectPage(notebook,panel_paths);
 	if (select_one.Len()) {
 		wxTextCtrl *to_select = nullptr;
-		     if (select_one=="valgrind")      to_select = files_valgrind_command;
+		if      (select_one=="valgrind")      to_select = files_valgrind_command;
 		else if (select_one=="doxigen")       to_select = files_doxygen_command;
 		else if (select_one=="cppcheck")      to_select = files_cppcheck_command;
 		else if (select_one=="terminal")      to_select = files_terminal_command;
@@ -1425,7 +1432,7 @@ void mxPreferenceWindow::SetToolbarPage(const wxString &edit_one) {
 	auxSelectPage(notebook,panel_toolbars);
 	if (edit_one.Len()) {
 		wxCommandEvent evt;
-		     if (edit_one=="file")  OnToolbarsFile(evt);
+		if      (edit_one=="file")  OnToolbarsFile(evt);
 		else if (edit_one=="edit")  OnToolbarsEdit(evt);
 		else if (edit_one=="view")  OnToolbarsView(evt);
 		else if (edit_one=="debug") OnToolbarsDebug(evt);
@@ -1443,4 +1450,3 @@ void mxPreferenceWindow::OnAutohidePanelsChange (wxCommandEvent & evt) {
 void mxPreferenceWindow::OnForceDPIChange (wxCommandEvent & evt) {
 	m_force_dpi_text->Enable(m_force_dpi_check->GetValue());
 }
-

@@ -2550,8 +2550,6 @@ PREFERENCES_DEBUG_LOAD_ALL_DEBUG_INFO
 Cargar toda la información de depuracion antes de comenzar
 PREFERENCES_DEBUG_RECOMPILE_AUTOMATICALLY
 Recompilar automaticamente antes de depurar si es necesario
-PREFERENCES_DEBUG_STOP_DEBBUGING_ON_ABNORMAL_TERMINATION
-Salir del modo depuración si el programa finaliza normalmente
 PREFERENCES_DEBUG_ALWAYS_RUN_IN_DEBUGGER
 Siempre ejecutar en el depurador
 PREFERENCES_DEBUG_USE_COLOURS_FOR_INSPECTIONS
@@ -2604,6 +2602,10 @@ PREFERENCES_USE_CACHE_FOR_SUBCMD
 Usar cache para la ejecución de subcomandos
 PREFERENCES_USE_CLEAR_SUBCMD_CACHE
 Limpiar
+PREFERENCES_FILE_EXTENSION_SOURCE
+Extensiones de archivo considerados fuentes
+PREFERENCES_FILE_EXTENSION_HEADER
+Extensiones de archivo considerados cabeceras
 PREFERENCES_SIMPLE_NEW_ACTION
 Accion para Nuevo Archivo
 PREFERENCES_SIMPLE_CREATE_EMPTY_FILE
@@ -2640,6 +2642,8 @@ PREFERENCES_STYLE_WRAP_ALL_BUT_SOURCES
 Todos menos fuentes
 PREFERENCES_STYLE_WRAP_ALWAYS
 Siempre
+PREFERENCES_FILE_EXTENSION_EXTRA
+Extensiones adicionales a colorear como fuentes
 PREFERENCES_STYLE_SHOW_EOF_AND_WHITE_SPACES
 Mostrar espacios y caracteres de fin de linea
 PREFERENCES_STYLE_SHOW_LINE_NUMBERS
@@ -2917,7 +2921,7 @@ Nota: estos cambios se aplican inmediatamente,
 PROJECTCONFIG_STEPS_WARNING_APPLY_NOW_LINE_2
 aunque luego seleccione cancelar
 PROJECTCONFIG_LIBS_TO_USE
-Bibliotecas a utilizar:
+Bibliotecas del sistema a utilizar
 PROJECTCONFIG_LIBS_TO_GENERATE
 Bibliotecas a generar*
 PROJECTCONFIG_LIBS_ADD

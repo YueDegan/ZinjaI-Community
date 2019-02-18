@@ -765,17 +765,15 @@ fuente. El default adivina según la extensión
 **/
 wxString mxUT::GetComplementaryFile(wxFileName the_one, eFileType force_ext) {
 	if (force_ext==FT_NULL) force_ext=GetFileType(the_one.GetFullPath());
-	const int n=5 ;
-	static char h_exts[][n]={"h","hpp","hxx","h++","hh"};
-	static char cpp_exts[][n]={"c","cpp","cxx","c++","cc"};
-	char (*exts)[n] = force_ext==FT_HEADER ? cpp_exts : h_exts;
-	// primero, ver si el otro archivo esta en el mismo dierctorio
-	for(int i=0;i<n;i++) { 
+	wxArrayString exts;
+	mxUT::Split(force_ext==FT_HEADER?config->Files.source_file_extensions:config->Files.header_file_extensions,exts);
+	// primero, ver si el otro archivo está en el mismo directorio
+	for(unsigned int i=0;i<exts.Count();i++) {
 		the_one.SetExt(exts[i]);
 		if (the_one.FileExists())
 			return the_one.GetFullPath();
 	}
-	// si es proyecto, buscar si esta en otro directorio (usando las clategorias de sus archivos y no la extension)
+	// si es proyecto, buscar si esta en otro directorio (usando las categorias de sus archivos y no la extension)
 	if (project) {
 		wxString only_name = the_one.GetName();
 		for( LocalListIterator<project_file_item*> it( force_ext==FT_HEADER ? &project->files.sources : &project->files.headers ); it.IsValid(); it.Next() ) {
@@ -1015,9 +1013,9 @@ eFileType mxUT::GetFileType(wxString name, bool recognize_projects) {
 	if (!name.Len()) return FT_OTHER;
 	if (name.Last()=='\"') name.RemoveLast();
 	pto[0]=path_sep; if (name.Contains(pto)) return FT_OTHER;
-	if (ExtensionIsCpp(name))
+	if (config->ExtIsSource(name))
 		return FT_SOURCE;
-	if (ExtensionIsH(name))
+	if (config->ExtIsHeader(name))
 		return FT_HEADER;
 	if (recognize_projects && name==PROJECT_EXT)
 		return FT_PROJECT;

@@ -1167,6 +1167,8 @@ void mxMainWindow::OnSelectError (wxTreeEvent &event) {
 		LocalListIterator<project_file_item*> fi(&project->files.sources);
 		while(fi.IsValid()) {
 #warning VER SI ANTES ERA SOLO EL NOMBRE DEL OBJ
+/// C:\Program Files (x86)\ZinjaI\src\..\temp\zinjai\debug.w32\mxIconInstaller.o: file not recognized: File format not recognized
+				
 			wxString bin_name = fi->GetBinName(project->GetTempFolder(false));
 			if (obj_name == bin_name) {
 				mxMessageDialog::mdAns ans = 
@@ -4832,7 +4834,7 @@ void mxMainWindow::CompileSource (bool force_compile, GenericAction *action) {
 		wxFileName source_filename = source->GetFullPath();
 		wxString ext=source->sin_titulo?wxString(""):source_filename.GetExt().MakeLower();
 		static bool ask=true;
-		if (ask && !master_source && mxUT::ExtensionIsH(ext)) {
+		if (ask && !master_source && config->ExtIsHeader(ext)) {
 			mxMessageDialog::mdAns ans = 
 				mxMessageDialog(this,LANG(MAINW_RUN_HEADER_WARNING,""
 										  "Esta intentando compilar/ejecutar un archivo de cabecera.\n"

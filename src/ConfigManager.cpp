@@ -48,8 +48,6 @@ ConfigManager::ConfigManager(wxString a_path):custom_tools(MAX_CUSTOM_TOOLS) {
 	config=this;
 	s_delayed_config_lines = nullptr; 
 	zinjai_dir = a_path;
-//	zinjai_bin_dir = DIR_PLUS_FILE(zinjai_dir,"bin");
-//	zinjai_third_dir = DIR_PLUS_FILE(zinjai_dir,"third");
 	LoadDefaults();
 }
 
@@ -712,6 +710,11 @@ void ConfigManager::LoadDefaults(){
 	m_filename = DIR_PLUS_FILE(config_dir,"config");
 	
 	// establecer valores predeterminados para todas las estructuras
+	
+	Files.source_file_extensions = "c cc cpp cxx c++";
+	Files.header_file_extensions = "h hh hpp hxx h++";
+	Files.extra_file_extensions = "vert frag glsl";
+	
 	Files.temp_dir=DIR_PLUS_FILE(config_dir,"tmp");
 	Files.skin_dir="imgs";
 #ifdef __WIN32__
@@ -1326,5 +1329,9 @@ int ConfigManager::GetDPI ( ) const {
 }
 bool ConfigManager::HighDPI ( ) const {
 	return GetDPI()>=120;
+}
+
+bool ConfigManager::ExtInList (const wxString & list, const wxString & ext) const {
+	return list==ext || list.StartsWith(ext+" ") || list.Contains(wxString(" ")+ext+" ") || list.EndsWith(wxString(" ")+ext);
 }
 
