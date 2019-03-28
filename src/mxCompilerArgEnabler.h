@@ -5,7 +5,7 @@
 class wxCheckBox;
 
 class mxCompilerArgEnabler : public mxDialog {
-	wxCheckBox *m_enable_arg, *m_recompile;
+	wxCheckBox *m_enable_arg, *m_recompile, *m_also_libs;
 	wxString m_comp_arg, m_link_arg;
 public:
 	mxCompilerArgEnabler(wxWindow *parent, wxString title, wxString help_text, wxString comp_arg, wxString link_arg);

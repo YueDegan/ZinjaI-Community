@@ -1334,6 +1334,8 @@ MAINW_WARNING_EXCUTABLE_PERMISSION_CHANGED
 Executable permissions changed for the binary file (chmod a+x)
 COMP_ARG_ADD_ARGS
 Include arguments
+COMP_ARG_ALSO_LIBS
+Also in libraries
 COMP_ARG_RECOMPILE
 Recompile all
 COMPLEMENTS_CAPTION

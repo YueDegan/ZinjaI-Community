@@ -18,6 +18,10 @@ mxCompilerArgEnabler::mxCompilerArgEnabler(wxWindow *parent, wxString title,
 	CreateSizer sizer(this);
 	sizer.BeginLabel(help_text).EndLabel();
 	sizer.BeginCheck(LANG(COMP_ARG_ADD_ARGS,"Incluir argumentos")).Id(wxID_FIND).EndCheck(m_enable_arg);
+	sizer.BeginLine().Space(15)
+		.BeginCheck(LANG(COMP_ARG_ALSO_LIBS,"Tambien en bibliotecas")).Id(wxID_FIND).EndCheck(m_also_libs)
+		.EndLine();
+	if (!project->active_configuration->libs_to_build.GetSize() || m_link_arg.IsEmpty()) m_also_libs->Hide(); else m_also_libs->SetValue(true);
 	if (project) sizer.BeginCheck(LANG(COMP_ARG_RECOMPILE,"Recompilar todo")).EndCheck(m_recompile);
 	else m_recompile = nullptr;
 	sizer.BeginBottom().Ok().Cancel().EndBottom(this);
@@ -38,12 +42,17 @@ mxCompilerArgEnabler::mxCompilerArgEnabler(wxWindow *parent, wxString title,
 
 void mxCompilerArgEnabler::OnButtonOk (wxCommandEvent & evt) {
 	bool arg_enable = m_enable_arg->GetValue();
+	bool also_libs = m_also_libs->GetValue();
 	wxCommandEvent aux_event;
 	if (project) {
 		if (!m_comp_arg.IsEmpty())
 			mxUT::SetArgument(project->active_configuration->compiling_extra,m_comp_arg,arg_enable);
 		if (!m_link_arg.IsEmpty())
 			mxUT::SetArgument(project->active_configuration->linking_extra,m_link_arg,arg_enable);
+		if (also_libs) {
+			for(JavaVectorIterator<project_library> it(project->active_configuration->libs_to_build);it.IsValid();it.Next())
+				mxUT::SetArgument(it->extra_link,m_link_arg,arg_enable);
+		}
 		if (!m_recompile || m_recompile->GetValue()) {
 			project->Clean();
 			main_window->OnRunCompile(aux_event);
