@@ -760,11 +760,19 @@ void mxFindDialog::MyHide() {
 
 void mxFindDialog::FindAll (const wxString & what) {
 	combo_find->SetValue(what);
+	int old_scope_value = combo_scope->GetSelection();
 	combo_scope->SetSelection(project?6:2);
+	bool old_case_value = check_case->GetValue();
 	check_case->SetValue(true);
+	bool old_regexp_value = check_regexp->GetValue();
 	check_regexp->SetValue(false);
+	bool old_word_value = check_word->GetValue();
 	check_word->SetValue(true);
 	wxCommandEvent evt;
 	OnFindNextButton(evt);
+	combo_scope->SetSelection(old_scope_value);
+	check_case->SetValue(old_case_value);
+	check_regexp->SetValue(old_regexp_value);
+	check_word->SetValue(old_word_value);
 }
 
