@@ -259,9 +259,9 @@ ProjectManager::ProjectManager(wxFileName name):custom_tools(MAX_PROJECT_CUSTOM_
 			project_library *lib_to_build = new project_library;
 			active_configuration->libs_to_build.Add(lib_to_build);
 			for( IniFileReader::Pair p = fil.GetNextPair(); p.IsOk(); p = fil.GetNextPair() ) {
-				if (p.Key()=="path") lib_to_build->m_path = p.AsString();
+				if (p.Key()=="path") lib_to_build->m_path = fix_path_char(file_path_char,p.AsString());
 				else if (p.Key()=="libname") lib_to_build->libname = p.AsString();
-				else if (p.Key()=="sources") lib_to_build->sources = p.AsString();
+				else if (p.Key()=="sources") lib_to_build->sources = fix_path_char(file_path_char,p.AsString());
 				else if (p.Key()=="extra_link") lib_to_build->extra_link = p.AsString();
 				else if (p.Key()=="is_static") lib_to_build->is_static = p.AsBool();
 				else if (p.Key()=="default_lib") lib_to_build->default_lib = p.AsBool();

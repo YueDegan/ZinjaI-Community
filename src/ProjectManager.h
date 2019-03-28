@@ -760,6 +760,4 @@ public:
 
 extern ProjectManager *project;
 
-#warning LIBS LINUX TO WIN (Q2)
-
 #endif
