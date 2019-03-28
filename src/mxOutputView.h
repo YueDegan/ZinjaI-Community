@@ -39,9 +39,11 @@ private:
 	mxVOmode output_mode;
 	wxString output_file;
 	wxFile *textfile;
+	wxString second_path;    ///< if a second command must be run after first one finishes, here's the workdir
+	wxString second_command; ///< if a second command must be run after first one finishes, here's the command
 public:
 	mxOutputView(wxString caption, mxOVmode extra_mode=mxOV_EXTRA_NULL, wxString extra_button="",wxString extra_command="", mxVOmode output_mode=mxVO_NULL, wxString output_file="");
-	void Launch(wxString path, wxString command);
+	void Launch(wxString path, wxString command, wxString second_path="", wxString second_command="");
 	void Launched(wxProcess *_process, int _pid);
 	void GetProcessOutput();
 	void OnOkButton(wxCommandEvent &evt);

@@ -308,6 +308,9 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 			AddMenuItem(mnTOOLS, myMenuItem("gcov_activate",mxID_TOOLS_GCOV_SET, LANG(MENUITEM_TOOLS_GCOV_ACTIVATE,"Habilitar/Deshabilitar")).Description("Añade/remueve los argumentos necesarios a la configuración de compilación y reconstruye el ejecutable."));
 			AddMenuItem(mnTOOLS, myMenuItem("gcov_show_bar",mxID_TOOLS_GCOV_SHOW, LANG(MENUITEM_TOOLS_GCOV_SHOW_BAR,"Mostrar barra de resultados")).Description("Muestra un panel con los conteos por linea en el margen izquierdo de la ventana."));
 			AddMenuItem(mnTOOLS, myMenuItem("gcov_reset",mxID_TOOLS_GCOV_RESET, LANG(MENUITEM_TOOLS_GCOV_RESET,"Eliminar resultados")).Description("Elimina los archivos de resultados generados por el test de cobertura."));
+#ifndef __WIN32__
+			AddMenuItem(mnTOOLS, myMenuItem("lcov_run",mxID_TOOLS_GCOV_LCOV_RUN, LANG(MENUITEM_TOOLS_GCOV_RUN_LCOV,"Procesar resultados con lcov...")).Description("lcov es una herramienta externa para generar htmls a partir de los resultados de gcov.").EnableIf(ecPROJECT));
+#endif
 			AddSeparator(mnTOOLS);
 			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_GCOV_HELP,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra ayuda acerca de como generar e interpretar la información del test de cobertura").Icon("help.png"));
 		EndSubMenu(mnTOOLS);

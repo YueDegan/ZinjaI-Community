@@ -321,6 +321,7 @@ public:
 	void OnToolsGcovShow(wxCommandEvent &event);
 	void OnToolsGcovReset(wxCommandEvent &event);
 	void OnToolsGcovHelp(wxCommandEvent &event);
+	void OnToolsGcovRunLCov(wxCommandEvent &event);
 	void OnToolsCppCheckRun(wxCommandEvent &event);
 	void OnToolsCppCheckConfig(wxCommandEvent &event);
 	void OnToolsCppCheckView(wxCommandEvent &event);

@@ -8,6 +8,7 @@
 
 </UL><BR><B>Release 201904xx</B><BR><UL>
 	<LI>New: Las listas de extensión a reconocer como fuentes o cabeceras, y adicionales a colorear como código C++ ahora pueden moficarse desde las pestañas Proyecto y Estilos del cuadro de preferencias.</LI>
+	<LI>New: Agregado un nuevo item en el submenu de gcov para invocar a lcov y visualizar los resultados (solo en GNU/Linux).</LI>
 	<LI>Imp: Al incluir/quitar argumentos de enlazado adicionales en un proyecto para herramientas externas como gcov/gprof, se aplica también a las bibliotecas a generar.</LI>
 	<LI>Imp: Mejor interfaz en el panel de resultados de la compilación para el caso de toolchain externo.</LI>
 	<LI>Imp: La ventana de ejecucion de CppCheck es ahora una ventana regular, por lo que se puede minimizar.</LI>
@@ -21,6 +22,7 @@
 	<LI>Imp: Nuevo argumento --no-singleton para evitar el modo singleton al abrir un cpp desde la linea de comandos.</LI>
 	<LI>Imp: Usar la variable TEMP_DIR para definir la ruta del ejecutable al crear un proyecto sin plantilla.</LI>
 	<LI>Imp: Permitir seleccionar archivos zip al instalar in complemento (a veces Internet Explorer le cambia la extensión al zcp cuando lo descarga).</LI>
+	<LI>Fix: No cambiar las opciones del cuadro de diálogo de búsqueda al buscar una palabra en todo el proyecto desde el menú contextual.</LI>
 	<LI>Fix: Corregido un problema por el cual al alternar entre Windows y GNU/Linux en un proyecto que genera bibliotecas se podía reducir por error la lista de fuentes a incluir en las mismas.</LI>
 	<LI>Fix: Corregido un posible deadlock al crear y adjuntar un nuevo proyecto wxfb.</LI>
 	<LI>Fix: Corregido el path interno hacia gprof2dot para mostrar como grafos los resultados de gprof.</LI>

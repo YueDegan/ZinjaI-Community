@@ -558,6 +558,26 @@ void mxMainWindow::OnToolsDoxyGenerate(wxCommandEvent &event) {
 	}
 }
 
+void mxMainWindow::OnToolsGcovRunLCov(wxCommandEvent &event) {
+	if (project) {
+		wxString extra_args = wxGetTextFromUser("Additional arguments","lcov","--exclude /usr/*",this);
+		
+		wxString tmp_dir = project->GetTempFolder();
+		wxString cov_info = DIR_PLUS_FILE(tmp_dir,"coverage.info");
+		wxString html_dir = DIR_PLUS_FILE(tmp_dir,"lcov");
+		wxString cmd1 = "lcov --capture --directory ";
+		cmd1 << mxUT::Quotize(tmp_dir) << " --output " << mxUT::Quotize(cov_info);
+		cmd1 << " -b " << mxUT::Quotize(project->path) << " " << extra_args;
+		wxString cmd2 = "genhtml ";
+		cmd2 << mxUT::Quotize(cov_info) << " --output-directory " << mxUT::Quotize(html_dir);
+		
+		mxOutputView *doxy = new mxOutputView("LCov",mxOV_EXTRA_URL,
+											  "Ver HTMLs",DIR_PLUS_FILE(html_dir,"index.html"),
+											  mxVO_NULL);
+		doxy->Launch(project->path,cmd1, project->path,cmd2);
+	}
+}
+
 void mxMainWindow::OnToolsDoxyView(wxCommandEvent &event) {
 	if (project) {
 		mxUT::OpenInBrowser(DIR_PLUS_FILE(project->path,DIR_PLUS_FILE(project->GetDoxygenConfiguration()->destdir,DIR_PLUS_FILE("html","index.html"))));

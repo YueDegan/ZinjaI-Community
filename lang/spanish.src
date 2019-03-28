@@ -630,6 +630,8 @@ MENUITEM_TOOLS_GCOV_SHOW_BAR
 Mostrar barra de resultados
 MENUITEM_TOOLS_GCOV_RESET
 Eliminar resultados
+MENUITEM_TOOLS_GCOV_RUN_LCOV
+Procesar resultados con lcov...
 MENUITEM_TOOLS_VALGRIND
 Análisis Dinámico (valgrind)
 MENUITEM_TOOLS_VALGRIND_RUN

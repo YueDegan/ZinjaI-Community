@@ -105,7 +105,7 @@ void mxOutputView::OnClose(wxCloseEvent &event) {
 }
 
 // cppcheck-suppress publicAllocationError
-void mxOutputView::Launch(wxString path, wxString command) {
+void mxOutputView::Launch(wxString path, wxString command, wxString second_path, wxString second_command) {
 	process = new wxProcess(GetEventHandler(),wxID_ANY);
 	process->Redirect();
 	RaiiWorkDirChanger cwd_guard(path); // set temp cwd
@@ -120,6 +120,7 @@ void mxOutputView::Launch(wxString path, wxString command) {
 		timer->Start(500,true);
 		state->SetLabel(LANG(LAUNCH_STATUS_RUNNING,"Estado: Ejecutando"));
 	}
+	this->second_path = path; this->second_command = second_command;
 }
 
 void mxOutputView::Launched(wxProcess *_process, int _pid) {
@@ -140,22 +141,10 @@ void mxOutputView::OnProcessTerminate(wxProcessEvent &evt) {
 }
 
 void mxOutputView::OnProcessTerminateCommon(int exit_code) {
-	close_button->Enable(true);
 	working=false;
-	if (extra_mode!=mxOV_EXTRA_NULL) {
-		if (extra_label.IsEmpty()) {
-			extra_button->Disable();
-		} else {
-			extra_button->SetThings(bitmaps->buttons.next,extra_label);
-			GetSizer()->Layout();
-			extra_button->SetFocus();
-		}
-	} else {
-		extra_button->Enable(false);
-		close_button->SetFocus();
-	}
 	timer->Stop();
 	GetProcessOutput();
+	process=nullptr;
 	if (exit_code)
 		state->SetLabel(wxString(LANG(LAUNCH_STATUS_EXITCODE,"Estado: Codigo de salida: "))<<exit_code);
 	else {
@@ -165,8 +154,26 @@ void mxOutputView::OnProcessTerminateCommon(int exit_code) {
 			main_window->ShowValgrindPanel(output_mode,output_file,output_mode!=mxVO_CPPCHECK);
 			if (extra_mode==mxOV_EXTRA_NULL) Close();
 		}
+		
+		if (second_command.IsEmpty()) {
+			close_button->Enable(true);
+			if (extra_mode!=mxOV_EXTRA_NULL) {
+				if (extra_label.IsEmpty()) {
+					extra_button->Disable();
+				} else {
+					extra_button->SetThings(bitmaps->buttons.next,extra_label);
+					GetSizer()->Layout();
+					extra_button->SetFocus();
+				}
+			} else {
+				extra_button->Enable(false);
+				close_button->SetFocus();
+			}
+		} else if(!exit_code) {
+			Launch(second_path,second_command);
+		}
 	}
-	process=nullptr;
+	
 }
 
 void mxOutputView::OnTimer(wxTimerEvent &evt) {
