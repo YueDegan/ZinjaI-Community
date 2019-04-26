@@ -3902,6 +3902,7 @@ int mxSource::GetStatementStartPos(int pos, bool skip_coma, bool skip_white, boo
 							II_BACK(p_func_name,(c=GetCharAt(p_func_name))&&II_IS_KEYWORD_CHAR(c));
 							II_BACK(p_func_name,II_IS_NOTHING_4(p_func_name));
 							if (c!=','&&c!=':'&&c!='{') { // que no sea una lista de inicializadores en un constructor
+								pos = pos_match+1; // caso "main(){\n}else{\n"
 								break; // si era el par de llaves de una funcion, no seguir.... faltaría contemplar "namespace bla {...}"
 							} else 
 								pos_match = p_func_name+1; // sin esto se mete a analizar dentro del paréntesis
