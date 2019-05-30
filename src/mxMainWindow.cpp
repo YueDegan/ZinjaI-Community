@@ -2865,7 +2865,7 @@ void mxMainWindow::OnFileSaveAs (wxCommandEvent &event) {
 						wxTreeItemId tree_item = project_tree.treeCtrl->AppendItem(project_tree.others, filename, 3);
 						source->SetTreeItem(tree_item);
 						project_tree.treeCtrl->Expand(project_tree.others);
-					} else { 
+					} else {
 						project_tree.treeCtrl->SetItemText(source->GetTreeItem(),filename);
 					}
 				}

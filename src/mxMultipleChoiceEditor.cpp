@@ -1,10 +1,18 @@
 #include <wx/textctrl.h>
 #include <wx/choicdlg.h>
+#include <wx/checklst.h>
 #include "mxMultipleChoiceEditor.h"
 #include "mxUtils.h"
+#include "mxSizers.h"
 
-mxMultipleChoiceEditor *mxMultipleChoiceEditor::last_multiple_choice_editor=nullptr;
 
+BEGIN_EVENT_TABLE(mxMultipleChoiceEditor,wxDialog)
+	EVT_BUTTON(wxID_OK,mxMultipleChoiceEditor::OnOkButton)
+	EVT_BUTTON(wxID_CANCEL,mxMultipleChoiceEditor::OnCancelButton)
+//	EVT_BUTTON(mxID_HELP_BUTTON,mxMultipleChoiceEditor::OnHelpButton)
+	EVT_TEXT(wxID_ANY,mxMultipleChoiceEditor::OnFilter)
+END_EVENT_TABLE()
+	
 /**
 * @brief Construye y muestra una ventana para seleccionar multiples opciones de una lista de posibles
 *
@@ -20,43 +28,69 @@ mxMultipleChoiceEditor *mxMultipleChoiceEditor::last_multiple_choice_editor=null
 * @param options_array  lista de opciones posibles
 * @param comma_splits   indica si la coma separa opciones en el cuadro de texto, para pasar a mxUtils::Split
 **/
-mxMultipleChoiceEditor::mxMultipleChoiceEditor(wxWindow *parent, wxString title, wxString message, wxTextCtrl *text, wxArrayString &options_array, bool comma_splits) {
-	if (last_multiple_choice_editor) delete last_multiple_choice_editor;
-	last_multiple_choice_editor=this;
+mxMultipleChoiceEditor::mxMultipleChoiceEditor(wxWindow *parent, wxString title, wxString message, wxTextCtrl *text, 
+											   wxArrayString &options_array, bool comma_splits) 
+	: mxDialog(parent,title), m_filter_text(nullptr), m_dst_text(text)
+{
+	
+	for(size_t i=0;i<options_array.size();i++)
+		m_data[options_array[i]] = false;
 	
 	wxArrayString splitted_array;
-	wxArrayInt selection;
 	mxUT::Split(text->GetValue(),splitted_array,comma_splits,true);
-	options_array.Sort();
-	int p=options_array.Index("all");
-	if (p!=wxNOT_FOUND) {
-		for (unsigned int i=0;i<splitted_array.GetCount();i++)
-			selection.Add(p);
-	} else {
-		for (unsigned int i=0;i<splitted_array.GetCount();i++) {
-			p=options_array.Index(splitted_array[i]);
-			if (p!=wxNOT_FOUND) selection.Add(p);
-		}
-	}
-	if (wxGetMultipleChoices(selection,message,title,options_array,parent)>=0) {
-		wxString res;
-		if (selection.GetCount()) {
-			if (options_array[selection[0]].Contains(wxChar(' '))) 
-				res=wxString("\"")<<options_array[selection[0]]<<"\"";
-			else
-				res=options_array[selection[0]];
-			for (unsigned int i=1;i<selection.GetCount();i++) {
-				if (options_array[selection[i]].Contains(wxChar(' '))) 
-					res<<" \""<<options_array[selection[i]]<<"\"";
-				else
-					res<<" "<<options_array[selection[i]];
-			}
-		}
-		text->SetValue(res);
-	}
+	for (unsigned int i=0;i<splitted_array.GetCount();i++)
+		m_data[splitted_array[i]] = true; // ademas de seleccionar, agrega las que no estaban
+
+	CreateSizer sizer(this);
+	
+	if (!message.IsEmpty())
+		sizer.BeginLabel( message ).EndLabel();
+	
+	m_check_list = new wxCheckListBox(this,wxID_ANY);
+	m_check_list->SetMinSize(wxSize(300,300));
+	sizer.Add(m_check_list,sizers->BA5_Exp1);
+	Set2List();
+	
+	if (m_data.size()>15)
+		sizer.BeginText( LANG(BREAKOPTS_LINE,"Filtrar") ).Short().EndText(m_filter_text);
+	
+	sizer.BeginBottom()/*.Help()*/.Ok().Cancel().EndBottom(this);
+	sizer.SetAndFit();
+	
+	ShowModal();
 }
 
-mxMultipleChoiceEditor::~mxMultipleChoiceEditor() {
-	if (this==last_multiple_choice_editor) last_multiple_choice_editor=nullptr;
+void mxMultipleChoiceEditor::OnOkButton(wxCommandEvent &evt) {
+	List2Set();
+	wxString res;
+	for(map_t::iterator it=m_data.begin();it!=m_data.end();++it)
+		if (it->second) res << mxUT::Quotize(it->first) << " "; 
+	if (!res.IsEmpty()) res = res.Mid(0,res.Len()-1);
+	m_dst_text->SetValue(res);
+	EndModal(1);
+}
+
+void mxMultipleChoiceEditor::OnCancelButton(wxCommandEvent &evt) {
+	EndModal(0);
+}
+
+void mxMultipleChoiceEditor::OnFilter (wxCommandEvent & evt) {
+	List2Set();
+	Set2List();
+}
+
+void mxMultipleChoiceEditor::List2Set ( ) {
+	for(size_t i=0;i<m_check_list->GetCount();i++)
+		m_data[m_check_list->GetString(i)] = m_check_list->IsChecked(i);
+}
+
+void mxMultipleChoiceEditor::Set2List ( ) {
+	m_check_list->Clear();
+	wxString s; if (m_filter_text) s = m_filter_text->GetValue().Upper();
+	for(map_t::iterator it=m_data.begin();it!=m_data.end();++it) {
+		if (!s.IsEmpty() && !it->first.Upper().Contains(s)) continue;
+		int id = m_check_list->Append(it->first);
+		m_check_list->Check(id,it->second);
+	}
 }
 

@@ -131,6 +131,7 @@ public:
 	void ReloadSteps(wxString selection="");
 	void ReloadLibs(wxString selection="");
 	void OnLibsNoExe(wxCommandEvent &evt);
+	void OnLibsToUseButton(wxCommandEvent &evt);
 	
 	void SelectCustomStep(const wxString &custom_step_name);
 private:

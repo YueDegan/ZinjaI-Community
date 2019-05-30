@@ -3324,9 +3324,7 @@ void mxSource::OnModifyOnRO (wxStyledTextEvent &event) {
 											 "Por defecto, no se puede modificar el fuente mientras se encuentra\n"
 											 "depurando un programa, ya que de esta forma pierde la relación que\n"
 											 "existe entre la información que brinda el depurador a partir del\n"
-											 "archivo binario, y el fuente que está visualizando. Puede configurar\n"
-											 "este comportamiento en la seccion Depuracion del cuadro de\n"
-											 "Preferencias (desde menu Archivo)"))
+											 "archivo binario, y el fuente que está visualizando."))
 				.Check1(LANG(DEBUG_ALLOW_EDIT_WHILE_DEBUGGING,"Permitir editar igualemente"),config->Debug.allow_edition)
 				.Title(LANG(GENERAL_WARNING,"Advertencia")).IconWarning().Run();
 		if (ans.check1) {

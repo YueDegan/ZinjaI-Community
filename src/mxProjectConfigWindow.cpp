@@ -24,6 +24,7 @@
 #include "mxToolchainOptions.h"
 #include "mxThreeDotsUtils.h"
 #include "mxCommonConfigControls.h"
+#include "mxMultipleChoiceEditor.h"
 
 unsigned int mxProjectConfigWindow::last_page_index=0;
 
@@ -68,6 +69,8 @@ BEGIN_EVENT_TABLE(mxProjectConfigWindow, wxDialog)
 	EVT_BUTTON(mxID_PROJECT_CONFIG_LIBS_UP,mxProjectConfigWindow::OnLibsUp)
 	EVT_BUTTON(mxID_PROJECT_CONFIG_LIBS_DOWN,mxProjectConfigWindow::OnLibsDown)
 	
+	EVT_BUTTON(mxID_PROJECT_CONFIG_LIBS_TO_USE_BUTTON,mxProjectConfigWindow::OnLibsToUseButton)
+	
 	EVT_CHECKBOX(mxID_PROJECT_CONFIG_LIBS_DONT_EXE,mxProjectConfigWindow::OnLibsNoExe)
 	
 	EVT_CLOSE(mxProjectConfigWindow::OnClose)
@@ -98,8 +101,8 @@ mxProjectConfigWindow::mxProjectConfigWindow(wxWindow* parent)
 		.AddPage(this,&mxProjectConfigWindow::CreateGeneralPanel, LANG(PROJECTCONFIG_GENERAL,"General"))
 		.AddPage(this,&mxProjectConfigWindow::CreateCompilingPanel, LANG(PROJECTCONFIG_COMPILING,"Compilación"))
 		.AddPage(this,&mxProjectConfigWindow::CreateLinkingPanel, LANG(PROJECTCONFIG_LINKING,"Enlazado"))
-		.AddPage(this,&mxProjectConfigWindow::CreateStepsPanel, LANG(PROJECTCONFIG_SEQUENCE,"Secuencia"))
 		.AddPage(this,&mxProjectConfigWindow::CreateLibsPanel, LANG(PROJECTCONFIG_LIBRARIES,"Bibliotecas"))
+		.AddPage(this,&mxProjectConfigWindow::CreateStepsPanel, LANG(PROJECTCONFIG_SEQUENCE,"Secuencia"))
 		.EndNotebook(notebook);
 
 	wx_noexe.EnableAll(!configuration->dont_generate_exe);
@@ -688,8 +691,11 @@ wxPanel *mxProjectConfigWindow::CreateStepsPanel (wxNotebook *notebook) {
 wxPanel *mxProjectConfigWindow::CreateLibsPanel (wxNotebook *notebook) {
 	CreatePanelAndSizer sizer(notebook); wxPanel *panel = sizer.GetPanel();
 	
-	sizer.BeginText( LANG(PROJECTCONFIG_LIBS_TO_USE,"Bibliotecas del sistema a utilizar") )
-		.Value(configuration->libs_to_use)/*.Button(mxID_PROJECT_CONFIG_LIBS_TO_USE_BUTTON)*/
+	sizer.BeginText( LANG(PROJECTCONFIG_LIBS_TO_USE,"Bibliotecas del sistema a utilizar (pkg-config/framework)") )
+		.Value(configuration->libs_to_use)
+#ifdef __linux__
+		.Button(mxID_PROJECT_CONFIG_LIBS_TO_USE_BUTTON)
+#endif
 		.RegisterIn(wx_extern).EndText(libs_to_use);
 	
 	
@@ -936,5 +942,14 @@ void mxProjectConfigWindow::OnLibsDown (wxCommandEvent & evt) {
 	if (sel==wxNOT_FOUND || sel+1==int(libtobuild_list->GetCount())) return;
 	project->MoveLibToBuild(configuration,sel,false);
 	ReloadLibs(libtobuild_list->GetString(sel));
+}
+
+void mxProjectConfigWindow::OnLibsToUseButton (wxCommandEvent & evt) {
+	wxString output = mxUT::GetOutput("pkg-config --list-all",true);
+	output = wxString("\"") + output + "\"";
+	output.Replace("\n","\",\"",true);
+	wxArrayString list; mxUT::Split(output,list,true,false);
+	for(size_t i=0;i<list.size();i++) list[i] = list[i].BeforeFirst(' ');
+	mxMultipleChoiceEditor(this,"pkg-config","Bibliotecas disponible en el sistema",libs_to_use,list,true);
 }
 
