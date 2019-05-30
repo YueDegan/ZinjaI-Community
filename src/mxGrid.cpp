@@ -7,13 +7,44 @@
 #include <wx/msgdlg.h>
 using namespace std;
 
+wxColour mxGrid::CLR_BLACK, mxGrid::CLR_RED, mxGrid::CLR_GRAY, mxGrid::CLR_CYAN; // pseudo-constantes que se calculan al crear la primer tabla y sirven para todas
+wxColour mxGrid::BCLR_WHITE, mxGrid::BCLR_GREEN, mxGrid::BCLR_YELLOW, mxGrid::BCLR_RED; // pseudo-constantes que se calculan al crear la primer tabla y sirven para todas
+
+static bool colours_initialized = false;
+// funciones auxiliares para definir colores especiales en base a los defaults
+static wxColour mix(wxColour cback, wxColour cfore, float max_r, float max_g, float max_b) {
+	return wxColour(
+		(unsigned char)((1-max_r)*std::min(cback.Red()  ,cfore.Red()  ) + max_r*std::max(cback.Red()  ,cfore.Red()  )),
+		(unsigned char)((1-max_g)*std::min(cback.Green(),cfore.Green()) + max_g*std::max(cback.Green(),cfore.Green())),
+		(unsigned char)((1-max_b)*std::min(cback.Blue() ,cfore.Blue() ) + max_b*std::max(cback.Blue() ,cfore.Blue() )));
+}
+static wxColour mix(wxColour cback, wxColour cfore, float u) {
+	return wxColour(
+		(unsigned char)((1-u)*cback.Red()  + u*cfore.Red()  ),
+		(unsigned char)((1-u)*cback.Green()+ u*cfore.Green()),
+		(unsigned char)((1-u)*cback.Blue() + u*cfore.Blue() ) );
+}
+
 mxGrid::mxGrid(wxWindow *parent, int number_of_cols, wxWindowID id, wxSize sz) 
-	: wxGrid(parent,id,wxDefaultPosition,sz,wxWANTS_CHARS), created(false),
-	  evt_full_resize(this->GetEventHandler(),wxID_ANY), cols(number_of_cols) 
+	: wxGrid(parent,id,wxDefaultPosition,sz,wxWANTS_CHARS), created(false), m_row_selection_mode(false),
+	  evt_full_resize(this->GetEventHandler(),wxID_ANY), cols(number_of_cols)
 {
 	CreateGrid(0,number_of_cols);
 	SetColLabelAlignment(wxALIGN_CENTRE,wxALIGN_CENTRE);
 	SetRowLabelSize(0);
+	
+	if (!colours_initialized) {
+		wxColour cback = GetDefaultCellBackgroundColour();
+		wxColour cfore = GetDefaultCellTextColour();
+		CLR_BLACK = cfore; BCLR_WHITE = cback;
+		CLR_GRAY = mix(cback,cfore,.65);
+		CLR_RED =  mix(cback,cfore,1,0,0);
+		CLR_CYAN = mix(cback,cfore,0,.4,.8);
+		BCLR_GREEN  = mix(cfore,cback,.8,1,.8);
+		BCLR_YELLOW = mix(cfore,cback,1,1,.75);
+		BCLR_RED    = mix(cfore,cback,1,.8,.8);
+		colours_initialized = true;
+	}
 }
 
 void mxGrid::SetColumnVisible (int c, bool visible) {
@@ -138,12 +169,12 @@ void mxGrid::OnLabelPopup (wxGridEvent & event) {
 
 void mxGrid::SetRowSelectionMode ( ) {
 	SetSelectionMode(wxGrid::wxGridSelectRows);
-	SetCellHighlightPenWidth(0);
+	SetCellHighlightPenWidth(0); m_row_selection_mode = true;
 }
 
 void mxGrid::Select(int row, int col) {
 	if (col==-1) col=GetGridCursorCol();
-	SelectRow(row);
+	if (m_row_selection_mode) SelectRow(row);
 	SetGridCursor(row,col);
 	MakeCellVisible(row,col);
 }

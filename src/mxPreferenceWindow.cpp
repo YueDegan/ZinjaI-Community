@@ -298,6 +298,9 @@ wxPanel *mxPreferenceWindow::CreateDebugPanel1 (wxNotebook *notebook) {
 	sizer.BeginCheck( LANG(PREFERENCES_DEBUG_INSPECT_ON_MOUSE_OVER,"Mostrar el valor de una variables al colocar el mouse sobre la misma") )
 		.Bind(m_binder,config->Debug.inspect_on_mouse_over).EndCheck();
 	
+	sizer.BeginCheck( LANG(PREFERENCES_DEBUG_USE_COLOURS_FOR_INSPECTIONS,"Utilizar colores en las tablas de inspecciones y trazado inverso") )
+		.Bind(m_binder,config->Debug.use_colours_for_inspections).EndCheck();
+	
 	sizer.SetAndFit();
 	return sizer.GetPanel();
 }
@@ -323,9 +326,6 @@ wxPanel *mxPreferenceWindow::CreateDebugPanel2 (wxNotebook *notebook) {
 	
 	sizer.BeginCheck( LANG(PREFERENCES_DEBUG_ALWAYS_RUN_IN_DEBUGGER,"Siempre ejecutar en el depurador") )
 		.Bind(m_binder,config->Debug.always_debug).EndCheck();
-	
-//	sizer.BeginCheck( LANG(PREFERENCES_DEBUG_USE_COLOURS_FOR_INSPECTIONS,"Utilizar colores en la tabla de inspecciones") )
-//		.Bind(m_binder,config->Debug.use_colours_for_inspections).EndCheck();
 	
 	sizer.BeginCheck( LANG(PREFERENCES_DEBUG_INSPECTIONS_CAN_HAVE_SIDE_EFFECTS,"Considerar side-effects al evaluar inspecciones") )
 		.Bind(m_binder,config->Debug.inspections_can_have_side_effects).EndCheck();

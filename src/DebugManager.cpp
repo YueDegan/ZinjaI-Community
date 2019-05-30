@@ -729,10 +729,9 @@ bool DebugManager::UpdateBacktrace(const BTInfo &stack, bool is_current) {
 	static wxString sep="/",wrong_sep="\\";
 #endif
 	
-	int last_stack_depth = backtrace_rows_count;
 	backtrace_rows_count = stack.depth>BACKTRACE_SIZE?BACKTRACE_SIZE:stack.depth; 
 	
-	main_window->backtrace_ctrl->BeginBatch();
+	main_window->backtrace_ctrl->BeginUpdate();
 	const wxChar * chfr = stack.frames.c_str();
 	// to_select* es para marcar el primer frame que tenga info de depuracion
 	int i = stack.frames.Find("stack=");
@@ -742,10 +741,11 @@ bool DebugManager::UpdateBacktrace(const BTInfo &stack, bool is_current) {
 			main_window->backtrace_ctrl->SetCellValue(c,BG_COL_FILE,LANG(BACKTRACE_NO_INFO,"<<Imposible determinar ubicacion>>"));
 			main_window->backtrace_ctrl->SetCellValue(c,BG_COL_FUNCTION,LANG(BACKTRACE_NO_INFO,"<<Imposible determinar ubicacion>>"));
 		}
-		main_window->backtrace_ctrl->EndBatch();
+		main_window->backtrace_ctrl->EndUpdate(false);
 		return false;
-	} else i+=7; 
-	int cant_levels=0, to_select_level=-1, sll=stack.frames.Len();
+	} else i+=7;
+	
+	int cant_levels=0, sll=stack.frames.Len();
 	while (cant_levels<BACKTRACE_SIZE) {
 		while (i<sll && chfr[i]!='{') i++;
 		if (i==sll) break;
@@ -758,27 +758,19 @@ bool DebugManager::UpdateBacktrace(const BTInfo &stack, bool is_current) {
 			ZLERR2("DebugManager","UpdateBacktrace, wrong frame level, num="<<s);
 		}
 #endif
-		main_window->backtrace_ctrl->SetCellValue(cant_levels,BG_COL_LEVEL,wxString()<<cant_levels);
 		wxString func = GetValueFromAns(s,"func",true);
 		if (func[0]=='?') {
-			main_window->backtrace_ctrl->SetCellValue(cant_levels,BG_COL_FUNCTION,LANG(BACKTRACE_NOT_AVAILABLE,"<<informacion no disponible>>"));
 			wxString from = GetValueFromAns(s,"from",true);
-			main_window->backtrace_ctrl->SetCellValue(cant_levels,BG_COL_FILE,from.IsEmpty()?"":wxString("from: ")+from);
-			main_window->backtrace_ctrl->SetCellValue(cant_levels,BG_COL_LINE,"");
-			main_window->backtrace_ctrl->SetCellValue(cant_levels,BG_COL_ARGS,"");
+			main_window->backtrace_ctrl->AddLevel(LANG(BACKTRACE_NOT_AVAILABLE,"<<informacion no disponible>>"),
+												  from.IsEmpty()?"":wxString("from: ")+from,"");
 		} else {
-			main_window->backtrace_ctrl->SetCellValue(cant_levels,BG_COL_FUNCTION,func);
 			wxString fname = GetValueFromAns(s,"fullname",true,true);
 			if (!fname.Len()) fname = GetValueFromAns(s,"file",true,true);
 			fname.Replace("\\\\",sep,true);
 			fname.Replace("//",sep,true);
 			fname.Replace(wrong_sep,sep,true);
-			main_window->backtrace_ctrl->SetCellValue(cant_levels,BG_COL_FILE,fname);
-			// seleccionar el frame de mas arriba que tenga info de depuracion (que en line diga algo)
 			wxString line_str=GetValueFromAns(s,"line",true);
-			main_window->backtrace_ctrl->SetCellValue(cant_levels,BG_COL_LINE,line_str);
-			if (to_select_level==-1 && line_str.Len() && wxFileName::FileExists(fname))
-				to_select_level=cant_levels;
+			main_window->backtrace_ctrl->AddLevel(func, fname, line_str);
 		}
 		cant_levels++;
 	}
@@ -799,7 +791,6 @@ bool DebugManager::UpdateBacktrace(const BTInfo &stack, bool is_current) {
 			if (i==wxNOT_FOUND) {
 				for (int c=0;c<stack.depth;c++)
 					main_window->backtrace_ctrl->SetCellValue(c,BG_COL_ARGS,LANG(BACKTRACE_NO_ARGUMENTS,"<<Imposible determinar argumentos>>"));
-				main_window->backtrace_ctrl->EndBatch();
 			} else {
 				bool comillas = false, cm_dtype=false; //cm_dtype indica el tipo de comillas en que estamos, inicializar en false es solo para evitar el warning
 				i+=12;
@@ -873,26 +864,9 @@ bool DebugManager::UpdateBacktrace(const BTInfo &stack, bool is_current) {
 		}
 	}
 	
-	// "limpiar" los renglones que sobran
-	for (int c=stack.depth; c<last_stack_depth; c++) {
-		for (int i=0;i<BG_COLS_COUNT;i++)
-			main_window->backtrace_ctrl->SetCellValue(c,i,"");
-	}
-	
-	// seleccionar el frame actual, o el más cercano que tenga info de depuración
-	if (to_select_level>=0) {
-		main_window->backtrace_ctrl->SelectRow(to_select_level);
-		SelectFrame(-1,to_select_level);
-		wxString file=main_window->backtrace_ctrl->GetCellValue(to_select_level,BG_COL_FILE);
-		wxString sline=main_window->backtrace_ctrl->GetCellValue(to_select_level,BG_COL_LINE);
-		long line=0; if (sline.ToLong(&line)) debug->MarkCurrentPoint(file,line,is_current?(to_select_level>0?mxSTC_MARK_FUNCCALL:mxSTC_MARK_EXECPOINT):mxSTC_MARK_HISTORY);
-	} else {
-		main_window->backtrace_ctrl->SelectRow(0);
-		current_frame_id = GetFrameID(0);
-		debug->MarkCurrentPoint();
-	}
-	
-	main_window->backtrace_ctrl->EndBatch();
+	// "limpiar" los renglones que sobran y seleccionar el frame actual, o el más cercano que tenga info de depuración
+	current_frame_id = GetFrameID(0);
+	main_window->backtrace_ctrl->EndUpdate(true);
 	return true;
 }
 

@@ -7,6 +7,8 @@
 #include "Language.h"
 #include "mxMessageDialog.h"
 #include "mxBacktraceHistory.h"
+#include "ProjectManager.h"
+#include "asserts.h"
 
 BEGIN_EVENT_TABLE(mxBacktraceGrid, wxGrid)
 	EVT_MENU(mxID_BACKTRACE_UPDATE,mxBacktraceGrid::OnUpdate)
@@ -22,6 +24,7 @@ END_EVENT_TABLE()
 	
 
 mxBacktraceGrid::mxBacktraceGrid(wxWindow *parent):mxGrid(parent,BG_COLS_COUNT,wxID_ANY,wxSize(400,300)) {
+	m_prev_cant_levels = 0; m_current_selection = -1;
 	mxGrid::InitColumn(BG_COL_LEVEL,LANG(BACKTRACE_LEVEL,"Nivel"),10);
 	mxGrid::InitColumn(BG_COL_FUNCTION,LANG(BACKTRACE_FUNCTION,"Función"),19);
 	mxGrid::InitColumn(BG_COL_FILE,LANG(BACKTRACE_FILE,"Archivo"),21);
@@ -29,7 +32,8 @@ mxBacktraceGrid::mxBacktraceGrid(wxWindow *parent):mxGrid(parent,BG_COLS_COUNT,w
 	mxGrid::InitColumn(BG_COL_ARGS,LANG(BACKTRACE_ARGS,"Argumentos"),36);
 	mxGrid::DoCreate();
 	InsertRows(0,BACKTRACE_SIZE); entries.Resize(BACKTRACE_SIZE);
-	mxGrid::SetRowSelectionMode();
+	if (config->Debug.use_colours_for_inspections) SetCellHighlightPenWidth(0);
+	else mxGrid::SetRowSelectionMode();
 	EnableEditing(false);
 	EnableDragRowSize(false);
 	SetColLabelSize(wxGRID_AUTOSIZE);
@@ -39,10 +43,24 @@ bool mxBacktraceGrid::OnCellDoubleClick(int row, int col) {
 	SelectFrame(row); return true;
 }
 
+void mxBacktraceGrid::SelectRow(int to_select) {
+	if (config->Debug.use_colours_for_inspections) {
+		if (to_select==m_current_selection) return;
+		if (m_current_selection!=-1) 
+			for(int i=0;i<BG_COLS_COUNT;i++) 
+				SetCellBackgroundColour(m_current_selection,i,BCLR_WHITE);
+		m_current_selection = to_select; 
+		wxColour clr = to_select ? BCLR_YELLOW : BCLR_GREEN;
+		for(int i=0;i<BG_COLS_COUNT;i++) 
+			SetCellBackgroundColour(m_current_selection,i,clr);
+		Refresh();
+	} else 
+		wxGrid::SelectRow(to_select);
+}
+
 void mxBacktraceGrid::SelectFrame(int r) {
 	if (debug->IsDebugging() && !debug->CanTalkToGDB()) return;
-	long line;
-	entries[r].line.ToLong(&line);
+	long line; entries[r].line.ToLong(&line);
 	wxString file = entries[r].fname;
 	if (file.Len()) {
 		if (!debug->MarkCurrentPoint(file,line,r?mxSTC_MARK_FUNCCALL:mxSTC_MARK_EXECPOINT)) {
@@ -52,6 +70,7 @@ void mxBacktraceGrid::SelectFrame(int r) {
 		if (debug->CanTalkToGDB()) debug->SelectFrame(-1,r);
 		debug->UpdateInspections();
 	}
+	SelectRow(r);
 }
 
 void mxBacktraceGrid::OnGotoPos(wxCommandEvent &event) {
@@ -222,5 +241,46 @@ void mxBacktraceGrid::OnHistory (wxCommandEvent & event) {
 
 void mxBacktraceGrid::OnPrevious (wxCommandEvent & event) {
 	if (debug->prev_stack.is_ok()) debug->UpdateBacktrace(debug->prev_stack,false);
+}
+
+void mxBacktraceGrid::BeginUpdate ( ) {
+	EXPECT(m_prev_cant_levels==0);
+	m_prev_cant_levels = m_cant_levels; 
+	m_to_select = -1; m_cant_levels = 0;
+	BeginBatch();
+}
+
+void mxBacktraceGrid::EndUpdate (bool do_select) {
+	if (m_to_select>=0) {
+		debug->SelectFrame(-1,m_to_select);
+		wxString file = GetCellValue(m_to_select,BG_COL_FILE);
+		wxString sline = GetCellValue(m_to_select,BG_COL_LINE);
+		long line=0; if (sline.ToLong(&line))
+			debug->MarkCurrentPoint(file,line,
+									debug->CurrentBacktraceIsReal()?(m_to_select>0?mxSTC_MARK_FUNCCALL:mxSTC_MARK_EXECPOINT):mxSTC_MARK_HISTORY);
+	} else {
+		debug->MarkCurrentPoint();
+	}
+	for(int i=m_cant_levels;i<m_prev_cant_levels;i++)
+		for(int j=0;j<BG_COLS_COUNT;j++) 
+			SetCellValue(i,j,wxEmptyString);
+	m_prev_cant_levels = 0;
+	SelectRow(m_to_select);
+	EndBatch();
+}
+
+void mxBacktraceGrid::AddLevel (const wxString func, const wxString file, const wxString line) {
+	SetCellValue(m_cant_levels,BG_COL_LEVEL,wxString()<<m_cant_levels);
+	SetCellValue(m_cant_levels,BG_COL_FUNCTION,func);
+	SetCellValue(m_cant_levels,BG_COL_FILE,file);
+	SetCellValue(m_cant_levels,BG_COL_LINE,line);
+	if (m_to_select==-1 && !line.IsEmpty()) m_to_select = m_cant_levels;
+	if (config->Debug.use_colours_for_inspections) {
+		if (!project || project->FindFromFullPath(file))
+			for (int j=0;j<BG_COLS_COUNT;j++) SetCellColour(m_cant_levels,j,CLR_BLACK);
+		else
+			for (int j=0;j<BG_COLS_COUNT;j++) SetCellColour(m_cant_levels,j,CLR_GRAY);
+	}
+	m_cant_levels++;
 }
 

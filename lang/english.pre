@@ -2563,7 +2563,7 @@ Rebuild automatically before debugging
 PREFERENCES_DEBUG_ALWAYS_RUN_IN_DEBUGGER
 Always run in debugging mode
 PREFERENCES_DEBUG_USE_COLOURS_FOR_INSPECTIONS
-Use colours in inspections grid
+Use colours in inspections and backtrace grids
 PREFERENCES_DEBUG_INSPECTIONS_CAN_HAVE_SIDE_EFFECTS
 Consider side-effects on inspections evaluation
 PREFERENCES_DEBUG_IMPROVE_INSPECTIONS_BY_TYPE

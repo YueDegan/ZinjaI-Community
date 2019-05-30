@@ -37,6 +37,7 @@ public:
 class mxGrid : public wxGrid {
 private:
 	bool created; ///< for masking some events until DoCreate
+	bool m_row_selection_mode;
 	struct mxGridCol {
 		wxString name; ///< column label
 		int orig_pos; ///< column original position (as hardcoded in inheritance constructor, assuming all columns visible)
@@ -67,6 +68,10 @@ protected:
 	void DoCreate(); 
 	int last_event_x, last_event_y;
 public:
+	
+	static wxColour CLR_BLACK, CLR_RED, CLR_GRAY, CLR_CYAN; // pseudo-constantes que se calculan al crear la primer tabla y sirven para todas
+	static wxColour BCLR_WHITE, BCLR_GREEN, BCLR_YELLOW, BCLR_RED; // idem para colores de fondo
+	
 	mxGrid(wxWindow *parent, int number_of_cols, wxWindowID id=wxID_ANY, wxSize sz=wxDefaultSize);
 	
 	void SetRowSelectionMode();

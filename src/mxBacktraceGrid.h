@@ -11,8 +11,16 @@ private:
 	int selected_row;
 	struct aux_bt_entry { wxString fname,line; };
 	SingleList<aux_bt_entry> entries; ///< to remember file and line column for doble-click event even if the columns are hidden
+	
+	int m_to_select, m_cant_levels, m_prev_cant_levels, m_current_selection;
 public:
 	mxBacktraceGrid(wxWindow *parent);
+	void BeginUpdate();
+	void AddLevel(const wxString func, const wxString file, const wxString line);
+	void EndUpdate(bool do_select);
+	
+	void SelectRow(int r);
+	
 	void OnExploreArgs(wxCommandEvent &event);
 	void OnExploreLocals(wxCommandEvent &event);
 	void OnInspectArgs(wxCommandEvent &event);

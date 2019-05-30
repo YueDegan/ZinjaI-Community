@@ -89,13 +89,13 @@ mxInspectionGrid::mxInspectionGrid(wxWindow *parent) : mxGrid(parent,IG_COLS_COU
 	
 	last_return_had_shift_down = false;
 	
-	s_mxig_status_opts[IGRS_UNINIT].Init(false,wxColour(100,100,100),DebuggerInspection::GetUserStatusText(DIMSG_PENDING));
-	s_mxig_status_opts[IGRS_OUT_OF_SCOPE].Init(false,wxColour(100,100,100),DebuggerInspection::GetUserStatusText(DIMSG_OUT_OF_SCOPE));
-	s_mxig_status_opts[IGRS_IN_SCOPE].Init(true,wxColour(196,0,0));
-	s_mxig_status_opts[IGRS_CHANGED].Init(true,wxColour(196,0,0));
-	s_mxig_status_opts[IGRS_NORMAL].Init(true,wxColour(0,0,0));
-	s_mxig_status_opts[IGRS_ERROR].Init(false,wxColour(196,0,0),DebuggerInspection::GetUserStatusText(DIMSG_ERROR));
-	s_mxig_status_opts[IGRS_FREEZE].Init(false,wxColour(0,100,200));
+	s_mxig_status_opts[IGRS_UNINIT].Init(      false,CLR_GRAY,DebuggerInspection::GetUserStatusText(DIMSG_PENDING));
+	s_mxig_status_opts[IGRS_OUT_OF_SCOPE].Init(false,CLR_GRAY,DebuggerInspection::GetUserStatusText(DIMSG_OUT_OF_SCOPE));
+	s_mxig_status_opts[IGRS_IN_SCOPE].Init(    true, CLR_RED);
+	s_mxig_status_opts[IGRS_CHANGED].Init(     true, CLR_RED);
+	s_mxig_status_opts[IGRS_NORMAL].Init(      true, CLR_BLACK);
+	s_mxig_status_opts[IGRS_ERROR].Init(       false,CLR_RED,DebuggerInspection::GetUserStatusText(DIMSG_ERROR));
+	s_mxig_status_opts[IGRS_FREEZE].Init(      false,CLR_CYAN);
 	
 	dragging_inspection=false;
 //	ignore_changing=true;
@@ -108,7 +108,7 @@ mxInspectionGrid::mxInspectionGrid(wxWindow *parent) : mxGrid(parent,IG_COLS_COU
 	mxGrid::DoCreate();
 	InsertRows();
 	
-	mxGrid::SetRowSelectionMode();
+//	mxGrid::SetRowSelectionMode();
 	
 	SetDropTarget(new mxInspectionDropTarget(this));
 	SetColLabelSize(wxGRID_AUTOSIZE);
@@ -711,7 +711,8 @@ void mxInspectionGrid::SetRowStatus (int r, int status) {
 	if (status!=IGRS_FREEZE) inspections[r].status=status;
 	if (inspections[r].is_frozen) return;
 	if (s_mxig_status_opts[prev_status].color!=s_mxig_status_opts[status].color)
-		mxGrid::SetCellColour(r,IG_COL_VALUE,s_mxig_status_opts[status].color);
+		if (config->Debug.use_colours_for_inspections) 
+			mxGrid::SetCellColour(r,IG_COL_VALUE,s_mxig_status_opts[status].color);
 	if (s_mxig_status_opts[status].have_message) 
 		mxGrid::SetCellValue(r,IG_COL_VALUE,s_mxig_status_opts[status].message);
 	if (s_mxig_status_opts[prev_status].editable_value!=s_mxig_status_opts[status].editable_value)
@@ -720,7 +721,8 @@ void mxInspectionGrid::SetRowStatus (int r, int status) {
 
 void mxInspectionGrid::SetRowStatus (int r, int status, bool dummy_force) {
 	if (status!=IGRS_FREEZE) inspections[r].status=status;
-	mxGrid::SetCellColour(r,IG_COL_VALUE,s_mxig_status_opts[status].color);
+	if (config->Debug.use_colours_for_inspections) 
+		mxGrid::SetCellColour(r,IG_COL_VALUE,s_mxig_status_opts[status].color);
 	mxGrid::SetCellValue(r,IG_COL_VALUE,s_mxig_status_opts[status].message);
 	mxGrid::SetReadOnly(r,IG_COL_VALUE,!s_mxig_status_opts[status].editable_value);
 }
