@@ -109,6 +109,8 @@ mxProjectConfigWindow::mxProjectConfigWindow(wxWindow* parent)
 	wx_extern.EnableAll(!Toolchain::GetInfo(toolchains_combo->GetStringSelection()).IsExtern());
 	wx_noscript.EnableAll(configuration->exec_method);
 	
+	if (!configuration->backup) configuration->backup = new project_configuration(*configuration);
+	
 	sizer.BeginBottom().Help().Ok().Cancel().EndBottom(this).SetAndFit();
 	if (last_page_index<notebook->GetPageCount())
 		notebook->SetSelection(last_page_index);
@@ -449,7 +451,7 @@ void mxProjectConfigWindow::OnRenameConfigButton(wxCommandEvent &event) {
 **/
 void mxProjectConfigWindow::LoadValues() {
 
-	if (configuration->backup) configuration->backup = new project_configuration(*configuration);
+	if (!configuration->backup) configuration->backup = new project_configuration(*configuration);
 	
 	linking_extra_options->SetValue(configuration->linking_extra);
 	linking_libraries_dirs->SetValue(configuration->libraries_dirs );
@@ -680,8 +682,8 @@ wxPanel *mxProjectConfigWindow::CreateStepsPanel (wxNotebook *notebook) {
 	
 	sizer.Add(sizer_h,sizers->BA5_Exp1);
 	
-	sizer.BeginLabel(LANG(PROJECTCONFIG_STEPS_WARNING_APPLY_NOW_LINE_1,"Nota: estos cambios se aplican inmediatamente,")).Center().EndLabel();
-	sizer.BeginLabel(LANG(PROJECTCONFIG_STEPS_WARNING_APPLY_NOW_LINE_2,"aunque luego seleccione cancelar")).Center().EndLabel();
+//	sizer.BeginLabel(LANG(PROJECTCONFIG_STEPS_WARNING_APPLY_NOW_LINE_1,"Nota: estos cambios se aplican inmediatamente,")).Center().EndLabel();
+//	sizer.BeginLabel(LANG(PROJECTCONFIG_STEPS_WARNING_APPLY_NOW_LINE_2,"aunque luego seleccione cancelar")).Center().EndLabel();
 	
 	ReloadSteps();
 	sizer.Set();
@@ -699,7 +701,7 @@ wxPanel *mxProjectConfigWindow::CreateLibsPanel (wxNotebook *notebook) {
 		.RegisterIn(wx_extern).EndText(libs_to_use);
 	
 	
-	sizer.BeginLabel( LANG(PROJECTCONFIG_LIBS_TO_GENERATE,"Bibliotecas a generar*") ).RegisterIn(wx_extern).EndLabel();
+	sizer.BeginLabel( LANG(PROJECTCONFIG_LIBS_TO_GENERATE,"Bibliotecas a generar") ).RegisterIn(wx_extern).EndLabel();
 	
 	libtobuild_list = new wxListBox(panel,wxID_ANY);
 	wx_extern.Add(libtobuild_list);
@@ -729,9 +731,9 @@ wxPanel *mxProjectConfigWindow::CreateLibsPanel (wxNotebook *notebook) {
 		.Value(configuration->dont_generate_exe).Id(mxID_PROJECT_CONFIG_LIBS_DONT_EXE)
 		.RegisterIn(wx_extern).EndCheck(libtobuild_noexec);
 	
-	sizer.BeginLabel( LANG(PROJECTCONFIG_STEPS_WARNING_APPLY_NOW,"* estos cambios se aplican inmediatamente,\n"
-						                                               "aunque luego seleccione cancelar") )
-					 .Center().EndLabel();
+//	sizer.BeginLabel( LANG(PROJECTCONFIG_STEPS_WARNING_APPLY_NOW,"* estos cambios se aplican inmediatamente,\n"
+//						                                               "aunque luego seleccione cancelar") )
+//					 .Center().EndLabel();
 	
 	ReloadLibs();
 	sizer.Set();
@@ -842,7 +844,6 @@ void mxProjectConfigWindow::ReloadSteps(wxString selection) {
 void mxProjectConfigWindow::DiscardChanges() {
 	for (int i=0;i<project->configurations_count;i++)
 		if (project->configurations[i]->backup) {
-			project->configurations[i]->backup->extra_steps=project->configurations[i]->extra_steps;
 			*(project->configurations[i])=*(project->configurations[i]->backup);
 		}
 }
@@ -945,7 +946,7 @@ void mxProjectConfigWindow::OnLibsDown (wxCommandEvent & evt) {
 }
 
 void mxProjectConfigWindow::OnLibsToUseButton (wxCommandEvent & evt) {
-	wxString output = mxUT::GetOutput("pkg-config --list-all",true);
+	wxString output = mxUT::GetOutput("pkg-config --list-all",false,true);
 	output = wxString("\"") + output + "\"";
 	output.Replace("\n","\",\"",true);
 	wxArrayString list; mxUT::Split(output,list,true,false);

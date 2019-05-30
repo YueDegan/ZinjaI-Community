@@ -183,7 +183,7 @@ void mxCppCheckConfigDialog::OnButtonSuppressFile (wxCommandEvent & evt) {
 
 void mxCppCheckConfigDialog::OnButtonSuppressIds (wxCommandEvent & evt) {
 	wxString cpp_cmd = mxUT::Quotize(config->Files.cppcheck_command) + " --errorlist";
-	wxString output = mxUT::GetOutput(cpp_cmd);
+//	wxString output = mxUT::GetOutput(cpp_cmd,false,true);
 	wxArrayString opts;
 	int p = output.Find(" id=\"");
 	while (p!=wxNOT_FOUND) {
