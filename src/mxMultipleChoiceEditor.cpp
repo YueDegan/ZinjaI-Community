@@ -29,7 +29,7 @@ END_EVENT_TABLE()
 * @param comma_splits   indica si la coma separa opciones en el cuadro de texto, para pasar a mxUtils::Split
 **/
 mxMultipleChoiceEditor::mxMultipleChoiceEditor(wxWindow *parent, wxString title, wxString message, wxTextCtrl *text, 
-											   wxArrayString &options_array, bool comma_splits) 
+											   const wxArrayString &options_array, bool comma_splits) 
 	: mxDialog(parent,title), m_filter_text(nullptr), m_dst_text(text)
 {
 	
@@ -52,7 +52,7 @@ mxMultipleChoiceEditor::mxMultipleChoiceEditor(wxWindow *parent, wxString title,
 	Set2List();
 	
 	if (m_data.size()>15)
-		sizer.BeginText( LANG(BREAKOPTS_LINE,"Filtrar") ).Short().EndText(m_filter_text);
+		sizer.BeginText( LANG(GENERAL_FILTER,"Filtrar") ).Short().EndText(m_filter_text);
 	
 	sizer.BeginBottom()/*.Help()*/.Ok().Cancel().EndBottom(this);
 	sizer.SetAndFit();

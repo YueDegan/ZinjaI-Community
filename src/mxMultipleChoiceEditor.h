@@ -10,7 +10,7 @@ class wxCheckListBox;
 
 class mxMultipleChoiceEditor : public mxDialog {
 public:
-	mxMultipleChoiceEditor(wxWindow *parent, wxString title, wxString message, wxTextCtrl *text, wxArrayString &options_array, bool comma_splits=true);
+	mxMultipleChoiceEditor(wxWindow *parent, wxString title, wxString message, wxTextCtrl *text, const wxArrayString &options_array, bool comma_splits=true);
 protected:
 	void OnOkButton(wxCommandEvent &evt);
 	void OnCancelButton(wxCommandEvent &evt);

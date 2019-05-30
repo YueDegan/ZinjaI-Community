@@ -1374,6 +1374,8 @@ CPPCHECK_INLINE_SUPPR
 Habilitar supresiones inline
 CPPCHECK_SAVE
 Guardar esta configuración con el proyecto
+CPPCHECK_PARALLELIZE
+Paralelizar ejecución
 CPPCHECK_SOURCES_IN
 Files to analize
 CPPCHECK_SOURCES_OUT
@@ -2258,6 +2260,8 @@ GENERAL_NO_BUTTON
  &No 
 GENERAL_YES_BUTTON
  &Si 
+GENERAL_FILTER
+Filtrar
 MULTIFILE_CAPTION
 Agregar Archivos al Proyecto
 MULTIFILE_DIR
@@ -2790,10 +2794,10 @@ PROJECTCONFIG_COMPILING
 Compilación
 PROJECTCONFIG_LINKING
 Enlazado
-PROJECTCONFIG_SEQUENCE
-Secuencia
 PROJECTCONFIG_LIBRARIES
 Bibliotecas
+PROJECTCONFIG_SEQUENCE
+Secuencia
 PROJECTCONFIG_LINKING_EXTRA_ARGS
 Parámetros extra para el enlazado
 PROJECTCONFIG_LINKING_EXTRA_PATHS
@@ -2925,7 +2929,7 @@ Nota: estos cambios se aplican inmediatamente,
 PROJECTCONFIG_STEPS_WARNING_APPLY_NOW_LINE_2
 aunque luego seleccione cancelar
 PROJECTCONFIG_LIBS_TO_USE
-Bibliotecas del sistema a utilizar
+Bibliotecas del sistema a utilizar (pkg-config/framework)
 PROJECTCONFIG_LIBS_TO_GENERATE
 Bibliotecas a generar*
 PROJECTCONFIG_LIBS_ADD
@@ -3113,7 +3117,7 @@ No se encontraron mas cambios
 SOURCE_EXTERNAL_MODIFICATION_ASK_RELOAD
 El archivo fue modificado por otro programa.\nDesea recargarlo para obtener las modificaciones?
 DEBUG_CANT_EDIT_WHILE_DEBUGGING
-Por defecto, no se puede modificar el fuente mientras se encuentra\ndepurando un programa, ya que de esta forma pierde la relación que\nexiste entre la información que brinda el depurador a partir del\narchivo binario, y el fuente que está visualizando. Puede configurar\neste comportamiento en la seccion Depuracion del cuadro de\nPreferencias (desde menu Archivo)
+Por defecto, no se puede modificar el fuente mientras se encuentra\ndepurando un programa, ya que de esta forma pierde la relación que\nexiste entre la información que brinda el depurador a partir del\narchivo binario, y el fuente que está visualizando.
 DEBUG_ALLOW_EDIT_WHILE_DEBUGGING
 Permitir editar igualemente
 MAINW_CHANGES_CONFIRM_RELOAD
@@ -3264,6 +3268,8 @@ VALGRIND_OPEN_OUTPUT_FILE
 Abrir salida completa
 VALGRIND_DELETE_FROM_TREE
 Eliminar Items
+VALGRIND_ADD_TO_SUPPRESSIONS
+Agregar supresión
 WXFBSETUP_CAPTION
 Configuracion wxFormBuilder
 WXFBSETUP_ACTIVATE

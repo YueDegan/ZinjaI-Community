@@ -2,6 +2,7 @@
 #define MXCPPCHECKCONFIGDIALOG_H
 
 #include "mxCommonConfigControls.h"
+#include "widgetDisabler.h"
 
 class wxListBox;
 class wxPanel;
@@ -13,7 +14,6 @@ class cppcheck_configuration;
 class mxCppCheckConfigDialog : public mxDialog {
 private:
 	wxListBox *sources_in, *sources_out;
-	wxCheckBox *copy_from_config;
 	wxTextCtrl *config_d;
 	wxTextCtrl *config_u;
 	wxTextCtrl *style;
@@ -21,10 +21,9 @@ private:
 	wxTextCtrl *standard;
 	wxTextCtrl *suppress_file;
 	wxTextCtrl *suppress_ids;
-	wxCheckBox *inline_suppr;
-	wxCheckBox *save_in_project;
-	wxCheckBox *exclude_headers;
 	wxTextCtrl *additional_files;
+	wxCheckBox *exclude_headers;
+	widgetBinder m_binder;
 	cppcheck_configuration *project_cppcheck_config;
 protected:
 public:

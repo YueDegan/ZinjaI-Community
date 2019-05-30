@@ -950,6 +950,6 @@ void mxProjectConfigWindow::OnLibsToUseButton (wxCommandEvent & evt) {
 	output.Replace("\n","\",\"",true);
 	wxArrayString list; mxUT::Split(output,list,true,false);
 	for(size_t i=0;i<list.size();i++) list[i] = list[i].BeforeFirst(' ');
-	mxMultipleChoiceEditor(this,"pkg-config","Bibliotecas disponible en el sistema",libs_to_use,list,true);
+	mxMultipleChoiceEditor(this,"pkg-config","",libs_to_use,list,true);
 }
 

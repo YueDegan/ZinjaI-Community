@@ -1,3 +1,8 @@
+#include <fstream>
+#include <wx/file.h>
+#include <wx/textfile.h>
+#include <wx/wfstream.h>
+#include <wx/txtstrm.h>
 #include <wx/menu.h>
 #include <wx/string.h>
 #include <wx/ffile.h>
@@ -34,19 +39,14 @@
 #include "mxValgrindConfigDialog.h"
 #include "Toolchain.h"
 #include "mxNewWizard.h"
-#include <fstream>
 #include "mxArt.h"
 #include "mxMakefileDialog.h"
-#include <wx/file.h>
-#include <wx/textfile.h>
 #include "mxGprofOutput.h"
 #include "execution_workaround.h"
 #include "mxWxfbConfigDialog.h"
 #include "MenusAndToolsConfig.h"
 #include "mxLizardOutput.h"
 #include "mxStyledOutput.h"
-#include <wx/wfstream.h>
-#include <wx/txtstrm.h>
 #include "mxCompilerArgEnabler.h"
 #include "mxAUI.h"
 #include "ZLog.h"
@@ -102,6 +102,7 @@ void mxMainWindow::OnToolsCppCheckRun(wxCommandEvent &event) {
 		cppargs<<mxUT::Split(project_cppcheck_config->suppress_ids,"--suppress=")<<" ";
 		if (project_cppcheck_config->suppress_file.Len()) cppargs<<"--suppressions_list="<<mxUT::Quotize(DIR_PLUS_FILE(project->path,project_cppcheck_config->suppress_file))<<" ";
 		if (project_cppcheck_config->inline_suppr) cppargs<<"--inline-suppr ";
+		if (project_cppcheck_config->parallelize && config->Init.max_jobs>1) cppargs<<"-j "<<config->Init.max_jobs<<" ";
 		
 		// path
 		path=project->path;

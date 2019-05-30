@@ -217,11 +217,13 @@ struct cppcheck_configuration {
 	bool inline_suppr; ///< activar supresiones inline (--inline-suppr)
 	wxString exclude_list; ///< lista de archivos del proyecto que no seran analizados
 	wxString additional_files; ///< lista de archivos no registrados en el proyecto a agregar para el analisis
+	bool parallelize; ///< run with "-j #" (same number of procs as when compiling)
 	bool save_in_project; ///< indica si hay que guardar esta configuración en el archivo de proyecto
 	//! inicializa la configuración con los valores por defecto
 	cppcheck_configuration(bool do_save_in_project) {
 		exclude_headers=true;
 		copy_from_config=true;
+		parallelize=false;
 		style="all";
 		inline_suppr=true;
 		save_in_project=do_save_in_project;

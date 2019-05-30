@@ -10,6 +10,12 @@ enum mxVOmode {
 };
 
 class mxValgrindOuput:public wxTreeCtrl {
+	
+public:
+	mxValgrindOuput(wxWindow* parent, mxVOmode mode, wxString afilename);
+	void SetMode(mxVOmode mode, wxString afilename);
+	bool LoadOutput(); /// populate panel's tree from given output file, returns false if there's no output
+	
 private:
 	wxString filename;
 	wxTreeItemId root;
@@ -17,10 +23,8 @@ private:
 	bool is_last;
 	wxTreeItemId sel;
 	mxVOmode mode;
-public:
-	mxValgrindOuput(wxWindow* parent, mxVOmode mode, wxString afilename);
-	void SetMode(mxVOmode mode, wxString afilename);
-	bool LoadOutput(); /// populate panel's tree from given output file, returns false if there's no output
+	
+	wxString GetCppCheckId(wxTreeItemId sel);
 	bool LoadOutputValgrind();
 	bool LoadOutputCppCheck();
 	bool LoadOutputDoxygen();
@@ -28,8 +32,10 @@ public:
 	void OnSelect(wxTreeEvent &evt);
 	void OnDelete(wxCommandEvent &evt);
 	void OnReload(wxCommandEvent &evt);
+	void OnAddToSuppressions(wxCommandEvent &evt);
 	void OnOpen(wxCommandEvent &evt);
 	void OnKey(wxKeyEvent &evt);
+	
 	DECLARE_EVENT_TABLE();
 };
 

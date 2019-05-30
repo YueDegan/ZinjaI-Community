@@ -19,6 +19,7 @@ BEGIN_EVENT_TABLE(mxValgrindOuput,wxTreeCtrl)
 	EVT_MENU(mxID_VALGRIND_OPEN_OUTPUT_FILE, mxValgrindOuput::OnOpen)
 	EVT_MENU(mxID_VALGRIND_RELOAD_TREE, mxValgrindOuput::OnReload)
 	EVT_MENU(mxID_VALGRIND_DELETE_FROM_TREE, mxValgrindOuput::OnDelete)
+	EVT_MENU(mxID_VALGRIND_ADD_TO_SUPPRESSIONS, mxValgrindOuput::OnAddToSuppressions)
 	EVT_TREE_ITEM_ACTIVATED(wxID_ANY, mxValgrindOuput::OnSelect)
 	EVT_KEY_DOWN(mxValgrindOuput::OnKey)
 END_EVENT_TABLE()
@@ -186,6 +187,14 @@ void mxValgrindOuput::OnDelete(wxCommandEvent &evt) {
 	}
 }
 
+wxString mxValgrindOuput::GetCppCheckId(wxTreeItemId sel) {
+	wxString line = GetItemText(sel);
+	if (line.IsEmpty() || line[0]!='[') return wxEmptyString;
+	line = line.AfterFirst(']');
+	if (line.IsEmpty() || line[1]!='(') return wxEmptyString;
+	return line.BeforeFirst(')').Mid(2);
+}
+
 
 void mxValgrindOuput::OnPopup(wxTreeEvent &evt) {
 	sel = evt.GetItem();
@@ -195,6 +204,10 @@ void mxValgrindOuput::OnPopup(wxTreeEvent &evt) {
 	menu.Append(mxID_VALGRIND_OPEN_OUTPUT_FILE, LANG(VALGRIND_OPEN_OUTPUT_FILE,"Abrir salida completa"));
 	menu.AppendSeparator();
 	menu.Append(mxID_VALGRIND_DELETE_FROM_TREE, LANG(VALGRIND_DELETE_FROM_TREE,"Eliminar Items"));
+	if (mode==mxVO_CPPCHECK && !GetCppCheckId(sel).IsEmpty()) {
+		menu.AppendSeparator();
+		menu.Append(mxID_VALGRIND_ADD_TO_SUPPRESSIONS, LANG(VALGRIND_ADD_TO_SUPPRESSIONS,"Agregar supresión"));
+	}
 	PopupMenu(&menu,evt.GetPoint());
 	
 }
@@ -272,3 +285,10 @@ void mxValgrindOuput::SetMode (mxVOmode mode, wxString afilename) {
 }
 
 	
+
+void mxValgrindOuput::OnAddToSuppressions (wxCommandEvent & evt) {
+	cppcheck_configuration *cfg = project->GetCppCheckConfiguration();
+	if (!cfg->suppress_ids.IsEmpty()) cfg->suppress_ids<<" ";
+	cfg->suppress_ids<<GetCppCheckId(GetSelection());
+}
+
