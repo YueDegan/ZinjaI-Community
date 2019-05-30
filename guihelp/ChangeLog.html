@@ -6,9 +6,12 @@
 <!--<I>Note 1: A more detailed and English changelog can be found in the <A href="http://sourceforge.net/p/zinjai/code/ci/master/log/?path=" target="_blank">git repository's history</A>.</I><BR><BR>
 <I>Nota 2: Nuevo código para categorizar los cambios: New=nueva funcionalidad, Imp=mejora sobre una funcionalidad existente, Fix=corrección de un bug</I><BR><UL>-->
 
-</UL><BR><B>Release 201904xx</B><BR><UL>
+</UL><BR><B>Release 201905xx</B><BR><UL>
+	<LI>New: En la pestaña "Biblioteca" del cuadro de diálogo de opciones de compilación y ejecución de un proyecto, hay un campo para agregar nombres de bibliotecas que se añadirán a los comandos de compilació y enlazado mediante el subcomando pkg-config (en GNU/Linux) o el argumento -framework (en Mac OS).</LI>
 	<LI>New: Las listas de extensión a reconocer como fuentes o cabeceras, y adicionales a colorear como código C++ ahora pueden moficarse desde las pestañas Proyecto y Estilos del cuadro de preferencias.</LI>
 	<LI>New: Agregado un nuevo item en el submenu de gcov para invocar a lcov y visualizar los resultados (solo en GNU/Linux).</LI>
+	<LI>Imp: Desde el panel de resultados de CppCheck se puede agregar una suppressión para un error haciendo click derecho sobre el mismo.</LI>
+	<LI>Imp: Agregada una opción en la configuración de CppCheck para habilitar su ejecución en paralelo.</LI>
 	<LI>Imp: Al incluir/quitar argumentos de enlazado adicionales en un proyecto para herramientas externas como gcov/gprof, se aplica también a las bibliotecas a generar.</LI>
 	<LI>Imp: Mejor interfaz en el panel de resultados de la compilación para el caso de toolchain externo.</LI>
 	<LI>Imp: La ventana de ejecucion de CppCheck es ahora una ventana regular, por lo que se puede minimizar.</LI>

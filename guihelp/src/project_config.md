@@ -109,6 +109,17 @@ Define los parametros que se utilizan para el enlazado.
 *  **Archivo manifest.xml**: ruta completa o relativa a la carpeta de proyecto del archivo que se utilizará como manifest para en *Microsoft Windows*. Este archivo se compila mediante un archivo de recursos generado automáticamente en la carpeta de archivos temporales del proyecto.
 
 
+<A name="biblioteca"></A>
+#### Pestaña Biblioteca
+
+![](project_config_libraries.png)
+
+*  **Bibliotecas del sistema a utilizar**:  la lista de palabras ingresadas en este campo se añadirá a los comandos de compilación y enlazado en GNU/Linux mediante la herramienta pkg-config (a modo de sub-comando, con el argumento "--cflags" para compilación y "--libs" para enlazado), o como argumento adicional "-framework" en Mac OS. En sistema Windows este campo no tiene aún ningún efecto.
+
+*  **Bibliotecas a geenerar**:  Permite definir bibliotecas que serán generadas a partir de un subconjunto de fuentes del proyectos. Estas bibliotecas serán además enlazadas con el ejecutable final. Para generar una biblioteca, debe agregarla en esta lista y definir sus propiedades, y qué fuentes la componen, mediante el [Diálogo Generar Biblioteca](lib_to_build.html). Para comprender detalladamente la forma de compilación de las bibliotecas y cómo se integran en el proyecto consulte la sección [Secuencia de contrucción de proyectos](project_building_sequence.html).
+Por último, si el objetivo de su proyecto es sólamente construir una o varias bibliotecas, pero no un ejecutable, puede tildar la casilla "Generar solo bibliotecas". Esto evita que *ZinjaI* intente enlazar un ejecutable final.
+
+
 <A name="secuencia"></A>
 #### Pestaña Secuencia
 
@@ -116,11 +127,3 @@ Define los parametros que se utilizan para el enlazado.
 
 Permite utilizar un [toolchain alternativo](toolchains.html), o alterar el proceso de construcción del proyecto insertando pasos adicionales. El proceso detallado, junto con las reglas que determinan cuando ejecutar estos pasos, se explica en la sección [Secuencia de contrucción de proyectos](project_building_sequence.html). Estos pasos se utilizan, por ejemplo, para insertar llamadas a parsers de bibioteca específicas, compilación de recursos adicionales, etc. Cuando agregue o modifique un paso personalizado, lo hará mediante el [Diálogo Agregar/Editar Paso de Compilación Personalizado](compile_extra_steps.html). Consulte este enlace para encontrar una descripción más detallada de las propiedades de cada paso.
 
-
-<A name="biblioteca"></A>
-#### Pestaña Biblioteca
-
-![](project_config_libraries.png)
-
-Permite definir bibliotecas que serán generadas a partir de un subconjunto de fuentes del proyectos. Estas bibliotecas serán además enlazadas con el ejecutable final. Para generar una biblioteca, debe agregarla en esta lista y definir sus propiedades, y qué fuentes la componen, mediante el [Diálogo Generar Biblioteca](lib_to_build.html). Para comprender detalladamente la forma de compilación de las bibliotecas y cómo se integran en el proyecto consulte la sección [Secuencia de contrucción de proyectos](project_building_sequence.html).
-Por último, si el objetivo de su proyecto es sólamente construir una o varias bibliotecas, pero no un ejecutable, puede tildar la casilla "Generar solo bibliotecas". Esto evita que *ZinjaI* intente enlazar un ejecutable final.

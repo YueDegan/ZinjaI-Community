@@ -7,7 +7,7 @@
 
 <p><A name="administracion"></A></p>
 
-<h4>Administración de perfiles</h4>
+<h4>Administración perfiles</h4>
 
 <p>Para administrar los diferentes perfiles debe utilizar los botones y la lista desplegable de la parte superior de la ventana: </p>
 
@@ -89,6 +89,18 @@
 <li><p><strong>Archivo manifest.xml</strong>: ruta completa o relativa a la carpeta de proyecto del archivo que se utilizará como manifest para en <em>Microsoft Windows</em>. Este archivo se compila mediante un archivo de recursos generado automáticamente en la carpeta de archivos temporales del proyecto.</p></li>
 </ul>
 
+<p><A name="biblioteca"></A></p>
+
+<h4>Pestaña Biblioteca</h4>
+
+<p><center><img src="project_config_libraries.png" alt=""></center></p>
+
+<ul>
+<li><p><strong>Bibliotecas del sistema a utilizar</strong>:  la lista de palabras ingresadas en este campo se añadirá a los comandos de compilación y enlazado en GNU/Linux mediante la herramienta pkg-config (a modo de sub-comando, con el argumento <q>--cflags</q> para compilación y <q>--libs</q> para enlazado), o como argumento adicional <q>-framework</q> en Mac OS. En sistema Windows este campo no tiene aún ningún efecto.</p></li>
+<li><p><strong>Bibliotecas a geenerar</strong>:  Permite definir bibliotecas que serán generadas a partir de un subconjunto de fuentes del proyectos. Estas bibliotecas serán además enlazadas con el ejecutable final. Para generar una biblioteca, debe agregarla en esta lista y definir sus propiedades, y qué fuentes la componen, mediante el <a href="lib_to_build.html">Diálogo Generar Biblioteca</a>. Para comprender detalladamente la forma de compilación de las bibliotecas y cómo se integran en el proyecto consulte la sección <a href="project_building_sequence.html">Secuencia de contrucción de proyectos</a>.
+Por último, si el objetivo de su proyecto es sólamente construir una o varias bibliotecas, pero no un ejecutable, puede tildar la casilla <q>Generar solo bibliotecas</q>. Esto evita que <em>ZinjaI</em> intente enlazar un ejecutable final.</p></li>
+</ul>
+
 <p><A name="secuencia"></A></p>
 
 <h4>Pestaña Secuencia</h4>
@@ -96,13 +108,4 @@
 <p><center><img src="project_config_sequence.png" alt=""></center></p>
 
 <p>Permite utilizar un <a href="toolchains.html">toolchain alternativo</a>, o alterar el proceso de construcción del proyecto insertando pasos adicionales. El proceso detallado, junto con las reglas que determinan cuando ejecutar estos pasos, se explica en la sección <a href="project_building_sequence.html">Secuencia de contrucción de proyectos</a>. Estos pasos se utilizan, por ejemplo, para insertar llamadas a parsers de bibioteca específicas, compilación de recursos adicionales, etc. Cuando agregue o modifique un paso personalizado, lo hará mediante el <a href="compile_extra_steps.html">Diálogo Agregar/Editar Paso de Compilación Personalizado</a>. Consulte este enlace para encontrar una descripción más detallada de las propiedades de cada paso.</p>
-
-<p><A name="biblioteca"></A></p>
-
-<h4>Pestaña Biblioteca</h4>
-
-<p><center><img src="project_config_libraries.png" alt=""></center></p>
-
-<p>Permite definir bibliotecas que serán generadas a partir de un subconjunto de fuentes del proyectos. Estas bibliotecas serán además enlazadas con el ejecutable final. Para generar una biblioteca, debe agregarla en esta lista y definir sus propiedades, y qué fuentes la componen, mediante el <a href="lib_to_build.html">Diálogo Generar Biblioteca</a>. Para comprender detalladamente la forma de compilación de las bibliotecas y cómo se integran en el proyecto consulte la sección <a href="project_building_sequence.html">Secuencia de contrucción de proyectos</a>.
-Por último, si el objetivo de su proyecto es sólamente construir una o varias bibliotecas, pero no un ejecutable, puede tildar la casilla <q>Generar solo bibliotecas</q>. Esto evita que <em>ZinjaI</em> intente enlazar un ejecutable final.</p>
 </BODY></HTML>
