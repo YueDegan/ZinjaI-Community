@@ -188,9 +188,13 @@ int mxGrid::GetSelectedRows (vector<int> & rows, bool inverted) {
 	wxGridCellCoordsArray br = wxGrid::GetSelectionBlockBottomRight();
 	for(unsigned int i=0;i<tl.GetCount();i++) 
 		for(int j=tl[i].GetRow();j<=br[i].GetRow();j++) rows.push_back(j);
-	sort(rows.begin(),rows.end());
-	rows.erase(unique(rows.begin(),rows.end()),rows.end());
-	if (inverted) reverse(rows.begin(),rows.end());
+	if (rows.empty()) {
+		rows.push_back(GetGridCursorRow());
+	} else {
+		sort(rows.begin(),rows.end());
+		rows.erase(unique(rows.begin(),rows.end()),rows.end());
+		if (inverted) reverse(rows.begin(),rows.end());
+	}
 	return rows.size();
 }
 
