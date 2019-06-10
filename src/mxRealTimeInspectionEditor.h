@@ -16,7 +16,7 @@ class mxRealTimeInspectionEditor : public wxFrame, public myDIEventHandler, publ
 	wxFlexGridSizer *sizer;
 	struct AuxRTIE {
 		DebuggerInspection *di;
-		int level;
+		int level; bool broken;
 		wxStaticText *label;
 		wxTextCtrl *text;
 		wxButton *button;
@@ -31,11 +31,11 @@ public:
 	void Resize(bool only_grow_h);
 	
 	// eventos myDIGlobalEventHandler
-	void OnDebugStop() { Destroy(); }
+	void OnDebugStop() override { Destroy(); }
 	// eventos myDIEventHandler
-	void OnDIError(DebuggerInspection *di);
-	void OnDIValueChanged(DebuggerInspection *di);
-	void OnDIOutOfScope(DebuggerInspection *di);
+	void OnDIError(DebuggerInspection *di) override;
+	void OnDIValueChanged(DebuggerInspection *di) override;
+	void OnDIOutOfScope(DebuggerInspection *di) override;
 	
 	// eventos propios
 	void OnUpdateValues(wxCommandEvent &evt);
