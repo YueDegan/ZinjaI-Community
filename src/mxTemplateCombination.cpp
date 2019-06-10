@@ -54,8 +54,8 @@ mxTemplateCombination::mxTemplateCombination(wxWindow *parent, wxString other_zp
 		.EndSection();
 	opts_sizer.BeginSection(LANG(TEMPLATECOMB_GENERAL_FIELDS,"Opciones generales a combinar:"))
 		.BeginCheck(LANG(PROJECTGENERAL_AUTOCOMP_EXTRA,"Indices de autocompletado adicionales")).Value(true).EndCheck(m_merge_autocomp)
-#ifdef _ZINJAI_DEBUG
 		.BeginCheck(LANG(PROJECTGENERAL_AUTOIMPROVE_TEMPLATES," Mejora de inspecciones según tipo ")).Value(true).EndCheck(m_merge_inspections)
+#ifdef _ZINJAI_DEBUG
 		.BeginCheck(LANG(MENUITEM_TOOLS_CUSTOM_TOOLS,"Herramientas Personalizables")).Value(true).EndCheck(m_merge_custom_tools)
 #endif
 		.EndSection();
@@ -232,8 +232,8 @@ void mxTemplateCombination::OnButtonOk (wxCommandEvent & evt) {
 	opts_general.autocomp = m_merge_autocomp->GetValue();
 #ifdef _ZINJAI_DEBUG
 	opts_general.custom_tools = m_merge_custom_tools->GetValue();
-	opts_general.inspections = m_merge_inspections->GetValue();
 #endif
+	opts_general.inspections = m_merge_inspections->GetValue();
 	CombineGeneralOpts(m_zpr_path,opts_general);
 	
 	Close();
@@ -275,8 +275,17 @@ void mxTemplateCombination::CombineGeneralOpts (wxString zpr_path, CombineOptsGe
 		if (section=="general") {
 			for( IniFileReader::Pair p = fil.GetNextPair(); p.IsOk(); p = fil.GetNextPair() ) {
 				if (p.Key()=="autocomp_extra") Mix(opts.autocomp, false, project->autocomp_extra, p.AsString());
+				else if (p.Key()=="inspection_improving_template") {
+					wxString from = p.AsString().BeforeFirst('|'), to = p.AsString().AfterFirst('|');
+					int i = project->inspection_improving_template_from.Index(from);
+					if (i==wxNOT_FOUND) {
+						project->inspection_improving_template_from.Add(from);
+						project->inspection_improving_template_to.Add(to);
+					} else {
+						project->inspection_improving_template_to[i] = to;
+					}
+				}
 //				bool custom_tools;
-//				bool inspections;
 			}
 		}
 	}
