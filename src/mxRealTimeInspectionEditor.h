@@ -5,6 +5,7 @@
 #include "mxUtils.h"
 #include "Cpp11.h"
 #include "raii.h"
+#include <wx/timer.h>
 
 class wxTextCtrl;
 class wxButton;
@@ -22,6 +23,7 @@ class mxRealTimeInspectionEditor : public wxFrame, public myDIEventHandler, publ
 		wxButton *button;
 	};
 	SingleList<AuxRTIE> inspections;
+	wxTimer m_resize_timer;
 public:
 	mxRealTimeInspectionEditor(const wxString &inspection);
 	~mxRealTimeInspectionEditor();
@@ -42,6 +44,7 @@ public:
 	void OnButton(wxCommandEvent &evt);
 	void OnText(wxCommandEvent &evt);
 	void OnClose(wxCloseEvent &evt);
+	void OnResizeTimer(wxTimerEvent &evt);
 	DECLARE_EVENT_TABLE();
 };
 

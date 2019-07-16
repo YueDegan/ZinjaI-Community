@@ -10,10 +10,12 @@ BEGIN_EVENT_TABLE(mxRealTimeInspectionEditor,wxFrame)
 	EVT_CLOSE(mxRealTimeInspectionEditor::OnClose)
 	EVT_BUTTON(wxID_ANY,mxRealTimeInspectionEditor::OnButton)
 	EVT_TEXT_ENTER(wxID_ANY,mxRealTimeInspectionEditor::OnText)
+	EVT_TIMER(wxID_ANY,mxRealTimeInspectionEditor::OnResizeTimer)
 END_EVENT_TABLE()
 
 mxRealTimeInspectionEditor::mxRealTimeInspectionEditor(const wxString &expression)
 	: wxFrame(main_window,wxID_ANY,expression,wxGetMousePosition()-wxPoint(25,10),wxDefaultSize,wxDEFAULT_FRAME_STYLE|wxSTAY_ON_TOP)
+	, m_resize_timer(GetEventHandler(),wxID_ANY)
 {
 	SetBackgroundColour(wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ));
 	DebuggerInspection *di;
@@ -102,7 +104,14 @@ void mxRealTimeInspectionEditor::Add (int pos, int lev, DebuggerInspection * di)
 void mxRealTimeInspectionEditor::OnButton (wxCommandEvent & evt) {
 	if (evt.GetId()==wxID_REDO) { OnUpdateValues(evt); return; }
 	for(int i=0;i<inspections.GetSize();i++) { 
-		if (evt.GetEventObject()==inspections[i].button) { Break(i); Resize(true); return; }
+		if (evt.GetEventObject()==inspections[i].button) { 
+			Break(i); 	
+			// no llamar directamente a resize porque si se llega a aca sin que el usuario
+			// pause la ejecucion, ya estamos en un yield, tonces el layout y cia no actualizan
+			// nada (al menos en linux con wx 2.8)
+			m_resize_timer.Start(20,true); 
+			return;
+		}
 	}
 }
 
@@ -131,7 +140,8 @@ void mxRealTimeInspectionEditor::OnText (wxCommandEvent & evt) {
 
 void mxRealTimeInspectionEditor::Resize(bool only_grow_h) {
 	wxSize old_size = WindowToClientSize(GetSize());
-	Layout(); /*wxYield();*/ /*GetSizer()->RecalcSizes();*/
+	Layout(); /*wxYield();*/ 
+	GetSizer()->RecalcSizes();
 	wxSize fit_size = GetSizer()->ComputeFittingClientSize(this);
 	int h=fit_size.GetHeight(); 
 	if  (only_grow_h) {
@@ -146,7 +156,7 @@ void mxRealTimeInspectionEditor::Resize(bool only_grow_h) {
 		}
 		SetSize(ClientToWindowSize(wxSize(w+100,h)));
 	}
-}
+ }
 
 void mxRealTimeInspectionEditor::OnDIError (DebuggerInspection * di) {
 	for(int i=0;i<inspections.GetSize();i++) { 
@@ -159,7 +169,7 @@ void mxRealTimeInspectionEditor::OnDIError (DebuggerInspection * di) {
 }
 
 void mxRealTimeInspectionEditor::OnDIValueChanged (DebuggerInspection * di) {
-	for(int i=0;i<inspections.GetSize();i++) { 
+	for(int i=0;i<inspections.GetSize();i++) {
 		if (inspections[i].di==di) {
 			if (inspections[i].button) inspections[i].button->SetLabel(di->GetValue());
 			if (inspections[i].text) inspections[i].text->SetValue(di->GetValue());
@@ -187,5 +197,9 @@ void mxRealTimeInspectionEditor::OnUpdateValues (wxCommandEvent & evt) {
 				inspections[i].di->UpdateValue(true);
 		}
 	}
+}
+
+void mxRealTimeInspectionEditor::OnResizeTimer (wxTimerEvent & evt) {
+	Resize(true);
 }
 
