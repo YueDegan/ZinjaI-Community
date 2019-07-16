@@ -80,6 +80,10 @@ LANGUAGE_ERROR is_language_compiled(string lang_in, string lang_cache) {
 	return LANGERR_OK;
 }
 
+static void remove_slash_r(std::string &s) {
+	if (!s.empty() && s[s.size()-1]=='\r') s.erase(s.size()-1,1);
+}
+
 LANGUAGE_ERROR compile_language(string lang_in, string lang_cache) {
 
 	// leer las cadenas
@@ -89,10 +93,10 @@ LANGUAGE_ERROR compile_language(string lang_in, string lang_cache) {
 	int texts_len = int(LANGUAGE_MAX)+1;
 	string *texts = new string[texts_len];
 	string tmp;
-	getline(fin,tmp);
+	getline(fin,tmp); remove_slash_r(tmp);
 	while (tmp!="END" && scount<LANGUAGE_MAX) {
 		string &tx=texts[scount];
-		getline(fin,tx);
+		getline(fin,tx); remove_slash_r(tx);
 		for (unsigned int j=0;j<tx.size();j++) {
 			if (tx[j]=='\\' && j+1<tx.size()) {
 				if (tx[j+1]=='n') tx.replace(j,2,"\n");
@@ -101,7 +105,7 @@ LANGUAGE_ERROR compile_language(string lang_in, string lang_cache) {
 			}
 		}
 		buflen+=1+texts[scount++].size();
-		getline(fin,tmp);
+		getline(fin,tmp); remove_slash_r(tmp);
 	}
 	if (scount!=LANGUAGE_MAX || tmp!="END") {
 		delete [] texts;
@@ -130,7 +134,7 @@ LANGUAGE_ERROR compile_language(string lang_in, string lang_cache) {
 	fout2.close();
 	// guardar firma
 	ifstream fi((lang_in+".sgn").c_str());
-	string si; getline(fi,si); fi.close();
+	string si; getline(fi,si); remove_slash_r(si); fi.close();
 	ofstream fc((lang_cache+".sgn").c_str(),ios::trunc);
 	fc<<si<<endl; fc.close();
 	

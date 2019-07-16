@@ -41,7 +41,7 @@ public:
 	void OnChangeRef(wxCommandEvent &evt);
 	void OnChangeLang(wxCommandEvent &evt);
 	void UpdateStatics();
-	mxWindow();
+	mxWindow(wxString ref_lang_id, wxString edit_lang_id);
 	DECLARE_EVENT_TABLE();
 };
 

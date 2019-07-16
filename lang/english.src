@@ -1372,10 +1372,10 @@ CPPCHECK_SUPPRESS_FILE
 Supressions list file
 CPPCHECK_INLINE_SUPPR
 Enable inline suppressions
-CPPCHECK_SAVE
-Save this setup in the project
 CPPCHECK_PARALLELIZE
 Parallelize execution
+CPPCHECK_SAVE
+Save this setup in the project
 CPPCHECK_SOURCES_IN
 Files to analize
 CPPCHECK_SOURCES_OUT
@@ -2550,6 +2550,8 @@ PREFERENCES_DEBUG_ORGANIZE_TOOLBARS
 Reorganize toolbars on debug start/stop
 PREFERENCES_DEBUG_ACTIVATE_WINDOW_ON_INTERRUPTION
 Focus ZinjaI's window when debugging is interrupted
+PREFERENCES_DEBUG_USE_COLOURS_FOR_INSPECTIONS
+Use colours in inspections and backtrace grids
 PREFERENCES_DEBUG_ENABLE_CORE_DUMP
 Enable core dumps when running without debugger
 PREFERENCES_DEBUG_CATCH_THROW
@@ -2560,8 +2562,6 @@ PREFERENCES_DEBUG_RECOMPILE_AUTOMATICALLY
 Rebuild automatically before debugging
 PREFERENCES_DEBUG_ALWAYS_RUN_IN_DEBUGGER
 Always run in debugging mode
-PREFERENCES_DEBUG_USE_COLOURS_FOR_INSPECTIONS
-Use colours in inspections and backtrace grids
 PREFERENCES_DEBUG_INSPECTIONS_CAN_HAVE_SIDE_EFFECTS
 Consider side-effects on inspections evaluation
 PREFERENCES_DEBUG_IMPROVE_INSPECTIONS_BY_TYPE

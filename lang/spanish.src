@@ -1372,10 +1372,10 @@ CPPCHECK_SUPPRESS_FILE
 Archivo con lista de supresiones
 CPPCHECK_INLINE_SUPPR
 Habilitar supresiones inline
-CPPCHECK_SAVE
-Guardar esta configuración con el proyecto
 CPPCHECK_PARALLELIZE
 Paralelizar ejecución
+CPPCHECK_SAVE
+Guardar esta configuración con el proyecto
 CPPCHECK_SOURCES_IN
 Files to analize
 CPPCHECK_SOURCES_OUT
@@ -2550,6 +2550,8 @@ PREFERENCES_DEBUG_ORGANIZE_TOOLBARS
 Reacomodar las barras de herramienta al iniciar/finalizar la depuración
 PREFERENCES_DEBUG_ACTIVATE_WINDOW_ON_INTERRUPTION
 Mostrar ZinjaI cuando se interrumpe la ejecución
+PREFERENCES_DEBUG_USE_COLOURS_FOR_INSPECTIONS
+Utilizar colores en las tablas de inspecciones y trazado inverso
 PREFERENCES_DEBUG_ENABLE_CORE_DUMP
 Habilitar volcado de memoria al ejecutar sin depurador
 PREFERENCES_DEBUG_CATCH_THROW
@@ -2560,8 +2562,6 @@ PREFERENCES_DEBUG_RECOMPILE_AUTOMATICALLY
 Recompilar automaticamente antes de depurar si es necesario
 PREFERENCES_DEBUG_ALWAYS_RUN_IN_DEBUGGER
 Siempre ejecutar en el depurador
-PREFERENCES_DEBUG_USE_COLOURS_FOR_INSPECTIONS
-Utilizar colores en la tabla de inspecciones
 PREFERENCES_DEBUG_INSPECTIONS_CAN_HAVE_SIDE_EFFECTS
 Considerar side-effects al evaluar inspecciones
 PREFERENCES_DEBUG_IMPROVE_INSPECTIONS_BY_TYPE
@@ -2931,7 +2931,7 @@ aunque luego seleccione cancelar
 PROJECTCONFIG_LIBS_TO_USE
 Bibliotecas del sistema a utilizar (pkg-config/framework)
 PROJECTCONFIG_LIBS_TO_GENERATE
-Bibliotecas a generar*
+Bibliotecas a generar
 PROJECTCONFIG_LIBS_ADD
 Agregar...
 PROJECTCONFIG_LIBS_EDIT
@@ -2941,7 +2941,7 @@ Quitar
 PROJECTCONFIG_LIBS_NOEXEC
 Generar solo bibliotecas (no generar ejecutable)
 PROJECTCONFIG_STEPS_WARNING_APPLY_NOW
-* estos cambios se aplican inmediatamente,\naunque luego seleccione cancelar
+* estos cambios se aplican inmediatamente,\n
 PROJECTCONFIG_ASK_DELETE_STEP
 Eliminar el paso: 
 PROJECTCONFIG_STEPS_COMPILE_SOURCES

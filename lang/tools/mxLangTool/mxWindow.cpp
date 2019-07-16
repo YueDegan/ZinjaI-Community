@@ -31,7 +31,7 @@ BEGIN_EVENT_TABLE(mxWindow,wxFrame)
 	EVT_BUTTON(mxFIND,mxWindow::OnFind)
 END_EVENT_TABLE();
 
-mxWindow::mxWindow():wxFrame(NULL,wxID_ANY,"mxLangTool") {
+mxWindow::mxWindow(wxString ref_lang_id, wxString edit_lang_id):wxFrame(NULL,wxID_ANY,"mxLangTool") {
 	
 	wxSizer *main_sizer = new wxBoxSizer(wxVERTICAL);
 	
@@ -93,10 +93,10 @@ mxWindow::mxWindow():wxFrame(NULL,wxID_ANY,"mxLangTool") {
 	Show();
 	
 	LoadEnum();
-	lang_file="english";
-	curref_text->SetValue("spanish");
+	lang_file=edit_lang_id;
+	curref_text->SetValue(ref_lang_id);
 	curlang_text->SetValue(lang_file);
-	LoadLang(ref_hash,"spanish");
+	LoadLang(ref_hash,ref_lang_id);
 	LoadLang(lang_hash,lang_file);
 	wxCommandEvent evt;
 	OnShowAll(evt);
