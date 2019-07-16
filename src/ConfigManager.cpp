@@ -1335,3 +1335,17 @@ bool ConfigManager::ExtInList (const wxString & list, const wxString & ext) cons
 	return list==ext || list.StartsWith(ext+" ") || list.Contains(wxString(" ")+ext+" ") || list.EndsWith(wxString(" ")+ext);
 }
 
+wxString ConfigManager::GetHelpFileEx (const wxString & path, const wxString & name, const wxString & ext, const wxString & args) {
+	wxString aux = DIR_PLUS_FILE(path,name+"_"+Init.language_file+ext);
+	if (wxFileExists(aux)) return aux+args;
+	aux = DIR_PLUS_FILE(path,name+ext);
+	if (wxFileExists(aux)) return aux+args;
+	aux = DIR_PLUS_FILE(path,name+"_spanish"+ext);
+	if (wxFileExists(aux)) return aux+args;
+	return "";
+}
+
+wxString ConfigManager::GetHelpFile (const wxString & name) {
+	return GetHelpFileEx(Help.guihelp_dir,name,".html","");
+}
+

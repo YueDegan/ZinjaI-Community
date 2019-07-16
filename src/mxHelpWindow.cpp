@@ -281,11 +281,7 @@ wxString mxHelpWindow::FixURL(wxString url, bool set_dir, bool select_tree, bool
 	}
 	// ver si hay traduccion
 	if (!keep_args) args.Clear();
-	wxString aux = path+name+"_"+config->Init.language_file+ext;
-	if (wxFileExists(aux)) return aux+args;
-	aux = path+name+ext;
-	if (wxFileExists(aux)) return aux+args;
-	return "";
+	return config->GetHelpFileEx(path,name,ext,args);
 }
 
 bool mxHelpWindow::LoadPage(wxString url) {

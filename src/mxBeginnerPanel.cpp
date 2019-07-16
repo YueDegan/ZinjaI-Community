@@ -88,8 +88,7 @@ void mxBeginnerPanel::ShowOptions(int n, wxString help) {
 }
 
 void mxBeginnerPanel::LoadQuickHelp(wxString file) {
-	file = wxString(_T("beg_"))<<file<<_T("_")<<config->Init.language_file<<_T(".html");
-	main_window->quick_help->LoadPage(DIR_PLUS_FILE(config->Help.guihelp_dir,file));
+	if (!main_window->quick_help->LoadPage(config->GetHelpFile(wxString("beg_")+file)));
 	main_window->m_aui->Show(PaneId::QuickHelp);
 }
 

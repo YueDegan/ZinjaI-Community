@@ -291,6 +291,9 @@ public:
 	bool ExtIsHeader(const wxString &lcase_ext) const { return ExtInList(Files.header_file_extensions,lcase_ext); }
 	bool ExtIsExtra(const wxString &lcase_ext) const { return ExtInList(Files.extra_file_extensions,lcase_ext); }
 	
+	wxString GetHelpFile(const wxString &name);
+	wxString GetHelpFileEx(const wxString &path, const wxString &name, const wxString &ext=".html", const wxString &anchor="");
+	
 };
 
 extern ConfigManager *config;
