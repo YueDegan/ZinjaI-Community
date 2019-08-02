@@ -86,7 +86,8 @@ mxInspectionsImprovingEditor::mxInspectionsImprovingEditor(wxWindow *parent, wxA
 		}
 		list->Select(sel_pos);
 		wxCommandEvent evt; OnList(evt);
-	}
+	} else
+		list->SetFocus();
 	
 	ShowModal();
 	

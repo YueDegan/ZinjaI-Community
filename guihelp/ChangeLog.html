@@ -6,8 +6,8 @@
 <!--<I>Note 1: A more detailed and English changelog can be found in the <A href="http://sourceforge.net/p/zinjai/code/ci/master/log/?path=" target="_blank">git repository's history</A>.</I><BR><BR>
 <I>Nota 2: Nuevo código para categorizar los cambios: New=nueva funcionalidad, Imp=mejora sobre una funcionalidad existente, Fix=corrección de un bug</I><BR><UL>-->
 
-</UL><BR><B>Release 201906xx</B><BR><UL>
-	<LI>New: En la pestaña "Biblioteca" del cuadro de diálogo de opciones de compilación y ejecución de un proyecto, hay un campo para agregar nombres de bibliotecas que se añadirán a los comandos de compilació y enlazado mediante el subcomando pkg-config (en GNU/Linux) o el argumento -framework (en Mac OS).</LI>
+</UL><BR><B>Release 201908xx</B><BR><UL>
+	<LI>New: En la pestaña "Biblioteca" del cuadro de diálogo de opciones de compilación y ejecución de un proyecto, hay un campo para agregar nombres de bibliotecas que se añadirán a los comandos de compilación y enlazado mediante el subcomando "pkg-config" (en GNU/Linux) o el argumento "-framework" (en Mac OS).</LI>
 	<LI>New: Las listas de extensión a reconocer como fuentes o cabeceras, y adicionales a colorear como código C++ ahora pueden moficarse desde las pestañas Proyecto y Estilos del cuadro de preferencias.</LI>
 	<LI>New: Agregado un nuevo item en el submenu de gcov para invocar a lcov y visualizar los resultados (solo en GNU/Linux).</LI>
 	<LI>Imp: El panel de trazado inverso muestra con colores cuales frames corresponden a fuentes del proyecto actual y cuales a bibliotecas externas.</LI>
@@ -28,6 +28,10 @@
 	<LI>Imp: Usar la variable TEMP_DIR para definir la ruta del ejecutable al crear un proyecto sin plantilla.</LI>
 	<LI>Imp: Permitir seleccionar archivos zip al instalar in complemento (a veces Internet Explorer le cambia la extensión al zcp cuando lo descarga).</LI>
 	<LI>Imp: En el cuadro de opciones de compilación y ejecución de proyecto, los cambios a las listas de las pestañas "Biblioteca" y "Secuencia" se deshacen al presionar "Cancelar".</LI>
+	<LI>Imp: Al combinar plantillas de dos proyectos se pueden combinar también los patrones para el reemplazo automático de inspecciones.</LI>
+	<LI>Imp: En el cuadro de búsqueda rápida de la barra de herramientas, se puede usar Shift+Enter para buscar hacia atrás.</LI>
+	<LI>Fix: Correcciones varias en la combinación de plantillas de proyecto.</LI>
+	<LI>Fix: Correcciones varias en el panel para editar inspecciones durante la ejecución.</LI>
 	<LI>Fix: No cambiar las opciones del cuadro de diálogo de búsqueda al buscar una palabra en todo el proyecto desde el menú contextual.</LI>
 	<LI>Fix: Corregido un problema por el cual al alternar entre Windows y GNU/Linux en un proyecto que genera bibliotecas se podía reducir por error la lista de fuentes a incluir en las mismas.</LI>
 	<LI>Fix: Corregido un posible deadlock al crear y adjuntar un nuevo proyecto wxfb.</LI>
@@ -1237,7 +1241,7 @@
 	<LI>Agregada una opción para eliminar todos los comentarios en el menu <I>Herramientas</I></LI>
 	<LI>Corregida la alineación de comentarios cuando hay varios fragmentos independientes en una misma linea</LI>
 	<LI>Ahora verifica si encuentra el compilador y el depurador al iniciar por primera vez en GNU/Linux</LI>
-	<LI>Agregado un parche temporal para evitar problemas con <I>Konsole</I> en <I>KDE4</I> (no hay compatibilidad hacia atras con sus parametros, y el nuevo sistema puede estar incompleto)</LI>
+	<LI>Agregado un parche temporal para evitar problemas con <I>Konsole</I> en <I>KDE4</I> (no hay compatibilidad hacia atrás con sus parametros, y el nuevo sistema puede estar incompleto)</LI>
 	<LI>Los directorios adicionales configurados para buscar archivos de cabeceras tambien se tienen en cuenta para la configuración de <I>Doxygen</I></LI>
 	<LI>Ahora hay un campo específico para macros predefinidas en las opciones de proyecto, que también aprovecha <I>Doxygen</I></LI>
 	<LI>Agregada una opción a la configuración de <I>Doxygen</I> para habilitar o deshabilitar el preprocesado</LI>
