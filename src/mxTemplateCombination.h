@@ -14,6 +14,7 @@ class mxTemplateCombination : public mxDialog {
 	wxCheckBox *m_merge_headers;
 	wxCheckBox *m_merge_lib_dirs;
 	wxCheckBox *m_merge_libraries;
+	wxCheckBox *m_merge_libs_to_use;
 	wxCheckBox *m_merge_macros;
 	wxCheckBox *m_merge_custom_steps;
 	wxCheckBox *m_merge_custom_tools;
@@ -38,6 +39,7 @@ public:
 		bool libraries;
 		bool macros;
 		bool custom_steps;
+		bool libs_to_use;
 	};
 	struct CombineOptsGeneral {
 		bool custom_tools;

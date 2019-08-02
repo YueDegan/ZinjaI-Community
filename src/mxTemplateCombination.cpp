@@ -48,6 +48,7 @@ mxTemplateCombination::mxTemplateCombination(wxWindow *parent, wxString other_zp
 		.BeginCheck(LANG(PROJECTCONFIG_LINKING_EXTRA_ARGS,"Parámetros extra para el enlazado")).Value(true).EndCheck(m_merge_link_extra)
 		.BeginCheck(LANG(PROJECTCONFIG_LINKING_EXTRA_PATHS,"Directorios adicionales para buscar bibliotecas")).Value(true).EndCheck(m_merge_lib_dirs)
 		.BeginCheck(LANG(PROJECTCONFIG_LINKING_EXTRA_LIBS,"Bibliotecas a enlazar")).Value(true).EndCheck(m_merge_libraries)
+		.BeginCheck(LANG(PROJECTCONFIG_LIBS_TO_USE,"Bibliotecas del sistema a utilizar")).Value(true).EndCheck(m_merge_libs_to_use)
 #ifdef _ZINJAI_DEBUG
 		.BeginCheck(LANG(TEMPLATECOMB_CUSTOM_STEPS,"Pasos de compilación personalizados")).Value(true).EndCheck(m_merge_custom_steps)
 #endif
@@ -216,6 +217,7 @@ void mxTemplateCombination::OnButtonOk (wxCommandEvent & evt) {
 	opts_prof.headers = m_merge_headers->GetValue();
 	opts_prof.lib_dirs = m_merge_lib_dirs->GetValue();
 	opts_prof.libraries = m_merge_libraries->GetValue();
+	opts_prof.libs_to_use = m_merge_libs_to_use->GetValue();
 	opts_prof.macros = m_merge_macros->GetValue();
 #ifdef _ZINJAI_DEBUG
 	opts_prof.custom_steps = m_merge_custom_steps->GetValue();
@@ -298,15 +300,18 @@ void mxTemplateCombination::CombineProfile (wxString dest_pname, wxString zpr_pa
 	IniFileReader fil(zpr_path);
 	for ( wxString section = fil.GetNextSection(); !section.IsEmpty(); section = fil.GetNextSection() ) {
 		if (section=="config") {
+			bool in_desired_section = false;
 			for( IniFileReader::Pair p = fil.GetNextPair(); p.IsOk(); p = fil.GetNextPair() ) {
-				if (p.Key()=="name" && p.AsString()!=src_pname) continue;
-				else if (p.Key()=="env_vars")     Mix(opts.env_vars,    replace, conf->env_vars,        p.AsString());
-				else if (p.Key()=="comp_extra")   Mix(opts.comp_extra,  replace, conf->compiling_extra, p.AsString());
-				else if (p.Key()=="link_extra")   Mix(opts.link_extra,  replace, conf->linking_extra,   p.AsString());
-				else if (p.Key()=="headers")      Mix(opts.headers,     replace, conf->headers_dirs,    p.AsString());
-				else if (p.Key()=="lib_dirs")     Mix(opts.lib_dirs,    replace, conf->libraries_dirs,  p.AsString());
-				else if (p.Key()=="libraries")    Mix(opts.libraries,   replace, conf->libraries,       p.AsString());
-				else if (p.Key()=="macros")       Mix(opts.macros,      replace, conf->macros,          p.AsString());
+				if (p.Key()=="name" && p.AsString()==src_pname) { in_desired_section =true; }
+				else if (!in_desired_section) continue;
+				else if (p.Key()=="env_vars")        Mix(opts.env_vars,    replace, conf->env_vars,        p.AsString());
+				else if (p.Key()=="compiling_extra") Mix(opts.comp_extra,  replace, conf->compiling_extra, p.AsString());
+				else if (p.Key()=="linking_extra")   Mix(opts.link_extra,  replace, conf->linking_extra,   p.AsString());
+				else if (p.Key()=="headers_dirs")    Mix(opts.headers,     replace, conf->headers_dirs,    p.AsString());
+				else if (p.Key()=="libraries_dirs")  Mix(opts.lib_dirs,    replace, conf->libraries_dirs,  p.AsString());
+				else if (p.Key()=="libraries")       Mix(opts.libraries,   replace, conf->libraries,       p.AsString());
+				else if (p.Key()=="libs_to_use")     Mix(opts.libs_to_use, replace, conf->libs_to_use,     p.AsString());
+				else if (p.Key()=="macros")          Mix(opts.macros,      replace, conf->macros,          p.AsString());
 //				else if (p.Key()=="custom_steps") Mix(opts.custom_steps,replace, conf->, p.AsString());
 			}
 		}
