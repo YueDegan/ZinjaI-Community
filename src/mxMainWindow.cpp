@@ -3582,10 +3582,14 @@ void mxMainWindow::OnToolbarFindEnter (wxCommandEvent &evt) {
 		return;
 	}
 	IF_THERE_IS_SOURCE {
+		bool invert = wxGetKeyState(WXK_SHIFT);
 		mxSource *source = CURRENT_SOURCE;
-		int pos = source->FindText(source->GetSelectionEnd(),source->GetLength(),menu_data->toolbar_find_text->GetValue(),0);
+		int p0 = invert ? source->GetLength() : 0, 
+			ps = invert ? source->GetSelectionStart() : source->GetSelectionEnd(),
+			pN = invert ? 0 : source->GetLength();
+		int pos = source->FindText(ps,pN,menu_data->toolbar_find_text->GetValue(),0);
 		if (pos==wxSTC_INVALID_POSITION) 
-			pos = source->FindText(0,source->GetSelectionEnd()+stext.Len(),menu_data->toolbar_find_text->GetValue(),0);
+			pos = source->FindText(p0,ps+stext.Len(),menu_data->toolbar_find_text->GetValue(),0);
 		if (pos!=wxSTC_INVALID_POSITION) {
 			source->EnsureVisibleEnforcePolicy(source->LineFromPosition(pos));
 			source->SetSelection(pos,pos+stext.Len());
