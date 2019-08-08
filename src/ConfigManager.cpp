@@ -908,22 +908,34 @@ bool ConfigManager::CheckWxfbPresent() {
 	wxfb_configuration *wxfb_conf = project?project->GetWxfbConfiguration():nullptr;
 	boolFlagGuard wxfb_working_guard(project?&(wxfb_conf->working):nullptr);
 	wxString out, check_command = mxUT::Quotize(config->Files.wxfb_command)+" -h";
-#ifdef __WIN32__
-	if (!config->Files.wxfb_command.IsEmpty())
+	if (!config->Files.wxfb_command.IsEmpty()) {
+		ZLINF2("CheckWxfbPresent","checking with: "<<check_command);
 		out = mxUT::GetOutput(check_command,true);
+		ZLINF2("CheckWxfbPresent","result: "<<(out.Len()?"ok":"error"));
+	} else {
+		ZLINF("CheckWxfbPresent","empty command");
+	}
 	if (!out.Len()) {
+#ifdef __WIN32__
 		if (wxFileName::FileExists("c:\\archivos de programa\\wxformbuilder\\wxformbuilder.exe"))
 			out = config->Files.wxfb_command="c:\\archivos de programa\\wxformbuilder\\wxformbuilder.exe";
 		else if (wxFileName::FileExists("c:\\Program Files\\wxformbuilder\\wxformbuilder.exe"))
 			out = config->Files.wxfb_command="c:\\Program Files\\wxformbuilder\\wxformbuilder.exe";
 		else if (wxFileName::FileExists("c:\\Program Files (x86)\\wxformbuilder\\wxformbuilder.exe"))
 			out = config->Files.wxfb_command="c:\\Program Files (x86)\\wxformbuilder\\wxformbuilder.exe";
-	}
 #else
-	if (config->Files.wxfb_command.IsEmpty()) config->Files.wxfb_command = "wxformbuilder";
+		out = mxUT::GetOutput("wxformbuilder -h",true);
+		if (out.Len()) config->Files.wxfb_command = "wxformbuilder";
 #endif
+	}
 	config->Init.wxfb_seen = out.Len();
-	if (config->Init.wxfb_seen) return true;
+	ZLINF2("CheckWxfbPresent","wxfb_command: " << config->Files.wxfb_command);
+	if (config->Init.wxfb_seen) {
+		ZLINF2("CheckWxfbPresent","seen");
+		return true;
+	}
+	
+	ZLINF("CheckWxfbPresent","not found");
 	
 	// si no estaba
 	wxString message = LANG(PROJMNGR_WXFB_NOT_FOUND,"El proyecto utiliza wxFormBuilder, pero este software\n"
@@ -942,6 +954,7 @@ bool ConfigManager::CheckWxfbPresent() {
 								 message, "wxformbuilder", "http://wxformbuilder.org","wxformbuilder");
 	// puede ser que lo acabe de instalar el CheckComplaintAndInstall con apt-get
 	if (just_installed) {
+		ZLINF("CheckWxfbPresent","just installed");
 		wxfb_conf->temp_disabled = false;
 		config->Init.wxfb_seen = true;
 	}

@@ -2759,12 +2759,16 @@ bool ProjectManager::CreateWxfbFlagFile(wxString flag_file_full_path) {
 	wxTextFile fil(flag_file_full_path);
 	if (!fil.Exists()) fil.Create();
 	fil.Open();
-	if (!fil.IsOpened()) return false;
+	if (!fil.IsOpened()) {
+		ZLERR2("CreateWxfbFlagFile","!fil.IsOpen() for "<<flag_file_full_path);
+		return false;
+	}
 	fil.Clear();
 	fil.AddLine("Este archivo se utiliza para determinar la fecha y hora de la última compilación del proyecto wxFormBuilder homónimo.");
 	fil.AddLine("This is a dummy file to be used as timestamp for the generation of a wxFormBuilder project.");
 	fil.Write();
 	fil.Close();
+	ZLINF2("CreateWxfbFlagFile","created: "<<flag_file_full_path);
 	return true;
 }
 
