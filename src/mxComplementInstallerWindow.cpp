@@ -13,6 +13,7 @@
 #include "mxHelpWindow.h"
 #include "ConfigManager.h"
 #include "mxMessageDialog.h"
+#include "Toolchain.h"
 
 BEGIN_EVENT_TABLE(mxComplementInstallerWindow, wxDialog)
 	EVT_BUTTON(wxID_OK,mxComplementInstallerWindow::OnOkButton)
@@ -82,7 +83,16 @@ void mxComplementInstallerWindow::OnHelpButton (wxCommandEvent & evt) {
 }
 
 void mxComplementInstallerWindow::OnDownloadButton (wxCommandEvent & evt) {
-	mxUT::OpenZinjaiSite("downextras.php");
+	wxString os;
+#ifdef __WIN32__
+	if      (current_toolchain.file.Contains("32")) os = "&os=w32";
+	else if (current_toolchain.file.Contains("64")) os = "&os=w64";
+	else                                            os = "&os=win";
+#endif
+#ifdef __linux__
+	os = "&os=lnx";
+#endif
+	mxUT::OpenZinjaiSite("downextras.php"+os);
 }
 
 void mxComplementInstallerWindow::OnCancelButton (wxCommandEvent & evt) {
