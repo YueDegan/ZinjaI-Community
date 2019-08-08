@@ -951,7 +951,7 @@ bool ConfigManager::CheckWxfbPresent() {
 	}
 	bool just_installed =
 		CheckComplaintAndInstall(main_window, check_command, LANG(GENERAL_WARNING,"Advertencia"), 
-								 message, "wxformbuilder", "http://wxformbuilder.org","wxformbuilder");
+								 message, "wxformbuilder", "https://github.com/wxFormBuilder/wxFormBuilder/releases","wxformbuilder");
 	// puede ser que lo acabe de instalar el CheckComplaintAndInstall con apt-get
 	if (just_installed) {
 		ZLINF("CheckWxfbPresent","just installed");

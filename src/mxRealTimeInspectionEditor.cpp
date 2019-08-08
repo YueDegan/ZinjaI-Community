@@ -26,13 +26,19 @@ mxRealTimeInspectionEditor::mxRealTimeInspectionEditor(const wxString &expressio
 		Destroy(); return;
 	}
 	
+	wxBoxSizer *out_sizer = new wxBoxSizer(wxHORIZONTAL);
+	scroll_win = new wxScrolledWindow(this,wxID_ANY,wxDefaultPosition,wxDefaultSize,wxVSCROLL|wxTAB_TRAVERSAL);
+	scroll_win->SetScrollRate(0,10); scroll_win->EnableScrolling(false,true);
+	out_sizer->Add(scroll_win,sizers->BA5_Exp1);
+	
 	sizer = new wxFlexGridSizer(2); 
 	sizer->AddGrowableCol(1);
 	sizer->SetFlexibleDirection(wxBOTH);
 	sizer->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_NONE);
 	
 	Add(0,0,di); if (inspections[0].button) Break(0);
-	SetSizer(sizer); Layout(); Resize(false);
+	scroll_win->SetSizer(sizer); this->SetSizer(out_sizer);
+	Layout(); Resize(false);
 	Show();
 }
 
@@ -78,25 +84,28 @@ void mxRealTimeInspectionEditor::OnClose (wxCloseEvent & evt) {
 void mxRealTimeInspectionEditor::Add (int pos, int lev, DebuggerInspection * di) {
 	BoolFlagGuard fg(mask_events);
 	AuxRTIE aux; aux.di=di; wxString tabs(' ',4*lev); aux.level=lev; aux.broken=false;
-	aux.label = new wxStaticText(this,wxID_ANY,tabs+di->GetShortExpression()+": ");
+	aux.label = new wxStaticText(scroll_win,wxID_ANY,tabs+di->GetShortExpression()+": ");
 	sizer->Insert(2*pos,aux.label,0,/*wxALIGN_CENTER_HORIZONTAL|*/wxALIGN_CENTER_VERTICAL);
 	wxControl *aux_control;
 	if (di->AskGDBIfIsEditable()) {
 		aux.button = nullptr; 
-		aux_control = aux.text = new wxTextCtrl(this,wxID_ANY,di->GetValue(),wxDefaultPosition,wxDefaultSize,wxTE_PROCESS_ENTER);
+		aux_control = aux.text = new wxTextCtrl(scroll_win,wxID_ANY,di->GetValue(),wxDefaultPosition,wxDefaultSize,wxTE_PROCESS_ENTER);
 	} else {
 		aux.text = nullptr; 
-		aux_control = aux.button = new wxButton(this,wxID_ANY,di->GetValue(),wxDefaultPosition,wxDefaultSize,wxNO_BORDER|wxBU_EXACTFIT);
+		aux_control = aux.button = new wxButton(scroll_win,wxID_ANY,di->GetValue(),wxDefaultPosition,wxDefaultSize,wxNO_BORDER|wxBU_EXACTFIT);
 	}
+	aux_control->SetMinSize(wxSize(50,aux_control->GetMinSize().GetHeight()));
 	
 	if (pos==0) {
 		wxSizer *aux_sizer = new wxBoxSizer(wxHORIZONTAL);
 		aux_sizer->Add(aux_control,sizers->Exp1);
 		wxString reload_bmp_path = wxString(config->HighDPI()?"dialogs/b24/":"dialogs/b16/")+"button_reload.png";
-		aux_sizer->Add(new wxBitmapButton(this,wxID_REDO,bitmaps->GetBitmap(reload_bmp_path)));
+		aux_sizer->Add(new wxBitmapButton(scroll_win,wxID_REDO,bitmaps->GetBitmap(reload_bmp_path)));
 		sizer->Insert(2*pos+1,aux_sizer,sizers->Exp1);
 	} else {
+		wxWindow *prev_wid = sizer->GetItem(2*pos-1)->GetWindow();
 		sizer->Insert(2*pos+1,aux_control,sizers->Exp1);
+		aux_control->MoveAfterInTabOrder(prev_wid);
 	}
 	inspections.Insert(pos,aux);
 }
@@ -140,10 +149,10 @@ void mxRealTimeInspectionEditor::OnText (wxCommandEvent & evt) {
 
 void mxRealTimeInspectionEditor::Resize(bool only_grow_h) {
 	wxSize old_size = WindowToClientSize(GetSize());
-	Layout(); /*wxYield();*/ 
-	GetSizer()->RecalcSizes();
-	wxSize fit_size = GetSizer()->ComputeFittingClientSize(this);
-	int h=fit_size.GetHeight(); 
+	sizer->Layout(); /*wxYield();*/
+	sizer->RecalcSizes();
+	wxSize fit_size = sizer->ComputeFittingClientSize(this);
+	int h = fit_size.GetHeight() + 10;
 	if  (only_grow_h) {
 		if (h>old_size.GetHeight()) {
 			SetSize(ClientToWindowSize(wxSize(old_size.GetWidth(),h)));
@@ -156,6 +165,9 @@ void mxRealTimeInspectionEditor::Resize(bool only_grow_h) {
 		}
 		SetSize(ClientToWindowSize(wxSize(w+100,h)));
 	}
+#ifdef __WIN32__
+	Refresh();
+#endif
  }
 
 void mxRealTimeInspectionEditor::OnDIError (DebuggerInspection * di) {

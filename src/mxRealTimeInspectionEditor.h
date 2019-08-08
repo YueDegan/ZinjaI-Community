@@ -6,6 +6,7 @@
 #include "Cpp11.h"
 #include "raii.h"
 #include <wx/timer.h>
+#include <wx/scrolwin.h>
 
 class wxTextCtrl;
 class wxButton;
@@ -14,6 +15,7 @@ class wxStaticText;
 
 class mxRealTimeInspectionEditor : public wxFrame, public myDIEventHandler, public myDIGlobalEventHandler {
 	BoolFlag mask_events;
+	wxScrolledWindow *scroll_win;
 	wxFlexGridSizer *sizer;
 	struct AuxRTIE {
 		DebuggerInspection *di;
