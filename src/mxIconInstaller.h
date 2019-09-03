@@ -14,6 +14,7 @@ private:
 	wxCheckBox *cpp;
 	bool icon_installed;
 	bool xdg_found;
+	void Execute(wxString from, wxString command);
 public:
 	mxIconInstaller(bool first_run=false);
 	void OnButtonOk(wxCommandEvent &evt);
@@ -21,7 +22,7 @@ public:
 	void OnClose(wxCloseEvent &evt);
 	void InstallIcons();
 	void InstallDesktop(bool menu);
-	void InstallMime ( wxString mime_type, wxString mime_desc, wxString icon, wxArrayString exts );
+	void InstallMime ( wxString gen_type, wxString zin_mime, wxString mime_desc, wxString icon, wxArrayString exts );
 	void InstallMimeZpr();
 	void InstallMimeSource();
 	void MakeDesktopIcon();
