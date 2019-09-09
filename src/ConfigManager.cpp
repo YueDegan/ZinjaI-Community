@@ -1164,6 +1164,9 @@ void ConfigManager::SetDefaultInspectionsImprovingTemplates (int version) {
 		AddInspectionImprovingTemplate("std::${NS}::list<${T}, std::allocator<${T}> >::iterator","*((${T}*)(${EXP}._M_node+1)) @1",true); // list<T>::iterator exp
 		AddInspectionImprovingTemplate("std::${NS}::list<${T}, std::allocator<${T}> >",">plist ${EXP} \'${T}\'",true);
 	}
+	if (version<20180828) {
+		AddInspectionImprovingTemplate("std::${NS}::string","(${EXP})._M_dataplus._M_p",true); // st::string en mingw32-gcc6
+	}
 }
 
 bool ConfigManager::CheckComplaintAndInstall(wxWindow *parent, const wxString &check_command, const wxString &what,
