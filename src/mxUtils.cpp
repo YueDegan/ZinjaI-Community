@@ -189,7 +189,8 @@ wxMenuItem *mxUT::AddSubMenuToMenu(wxMenu *menu, wxMenu *menu_h, const wxString 
 	wxMenuItem *item = 	menu->AppendSubMenu(menu_h, caption, help);
 	// en windows, al menos con wx 2.8, si le pongo icono me cambia el tamaño de la fuente
 	wxString bmp_fname = DIR_PLUS_FILE(config->HighDPI()?"24":"16",filename);
-	if (_if_win32(OSDep::GetDPI()>96 &&,) filename.Len() && bitmaps->HasBitmap(bmp_fname,true))
+	// el if_win32 es porque en win10 con hidpi al setear el icono el tamano de fuente se vuelve al "normal" (sin el zoom)
+	if (_if_win32(OSDep::GetDPI()<=96 &&,) filename.Len() && bitmaps->HasBitmap(bmp_fname,true))
 		item->SetBitmap(bitmaps->GetBitmap(bmp_fname,true));
 	return item;
 }
