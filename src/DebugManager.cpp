@@ -593,11 +593,11 @@ wxString DebugManager::HowDoesItRuns(bool raise_zinjai_window) {
 		}
 		if (bpi && bpi->action==BPA_STOP_ONCE) bpi->SetStatus(BPS_DISABLED_ONLY_ONCE);
 		SetStateText(state_text); should_pause=false;
-		if (bpi && bpi->annotation.Len() && current_source) {
+		if (raise_zinjai_window && config->Debug.raise_main_window) main_window->Raise();
+		if (bpi && bpi->annotation.Len() && current_source) { // esto debe ir despues del raise, sino en windows se cierra
 			wxYield();
 			current_source->ShowBaloon(bpi->annotation,current_source->PositionFromLine(current_source->GetCurrentLine()));
 		}
-		if (raise_zinjai_window && config->Debug.raise_main_window) main_window->Raise();
 		return retval;
 	}
 }
@@ -1943,8 +1943,15 @@ void DebugManager::TemporaryScopeChange::ChangeIfNeeded(DebuggerInspection *di) 
 
 bool DebugManager::PauseFor (OnPauseAction * action) {
 	if (!debugging) { delete action; return false; } // si no estamos depurando, no hacer nada (no deberia pasar)
-	if (!waiting) { action->Run(); delete action; return true; } // si esta en pausa ejecuta en el momento (no deberia pasar)
-	if (on_pause_action) return false; // por ahora no se puede encolar mas de una accion
+	if (!waiting) { 
+		ZLERR("DebugManager::PauseFor","waiting=true");
+		action->Run(); delete action; return true; 
+	} // si esta en pausa ejecuta en el momento (no deberia pasar)
+	if (on_pause_action) {
+		ZLERR("DebugManager::PauseFor","on_pause_action!=NULL");
+		return false; // por ahora no se puede encolar mas de una accion
+	}
+	ZLINF("DebugManager::PauseFor","new action defined");
 	on_pause_action = action; // encolar la accion
 	Pause(); // pausar para que se ejecute
 	return true;
