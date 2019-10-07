@@ -2220,14 +2220,6 @@ void ProjectManager::AnalizeConfig(wxString path, bool exec_comas, wxString ming
 	if (active_configuration->enable_lto) co_optim<<" -flto";
 	compiling_options<<co_optim<<" ";
 	
-	// opciones de compilación para libs del sistema
-#  ifdef __APPLE__
-	linking_options<<mxUT::Split(active_configuration->libs_to_use,"-framework ")<<" ";
-#  else
-	linking_options<<mxUT::Split(active_configuration->libs_to_use,"`pkg-config --cflags ","`")<<" ";
-#  endif
-	
-	
 	// headers_dirs
 	wxString co_includes;
 	co_includes<<mxUT::Split(active_configuration->headers_dirs,"-I");
@@ -2242,6 +2234,15 @@ void ProjectManager::AnalizeConfig(wxString path, bool exec_comas, wxString ming
 	mxUT::ParameterReplace(co_extra,"${TEMP_DIR}",temp_folder_short);
 	mxUT::ParameterReplace(co_extra,"${ZINJAI_DIR}",config->zinjai_dir);
 	mxUT::ParameterReplace(co_extra,"${PROJECT_PATH}",project->path);
+
+	// opciones de compilación para libs del sistema
+#  ifdef __APPLE__
+	co_extra<<mxUT::Split(active_configuration->libs_to_use,"-framework ")<<" ";
+#  else
+	co_extra<<mxUT::Split(active_configuration->libs_to_use,"`pkg-config --cflags ","`")<<" ";
+#  endif
+	
+	
 	// reemplazar subcomandos y agregar extras
 	if (exec_comas) co_extra = mxUT::ExecComas(path, co_extra);
 	
