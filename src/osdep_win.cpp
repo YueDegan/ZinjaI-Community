@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <cstdio>
 #include "osdep.h"
+#include "ZLog.h"
 
 void OSDep::AppInit() {
 	HMODULE user32 = LoadLibrary("user32.dll");
@@ -67,6 +68,7 @@ static HWND find_main_window(unsigned long process_id)
 
 bool OSDep::SetFocus(unsigned long int pid) {
 	HWND win = find_main_window(pid);
+	ZLINF2("OSDep::SetFocus","pid="<<pid<<" win="<<int(win));
 	if (win==0) return false;
 	SetForegroundWindow(win);
 	return true;
@@ -84,6 +86,7 @@ bool OSDep::winLoadDBP() {
 	
 	HINSTANCE hinstLib = LoadLibrary("kernel32.dll");
 	if (hinstLib == nullptr) {
+		ZLERR("OSDep::winLoadDBP","hinstLib==NULL");
 		dbp_present=false;
 		return false;
 	}
@@ -91,10 +94,12 @@ bool OSDep::winLoadDBP() {
 	// Get function pointer
 	dbp_function = (dbp_proto)GetProcAddress(hinstLib,"DebugBreakProcess");
 	if (dbp_function == nullptr) {
+		ZLERR("OSDep::winLoadDBP","dbp_function==NULL");
 		dbp_present=false;
 		return false;
 	}
 	
+	ZLINF("OSDep::winLoadDBP","dbp_presen=true");
 	dbp_present=true;
 	return true;
 }
@@ -104,6 +109,7 @@ bool OSDep::winLoadDBP() {
 
 // based on code taken from http://stackoverflow.com/questions/1173342/terminate-a-process-tree-c-for-windows
 long OSDep::GetChildPid(long pid) {
+	ZLINF2("OSDep::GetChildPid","pid="<<pid);
 	DWORD child_pid=0, myprocID = pid; // your main process id
 	PROCESSENTRY32 pe;
 	memset(&pe, 0, sizeof(PROCESSENTRY32));
@@ -114,25 +120,40 @@ long OSDep::GetChildPid(long pid) {
 		// kill child processes
 		while (bContinue) {
 			// only kill child processes
-			if (pe.th32ParentProcessID == myprocID && pe.th32ProcessID>0 &&
-				(pe.th32ProcessID<child_pid || child_pid==0) )
-				child_pid=pe.th32ProcessID;
+			if (pe.th32ParentProcessID == myprocID && pe.th32ProcessID>0)
+//				(pe.th32ProcessID<child_pid || child_pid==0) ) 
+			{
+//				ZLINF2("OSDep::GetChildPid","Found child_pid="<<int(child_pid));
+//				ZLINF2("OSDep::GetChildPid","Found szExeFile="<<pe.szExeFile);
+				if (child_pid==0 || strcmp(pe.szExeFile,"conhost.exe")!=0)
+					child_pid = pe.th32ProcessID;
+			}
 			bContinue = ::Process32Next(hSnap, &pe);
 		}
+	} else {
+		ZLINF2("OSDep::GetChildPid","Process32First last_error="<<int(GetLastError()));
 	}
 	return child_pid;
 }
 
 // based on code taken from http://www.mingw.org/wiki/Workaround_for_GDB_Ctrl_C_Interrupt
 bool OSDep::winDebugBreak(long proc_id) {
+	ZLERR2("OSDep::winDebugBreak","proc_id="<<proc_id);
 	HANDLE proc;
 	BOOL break_result;
-	if (proc_id == 0) return false;
+	if (proc_id == 0) {
+		ZLERR("OSDep::winDebugBreak","proc_id==0");
+		return false;
+	}
 	proc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, (DWORD)proc_id);
-	if (proc == nullptr) return false;
+	if (proc == nullptr) {
+		ZLERR2("OSDep::winDebugBreak","OpenProcess last_error:"<<int(GetLastError()));
+		return false;
+	}
 	//	break_result = DebugBreakProcess(proc);
 	break_result = dbp_function(proc);
 	if (!break_result) {
+		ZLERR2("OSDep::winDebugBreak","DebugBreakProcess last_error:"<<int(GetLastError()));
 		CloseHandle(proc);
 		return false;
 	}
