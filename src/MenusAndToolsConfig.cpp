@@ -846,16 +846,9 @@ void MenusAndToolsConfig::SetAccelerators() {
 	wxAcceleratorEntry *aentries = new wxAcceleratorEntry[menues[mnHIDDEN].items.size()]; int ac=0;
 	for(unsigned int i=0;i<menues[mnHIDDEN].items.size();i++) {
 		int id=menues[mnHIDDEN].items[i].wx_id;
-		wxString str=menues[mnHIDDEN].items[i].shortcut;
-		str.MakeUpper(); str.Replace(" ","");
-		if (!str.Len()) continue;
-		int flags=0;
-		if (str.Contains("CTRL+")) { flags|=wxACCEL_CTRL; str.Replace("CTRL+",""); }
-		if (str.Contains("SHIFT+")) { flags|=wxACCEL_SHIFT; str.Replace("SHIFT+",""); }
-		if (str.Contains("ALT+")) { flags|=wxACCEL_ALT; str.Replace("ALT+",""); }
-		int keycode=getKeyCode(str);
-		if (!keycode) continue;
-		aentries[ac++].Set(flags,keycode,id);
+		std::pair<int,int> fak = menues[mnHIDDEN].items[i].GetFlagAndKeycode();
+		if (!fak.second) continue;
+		aentries[ac++].Set(fak.first,fak.second,id);
 	}
 	wxAcceleratorTable accel(ac,aentries);
 	main_window->SetAcceleratorTable(accel);

@@ -310,7 +310,9 @@ private:
 	
 	bool VOAssign(const wxString &new_value) {
 		__debug_log_method__;
-		DebugManager::GDBAnswer &ans = debug->SendCommand(wxString("-var-assign ")<<variable_object<<" "<<mxUT::EscapeString(new_value,true));
+		DebugManager::GDBAnswer &ans = IsCString() 
+			? debug->SendCommand(wxString("set var ")<<expression<<"="<<new_value) 
+			: debug->SendCommand(wxString("-var-assign ")<<variable_object<<" "<<mxUT::EscapeString(new_value,true));
 		return ans.result.StartsWith("^done");
 	}
 	
@@ -371,9 +373,14 @@ public:
 		}
 	}
 	
-	bool AskGDBIfIsEditable() {
+	bool IsCString() const {
+		return (value_type.StartsWith("char [")&&value_type.Last()==']');
+	}
+	
+	bool AskGDBIfIsEditable() const {
 		if (!debug->debugging||debug->waiting) return false;
 		if (dit_type!=DIT_VARIABLE_OBJECT) return false;
+		if (IsCString()) return true;
 		DebugManager::GDBAnswer &ans = debug->SendCommand("-var-show-attributes ",variable_object);
 		if (ans.result.Contains("noneditable")) return false;
 		else return ans.result.Contains("editable");

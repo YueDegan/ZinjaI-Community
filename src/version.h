@@ -1,4 +1,4 @@
-#define VERSION 20190903
+#define VERSION 20191006
 
 #ifdef __WIN32__
 #	define ARCHITECTURE "w32"

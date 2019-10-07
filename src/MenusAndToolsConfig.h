@@ -16,6 +16,7 @@ class wxMenuBar;
 class wxStaticText;
 class mxMainWindow;
 
+int getKeyCode(const wxString &key);
 
 class MenusAndToolsConfig {
 	
@@ -91,6 +92,17 @@ public: /// there seems to be something wrong with nested friendship in my gcc f
 			if (lab.EndsWith("...")) 
 				lab = lab.Mid(0,lab.Len()-3); 
 			return lab;
+		}
+		std::pair<int,int> GetFlagAndKeycode() {
+			if (!shortcut.Len()) return std::make_pair(0,0);
+			wxString str = shortcut;
+			str.MakeUpper(); str.Replace(" ","");
+			int flags=0;
+			if (str.Contains("CTRL+")) { flags|=wxACCEL_CTRL; str.Replace("CTRL+",""); }
+			if (str.Contains("SHIFT+")) { flags|=wxACCEL_SHIFT; str.Replace("SHIFT+",""); }
+			if (str.Contains("ALT+")) { flags|=wxACCEL_ALT; str.Replace("ALT+",""); }
+			return std::make_pair(flags,getKeyCode(str));
+			
 		}
 	};
 	

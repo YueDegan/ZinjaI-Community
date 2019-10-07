@@ -1,17 +1,33 @@
 #include <wx/textctrl.h>
 #include <wx/sizer.h>
+#include <wx/tglbtn.h>
 #include "mxRealTimeInspectionEditor.h"
 #include "mxMessageDialog.h"
 #include "mxMainWindow.h"
 #include "mxSizers.h"
 #include "mxArt.h"
+#include "MenusAndToolsConfig.h"
 
 BEGIN_EVENT_TABLE(mxRealTimeInspectionEditor,wxFrame)
 	EVT_CLOSE(mxRealTimeInspectionEditor::OnClose)
-	EVT_BUTTON(wxID_ANY,mxRealTimeInspectionEditor::OnButton)
-	EVT_TEXT_ENTER(wxID_ANY,mxRealTimeInspectionEditor::OnText)
+	EVT_MENU(mxID_DEBUG_RUN,mxRealTimeInspectionEditor::OnContinueOrRefresh)
+	EVT_BUTTON(wxID_REFRESH,mxRealTimeInspectionEditor::OnUpdateValues)
+	EVT_TOGGLEBUTTON(wxID_ANY,mxRealTimeInspectionEditor::OnToggleButton)
 	EVT_TIMER(wxID_ANY,mxRealTimeInspectionEditor::OnResizeTimer)
+	EVT_TEXT(wxID_ANY,mxRealTimeInspectionEditor::OnText)
+	EVT_TEXT_ENTER(wxID_ANY,mxRealTimeInspectionEditor::OnApplyChange)
+	EVT_COMBOBOX(wxID_ANY,mxRealTimeInspectionEditor::OnApplyChange)
+	EVT_CHECKBOX(wxID_ANY,mxRealTimeInspectionEditor::OnApplyChange)
 END_EVENT_TABLE()
+	
+wxColour mxRealTimeInspectionEditor::AuxRTIE::color_error;
+wxColour mxRealTimeInspectionEditor::AuxRTIE::color_modified;
+wxColour mxRealTimeInspectionEditor::AuxRTIE::color_ok;
+	
+static wxString StripScope(wxString value) {
+	if (value.Contains("::")) value=value.AfterFirst(':').Mid(1);
+	return value;
+}
 
 mxRealTimeInspectionEditor::mxRealTimeInspectionEditor(const wxString &expression)
 	: wxFrame(main_window,wxID_ANY,expression,wxGetMousePosition()-wxPoint(25,10),wxDefaultSize,wxDEFAULT_FRAME_STYLE|wxSTAY_ON_TOP)
@@ -36,10 +52,22 @@ mxRealTimeInspectionEditor::mxRealTimeInspectionEditor(const wxString &expressio
 	sizer->SetFlexibleDirection(wxBOTH);
 	sizer->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_NONE);
 	
-	Add(0,0,di); if (inspections[0].button) Break(0);
+	Add(0,0,di); if (inspections[0].IsButton()) Break(0);
 	scroll_win->SetSizer(sizer); this->SetSizer(out_sizer);
 	Layout(); Resize(false);
+	
+	// usamos un accelerator para F5, que será continuar o actualizar
+	pair<int,int> shortcut = _menu_item_2(mnDEBUG,mxID_DEBUG_RUN)->GetFlagAndKeycode();
+	wxAcceleratorEntry aentry(shortcut.first,shortcut.second,mxID_DEBUG_RUN);
+	if (shortcut.second) this->SetAcceleratorTable( wxAcceleratorTable(1,&aentry) );
+	
+	update_button->SetFocus();
 	Show();
+	
+	wxColour fore = inspections[0].label->GetForegroundColour(), back = inspections[0].label->GetBackgroundColour();
+	AuxRTIE::color_ok = fore;
+	AuxRTIE::color_error = mxUT::mix_colors(back,fore,1,0,0);
+	AuxRTIE::color_modified = mxUT::mix_colors(back,fore,.6,.4,0);
 }
 
 mxRealTimeInspectionEditor::~mxRealTimeInspectionEditor() {
@@ -59,8 +87,7 @@ void mxRealTimeInspectionEditor::Break (int num) {
 		while (child<inspections.GetSize() && inspections[child].level > inspections[num].level) {
 			AuxRTIE &aux = inspections[child];
 			sizer->Detach(aux.label); aux.label->Destroy();
-			if (aux.button) { sizer->Detach(aux.button); aux.button->Destroy(); }
-			if (aux.text)  { sizer->Detach(aux.text); aux.text->Destroy(); }
+			sizer->Detach(aux.ctrl); aux.ctrl->Destroy();
 			DebuggerInspection *di = aux.di;
 			di->Destroy();
 			inspections.Remove(child);
@@ -75,6 +102,7 @@ void mxRealTimeInspectionEditor::Break (int num) {
 		}
 	}
 	inspections[num].broken = !inspections[num].broken;
+	inspections[num].GetButton()->SetValue(inspections[num].broken);
 }
 
 void mxRealTimeInspectionEditor::OnClose (wxCloseEvent & evt) {
@@ -86,35 +114,52 @@ void mxRealTimeInspectionEditor::Add (int pos, int lev, DebuggerInspection * di)
 	AuxRTIE aux; aux.di=di; wxString tabs(' ',4*lev); aux.level=lev; aux.broken=false;
 	aux.label = new wxStaticText(scroll_win,wxID_ANY,tabs+di->GetShortExpression()+": ");
 	sizer->Insert(2*pos,aux.label,0,/*wxALIGN_CENTER_HORIZONTAL|*/wxALIGN_CENTER_VERTICAL);
-	wxControl *aux_control;
 	if (di->AskGDBIfIsEditable()) {
-		aux.button = nullptr; 
-		aux_control = aux.text = new wxTextCtrl(scroll_win,wxID_ANY,di->GetValue(),wxDefaultPosition,wxDefaultSize,wxTE_PROCESS_ENTER);
+		if(di->GetValueType()=="bool") {
+			aux.SetCheck( new wxCheckBox(scroll_win,wxID_ANY,"") );
+			aux.GetCheck()->SetValue(di->GetValue()=="true");
+		} else {
+			wxArrayString opts;
+			if (debug->SendCommand("ptype ",di->GetValueType()).stream.Contains("enum class")) {
+				wxString ans = debug->SendCommand("complete whatis ",di->GetValueType()+"::").stream;
+				while (ans.Contains("\n")) {
+					wxString line=ans.BeforeFirst('\n');
+					ans=ans.AfterFirst('\n');
+					while (line.Len() && (line.Last()=='\n'||line.Last()=='\r')) line.RemoveLast();
+					opts.Add(line.AfterFirst(':').Mid(1));
+				}
+			}
+			if (opts.IsEmpty()) {
+				wxString value = di->GetValue(); if (di->IsCString()) value = mxUT::UnEscapeString(value,true);
+				aux.SetText( new wxTextCtrl(scroll_win,wxID_ANY,value,wxDefaultPosition,wxDefaultSize,wxTE_PROCESS_ENTER) );
+			} else {
+				aux.SetCombo( new wxComboBox(scroll_win,wxID_ANY,StripScope(di->GetValue()),wxDefaultPosition,wxDefaultSize,opts,wxTE_PROCESS_ENTER) );
+			}
+		}
 	} else {
-		aux.text = nullptr; 
-		aux_control = aux.button = new wxButton(scroll_win,wxID_ANY,di->GetValue(),wxDefaultPosition,wxDefaultSize,wxNO_BORDER|wxBU_EXACTFIT);
+		aux.SetButton( new wxToggleButton(scroll_win,wxID_ANY,di->GetValue(),wxDefaultPosition,wxDefaultSize,wxNO_BORDER|wxBU_EXACTFIT) );
 	}
-	aux_control->SetMinSize(wxSize(50,aux_control->GetMinSize().GetHeight()));
+	aux.ctrl->SetToolTip(di->GetValueType());
+	aux.ctrl->SetMinSize(wxSize(50,aux.ctrl->GetMinSize().GetHeight()));
 	
 	if (pos==0) {
 		wxSizer *aux_sizer = new wxBoxSizer(wxHORIZONTAL);
-		aux_sizer->Add(aux_control,sizers->Exp1);
+		aux_sizer->Add(aux.ctrl,sizers->Exp1);
 		wxString reload_bmp_path = wxString(config->HighDPI()?"dialogs/b24/":"dialogs/b16/")+"button_reload.png";
-		aux_sizer->Add(new wxBitmapButton(scroll_win,wxID_REDO,bitmaps->GetBitmap(reload_bmp_path)));
+		aux_sizer->Add(update_button = new wxBitmapButton(scroll_win,wxID_REFRESH,bitmaps->GetBitmap(reload_bmp_path)));
 		sizer->Insert(2*pos+1,aux_sizer,sizers->Exp1);
 	} else {
 		wxWindow *prev_wid = sizer->GetItem(2*pos-1)->GetWindow();
-		sizer->Insert(2*pos+1,aux_control,sizers->Exp1);
-		aux_control->MoveAfterInTabOrder(prev_wid);
+		sizer->Insert(2*pos+1,aux.ctrl,sizers->Exp1);
+		aux.ctrl->MoveAfterInTabOrder(prev_wid);
 	}
 	inspections.Insert(pos,aux);
 }
 
-void mxRealTimeInspectionEditor::OnButton (wxCommandEvent & evt) {
-	if (evt.GetId()==wxID_REDO) { OnUpdateValues(evt); return; }
+void mxRealTimeInspectionEditor::OnToggleButton (wxCommandEvent & evt) {
 	for(int i=0;i<inspections.GetSize();i++) { 
-		if (evt.GetEventObject()==inspections[i].button) { 
-			Break(i); 	
+		if (evt.GetEventObject()==inspections[i].ctrl) { 
+			Break(i);
 			// no llamar directamente a resize porque si se llega a aca sin que el usuario
 			// pause la ejecucion, ya estamos en un yield, tonces el layout y cia no actualizan
 			// nada (al menos en linux con wx 2.8)
@@ -124,15 +169,18 @@ void mxRealTimeInspectionEditor::OnButton (wxCommandEvent & evt) {
 	}
 }
 
-void mxRealTimeInspectionEditor::OnText (wxCommandEvent & evt) {
+void mxRealTimeInspectionEditor::OnApplyChange (wxCommandEvent & evt) {
 	if (mask_events) return;
 	if (!debug->IsDebugging()) return;
 	for(int i=0;i<inspections.GetSize();i++) {
-		if (evt.GetEventObject()==inspections[i].text) {
+		if (evt.GetEventObject()==inspections[i].ctrl) {
 			_DEBUG_LAMBDA_2(mlbModifyAndUpdateParents,mxRealTimeInspectionEditor,rte,int,i,{
 				SingleList<AuxRTIE> &inspections = rte->inspections;
 				// cargar el nuevo valor
-				rte->inspections[i].di->ModifyValue(inspections[i].text->GetValue());
+				wxString new_value = inspections[i].GetValue();
+				if (rte->inspections[i].di->IsCString()) new_value = mxUT::EscapeString(new_value,true);
+				bool ok = rte->inspections[i].di->ModifyValue(new_value);
+				rte->inspections[i].SetState(ok?AuxRTIE::st_ok:AuxRTIE::st_err);
 				// forzar la actualizacion de los padres
 				while (true) {
 					int p = i-1;
@@ -173,8 +221,7 @@ void mxRealTimeInspectionEditor::Resize(bool only_grow_h) {
 void mxRealTimeInspectionEditor::OnDIError (DebuggerInspection * di) {
 	for(int i=0;i<inspections.GetSize();i++) { 
 		if (inspections[i].di==di) {
-			if (inspections[i].button) inspections[i].button->Enable(false);
-			if (inspections[i].text) inspections[i].text->Enable(false);
+			inspections[i].ctrl->Enable(false);
 			return;
 		}
 	}
@@ -182,11 +229,7 @@ void mxRealTimeInspectionEditor::OnDIError (DebuggerInspection * di) {
 
 void mxRealTimeInspectionEditor::OnDIValueChanged (DebuggerInspection * di) {
 	for(int i=0;i<inspections.GetSize();i++) {
-		if (inspections[i].di==di) {
-			if (inspections[i].button) inspections[i].button->SetLabel(di->GetValue());
-			if (inspections[i].text) inspections[i].text->SetValue(di->GetValue());
-			return;
-		}
+		if (inspections[i].di==di) { inspections[i].SetValueFromDI(); break; }
 	}
 }
 
@@ -204,7 +247,8 @@ void mxRealTimeInspectionEditor::OnUpdateValues (wxCommandEvent & evt) {
 		debug->PauseFor(new lmbUpdateRTIEditor(this));
 	} else {
 		inspections[0].di->ForceVOUpdate();
-		for(int i=0;i<inspections.GetSize();i++) { 
+		for(int i=0;i<inspections.GetSize();i++) {
+			if (!inspections[i].IsOk()) inspections[i].SetValueFromDI();
 			if (inspections[i].di->RequiresManualUpdate())
 				inspections[i].di->UpdateValue(true);
 		}
@@ -213,5 +257,40 @@ void mxRealTimeInspectionEditor::OnUpdateValues (wxCommandEvent & evt) {
 
 void mxRealTimeInspectionEditor::OnResizeTimer (wxTimerEvent & evt) {
 	Resize(true);
+}
+
+void mxRealTimeInspectionEditor::OnContinueOrRefresh (wxCommandEvent & evt) {
+	if (debug->IsPaused()) debug->Continue();
+	else if (debug->IsDebugging()) OnUpdateValues(evt);
+}
+
+void mxRealTimeInspectionEditor::OnText (wxCommandEvent & evt) {
+	for(int i=0;i<inspections.GetSize();i++) {
+		if (evt.GetEventObject()==inspections[i].ctrl) {
+			inspections[i].SetState(AuxRTIE::st_mod); return;
+		}
+	}
+}
+
+void mxRealTimeInspectionEditor::AuxRTIE::SetValueFromDI() {
+	switch(ctrl_type) {
+		case AuxRTIE::ct_button:
+			GetButton()->SetLabel(di->GetValue());
+			break;
+		case AuxRTIE::ct_text:
+			{
+				wxString value = di->GetValue(); if (di->IsCString()) value = mxUT::UnEscapeString(value,true);
+				GetText()->SetValue(value);
+			} break;
+		case AuxRTIE::ct_check:
+			GetCheck()->SetValue(di->GetValue()=="true");
+			break;
+		case AuxRTIE::ct_combo:
+			GetCombo()->SetValue(StripScope(di->GetValue()));
+			break;
+		default:
+			;
+	}
+	SetState(st_ok);
 }
 
