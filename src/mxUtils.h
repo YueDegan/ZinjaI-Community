@@ -259,6 +259,10 @@ public:
 	
 	static wxString MakeCaption(int lang_id);
 
+	// funciones auxiliares para definir colores especiales en base a los defaults
+	static wxColour mix_colors(wxColour cback, wxColour cfore, float u);
+	static wxColour mix_colors(wxColour cback, wxColour cfore, float max_r, float max_g, float max_b);
+	
 };
 
 #endif

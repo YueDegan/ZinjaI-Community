@@ -931,8 +931,9 @@ wxString mxUT::UnEscapeString(wxString str, bool is_quoted) {
 	int i = 0, l = str.Len();
 	while(i<l) {
 		if (str[i]=='\\') {
-			if (str[i]=='\\' && i+1<l && str[i+1]=='t') str[i+1]='\t';
-			if (str[i]=='\\' && i+1<l && str[i+1]=='n') str[i+1]='\n';
+			if (str[i]=='\\' && i+1<l && str[i+1]=='0') {str = str.Mid(0,i); break; }
+			else if (str[i]=='\\' && i+1<l && str[i+1]=='t') str[i+1]='\t';
+			else if (str[i]=='\\' && i+1<l && str[i+1]=='n') str[i+1]='\n';
 			else if (str[i]=='\\' && i+1<l && str[i+1]=='r') str[i+1]='\r';
 			else if (str[i]=='\\' && i+1<l && str[i+1]=='b') str[i+1]='\b';
 			str=str.Mid(0,i)+str.Mid(i+1); l--;
@@ -1276,3 +1277,16 @@ wxString mxUT::MakeCaption (int lang_id) {
 	return s;
 }
 
+// funciones auxiliares para definir colores especiales en base a los defaults
+wxColour mxUT::mix_colors(wxColour cback, wxColour cfore, float max_r, float max_g, float max_b) {
+	return wxColour(
+					(unsigned char)((1-max_r)*std::min(cback.Red()  ,cfore.Red()  ) + max_r*std::max(cback.Red()  ,cfore.Red()  )),
+					 (unsigned char)((1-max_g)*std::min(cback.Green(),cfore.Green()) + max_g*std::max(cback.Green(),cfore.Green())),
+					  (unsigned char)((1-max_b)*std::min(cback.Blue() ,cfore.Blue() ) + max_b*std::max(cback.Blue() ,cfore.Blue() )));
+}
+wxColour mxUT::mix_colors(wxColour cback, wxColour cfore, float u) {
+	return wxColour(
+					(unsigned char)((1-u)*cback.Red()  + u*cfore.Red()  ),
+					 (unsigned char)((1-u)*cback.Green()+ u*cfore.Green()),
+					  (unsigned char)((1-u)*cback.Blue() + u*cfore.Blue() ) );
+}
