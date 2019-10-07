@@ -141,13 +141,15 @@ public:
 	bool ModifyExpression(int row, const wxString &expression, bool is_frameless, bool do_update_cell=true);
 	
 	// eventos generados por mxGrid
-	bool OnCellClick(int row, int col);
-	void OnCellPopupMenu(int row, int col);
-	bool OnCellDoubleClick(int row, int col);
-	void OnColumnHideOrUnhide(int c, bool visible);
-	bool OnKey(int row, int col, int key, int modifiers);
+	bool OnCellClick(int row, int col) override;
+	void OnCellPopupMenu(int row, int col) override { ShowPopupMenu(row,col,true); }
+	bool OnCellDoubleClick(int row, int col) override;
+	void OnColumnHideOrUnhide(int c, bool visible) override;
+	bool OnKey(int row, int col, int key, int modifiers) override;
 	
-	bool CanHideColumn(int col) { return col==IG_COL_LEVEL||col==IG_COL_TYPE; }
+	bool CanHideColumn(int col)  override { return col==IG_COL_LEVEL||col==IG_COL_TYPE; }
+	
+	void ShowPopupMenu(int row, int col, bool at_mouse_pos);
 	
 	// eventos generados por DebuggerInspection globalmente
 //	void OnDebugStart();

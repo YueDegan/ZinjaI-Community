@@ -111,10 +111,8 @@ mxInspectionGrid::mxInspectionGrid(wxWindow *parent) : mxGrid(parent,IG_COLS_COU
 	SetDropTarget(new mxInspectionDropTarget(this));
 	SetColLabelSize(wxGRID_AUTOSIZE);
 	
-	wxAcceleratorEntry aentries[1];
-	aentries[0].Set(0,WXK_F2,mxID_INSPECTION_EDIT);
-	wxAcceleratorTable accel(1,aentries);
-	SetAcceleratorTable(accel);
+	wxAcceleratorEntry aentry(0,WXK_F2,mxID_INSPECTION_EDIT);
+	SetAcceleratorTable(wxAcceleratorTable(1,&aentry));
 	
 }
 
@@ -138,11 +136,8 @@ bool mxInspectionGrid::OnKey(int row, int col, int key, int modifiers) {
 	} else if (key==WXK_RETURN || key==WXK_NUMPAD_ENTER) {
 		last_return_had_shift_down=modifiers&wxMOD_SHIFT;
 		return false;
-//	} else if (key==WXK_F2) {
-//		if (mxGrid::SetGridCursor(row,IG_COL_EXPR)) {
-//			EnableCellEditControl(true);
-//			return true;
-//		}
+	} else if (key==WXK_MENU) {
+		ShowPopupMenu(row,col,false);
 	}
 	return false;
 }
@@ -254,7 +249,7 @@ static wxString Shorten(wxString str) {
 	return str;
 }
 
-void mxInspectionGrid::OnCellPopupMenu(int row, int col) {
+void mxInspectionGrid::ShowPopupMenu(int row, int col, bool at_mouse_pos) {
 	// ensure that clicked cell is selected, so generated events will use that one
 	// selection policy is: if theres a multiple selection, keep, else select only clicked cell
 	vector<int> sel; mxGrid::GetSelectedRows(sel);
@@ -346,7 +341,14 @@ void mxInspectionGrid::OnCellPopupMenu(int row, int col) {
 		menu.AppendSeparator();
 		menu.Append(mxID_INSPECTION_CLEAR_ALL,LANG(INSPECTGRID_POPUP_CLEAN_TABLE,"&Limpiar Tabla de Inspecciones"));
 	}
-	PopupMenu(&menu);
+	if (at_mouse_pos) {
+		PopupMenu(&menu);
+	} else {
+		int y = GetColLabelSize(), x = GetColLeft(col) + GetColSize(col)/10;
+		for(int i=0;i<=row;i++) y += GetRowSize(i);
+		PopupMenu(&menu,x,y);
+	}
+	
 }
 
 void mxInspectionGrid::OnBreakClassOrArray(wxCommandEvent &evt) {
