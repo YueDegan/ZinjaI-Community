@@ -3324,11 +3324,11 @@ void mxMainWindow::OnDebugDoThat ( wxCommandEvent &event ) {
 	static wxString what;
 	wxString res = mxGetTextFromUser("Comando:", "Comandos internos" , what, this);
 	if (res=="help") {
-		wxMessageBox ("errorsave, kboom, wxlog on, wxlog off, gdb cmd, gdb ans, dbglog <file>/win/off, log <file>/panel/msg <group>");
-	} else if (res.StartsWith("dbglog ")) {
+		wxMessageBox ("errorsave, kboom, wxlog on, wxlog off, gdb cmd, gdb ans, dbg <file>/win/off, log win, log msg <group>");
+	} else if (res.StartsWith("dbglog ")||res.StartsWith("dbg ")) {
 		wxString arg=res.AfterFirst(' ');
 		if (arg=="off") _DBG_LOG_ST_CALL(UnSet());
-		else if (arg=="win") {
+		else if (arg=="win"||arg=="panel") {
 			struct mxDbgLogWin : public DebuggerTalkLogger {
 				wxTextCtrl *ctrl;
 				mxDbgLogWin() { 
@@ -3352,7 +3352,7 @@ void mxMainWindow::OnDebugDoThat ( wxCommandEvent &event ) {
 			};
 			_DBG_LOG_ST_CALL(Set(new mxDbgLogFile(arg)));
 		}
-	} else if (res=="log panel") {
+	} else if (res=="log panel"||res=="log win") {
 		struct mxZLogPanel : public ZLog, public wxTextCtrl {
 //			wxTextCtrl *ctrl;
 			mxZLogPanel() : ZLog("mxZLogPanel"), wxTextCtrl(main_window,wxID_ANY,"",wxDefaultPosition,wxDefaultSize,wxTE_MULTILINE) {
