@@ -155,10 +155,12 @@ static inline bool ErrorLineIsChild(const wxString &error_line) {
 	// si el mensaje de error empieza con 3 espacios, es porque en realidad sigue del mensaje anterior
 	int p=2,l=error_line.Len();
 	while (p<l && error_line[p]!=':') p++; // saltear el nombre del archivo
-	if (p==l) return false; else p++;
-	while (p<l && error_line[p]!=':') p++; // saltear el numero de linea
-	if (p==l) return false; else p++;
-	while (p<l && error_line[p]!=':') p++; // saltear el la columna
+	if (error_line[0]!='<') { // algunos errores dicen "<command-line>: note: blah..." como al redefinir una macro
+		if (p==l) return false; else p++;
+		while (p<l && error_line[p]!=':') p++; // saltear el numero de linea
+		if (p==l) return false; else p++;
+		while (p<l && error_line[p]!=':') p++; // saltear el la columna
+	}
 	if (p==l) return false; else p++;
 	if (p+2<l && error_line[p]==' '&&error_line[p+1]==' '&&error_line[p+2]==' ') return true; // puede venir directo el mensaje
 	if (p+5<l && error_line[p+1]=='n'&&error_line[p+2]=='o'&&error_line[p+3]=='t'&&error_line[p+5]==':') return true; // o la palabra note
