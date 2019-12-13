@@ -707,7 +707,7 @@ void mxMainWindow::OnCompilerTreePopup(wxTreeEvent &event) {
 	menu.Append(mxID_COMPILER_POPUP_FULL, LANG(MAINW_OPEN_LAST_COMPILER_OUTPUT,"Abrir última salida"));
 	menu.AppendSeparator();
 	if (!current_toolchain.IsExtern())
-		menu.Append(mxID_COMPILER_POPUP_USTD,LANG(PREFERENCES_WRITING_BEAUTIFY_COMPILER_ERRORS,""
+		menu.AppendCheckItem(mxID_COMPILER_POPUP_USTD,LANG(PREFERENCES_WRITING_BEAUTIFY_COMPILER_ERRORS,""
 												  "Simplificar mensajes de error del compilador")
 					)->Check(config->Init.beautify_compiler_errors);
 	project_tree.treeCtrl->PopupMenu(&menu);
@@ -2378,10 +2378,11 @@ mxSource *mxMainWindow::OpenFile (const wxString &filename, bool add_to_project)
 			project->AddFile(FT_OTHER,filename);
 		} else {
 			mxOSDGuard osd(this,LANG(WXFB_OPENING,"Abriendo wxFormBuilder..."));
-			wxExecute(wxString("\"")+config->Files.wxfb_command+"\" \""+filename+"\"");
-			ZLINF("MainWindow","OpenFile wxYield:in");
+			wxString command = wxString("\"")+config->Files.wxfb_command+"\" \""+filename+"\"";
+			ZLINF2("mxMainWindow::OpenFile","Running: "<<command);
+			int retval = wxExecute(command);
+			ZLINF2("mxMainWindow::OpenFile","retval: "<<retval);
 			wxYield(); 
-			ZLINF("MainWindow","OpenFile wxYield:out");
 			wxMilliSleep(1000);
 		}
 		return EXTERNAL_SOURCE;

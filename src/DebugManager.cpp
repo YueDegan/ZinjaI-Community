@@ -1895,7 +1895,7 @@ bool DebugManager::Start_ConfigureGdb (bool check_for_symbols) {
 		}
 		i++;
 	}
-
+	
 #ifdef __WIN32__
 	if (config->Debug.no_debug_heap) SendCommand("set environment _NO_DEBUG_HEAP 1");
 #endif

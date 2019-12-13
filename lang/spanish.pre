@@ -888,6 +888,8 @@ OSD_LOADING_PROJECT_POST
 ...
 PROJMNGR_OPENING
 Abriendo
+PROJMNGR_FILE_NOT_FOUND
+No se encuentra el archivo <{1}>.
 PROJMNGR_CHANGE_PROFILE_OPENNING
 Parece que esta abriendo un proyecto que tiene seleccionado un perfil\nde compilación y ejecución para otro sistema operativo: \"<{1}>\"\n\n¿Desea cambiar el perfil activo por \"<{2}>\"?
 PROJMNGR_CHANGE_PROFILE_OPENNING_CAPTION

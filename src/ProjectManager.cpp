@@ -80,13 +80,14 @@ static wxString fix_path_char(wxChar file_path_char, wxString value) {
 }
 
 /// funcion auxiliar para leer datos de un proyecto desde el cual se heredan archivos
-static bool ReadProjectFilesList(const wxString &zpr_full_path, ProjectManager::FilesList &out_list, wxArrayString &recursive_inheritances) {
+static bool ReadProjectFilesList(const wxString &base_path, const wxString &zpr_relative_path, ProjectManager::FilesList &out_list, wxArrayString &recursive_inheritances) {
+	wxString zpr_full_path = DIR_PLUS_FILE(base_path,zpr_relative_path);
 	IniFileReader fil(zpr_full_path);
 	if (!fil.IsOk()) {
 		errors_manager->AddZinjaiError(false,LANG1(PROJECT_ERROR_OPENING_FATHER,"Error abriendo el proyecto \"<{1}>\" para heredar sus archivos.",zpr_full_path));
 		return false;
 	}
-	wxString project_path = wxFileName(zpr_full_path).GetPath();
+	wxString project_path = wxFileName(zpr_relative_path).GetPath();
 	wxChar file_path_char = _if_win32('\\','/');
 	for ( wxString section = fil.GetNextSection(); !section.IsEmpty(); section = fil.GetNextSection() ) {
 		
@@ -103,10 +104,10 @@ static bool ReadProjectFilesList(const wxString &zpr_full_path, ProjectManager::
 			for( IniFileReader::Pair p = fil.GetNextPair(); p.IsOk(); p = fil.GetNextPair() ) {
 				if (p.Key()=="path") {
 					wxString filepath = fix_path_char(file_path_char,p.AsString());
-					if      (section=="source")     out_list.sources.Add( new project_file_item(project_path,filepath,wxTreeItemId(),FT_SOURCE) );
-					else if (section=="header")     out_list.headers.Add( new project_file_item(project_path,filepath,wxTreeItemId(),FT_HEADER) );
-					else if (section=="other")      out_list.others.Add ( new project_file_item(project_path,filepath,wxTreeItemId(),FT_OTHER ) );
-					else if (section=="blacklist")  out_list.others.Add ( new project_file_item(project_path,filepath,wxTreeItemId(),FT_BLACKLIST) );
+					if      (section=="source")     out_list.sources.Add( new project_file_item(base_path,DIR_PLUS_FILE(project_path,filepath),wxTreeItemId(),FT_SOURCE) );
+					else if (section=="header")     out_list.headers.Add( new project_file_item(base_path,DIR_PLUS_FILE(project_path,filepath),wxTreeItemId(),FT_HEADER) );
+					else if (section=="other")      out_list.others.Add ( new project_file_item(base_path,DIR_PLUS_FILE(project_path,filepath),wxTreeItemId(),FT_OTHER ) );
+					else if (section=="blacklist")  out_list.others.Add ( new project_file_item(base_path,DIR_PLUS_FILE(project_path,filepath),wxTreeItemId(),FT_BLACKLIST) );
 				}
 			}
 		}
@@ -123,19 +124,19 @@ void ProjectManager::ReloadFatherProjects() {
 	for (GlobalListIterator<project_file_item*> it(&files.all); it.IsValid(); it.Next()) 
 		if (it->IsInherited()) it->SetUnknownFatherProject();
 	
-	// inicilizar la lista de proyectos padres
+	// inicializar la lista de proyectos padres
 	wxArrayString project_inheritances; 
 	mxUT::Split(inherits_from,project_inheritances,true,false);
-	for(unsigned int i=0;i<project_inheritances.GetCount();i++) {
-		project_inheritances[i] = DIR_PLUS_FILE(path,project_inheritances[i]);
-	}
+//	for(unsigned int i=0;i<project_inheritances.GetCount();i++) {
+//		project_inheritances[i] = DIR_PLUS_FILE(path,project_inheritances[i]);
+//	}
 	// obtener las lista de archivos heredados
 	for(unsigned int i=0;i<project_inheritances.GetCount();i++) {  
 		FilesList flist; 
 		wxString zpr_full_path = project_inheritances[i];
 		wxString zpr_relative_path = mxFilename::Relativize(zpr_full_path,path);
-		if (ReadProjectFilesList(zpr_full_path,flist,project_inheritances)) {
-			// warning: in *this al project_file_item paths are relative, 
+		if (ReadProjectFilesList(path,zpr_full_path,flist,project_inheritances)) {
+			// warning: in *this all project_file_item paths are relative, 
 			// but ReadProjectFilesList puts full paths in project_file_item::m_relative_path
 			for (GlobalListIterator<project_file_item*> it(&flist.all); it.IsValid(); it.Next()) {
 				project_file_item *item = FindFromRelativePath(it->m_relative_path);
@@ -351,6 +352,8 @@ ProjectManager::ProjectManager(wxFileName name):custom_tools(MAX_PROJECT_CUSTOM_
 						last_file = AddFile(FT_OTHER,filepath,false);
 					else if (section=="blacklist")
 						last_file = AddFile(FT_BLACKLIST,filepath,false);
+					if (section!="blacklist" && !wxFileExists(last_file->GetFullPath()))
+						errors_manager->AddZinjaiError(true,LANG1(PROJMNGR_FILE_NOT_FOUND,"No se encuentra el archivo \"<{1}>\".",filepath));
 				} else if (p.Key()=="obj_path") {
 					if (last_file) last_file->m_binary_fname_tpl = p.AsString();
 				} else if (p.Key()=="cursor") {

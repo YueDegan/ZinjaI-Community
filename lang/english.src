@@ -886,6 +886,8 @@ OSD_LOADING_PROJECT_POST
 ...
 PROJMNGR_OPENING
 Opening
+PROJMNGR_FILE_NOT_FOUND
+File not found: "<{1}>"
 PROJMNGR_CHANGE_PROFILE_OPENNING
 I seems that you are openning a project that has an active compiling\nand running profile for some other operative system: "<{1}>"\nDo you want to change active profile to "<{2}>"?
 PROJMNGR_CHANGE_PROFILE_OPENNING_CAPTION

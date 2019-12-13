@@ -68,7 +68,7 @@ bool mxApplication::OnInit() {
 		cout << "   --cerr          use std::cerr as internal logging output" << endl;
 		cout << "   --no-splash     do not show splash window" << endl;
 		cout << "   --no-singleton  disable singleton mode for that instance" << endl;
-		cout << "   --log <fame>    write internal logging output to file <fname>" << endl;
+		cout << "   --log <fname>   write internal logging output to file <fname>" << endl;
 		return false;
 	}
 	
