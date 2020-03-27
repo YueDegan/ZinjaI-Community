@@ -2024,7 +2024,8 @@ void ProjectManager::ExportMakefile(wxString make_file, bool exec_comas, wxStrin
 
 		if (temp_folder_short.Len()!=0) {
 			fil.AddLine(temp_folder_short+":");
-			fil.AddLine("\tmkdir "+temp_folder_short);
+			if (cmake_style) fil.AddLine(tab+"@echo "+get_percent(0,steps_total)+" Creating directory "+temp_folder_short);
+			fil.AddLine((cmake_style?"\t@mkdir -p ":"\tmkdir ")+temp_folder_short);
 			fil.AddLine("");
 		}
 	
