@@ -345,7 +345,7 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 		SetMarginSensitive (MARGIN_FOLD, 1);
 		SetProperty("fold", true?"1":"0");
 		SetProperty("fold.comment",true?"1":"0");
-		SetProperty("fold.compact",true?"1":"0");
+		SetProperty("fold.compact",false?"1":"0");
 		SetProperty("fold.preprocessor",true?"1":"0");
 		SetProperty("fold.html.preprocessor",true?"1":"0");
 		SetFoldFlags( wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED );

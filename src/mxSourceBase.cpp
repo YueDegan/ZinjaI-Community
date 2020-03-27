@@ -9,6 +9,7 @@ mxSourceBase::mxSourceBase (wxWindow * parent)
 	wxStyledTextCtrl::Connect(wxEVT_MOUSEWHEEL,wxMouseEventHandler(mxSourceBase::OnMouseWheel),nullptr,this);
 	wxFont font (config->Styles.font_size, wxMODERN, wxNORMAL, wxNORMAL);
 	StyleSetFont (wxSTC_STYLE_DEFAULT, font);
+//	SetProperty("fold.compact","0");
 }
 
 void mxSourceBase::OnMouseWheel (wxMouseEvent & event) {
