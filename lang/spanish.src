@@ -887,7 +887,7 @@ OSD_LOADING_PROJECT_POST
 PROJMNGR_OPENING
 Abriendo
 PROJMNGR_FILE_NOT_FOUND
-No se encuentra el archivo <{1}>.
+No se encuentra el archivo \"<{1}>\".
 PROJMNGR_CHANGE_PROFILE_OPENNING
 Parece que esta abriendo un proyecto que tiene seleccionado un perfil\nde compilación y ejecución para otro sistema operativo: \"<{1}>\"\n\n¿Desea cambiar el perfil activo por \"<{2}>\"?
 PROJMNGR_CHANGE_PROFILE_OPENNING_CAPTION
@@ -2728,6 +2728,8 @@ PREFERENCES_STYLE_GUESSED_DPI
    ( valor por defecto: <{1}> )
 PREFERENCES_PATHS_1
 Rutas 1
+PREFERENCES_PATHS_2
+Rutas 2
 PREFERENCES_PATHS_TEMP
 Directorio temporal
 PREFERENCES_PATHS_PROJECTS

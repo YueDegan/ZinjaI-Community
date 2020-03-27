@@ -745,7 +745,7 @@ wxPanel *mxPreferenceWindow::CreateSkinPanel (mxBookCtrl *notebook) {
 wxNotebook *mxPreferenceWindow::CreatePathsPanels (mxBookCtrl *notebook) {
 	panel_paths = CreateNotebook(notebook)
 		.AddPage(this,&mxPreferenceWindow::CreatePathsPanel1, LANG(PREFERENCES_PATHS_1,"Rutas 1") )
-		.AddPage(this,&mxPreferenceWindow::CreatePathsPanel2, LANG(PREFERENCES_PATHS_1,"Rutas 2") )
+		.AddPage(this,&mxPreferenceWindow::CreatePathsPanel2, LANG(PREFERENCES_PATHS_2,"Rutas 2") )
 		.EndNotebook();
 	return panel_paths;
 }
