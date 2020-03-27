@@ -17,8 +17,8 @@ private:
 		gotoff_result(pd_class *p):type(2),ptr(p) {}
 		gotoff_result(pd_func *p):type(3),ptr(p) {}
 		wxString get_file() {
-			if (type==1) return get_macro()->file->name;
-			if (type==2) return get_class()->file->name;
+			if (type==1) return get_macro()->file ? get_macro()->file->name : "";
+			if (type==2) return get_class()->file ? get_class()->file->name : "";
 			if (type==3) {
 				pd_func *aux_func = get_func();
 				if (aux_func->file_def) return aux_func->file_def->name;
