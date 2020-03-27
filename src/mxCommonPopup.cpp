@@ -13,7 +13,7 @@ void mxCommonPopup::ProcessCommandEvent(wxCommandEvent &evt) {
 		return;
 	case mxID_POPUPS_EDIT_AS_LIST:
 		if (m_text_ctrl) mxEnumerationEditor(m_parent,m_caption,m_text_ctrl,m_comma_split);
-		else             mxEnumerationEditor(m_parent,m_caption,m_text_ctrl,m_combo_box);
+		else             mxEnumerationEditor(m_parent,m_caption,m_combo_box,m_comma_split);
 		return;
 	case mxID_POPUPS_INSERT_FILE:
 		if (m_text_ctrl) mxThreeDotsUtils::ReplaceSelectionWithFile(m_parent,m_text_ctrl,m_base_path); 
