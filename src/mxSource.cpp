@@ -150,7 +150,7 @@ void NavigationHistory::Next() {
 #define STYLE_IS_COMMENT(s) (s==wxSTC_C_COMMENT || s==wxSTC_C_COMMENTLINE || s==wxSTC_C_COMMENTLINEDOC || s==wxSTC_C_COMMENTDOC || s==wxSTC_C_COMMENTDOCKEYWORD || s==wxSTC_C_COMMENTDOCKEYWORDERROR)
 #define STYLE_IS_KEYWORD(s) (s==wxSTC_C_WORD || s==wxSTC_C_WORD2)
 
-static const wxChar* s_reserved_keywords =
+static const wxChar* s_reserved_keywords = _T(
 	"and asm auto break case catch class const const_cast "
 	"continue default delete do dynamic_cast else enum explicit "
 	"export extern false for friend if goto inline "
@@ -158,11 +158,11 @@ static const wxChar* s_reserved_keywords =
 	"reinterpret_cast return sizeof static_cast "
 	"struct switch template this throw true try typedef typeid "
 	"typename union using virtual while xor "
-	"auto constexpr decltype static_assert final override noexcept nullptr"; // c++ 2011
-static const wxChar* s_types_keywords =
+	"auto constexpr decltype static_assert final override noexcept nullptr" ); // c++ 2011
+static const wxChar* s_types_keywords = _T(
 	"bool char const double float int long mutable register "
-	"short signed static unsigned void volatile wchar_t";
-static const wxChar* s_doxygen_keywords =
+	"short signed static unsigned void volatile wchar_t" );
+static const wxChar* s_doxygen_keywords = _T(
 	"a addindex addtogroup anchor arg attention author b brief bug c "
 	"class code date def defgroup deprecated dontinclude e em endcode "
 	"endhtmlonly endif endlatexonly endlink endverbatim enum example "
@@ -172,8 +172,10 @@ static const wxChar* s_doxygen_keywords =
 	"overload p page par param post pre ref relates remarks return "
 	"retval sa section see showinitializer since skip skipline struct "
 	"subsection test throw todo tparam typedef union until var verbatim "
-	"verbinclude version warning weakgroup $ @ \"\" & < > # { }";
+	"verbinclude version warning weakgroup $ @ \"\" & < > # { }" );
 
+static const wxChar *s_bash_keywords = _T(
+	"case do done elif else esac fi for function if in select then time until while");
 
 enum Margins { MARGIN_LINENUM=0, MARGIN_BREAKS, MARGIN_FOLD, MARGIN_NULL };
 
@@ -319,10 +321,6 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 	SetWrapMode (config_source.wrapMode?wxSTC_WRAP_WORD: wxSTC_WRAP_NONE);
 	SetWrapVisualFlags(wxSTC_WRAPVISUALFLAG_END|wxSTC_WRAPVISUALFLAG_START);
 	
-	SetKeyWords (0, s_reserved_keywords);
-	SetKeyWords (1, s_types_keywords);
-	SetKeyWords (2, s_doxygen_keywords);
-
 	//SetCaretLineBackground("Z LIGHT BLUE");
 	//SetCaretLineVisible(true);
 
@@ -339,18 +337,7 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 	SetMarginMask (MARGIN_FOLD, wxSTC_MASK_FOLDERS);
 	SetMarginWidth (MARGIN_FOLD, 0);
 	SetMarginSensitive (MARGIN_FOLD, false);
-	// folding enable
-	if (config_source.foldEnable) {
-		SetMarginWidth (MARGIN_FOLD, true? 15: 0);
-		SetMarginSensitive (MARGIN_FOLD, 1);
-		SetProperty("fold", true?"1":"0");
-		SetProperty("fold.comment",true?"1":"0");
-		SetProperty("fold.compact",false?"1":"0");
-		SetProperty("fold.preprocessor",true?"1":"0");
-		SetProperty("fold.html.preprocessor",true?"1":"0");
-		SetFoldFlags( wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED );
-	}
-
+	
 	// set visibility
 	SetVisiblePolicy (wxSTC_VISIBLE_STRICT|wxSTC_VISIBLE_SLOP, 1);
 	SetXCaretPolicy (wxSTC_CARET_EVEN|wxSTC_VISIBLE_STRICT|wxSTC_CARET_SLOP, 1);
@@ -366,14 +353,13 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 	AutoCompSetAutoHide(false);
 	AutoCompSetTypeSeparator('$');
 	
-	IndicatorSetStyle(0,wxSTC_INDIC_SQUIGGLE);
-	IndicatorSetStyle(1,wxSTC_INDIC_SQUIGGLE);
-	IndicatorSetForeground (0, 0x0000ff);
-	IndicatorSetForeground (1, 0x550055);
+	IndicatorSetStyle(mxSTC_INDIC_ERROR,wxSTC_INDIC_SQUIGGLE);
+	IndicatorSetStyle(mxSTC_INDIC_WARNING,wxSTC_INDIC_SQUIGGLE);
+	IndicatorSetForeground (mxSTC_INDIC_ERROR, 0x0000ff);
+	IndicatorSetForeground (mxSTC_INDIC_WARNING, 0x550055);
 	
-	// lineas que no se compilan
-	IndicatorSetStyle(2,wxSTC_INDIC_STRIKE);
-	IndicatorSetForeground (2, 0x005555);
+	IndicatorSetStyle(mxSTC_INDIC_PREPROC,wxSTC_INDIC_STRIKE);
+	IndicatorSetForeground (mxSTC_INDIC_PREPROC, 0x005555);
 
 	if (config_source.syntaxEnable) {
 		lexer=wxSTC_LEX_CPP;
@@ -665,7 +651,7 @@ void mxSource::OnMarginClick (wxStyledTextEvent &event) {
 		BreakPointInfo *bpi=m_extras->FindBreakpointFromLine(this,l);
 		
 		// si apretó shift o ctrl (por alguna razon en linux solo me anda shift) mostrar el cuadro de opciones
-		if (event.GetModifiers()&wxSTC_SCMOD_SHIFT || event.GetModifiers()&wxSTC_SCMOD_CTRL) {
+		if (event.GetModifiers()&wxSTC_KEYMOD_SHIFT || event.GetModifiers()&wxSTC_KEYMOD_CTRL) {
 			if (!debug->IsDebugging() || debug->CanTalkToGDB()) {
 				if (!bpi) { // si no habia, lo crea
 					bpi=new BreakPointInfo(this,l);
@@ -850,10 +836,7 @@ bool mxSource::LoadFile (const wxFileName &filename) {
 }
 
 bool mxSource::SaveSource() {
-	int lse = GetEndStyled();
-	StartStyling(0,wxSTC_INDICS_MASK);
-	SetStyling(GetLength(),0);
-	StartStyling(lse,0x1F);
+	ClearErrorMarks();
 	if (lexer==wxSTC_LEX_CPP && config_source.avoidNoNewLineWarning && GetLine(GetLineCount()-1)!="")
 		AppendText("\n");
 	sin_titulo = false;
@@ -871,12 +854,14 @@ bool mxSource::SaveTemp (wxString fname) {
 	return ret; 
 }
 
+void mxSource::ClearErrorMarks() {
+	SetIndicatorCurrent(mxSTC_INDIC_WARNING); IndicatorClearRange(0,GetLength());
+	SetIndicatorCurrent(mxSTC_INDIC_ERROR  ); IndicatorClearRange(0,GetLength());
+}
+
 bool mxSource::SaveTemp () {
+	ClearErrorMarks();
 	bool mod = GetModify();
-	int lse = GetEndStyled();
-	StartStyling(0,wxSTC_INDICS_MASK);
-	SetStyling(GetLength(),0);
-	StartStyling(lse,0x1F);
 	if (lexer==wxSTC_LEX_CPP && config_source.avoidNoNewLineWarning && GetLine(GetLineCount()-1)!="")
 		AppendText("\n");
 	if (sin_titulo)
@@ -887,10 +872,7 @@ bool mxSource::SaveTemp () {
 }
 
 bool mxSource::SaveSource (const wxFileName &filename) {
-	int lse = GetEndStyled();
-	StartStyling(0,wxSTC_INDICS_MASK);
-	SetStyling(GetLength(),0);
-	StartStyling(lse,0x1F);
+	ClearErrorMarks();
 	if (lexer==wxSTC_LEX_CPP && config_source.avoidNoNewLineWarning && GetLine(GetLineCount()-1)!="")
 		AppendText("\n");
 	if (MySaveFile(filename.GetFullPath())) {
@@ -1645,29 +1627,38 @@ void mxSource::SetStyle(bool color) {
 		case wxSTC_LEX_CPP:
 			config_source.callTips = config->Source.callTips;
 			config_source.autoCompletion = config->Source.autoCompletion;
-//			config_source.stdCalltips = config->Source.stdCalltips;
-//			config_source.stdCompletion = config->Source.stdCompletion;
-//			config_source.parserCalltips = config->Source.parserCalltips;
-//			config_source.parserCompletion = config->Source.parserCompletion;
 			config_source.smartIndent = config->Source.smartIndent;
 			config_source.indentPaste = config->Source.indentPaste;
+			SetKeyWords (0, s_reserved_keywords);
+			SetKeyWords (1, s_types_keywords);
+			SetKeyWords (2, s_doxygen_keywords);
+			SetProperty("lexer.cpp.track.preprocessor","0");
+			// folding enable
+			if (config_source.foldEnable) {
+				SetMarginWidth (MARGIN_FOLD, true? 15: 0);
+				SetMarginSensitive (MARGIN_FOLD, 1);
+				SetProperty("fold", true?"1":"0");
+				SetProperty("fold.comment",true?"1":"0");
+				SetProperty("fold.compact",false?"1":"0");
+				SetProperty("fold.preprocessor",true?"1":"0");
+				SetProperty("fold.html.preprocessor",true?"1":"0");
+				SetFoldFlags( wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED );
+			}
 			break;
 		case wxSTC_LEX_HTML: case wxSTC_LEX_XML:
-//			config_source.stdCalltips=config_source.stdCompletion=config_source.parserCalltips=config_source.parserCompletion=config_source.smartIndent=config_source.indentPaste=false;
 			config_source.callTips = config_source.smartIndent = config_source.indentPaste = false;
 			config_source.autoCompletion = 0;
 			SetProperty ("fold.html","0");
 			SetProperty ("fold.html.preprocessor", "0");
 			break;
 		case wxSTC_LEX_MAKEFILE:
-//			config_source.stdCalltips=config_source.stdCompletion=config_source.parserCalltips=config_source.parserCompletion=config_source.smartIndent=config_source.indentPaste=false;
 			config_source.callTips = config_source.smartIndent = config_source.indentPaste = false;
 			config_source.autoCompletion = 0;
 			break;
 		case wxSTC_LEX_BASH:
-//			config_source.stdCalltips=config_source.stdCompletion=config_source.parserCalltips=config_source.parserCompletion=config_source.smartIndent=config_source.indentPaste=false;
 			config_source.callTips=config_source.smartIndent=config_source.indentPaste=false;
 			config_source.autoCompletion=0;
+			SetKeyWords(0, s_bash_keywords);
 			break;
 		}
 	} else {
@@ -1690,7 +1681,7 @@ void mxSource::SetStyle(int a_lexer) {
 	}
 }
 
-void mxSource::SelectError(int indic, int p1, int p2) {
+void mxSource::SelectError(MXS_INDICS indic, int p1, int p2) {
 	if (p1>=GetLength()||p2>GetLength()) return;
 	if (p1==p2) {
 		if (GetCharAt(p2)==')') {
@@ -1705,17 +1696,12 @@ void mxSource::SelectError(int indic, int p1, int p2) {
 		while (p2>p1 && (GetCharAt(p2-1)==' ' || GetCharAt(p2-1)=='\t')) p2--;
 		if (p2==p1) { GotoPos(p1); return; }
 	}
-	int lse = GetEndStyled();
-//	StartStyling(0,wxSTC_INDICS_MASK);
-//	SetStyling(GetLength(),0);
-	StartStyling(p1,wxSTC_INDICS_MASK);
-	if (indic==1)
-		SetStyling(p2-p1,wxSTC_INDIC1_MASK);
-	else
-		SetStyling(p2-p1,wxSTC_INDIC0_MASK);
+	
+	SetIndicatorCurrent(indic);
+	IndicatorFillRange(p1,p2-p1);
+	
 	GotoPos(p1);
 	SetSelection(p1,p2);
-	StartStyling(lse,0x1F);
 }
 
 bool mxSource::AddInclude(wxString header, wxString optional_namespace) {
@@ -1817,10 +1803,7 @@ bool mxSource::AddInclude(wxString header, wxString optional_namespace) {
 	
 	wxYield(); // sin esto no se ve el calltip (posiblemente un problema con el evento OnUpdateUI)
 	if (!header_present || !using_namespace_present) {
-		int lse = GetEndStyled();
-		StartStyling(0,wxSTC_INDICS_MASK);
-		SetStyling(GetLength(),0);
-		StartStyling(lse,0x1F);
+		ClearErrorMarks();
 		wxString baloon_message;
 		if (!header_present) {
 			if (uncomment_line)
@@ -2351,7 +2334,7 @@ void mxSource::ShowBaloon(wxString str, int p) {
 					while (j && ( str[j]!=' ' && str[j]!=',' && str[j]!='(' && str[j]!=')' ) ) j--;
 					if (j && !(j>2 && str[j]==' ' && str[j-1]==' ' && str[j-2]==' ' && str[j-3]=='\n') ) {
 						i=j;
-						str = str.SubString(0,j)+"\n"+wxString(' ',spaces+3).c_str()+str.Mid(j+1);
+						str = str.SubString(0,j)+"\n"+wxString(' ',spaces+3)+str.Mid(j+1);
 						++line_count;
 						l+=4;
 					}

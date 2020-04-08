@@ -47,6 +47,13 @@ enum ReadOnlyModeEnum {
 	ROM_SPECIAL =1<<2, ///< special file, such as full compiler output
 };
 
+enum MXS_INDICS {
+	mxSTC_INDIC_ERROR = 0,
+	mxSTC_INDIC_WARNING,
+	mxSTC_INDIC_PREPROC, // lineas que no se compilan por ifdefs o similar
+	mxSTC_INDIC_COUNT,
+};
+
 class mxSource;
 #define MAX_NAVIGATION_HISTORY_LEN 100
 class NavigationHistory {
@@ -268,8 +275,9 @@ public:
 	void SetStyle(int lexer);
 	void SetModify(bool modif=true);
 	void MarkError(int line, bool focus=true);
-	void SelectError(int indic, int p1, int p2);
-	int GetStyleAt(int p) { return wxStyledTextCtrl::GetStyleAt(p)&(~wxSTC_INDICS_MASK); }
+	void SelectError(MXS_INDICS indic, int p1, int p2);
+	void ClearErrorMarks();
+//	int GetStyleAt(int p) { return wxStyledTextCtrl::GetStyleAt(p)&(~wxSTC_INDICS_MASK); }
 	/**
 	* @brief uses markers and m_cem_ref to track changes since the compiler error was generated
 	* @param line   base 1 line number (should be used only for compiler generated errors)

@@ -436,12 +436,11 @@ wxNotebook *mxPreferenceWindow::CreateCompilePanel(mxBookCtrl *notebook) {
 		.EndNotebook();
 }
 
-wxPanel *mxPreferenceWindow::CreateCompilePanelProject (wxBookCtrl *notebook) {
+wxPanel *mxPreferenceWindow::CreateCompilePanelProject (wxNotebook *notebook) {
 	CreatePanelAndSizer sizer(notebook);
 	
 	sizer.BeginText( LANG(PREFERENCES_GENERAL_MAX_JOBS,"Cantidad de pasos en paralelo al compilar") )
 		.Bind(m_binder,config->Init.max_jobs).Button(mxID_MAX_JOBS).EndText();
-	
 	
 	sizer.BeginCheck( LANG(PREFERENCES_STOP_COMPILING_ON_ERROR,"Detener la compilación de un proyecto al encontrar el primer error") )
 		.Bind(m_binder,config->Init.stop_compiling_on_error).EndCheck();
@@ -719,7 +718,7 @@ wxPanel *mxPreferenceWindow::CreateSkinPanel (mxBookCtrl *notebook) {
 		skin_image = new wxStaticBitmap(panel,wxID_ANY,bitmaps->GetBitmap("skin_no_preview.png"));
 	sizer->Add(skin_image,sizers->BA10_Exp0);
 	wxButton *apply_button = new mxBitmapButton(panel,mxID_SKIN_APPLY,bitmaps->buttons.ok,LANG(PREFERENCES_SKIN_APPLY,"Aplicar"));
-	sizer->Add(apply_button,sizers->BA10_Exp0_Right);
+	sizer->Add(apply_button,sizers->BA10_Exp0);
 	sizer->AddSpacer(15);
 	
 	m_force_dpi_bool = config->Styles.forced_dpi!=0;

@@ -16,7 +16,7 @@
 using namespace std;
 
 BEGIN_EVENT_TABLE(mxInspectionGrid, wxGrid)
-	EVT_GRID_CELL_CHANGE(mxInspectionGrid::OnCellChange)
+	EVT_GRID_CELL_CHANGED(mxInspectionGrid::OnCellChange)
 	EVT_GRID_CELL_LEFT_CLICK(mxInspectionGrid::OnClick)
 	EVT_MENU(mxID_INSPECTION_FREEZE,mxInspectionGrid::OnFreeze)
 	EVT_MENU(mxID_INSPECTION_UNFREEZE,mxInspectionGrid::OnUnFreeze)

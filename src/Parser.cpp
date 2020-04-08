@@ -19,6 +19,7 @@
 #include "CodeHelper.h"
 #include "execution_workaround.h"
 #include "gdbParser.h"
+#include "StringConv.h"
 
 Parser *parser;
 
@@ -350,11 +351,11 @@ void Parser::ParseNextFileContinue(const wxString &s) {
 	
 	// toda linea de cbrowser empieza con un entero indicando qué es, de 1 o 2 digitos, seguido por punto y coma
 	int id, p[15]; int l=s.Len();
-	if (l>2 && s.GetChar(1)==';') {
-		id = s.GetChar(0)-'0';
+	if (l>2 && GetChar(s,1)==';') {
+		id = GetChar(s,0)-'0';
 		p[0]=1;
-	} else if (l>3 && s.GetChar(2)==';') {
-		id = (s.GetChar(0)-'0')*10+s.GetChar(1)-'0';
+	} else if (l>3 && GetChar(s,2)==';') {
+		id = (GetChar(s,0)-'0')*10+GetChar(s,1)-'0';
 		p[0]=2;
 	} else return;
 	// "cortar" las partes de la linea, separadas por ';' o 1. En p[i] se guardan las posiciones de estos caracteres de separacion
@@ -578,7 +579,7 @@ void Parser::ParseNextFileContinue(const wxString &s) {
 			wxString key=PARSER_PARTE(0);
 			g_code_helper->UnMacro(name);
 			g_code_helper->UnTemplate(name);
-			switch (s[p[5]+3]) {
+			switch (GetChar(s,p[5]+3)) {
 			case '4':
 				PD_REGISTER_INHERIT(process->file,name,key,PD_CONST_PUBLIC);
 				break;

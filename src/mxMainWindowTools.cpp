@@ -51,6 +51,7 @@
 #include "mxAUI.h"
 #include "ZLog.h"
 #include "mxSourceComments.h"
+#include <wx/choicdlg.h>
 using namespace std;
 
 /// @brief Muestra el cuadro de configuración de cppcheck (mxCppCheckConfigDialog)
@@ -869,7 +870,7 @@ void mxMainWindow::ToolsCodeCopyFromH(mxSource *source, wxString the_one) {
 	wxArrayInt sels;
 	int line=-1;
 	for (unsigned int i=0;i<choices.GetCount();i++) sels.Add(i);
-	int nsels=wxGetMultipleChoices(sels,LANG(MAINW_CODETOOLS_CHOOSE_FUNCTIONS_METHODS,"Seleccione las funciones/metodos a implementar:"),LANG(MENUITEM_TOOLS_CODE_COPY_FROM_H,"Implementar Metodos/Funciones faltantes"),choices,this);
+	int nsels=wxGetSelectedChoices(sels,LANG(MAINW_CODETOOLS_CHOOSE_FUNCTIONS_METHODS,"Seleccione las funciones/metodos a implementar:"),LANG(MENUITEM_TOOLS_CODE_COPY_FROM_H,"Implementar Metodos/Funciones faltantes"),choices,this);
 	for (int i=0;i<nsels;i++) {
 		while (source->GetLineCount() && source->GetLine(source->GetLineCount()-1).Len()>1) {
 			wxString aux=source->GetLine(source->GetLineCount()-1);
@@ -920,11 +921,8 @@ void mxMainWindow::OnToolsPreprocMarkValid ( wxCommandEvent &event ) {
 void mxMainWindow::OnToolsPreprocUnMarkAll ( wxCommandEvent &event ) {
 	IF_THERE_IS_SOURCE {
 		mxSource *src=CURRENT_SOURCE;
-		src->IndicatorSetStyle(2,wxSTC_INDIC_STRIKE);
-		int lse = src->GetEndStyled();
-		src->StartStyling(0,wxSTC_INDICS_MASK);
-		src->SetStyling(src->GetLength(),0);
-		src->StartStyling(lse,0x1F);
+		src->SetIndicatorCurrent(mxSTC_INDIC_PREPROC);
+		src->IndicatorClearRange(0,src->GetLength());
 	}
 }
 
@@ -1001,9 +999,7 @@ void mxMainWindow::ToolsPreproc( int id_command ) {
 			src->IndicatorSetForeground (2, wxColour(255,255,255));
 		else
 			src->IndicatorSetForeground (2, wxColour(0,0,0));
-		int lse = src->GetEndStyled();
-		src->StartStyling(0,wxSTC_INDICS_MASK);
-		src->SetStyling(src->GetLength(),0);
+		src->ClearErrorMarks();
 		for(int i=0;i<n;i++) { 
 			if (i&&src->GetCharAt(src->GetLineEndPosition(i-1)-1)=='\\') v[i]=v[i-1];
 			if (!v[i]) {
@@ -1020,13 +1016,12 @@ void mxMainWindow::ToolsPreproc( int id_command ) {
 //						if (j<n && v[j]) v[i]=true;
 //					}
 //				if (!v[i]) {
-					src->StartStyling(i1,wxSTC_INDICS_MASK);
-					src->SetStyling(i2-i1,wxSTC_INDIC2_MASK);
+					src->SetIndicatorCurrent(mxSTC_INDIC_PREPROC);
+					src->IndicatorFillRange(i1,i2-i1);
 //				}
 			}
 		}
 		delete []v;
-		src->StartStyling(lse,0x1F);
 	} else if (id_command==2) {
 		int l0=src->LineFromPosition(src->GetSelectionStart());
 		int l1=src->LineFromPosition(src->GetSelectionEnd());

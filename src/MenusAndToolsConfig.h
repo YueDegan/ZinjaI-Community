@@ -242,11 +242,11 @@ public:
 		}
 		operator wxString() {
 			wxString s;
-			if (left) s<<"Lx"<<row; 
+			if (left) s<<"L"<<row; 
 			else if (right) s<<"R"<<row; 
 			else if (top) s<<"T"<<row;
 			else s<<"F";
-			if (!visible) s[0]+=32;
+			if (!visible) s.MakeLower();
 			return s;
 		}
 	};

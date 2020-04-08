@@ -185,7 +185,7 @@ void mxHidenPanel::OnTimer(wxTimerEvent &evt) {
 			forced_show=!control->GetScreenRect().Contains(wxGetMousePosition());
 		else if (!mouse_in && !control->GetScreenRect().Contains(wxGetMousePosition())) {
 			wxMouseState ms = wxGetMouseState();
-			if (ms.LeftDown() || ms.RightDown() || ms.MiddleDown() ) return;
+			if (ms.LeftIsDown() || ms.RightIsDown() || ms.MiddleIsDown() ) return;
 			Hide();
 		}
 	} else {

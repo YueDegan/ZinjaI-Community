@@ -14,6 +14,7 @@
 #include "Parser.h"
 #include "execution_workaround.h"
 #include "mxCommonConfigControls.h"
+#include "StringConv.h"
 
 BEGIN_EVENT_TABLE(mxDiffWindow, wxDialog)
 	EVT_BUTTON(wxID_OK,mxDiffWindow::OnOkButton)
@@ -109,20 +110,20 @@ void mxDiffWindow::DiffSourceFile(mxSource *src, wxString fname) {
 		for (unsigned int i=0;i<output.GetCount();i++) {
 			int n1=0,n2=0,n3=0,n4=0,p=0;
 			while (output[i][p]>='0' && output[i][p]<='9')
-				n1 = n1*10 + output[i][p++]-'0' ;
+				n1 = n1*10 + GetChar(output[i],p++)-'0' ;
 			if (output[i][p]==',') {
 				p++;
 				while (output[i][p]>='0' && output[i][p]<='9')
-					n2 = n2*10 + output[i][p++]-'0' ;
+					n2 = n2*10 + GetChar(output[i],p++)-'0' ;
 			} else
 				n2=n1;
 			char c=output[i][p++];
 			while (output[i][p]>='0' && output[i][p]<='9')
-				n3 = n3*10 + output[i][p++]-'0' ;
+				n3 = n3*10 + GetChar(output[i],p++)-'0' ;
 			if (output[i][p]==',') {
 				p++;
 				while (output[i][p]>='0' && output[i][p]<='9')
-					n4 = n4*10 + output[i][p++]-'0' ;
+					n4 = n4*10 + GetChar(output[i],p++)-'0' ;
 			} else
 				n4=n3;
 			n1--; n2--; n3--; n4--;
@@ -153,7 +154,7 @@ void mxDiffWindow::DiffSourceFile(mxSource *src, wxString fname) {
 		main_window->ShowDiffSideBar(show_sidebar->GetValue(),show_tools->GetValue());
 	} else {
 		mxMessageDialog(main_window,LANG(DIFF_FILES_EQUAL,"Los archivos son iguales"))
-			.Title(LANG(DIFF_CAPTION,"Comparacion")).IconInfo().Run();
+			.Title(LANG(DIFF_CAPTION,"Comparación")).IconInfo().Run();
 	}
 }
 
@@ -173,21 +174,21 @@ void mxDiffWindow::DiffTwoSources(mxSource *src1, mxSource *src2) {
 	if (output.GetCount()) {
 		for (unsigned int i=0;i<output.GetCount();i++) {
 			int n1=0,n2=0,n3=0,n4=0,p=0;
-			while (output[i][p]>='0' && output[i][p]<='9')
-				n1 = n1*10 + output[i][p++]-'0' ;
+			while (CharIsDigit(output[i],p))
+				n1 = n1*10 + GetCharAsDigit(output[i],p++);
 			if (output[i][p]==',') {
 				p++;
-				while (output[i][p]>='0' && output[i][p]<='9')
-					n2 = n2*10 + output[i][p++]-'0' ;
+				while (CharIsDigit(output[i],p))
+					n2 = n2*10 + GetCharAsDigit(output[i],p++);
 			} else
 				n2=n1;
-			char c=output[i][p++];
-			while (output[i][p]>='0' && output[i][p]<='9')
-				n3 = n3*10 + output[i][p++]-'0' ;
-			if (output[i][p]==',') {
+			char c=GetChar(output[i],p++);
+			while (CharIsDigit(output[i],p))
+				n3 = n3*10 + GetCharAsDigit(output[i],p++);
+			if (GetChar(output[i],p)==',') {
 				p++;
-				while (output[i][p]>='0' && output[i][p]<='9')
-					n4 = n4*10 + output[i][p++]-'0' ;
+				while (CharIsDigit(output[i],p))
+					n4 = n4*10 + GetCharAsDigit(output[i],p++);
 			} else
 				n4=n3;
 			n1--; n2--; n3--; n4--;

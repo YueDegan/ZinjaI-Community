@@ -23,6 +23,7 @@
 #ifdef _ZINJAI_DEBUG
 #include<iostream>
 #include <cstdlib>
+#include "StringConv.h"
 using namespace std;
 #endif
 
@@ -502,7 +503,7 @@ wxString mxCompiler::GetCompilingStatusText() {
 bool mxCompiler::CheckForExecutablePermision(wxString file) {
 #ifndef __WIN32__
 	if (!wxFileName::IsFileExecutable(file)) {
-		system((string("chmod a+x ")+mxUT::Quotize(file).c_str()).c_str());
+		system(ToCStyleString(wxString("chmod a+x ")+mxUT::Quotize(file)));
 		if (!wxFileName::IsFileExecutable(file)) {
 			errors_manager->AddZinjaiError(true,LANG(MAINW_WARNING_NO_EXCUTABLE_PERMISSION,"El binario no tiene permisos de ejecución."));
 			return false;

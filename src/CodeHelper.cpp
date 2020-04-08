@@ -12,6 +12,7 @@
 #include "mxMainWindow.h"
 #include "mxMessageDialog.h"
 #include "mxCalltip.h"
+#include "StringConv.h"
 using namespace std;
 
 MyAutocompList g_autocomp_list;
@@ -26,7 +27,7 @@ static bool ShouldAddToAutocompStart(const wxString &typed, int len, const wxStr
 	int l2=candidate.Len(); 
 	if (l2<len) return false;
 	for(int i=0; i<len; i++) 
-		if (tolower(candidate[i])!=typed[i]) 
+		if (tolower(GetChar(candidate,i))!=GetChar(typed,i)) 
 			return false;
 	return true;
 }
@@ -78,7 +79,7 @@ bool CodeHelper::AutocompleteFromArray(mxSource *source, CodeHelperSpecialArray 
 	int j, ll = words.keywords.GetCount();
 	for (j=0;j<ll;j++) {
 		unsigned int i=0;
-		while (i<l && (tolower(words.keywords[j][i])==typed[i]))
+		while (i<l && (tolower(GetChar(words.keywords[j],i))==GetChar(typed,i)))
 			i++;
 		if (i==l) g_autocomp_list.Add(words.keywords[j],words.icon,words.help);
 	}
@@ -1319,7 +1320,8 @@ void CodeHelper::TryToSuggestTemplateSolutionForLinkingErrors (const wxArrayStri
 	
 	for(unsigned int i=0;i<full_output.GetCount();i++) { 
 		
-		wxString &l=full_output[i], keyword; 
+		const wxString &l = full_output[i];
+		wxString keyword; 
 		
 		// simbolos que no encuentra el linker
 		int p=l.Find(EN_COMPOUT_UNDEFINED_REFERENCE);

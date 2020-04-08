@@ -2725,7 +2725,7 @@ Apply
 PREFERENCES_STYLE_FORCE_DPI
 Force screen PPI:
 PREFERENCES_STYLE_GUESSED_DPI
-   ( default/guessed balue: <{1}> )
+   ( default/guessed value: <{1}> )
 PREFERENCES_PATHS_1
 Paths 1
 PREFERENCES_PATHS_2

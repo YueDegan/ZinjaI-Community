@@ -6,6 +6,7 @@
 #include "mxUtils.h"
 #include "ConfigManager.h"
 #include <fstream>
+#include "StringConv.h"
 using namespace std;
 
 #define DP_ERROR_DUMP 1
@@ -19,14 +20,14 @@ bool DebugPatcher::mem_seg::extract(wxString &s, int &where) {
 	if (p==wxNOT_FOUND) return false;
 	s=s.Mid(p+2);
 	int r=0, l=s.Len(), i=0;
-	while (i<l && ( (s[i]>='0'&&s[i]<='9') || (s[i]>='A'&&s[i]<='F') || (s[i]>='a'&&s[i]<='f') ) ) {
+	while (i<l && ( CharIsDigit(s,i) || CharIsInRange(s,i,'A','F') || CharIsInRange(s,i,'a','f') ) ) {
 		r*=16;
 		if (s[i]>='0'&&s[i]<='9') {
 			r+=s[i]-'0';
 		} else if (s[i]>='A'&&s[i]<='F') {
-			r+=s[i]+10-'A';
+			r+=GetChar(s,i)+10-'A';
 		} else {
-			r+=s[i]+10-'a';
+			r+=GetChar(s,i)+10-'a';
 		}
 		i++;
 	}

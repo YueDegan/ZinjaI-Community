@@ -59,6 +59,10 @@ void mxMiniSource::SetStyle (int lexer) {
 							  int(g_ctheme->CURRENT_LINE.Green()*alph)+int(g_ctheme->DEFAULT_BACK.Green()*um_alph),
 							  int(g_ctheme->CURRENT_LINE.Blue() *alph)+int(g_ctheme->DEFAULT_BACK.Blue() *um_alph) );
 	SetSelBackground(true,c_current_screen);
+	
+	wxFont font (1, wxMODERN, wxNORMAL, wxNORMAL);
+	SetPhasesDraw(wxSTC_PHASES_ONE);
+	for(int i=wxSTC_STYLE_DEFAULT;i<wxSTC_STYLE_MAX;i++) StyleSetFont (32, font);
 }
 
 void mxMiniSource::OnClick (wxMouseEvent & evt) {

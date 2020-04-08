@@ -1444,7 +1444,7 @@ mxMainWindow::~mxMainWindow() {
 void mxMainWindow::OnEdit (wxCommandEvent &event) {
 	_record_this_action_in_macro(event.GetId());
 	IF_THERE_IS_SOURCE {
-		CURRENT_SOURCE->ProcessEvent(event);
+		CURRENT_SOURCE->GetEventHandler()->ProcessEvent(event);
 		CURRENT_SOURCE->SetFocus();
 	}
 }
@@ -1456,9 +1456,9 @@ void mxMainWindow::OnEditNeedFocus (wxCommandEvent &event) {
 	if (focus && (focus==inspection_ctrl || focus->GetParent()==inspection_ctrl->GetCurrentInspectionGrid())) {
 		inspection_ctrl->OnRedirectedEditEvent(event);
 	} else if (focus && focus->IsKindOf(menu_data->toolbar_find_text->GetClassInfo())) {
-		if (event.GetId()<wxID_HIGHEST) focus->ProcessEvent(event); // redirect copy/past/cut, not others (duplicate lines, toggle mark, etc)
+		if (event.GetId()<wxID_HIGHEST) focus->GetEventHandler()->ProcessEvent(event); // redirect copy/past/cut, not others (duplicate lines, toggle mark, etc)
 	} else IF_THERE_IS_SOURCE {
-		CURRENT_SOURCE->ProcessEvent(event);
+		CURRENT_SOURCE->GetEventHandler()->ProcessEvent(event);
 	}
 }
 
@@ -1470,8 +1470,8 @@ wxHtmlWindow* mxMainWindow::CreateQuickHelp(wxWindow* parent) {
 }
 
 wxAuiNotebook *mxMainWindow::CreateNotebookSources() {
-//	wxSize client_size = GetClientSize();
 	notebook_sources = new wxAuiNotebook(this, mxID_NOTEBOOK_SOURCES, wxDefaultPosition, wxDefaultSize, wxAUI_NB_DEFAULT_STYLE | wxAUI_NB_TAB_EXTERNAL_MOVE | wxNO_BORDER | wxAUI_NB_WINDOWLIST_BUTTON);
+	notebook_sources->SetArtProvider(new wxAuiGenericTabArt);
 //	wxBitmap page_bmp = wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(tsize,tsize));
 	return notebook_sources;
 }
@@ -4551,11 +4551,11 @@ void mxMainWindow::OnSelectErrorCommon (const wxString & error, const wxString &
 		preline=preline.AfterFirst(':').BeforeFirst(':');
 		if (preline.Len()) {
 			unsigned int i=0, n=0;
-			while (i<preline.size() && preline[i]>='0' && preline[i]<='9') 
-			{ n=n*10+preline[i++]-'0'; }
+			while (i<preline.size() && GetChar(preline,i)>='0' && GetChar(preline,i)<='9') 
+			{ n=n*10+GetChar(preline,i++)-'0'; }
 			if (i==preline.Len()) {
 				n+=source->PositionFromLine(line-1)-1;
-				source->SelectError(0,n,n);
+				source->SelectError(mxSTC_INDIC_ERROR,n,n);
 				// el siguiente if no deberia ser necesario, pero el autocomp de 
 				// SuggestFix deja el foco en el fuente y no en la lista, al menos
 				// con paneles autoocultables en linux
@@ -4626,17 +4626,17 @@ void mxMainWindow::OnSelectErrorCommon (const wxString & error, const wxString &
 		if (found) {
 			int p=source->FindText(pos+keyword.Len(),endpos,keyword,wxSTC_FIND_MATCHCASE|wxSTC_FIND_WHOLEWORD);
 			if (p!=wxSTC_INVALID_POSITION) {
-				source->SelectError(1,pos,pos+keyword.Len());
-				source->SelectError(1,p,p+keyword.Len());
+				source->SelectError(mxSTC_INDIC_WARNING,pos,pos+keyword.Len());
+				source->SelectError(mxSTC_INDIC_WARNING,p,p+keyword.Len());
 				p=p+keyword.Len();
 				while ( (p=source->FindText(p,endpos,keyword,wxSTC_FIND_MATCHCASE|wxSTC_FIND_WHOLEWORD))>=0 ) {
-					source->SelectError(1,p,p+keyword.Len());
+					source->SelectError(mxSTC_INDIC_WARNING,p,p+keyword.Len());
 					p=p+keyword.Len();
 				}
 				source->GotoPos(source->GetLineIndentPosition(line-1));
 				SuggestFix(source,pos,error,first_child);
 			} else {
-				source->SelectError(0,pos,pos+keyword.Len());
+				source->SelectError(mxSTC_INDIC_ERROR,pos,pos+keyword.Len());
 			}
 		}
 #ifdef __WIN32__
@@ -4661,7 +4661,7 @@ void mxMainWindow::CallAfterEvents (AfterEventsAction * action) {
 
 void mxMainWindow::OnAfterEventsTimer (wxTimerEvent & event) {
 	wxMouseState ms=wxGetMouseState();
-	if (ms.LeftDown()||ms.MiddleDown()||ms.RightDown()) {
+	if (ms.LeftIsDown()||ms.MiddleIsDown()||ms.RightIsDown()) {
 		after_events_timer->Start(50,true); return;
 	}
 	AfterEventsAction * &current = current_after_events_action;

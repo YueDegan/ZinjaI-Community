@@ -24,7 +24,7 @@ ShareManager *g_share_manager = nullptr;
 		El cliente se conecta mediante su index_client al index_server del servidor.
 		El servidor crea un nuevo socket para atender la conexion.
 		El cliente envia un l para indicar que quiere la lista.
-		El servidor en un nuevo socket atiende al cliente, y al recibir la l envia la cnatidad de archivos que comparte y sus nombres separados por \n.
+		El servidor en un nuevo socket atiende al cliente, y al recibir la l envia la cabtidad de archivos que comparte y sus nombres separados por \n.
 		El cliente espera a que llegue la cantidad de nombres indicados y luego se encarga de cerrar la conexion.
 	
 	Para pedir un fuente
@@ -284,7 +284,7 @@ void ShareManager::OnSocketEvent(wxSocketEvent *event) {
 		} else if (event->GetSocketEvent()==wxSOCKET_INPUT) { // if comes a piece of source
 			int n=0;
 			if (it->second.len==-1) { // if that's the first message, get the source len
-				wxChar buf[25]="a";
+				wxChar buf[25];
 				while (n<25) {
 					sock->Read(buf+n,1);
 					if (buf[n++]==' ') break;
@@ -331,7 +331,7 @@ void ShareManager::OnSocketEvent(wxSocketEvent *event) {
 		if (event->GetSocketEvent()==wxSOCKET_INPUT) { // if ask for something
 			
 			// read the request
-			wxChar buf[256]="";
+			wxChar buf[256];
 			event->GetSocket()->Read(buf,255);
 			HashStringSource it;
 			

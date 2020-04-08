@@ -163,23 +163,23 @@ static void Surround (mxSource *src, int lmin, int lmax, wxString spre, wxString
 			src->SetLineIndentation(i,src->GetLineIndentation(i)+src->config_source.tabWidth);
 	}
 	int pmax = src->GetLineEndPosition(lmax);
-	src->InsertText(pmax,wxString("\n")+spos);
+	src->InsertText(pmax,wxString(_T("\n"))+spos);
 	int pmin = src->PositionFromLine(lmin);
-	src->InsertText(pmin,spre+"\n");
+	src->InsertText(pmin,spre+_T("\n"));
 	lmax+=2; pmax=src->GetLineEndPosition(lmax); 
 	if (fix_indent) {
 		src->Colourise(pmin,pmax);
 		src->Indent(lmin,lmin);
 		src->Indent(lmax,lmax);
 	}
-	if (spre.Contains("#here#")) {
-		int p = src->GetLineIndentPosition(lmin) + spre.Index("#here#");
+	if (spre.Contains(_T("#here#"))) {
+		int p = src->GetLineIndentPosition(lmin) + spre.Index(_T("#here#"));
 		src->SetTargetStart(p); src->SetTargetEnd(p+6); 
 		src->ReplaceTarget(""); src->SetSelection(p,p);
-	} else if (spos.Contains("#here#")) {
-		int p = src->GetLineIndentPosition(lmax) + spos.Index("#here#");
+	} else if (spos.Contains(_T("#here#"))) {
+		int p = src->GetLineIndentPosition(lmax) + spos.Index(_T("#here#"));
 		src->SetTargetStart(p); src->SetTargetEnd(p+6); 
-		src->ReplaceTarget(""); src->SetSelection(p,p);
+		src->ReplaceTarget(_T("")); src->SetSelection(p,p);
 	}
 }
 

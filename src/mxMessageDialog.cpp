@@ -72,13 +72,13 @@ mxMessageDialog::mdAns mxMessageDialog::Run() {
 	}
 	
 	if (m_icon==mxMDError)
-		topSizer->Add( new wxStaticBitmap(this,wxID_ANY,*bitmaps->icons.error) , sizers->BA10_Right);
+		topSizer->Add( new wxStaticBitmap(this,wxID_ANY,*bitmaps->icons.error) , sizers->BA10);
 	if (m_icon==mxMDWarning)
-		topSizer->Add( new wxStaticBitmap(this,wxID_ANY,*bitmaps->icons.warning), sizers->BA10_Right);
+		topSizer->Add( new wxStaticBitmap(this,wxID_ANY,*bitmaps->icons.warning), sizers->BA10);
 	if (m_icon==mxMDQuestion)
-		topSizer->Add( new wxStaticBitmap(this,wxID_ANY,*bitmaps->icons.question), sizers->BA10_Right);
+		topSizer->Add( new wxStaticBitmap(this,wxID_ANY,*bitmaps->icons.question), sizers->BA10);
 	if (m_icon==mxMDInfo)
-		topSizer->Add( new wxStaticBitmap(this,wxID_ANY,*bitmaps->icons.info), sizers->BA10_Right);
+		topSizer->Add( new wxStaticBitmap(this,wxID_ANY,*bitmaps->icons.info), sizers->BA10);
 		
 
 	if ( m_check1_str.Len() || m_check2_str.Len() ) {

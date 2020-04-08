@@ -4,17 +4,17 @@
 #include "lang_index_macros.h"
 
 #define LANG_MAP(key,text) (g_language_buffer?g_language_buffer+g_language_index[LANG_##key]:text)
-#ifdef __APPLE__
-extern wxCSConv cscUTF8;
-extern wxCSConv cscMAC;
-#	define _ZS(text) cscMAC.cWC2MB(text.wchar_str())
-#	define _ZW(text) wxString(cscUTF8.cMB2WC(text),cscMAC)
-#	define LANG(key,text) cscMAC.cWC2MB(cscUTF8.cMB2WC( LANG_MAP(key,text) ))
-#else
+//#ifdef __APPLE__
+//extern wxCSConv cscUTF8;
+//extern wxCSConv cscMAC;
+//#	define _ZS(text) cscMAC.cWC2MB(text.wchar_str())
+//#	define _ZW(text) wxString(cscUTF8.cMB2WC(text),cscMAC)
+//#	define LANG(key,text) cscMAC.cWC2MB(cscUTF8.cMB2WC( LANG_MAP(key,text) ))
+//#else
 #	define _ZS(text) text
 #	define _ZW(text) text
-#	define LANG(key,text) LANG_MAP(key,text) 
-#endif
+#	define LANG(key,text) wxString::From8BitData(LANG_MAP(key,text))
+//#endif
 /// Codigos de error para las funciones que administran el archivo y buffer de lenguaje
 enum LANGUAGE_ERROR { 
 	LANGERR_OK, ///< el lenguaje se cargó o regeneró sin problemas

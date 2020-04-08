@@ -37,6 +37,7 @@
 #ifdef __WIN32__
 #	include "osdep.h"
 #endif
+#include "StringConv.h"
 
 
 bool g_zinjai_debug_mode = false;
@@ -81,27 +82,17 @@ void mxUT::SortArrayString(wxArrayString &array, int inf, int sup) {
 	if(inf==sup) return;
 	
 	int oinf=inf,osup=sup--;
-	wxString med=array[osup],aux;
+	wxString med=array[osup].Lower(),aux;
 	int i=0,ml=med.Len();
-//	bool bi,bs;
-	for (i=0;i<ml;i++)
-		med[i]|=32;
 	while (true) {
-// for (int i=oinf;i<=osup;i++) {
-// 	if (i==inf) cout<<"--";
-// 	else if (i==sup) cout<<"++";
-// 	else cout<<"  ";
-// 	cout<<array[i]<<"  ";
-// }
-// cout<<endl;
 
 		bool bi=true, bs=false; // si una cadena esta vacia, se considera menor
 		
 		while (true) {
 			int jl=array[inf].Len(),  l=(jl<ml?jl:ml)-2;
 			for (i=0;i<l;i++) {
-				if ( (array[inf][i]|32)!=med[i] ) {
-					bi=( (array[inf][i]|32)<med[i] );
+				if ( GetCharLowerCase(array[inf],i)!=med[i] ) {
+					bi=( GetCharLowerCase(array[inf],i)<med[i] );
 					break;
 				}
 			}
@@ -115,8 +106,8 @@ void mxUT::SortArrayString(wxArrayString &array, int inf, int sup) {
 		while (true) {
 			int jl=array[sup].Len(), l=(jl<ml?jl:ml)-2;
 			for (i=0;i<l;i++) {
-				if ( (array[sup][i]|32)!=med[i] ) {
-					bs=( (array[sup][i]|32)>med[i] );
+				if ( GetCharLowerCase(array[sup],i)!=med[i] ) {
+					bs=( GetCharLowerCase(array[sup],i)>med[i] );
 					break;
 				}
 			}
@@ -139,12 +130,6 @@ void mxUT::SortArrayString(wxArrayString &array, int inf, int sup) {
 			} else
 				inf++;
 
-// if (oi>=0&&os>=0) {
-// cout<<oi<<" "<<os<<" "<<med<<endl; 
-// for (int i=oi;i<=os;i++)
-// 	 cout<<array[i]<<endl;
-// cout<<endl;
-// }
 			if (inf-oinf>1)
 				SortArrayString(array,oinf,inf-1);
 			if (osup-sup>1)
@@ -565,8 +550,7 @@ wxString mxUT::ToHtml(wxString text, bool full) {
 	text.Replace(_T(">"),_T("&gt;"));
 	text.Replace("\n",_T("<BR>"));
 	if (full) {
-		wxChar doce[]=" ";
-		doce[0]=12;
+		wxChar doce[2]={12,0};
 		text.Replace(doce,_T("<BR>"));
 		text.Replace(" ",_T("&nbsp;"));
 	}

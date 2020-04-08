@@ -29,6 +29,7 @@
 #include "gdbParser.h"
 #include "ZLog.h"
 #include "asserts.h"
+#include "StringConv.h"
 using namespace std;
 
 //#define BACKTRACE_MACRO "define zframeaddress\nset $fi=0\nwhile $fi<$arg0\nprintf \"*zframe-%u={\",$fi\ninfo frame $fi\nprintf \"}\\n\"\nset $fi=$fi+1\nend\nend"
@@ -416,7 +417,7 @@ bool DebugManager::Stop(bool waitkey, wxString exit_code) {
 			if (!exit_code.IsEmpty()) {
 				int c=0;
 				for(size_t i=0;i<exit_code.Len();i++) { 
-					c = c*8 + exit_code[i]-'0';
+					c = c*8 + GetChar(exit_code,i)-'0';
 				}
 				exit_code.Clear(); exit_code << c;
 			}
@@ -962,7 +963,7 @@ void DebugManager::ReadGDBOutput() {
 	if (input->IsOk() && input->CanRead()) {
 		int n, watchdog=0;
 		do {
-			static char buffer[256];
+			static wxChar buffer[256];
 			n = input->Read(buffer,255).LastRead();
 			m_gdb_buffer.Read(buffer,n);
 		} while (++watchdog!=1000 && n==255 && input->CanRead());

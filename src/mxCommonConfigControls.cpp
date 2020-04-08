@@ -153,7 +153,7 @@ mxDialog::MainSizer &mxDialog::MainSizer::MainText::EndText(wxTextCtrl *&text_ct
 		inner_sizer->Add(text_ctrl, sizers->Exp1);
 		if (m_button_id!=mxID_NULL) {
 			button = new wxButton(parent,m_button_id,m_button_text,wxDefaultPosition,m_button_text== _T("...")?wxSize(30,10):wxSize(-1,10));
-			inner_sizer->Add(button, sizers->Exp0_Right);
+			inner_sizer->Add(button, sizers->Exp0);
 		}
 		sizer->Add(inner_sizer, m_one_line?sizers->BA5_Exp0:sizers->BLRB5_Exp0);
 	} else {

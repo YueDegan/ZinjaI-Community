@@ -9,7 +9,7 @@
 class mxInspectionGridCellEditorControl:public wxTextCtrl {
 	wxArrayString comp_options;
 public:
-	mxInspectionGridCellEditorControl(wxWindow* parent, wxWindowID id):wxTextCtrl(parent,id,"lala",wxDefaultPosition,wxDefaultSize,wxTE_PROCESS_ENTER|wxTE_PROCESS_TAB|wxTE_AUTO_SCROLL|wxNO_BORDER) {}
+	mxInspectionGridCellEditorControl(wxWindow* parent, wxWindowID id):wxTextCtrl(parent,id,"lala",wxDefaultPosition,wxDefaultSize,wxTE_PROCESS_ENTER|wxTE_PROCESS_TAB|wxNO_BORDER) {}
 	void Autocomplete();
 	void OnMenu(wxCommandEvent &evt) {
 		SetText(comp_options[evt.GetId()-mxID_LAST_ID-2000]);
