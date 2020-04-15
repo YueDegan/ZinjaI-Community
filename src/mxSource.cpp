@@ -3292,10 +3292,11 @@ void mxSource::ThereAreExternalModifications() {
 }
 
 bool mxSource::MySaveFile(const wxString &fname) {
-	wxFile file(fname, wxFile::write);
+	wxFFile file(fname, "w");
 	if (!file.IsOpened())
 		return false;
-	bool success = file.Write(GetText(), *wxConvCurrent);
+//	bool success = file.Write(GetText(), *wxConvCurrent);
+	bool success = file.Write(GetText(), wxCSConv("ISO-8851"));
 	file.Flush(); file.Close();
 	if (success) SetSavePoint();
 	return success;
