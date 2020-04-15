@@ -14,14 +14,15 @@ END_EVENT_TABLE()
 mxInspectionsPanel::mxInspectionsPanel(wxWindow *parent):wxAuiNotebook(parent,mxID_NOTEBOOK_INSPECTIONS,wxDefaultPosition,wxSize(400,300),
 	wxAUI_NB_MIDDLE_CLICK_CLOSE|wxAUI_NB_BOTTOM|wxNO_BORDER|wxAUI_NB_SCROLL_BUTTONS|wxAUI_NB_CLOSE_ON_ACTIVE_TAB) 
 {
+	SetArtProvider(new wxAuiGenericTabArt);
 	created = false;
-	SetTabCtrlHeight(24);
 	name_aux = current_tab = 0;
 	tabs.Add(Tab(new mxLocalsGrid(this),"Locals"));
 	tabs.Add(Tab(new mxInspectionGrid(this),"Table 0"));
 	for(int i=0;i<tabs.GetSize();i++)
 		AddPage(tabs[i].ctrl,tabs[i].name);
 	AddPage(new wxStaticText(this,wxID_ANY,""),"+");
+	SetTabCtrlHeight((GetTabCtrlHeight()*2)/3); // reduce tab size; do it after adding a page (or this will be 0)
 	SetSelection(1); SelectPage(1);
 	created=true;
 }

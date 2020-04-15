@@ -27,7 +27,7 @@ public:
 	~GDBAnsBuffer() { 
 		std::free(m_buf); 
 	}
-	void Read(const wxChar *data, int len) {
+	void Read(const char *data, int len) {
 		if (!len) return;
 		EnsureSpaceForAdding(len);
 		for(int i=0;i<len;i++) { 
