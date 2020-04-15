@@ -849,7 +849,7 @@ bool mxSource::SaveSource() {
 
 bool mxSource::SaveTemp (wxString fname) {
 	bool mod = GetModify();
-	bool ret=MySaveFile(fname);
+	bool ret = MySaveFile(fname);
 	SetModify(mod);
 	return ret; 
 }

@@ -9,7 +9,20 @@ mxSourceBase::mxSourceBase (wxWindow * parent)
 	wxStyledTextCtrl::Connect(wxEVT_MOUSEWHEEL,wxMouseEventHandler(mxSourceBase::OnMouseWheel),nullptr,this);
 	wxFont font (config->Styles.font_size, wxMODERN, wxNORMAL, wxNORMAL);
 	StyleSetFont (wxSTC_STYLE_DEFAULT, font);
-//	SetProperty("fold.compact","0");
+	
+	//	CmdKeyClearAll(); // desactiva hasta delete, backspace, flechas, tabs, etc
+	for(char c='A';c<='Z';++c) {
+		// no es lo mismo hacerles clear que asignar null...
+		// el clear les asigna el msg STC_NULL que no es 0, y entonces el
+		// wrapper cree que hizo algo y no deja que siga el evento hacia el padre
+		CmdKeyAssign(c,                                    wxSTC_KEYMOD_CTRL,0);
+		CmdKeyAssign(c,                 wxSTC_KEYMOD_SHIFT                  ,0);
+		CmdKeyAssign(c,                 wxSTC_KEYMOD_SHIFT|wxSTC_KEYMOD_CTRL,0);
+		CmdKeyAssign(c,wxSTC_KEYMOD_ALT                                     ,0);
+		CmdKeyAssign(c,wxSTC_KEYMOD_ALT|                   wxSTC_KEYMOD_CTRL,0);
+		CmdKeyAssign(c,wxSTC_KEYMOD_ALT|wxSTC_KEYMOD_SHIFT                  ,0);
+		CmdKeyAssign(c,wxSTC_KEYMOD_ALT|wxSTC_KEYMOD_SHIFT|wxSTC_KEYMOD_CTRL,0);
+	}
 }
 
 void mxSourceBase::OnMouseWheel (wxMouseEvent & event) {
