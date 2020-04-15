@@ -26,9 +26,9 @@ mxDoxyDialog::mxDoxyDialog(wxWindow *parent)
 	CreateSizer sizer(this);
 	wxNotebook *nb;
 	sizer.BeginNotebook().EndNotebook(nb);
-		nb->AddPage(CreateGeneralPanel(nb), LANG(DOXYCONF_BASIC_OPTIONS,"Opciones Básicas"));
-		nb->AddPage(CreateMorePanel(nb), LANG(DOXYCONF_MORE_OPTIONS,"Más Opciones"));
-		nb->AddPage(CreateExtraPanel(nb), LANG(DOXYCONF_EXTRA_TAB,"Campos Adicionales"));
+	nb->AddPage(CreateGeneralPanel(nb), LANG(DOXYCONF_BASIC_OPTIONS,"Opciones Básicas"));
+	nb->AddPage(CreateMorePanel(nb), LANG(DOXYCONF_MORE_OPTIONS,"Más Opciones"));
+	nb->AddPage(CreateExtraPanel(nb), LANG(DOXYCONF_EXTRA_TAB,"Campos Adicionales"));
 //	sizer.BeginNotebook()
 //		.AddPage(this,&mxDoxyDialog::CreateGeneralPanel, LANG(DOXYCONF_BASIC_OPTIONS,"Opciones Básicas"))
 //		.AddPage(this,&mxDoxyDialog::CreateMorePanel, LANG(DOXYCONF_MORE_OPTIONS,"Más Opciones"))

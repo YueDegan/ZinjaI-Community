@@ -24,7 +24,7 @@ mxTemplateCombination::mxTemplateCombination(wxWindow *parent, wxString other_zp
 	
 	CreateHorizontalSizer hor_sizer(this);
 	
-	m_sizer_profiles = new wxFlexGridSizer(1,3,15,5);
+	m_sizer_profiles = new wxFlexGridSizer(project->configurations_count+1,3,15,5);
 	m_sizer_profiles->AddGrowableCol(0,1);
 	m_sizer_profiles->AddGrowableCol(2,1);
 	m_sizer_profiles->Add(new wxStaticText(this,wxID_ANY,project->project_name,wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE),sizers->Exp0);

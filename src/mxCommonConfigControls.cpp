@@ -52,7 +52,7 @@ wxTextCtrl *mxDialog::AddDirCtrl (wxBoxSizer *sizer, wxWindow *panel, wxString t
 	wxButton *button = s_last_button = new wxButton(panel,id,button_text,wxDefaultPosition,button_text== _T("...")?wxSize(30,10):wxSize(-1,10));
 	if (margin) sizerRow->AddSpacer(15);
 	sizerRow->Add(textctrl, sizers->Exp1);
-	sizerRow->Add(button, sizers->Exp0_Right);
+	sizerRow->Add(button, sizers->Exp0);
 	sizer->Add(s_last_label=new wxStaticText(panel,wxID_ANY,text+_T(":   "), wxDefaultPosition, wxDefaultSize, 0),sizers->BLRT5_Exp0);
 	sizer->Add(sizerRow, sizers->BLRB5_Exp0);
 	textctrl->SetValue(value);

@@ -77,7 +77,7 @@ private:
 		int m_selection, m_id;
 	public:
 		BaseNotebookAux(wxNotebook *notebook) 
-			: m_notebook(notebook), m_selection(0), m_id(wxID_ANY) {}
+			: m_notebook(notebook), m_selection(-1), m_id(wxID_ANY) {}
 		wxNotebook *EndNotebook();
 	};
 	

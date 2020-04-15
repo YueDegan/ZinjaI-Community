@@ -18,12 +18,12 @@
 #include "CompilerErrorsManager.h"
 #include "compiler_strings.h"
 #include "EnvVars.h"
+#include "StringConv.h"
 
 
 #ifdef _ZINJAI_DEBUG
 #include<iostream>
 #include <cstdlib>
-#include "StringConv.h"
 using namespace std;
 #endif
 

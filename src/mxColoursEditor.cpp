@@ -411,9 +411,9 @@ void mxStaticText::OnPaint(wxPaintEvent &evt) {
 	wxPaintDC dc(this);
 	PrepareDC(dc);
 	dc.SetBackground(*back);
-	wxFont f((config->Styles.font_size*(*zoom))/100, wxMODERN, wxNORMAL, wxNORMAL,false,config->Styles.font_name);
+	wxFont f((config->Styles.font_size*(*zoom))/100, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,false,config->Styles.font_name);
 	f.SetWeight((bold&&*bold)?wxFONTWEIGHT_BOLD:wxFONTWEIGHT_NORMAL);
-	f.SetStyle((italic&&*italic)?wxFONTFLAG_ITALIC:wxFONTFLAG_DEFAULT);
+	f.SetStyle((italic&&*italic)?wxFONTSTYLE_ITALIC:wxFONTSTYLE_NORMAL);
 	dc.Clear(); dc.SetFont(f);
 //	dc.SetTextBackground(*back);
 	dc.SetTextForeground(*fore);
