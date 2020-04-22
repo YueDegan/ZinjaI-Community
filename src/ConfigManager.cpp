@@ -1043,11 +1043,11 @@ void ConfigManager::RecalcStuff ( ) {
 	if (temp_dir.EndsWith("\\")||temp_dir.EndsWith("/")) temp_dir.RemoveLast();
 	// poner el idioma del compilador en castellano
 	if (config->Init.lang_es) {
-		wxSetEnv("LANG","es_ES.ISO8859-1");
-//		wxSetEnv("LANGUAGE","es_ES");
+//		wxSetEnv("LANG","es_ES.ISO8859-1");
+		wxSetEnv("LANGUAGE","es_ES");
 	} else {
-		wxSetEnv("LANG","en_US.ISO8859-1");
-//		wxSetEnv("LANGUAGE","en_US");
+//		wxSetEnv("LANG","en_US.ISO8859-1");
+		wxSetEnv("LANGUAGE","en_US");
 	}
 }
 

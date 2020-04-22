@@ -8,6 +8,7 @@
 #include "DebugManager.h"
 #include "mxAUI.h"
 #include "osdep.h"
+#include <wx/srchctrl.h>
 
 MenusAndToolsConfig *menu_data;
 
@@ -900,7 +901,7 @@ void MenusAndToolsConfig::CreateToolbars() {
 	// barras especiales: busqueda
 	{
 		myToolbar &tb = toolbars[tbFIND];
-		tb.wx_toolbar->AddControl( toolbar_find_text = new wxTextCtrl(tb.wx_toolbar,mxID_TOOLBAR_FIND,wxEmptyString,wxDefaultPosition,wxSize(100,icon_size),wxTE_PROCESS_ENTER) );
+		tb.wx_toolbar->AddControl( toolbar_find_text = new wxSearchCtrl(tb.wx_toolbar,mxID_TOOLBAR_FIND,wxEmptyString,wxDefaultPosition,wxSize(config->GetDPI()*1.25,icon_size),wxTE_PROCESS_ENTER) );
 		toolbar_find_text->SetToolTip(LANG(TOOLBAR_FIND_TEXT,"Texto a Buscar"));
 		mxUT::AddTool(tb.wx_toolbar,mxID_EDIT_TOOLBAR_FIND,LANG(TOOLBAR_FIND_CAPTION,"Busqueda Rapida"),ipre+_T("buscar.png"),LANG(TOOLBAR_FIND_BUTTON,"Buscar siguiente"));
 	}
@@ -908,7 +909,7 @@ void MenusAndToolsConfig::CreateToolbars() {
 	// barras especiales: estado de la depuracion
 	{
 		myToolbar &tb = toolbars[tbSTATUS];
-		tb.wx_toolbar->AddControl( toolbar_status_text = new wxStaticText(tb.wx_toolbar,wxID_ANY,"",wxDefaultPosition,wxSize(2500,20)) );
+		tb.wx_toolbar->AddControl( toolbar_status_text = new wxStaticText(tb.wx_toolbar,wxID_ANY,"",wxDefaultPosition,wxSize(500,20)) );
 		toolbar_status_text->SetForegroundColour(wxColour("Z DARK BLUE"));
 	}
 	

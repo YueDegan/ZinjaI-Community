@@ -10,7 +10,7 @@
 #include<iostream>
 #endif
 #include "ZLog.h"
-using namespace std;
+#include <wx/srchctrl.h>
 
 class wxMenuBar;
 class wxStaticText;
@@ -118,9 +118,9 @@ private:
 		}
 	};
 	/// list with items that should be enabled/disabled when openning/closing a project
-	vector<AutoenabligItem> items_project;
+	std::vector<AutoenabligItem> items_project;
 	/// list with items that should be enabled/disabled when starting/ending a debug session
-	vector<AutoenabligItem> items_debug;
+	std::vector<AutoenabligItem> items_debug;
 	
 	/// struct for storing refences to items that will be needed later outside this class
 	template<class T>
@@ -130,15 +130,15 @@ private:
 		MappedSomething(int _wx_id, T _something):wx_id(_wx_id),something(_something) {}
 	};
 	/// items that can be queried with GetItem
-	vector<MappedSomething<wxMenuItem*> > mapped_items;
+	std::vector<MappedSomething<wxMenuItem*> > mapped_items;
 	/// items that can be queried with GetMenu
-	vector<MappedSomething<wxMenu*> > mapped_menues;
+	std::vector<MappedSomething<wxMenu*> > mapped_menues;
 	
 	/// struct for storing information for a single menu and all its items
 	struct myMenu {
 		wxString label, key;
 		wxMenu *wx_menu;
-		vector<myMenuItem> items;
+		std::vector<myMenuItem> items;
 		void Init(const wxString &_key, const wxString &_label) {
 			key=_key; label=_label; wx_menu = nullptr; items.clear();
 		}
@@ -255,7 +255,7 @@ public:
 	struct myToolbar {
 		wxString label, key;
 		wxToolBar *wx_toolbar;
-		vector<myToolbarItem> items;
+		std::vector<myToolbarItem> items;
 		toolbarPosition position;
 		void Init(const wxString &_key, const wxString &_label, const wxString &_position) {
 			key=_key; label=_label; position=_position;
@@ -275,7 +275,7 @@ private:
 	
 	// elementos de las barras de tratamiento especial
 	wxStaticText *toolbar_status_text;
-	wxTextCtrl* toolbar_find_text;
+	wxSearchCtrl* toolbar_find_text;
 	
 public:
 	
