@@ -78,67 +78,12 @@ void mxUT::SortArrayString(wxArrayString &array, int inf, int sup) {
 
 	// si no recibe limites, ordenar todo (los limites son incluyendo ambos extremos)
 	if (inf==-1) { inf=0; sup=array.GetCount()-1; if (sup==-1) return; }
-	// si hay un solo elemento, no hay que hacer nada
-	if(inf==sup) return;
 	
-	int oinf=inf,osup=sup--;
-	wxString med=array[osup].Lower(),aux;
-	int i=0,ml=med.Len();
-	while (true) {
-
-		bool bi=true, bs=false; // si una cadena esta vacia, se considera menor
-		
-		while (true) {
-			int jl=array[inf].Len(),  l=(jl<ml?jl:ml)-2;
-			for (i=0;i<l;i++) {
-				if ( GetCharLowerCase(array[inf],i)!=med[i] ) {
-					bi=( GetCharLowerCase(array[inf],i)<med[i] );
-					break;
-				}
-			}
-			if (i==l) bi=jl<ml;
-			if (bi && inf!=sup)
-				inf++;
-			else
-				break;
-		}
-
-		while (true) {
-			int jl=array[sup].Len(), l=(jl<ml?jl:ml)-2;
-			for (i=0;i<l;i++) {
-				if ( GetCharLowerCase(array[sup],i)!=med[i] ) {
-					bs=( GetCharLowerCase(array[sup],i)>med[i] );
-					break;
-				}
-			}
-			if (i==l)
-				bs=jl>=ml;
-			if (bs && inf!=sup)
-				sup--;
-			else
-				break;
-		}
-		if (inf<sup) {
-			aux=array[inf];
-			array[inf]=array[sup];
-			array[sup]=aux;
-		} else {
-			if(!bi) {
-				aux=array[inf];
-				array[inf]=array[osup];
-				array[osup]=aux;
-			} else
-				inf++;
-
-			if (inf-oinf>1)
-				SortArrayString(array,oinf,inf-1);
-			if (osup-sup>1)
-				SortArrayString(array,sup+1,osup);
-			return;
-		}
-	}
-	return;
-	
+	std::sort(array.begin()+inf,array.begin()+sup+1,[](const wxString &s1, const wxString &s2){ 
+		int nc = s1.CmpNoCase(s2);
+		if (nc==0) nc = s1.Cmp(s2); 
+		return nc<0;
+	});
 }
 
 wxMenuItem *mxUT::AddItemToMenu(wxMenu *menu, const void *a_myMenuItem) {
@@ -1183,13 +1128,9 @@ wxString mxUT::GetClipboardText ( ) {
 }
 
 void mxUT::SetClipboardText (const wxString & text) {
-//#ifdef ZASKARS_SPECIAL_CLIPBOARD_METHOD
-//	wxTheClipboard->SetText(text);
-//#else
 	if (!wxTheClipboard->Open()) return;
 	wxTheClipboard->SetData( new wxTextDataObject(text) );
 	wxTheClipboard->Close();
-//#endif
 }
 
 wxString mxUT::GetRunnerBaseCommand(int wait_for_key) {
