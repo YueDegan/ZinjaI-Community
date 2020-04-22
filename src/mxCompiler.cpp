@@ -246,11 +246,10 @@ void mxCompiler::ParseSomeErrors(compile_and_run_struct_single *compile_and_run)
 	if (compile_and_run->output_type==MXC_EXTERN) { ParseSomeExternErrors(compile_and_run); return; }
 	
 	wxProcess *process = compile_and_run->process;
-	wxTextInputStream input(*(process->GetErrorStream()));	
+	wxTextInputStream input(*(process->GetErrorStream()),"\t",*wxConvCurrent);	
 	while ( process->IsErrorAvailable() ) {
 		
 		wxString error_line=input.ReadLine();
-		
 		if (compile_and_run->output_type==MXC_EXTRA || error_line.Len()==0) {
 			errors_manager->AddExtraOutput(compile_and_run->m_cem_state,error_line);
 			continue;
