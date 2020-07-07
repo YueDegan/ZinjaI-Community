@@ -64,6 +64,7 @@ void mxSourceBase::SetStyle(int lexer) {
 			AUXSetStyle3(C,PREPROCESSORCOMMENT,COMMENT); // comment
 			AUXSetStyle3(C,PREPROCESSORCOMMENTDOC,COMMENTDOC); // comment doc
 			AUXSetStyle(C,NUMBER); // number
+			AUXSetStyle3(C,USERLITERAL,NUMBER); // number
 			AUXSetStyle(C,WORD); // keywords
 			AUXSetStyle(C,STRING); // string
 			AUXSetStyle3(C,STRINGRAW,STRING); // string

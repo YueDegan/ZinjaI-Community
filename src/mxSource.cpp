@@ -161,7 +161,7 @@ static const wxChar* s_reserved_keywords = _T(
 	"auto constexpr decltype static_assert final override noexcept nullptr" ); // c++ 2011
 static const wxChar* s_types_keywords = _T(
 	"bool char const double float int long mutable register "
-	"short signed static unsigned void volatile wchar_t" );
+	"short signed static thread_local unsigned void volatile wchar_t" );
 static const wxChar* s_doxygen_keywords = _T(
 	"a addindex addtogroup anchor arg attention author b brief bug c "
 	"class code date def defgroup deprecated dontinclude e em endcode "
@@ -3722,7 +3722,7 @@ void mxSource::OnAutocompSelection(wxStyledTextEvent &event) {
 
 
 void mxSource::OnTimer(wxTimerEvent &event) {
-	wxTimer *timer = reinterpret_cast<wxTimer*>(event.GetEventObject());
+	wxTimer *timer = &event.GetTimer();
 	if (focus_helper.IsThisYourTimer(timer)) { 
 		focus_helper.Unmask();
 	} else if (autocomp_helper.IsThisYourTimer(timer)) {
