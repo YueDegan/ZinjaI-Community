@@ -21,7 +21,7 @@ mxCompilerArgEnabler::mxCompilerArgEnabler(wxWindow *parent, wxString title,
 	sizer.BeginLine().Space(15)
 		.BeginCheck(LANG(COMP_ARG_ALSO_LIBS,"Tambien en bibliotecas")).Id(wxID_FIND).EndCheck(m_also_libs)
 		.EndLine();
-	if (!project->active_configuration->libs_to_build.GetSize() || m_link_arg.IsEmpty()) m_also_libs->Hide(); 
+	if (!project or !project->active_configuration->libs_to_build.GetSize() or m_link_arg.IsEmpty()) m_also_libs->Hide(); 
 	if (project) sizer.BeginCheck(LANG(COMP_ARG_RECOMPILE,"Recompilar todo")).EndCheck(m_recompile);
 	else m_recompile = nullptr;
 	sizer.BeginBottom().Ok().Cancel().EndBottom(this);
