@@ -35,10 +35,11 @@
 #include "mxSourceComments.h"
 using namespace std;
 
-// dwell time for margins
-#define _DWEEL_TIME_ 100
-// dwell time for code = _DWEEL_TIME_*_DWEEL_FACTOR_
-#define _DWEEL_FACTOR_ 15
+// cannot "emulate" different dwell times anymore with wx3
+//// dwell time for margins
+//#define _DWEEL_TIME_ 100
+//// dwell time for code = _DWEEL_TIME_*_DWEEL_FACTOR_
+//#define _DWEEL_FACTOR_ 15
 
 
 NavigationHistory g_navigation_history;
@@ -380,7 +381,8 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 	SetBufferedDraw(false); 
 #endif
 //	SetTwoPhaseDraw (false);
-	SetMouseDwellTime(_DWEEL_TIME_); // mis tooltips bizarros (con showbaloon = calltip)
+//	SetMouseDwellTime(_DWEEL_TIME_); // mis tooltips bizarros (con showbaloon = calltip)
+	SetMouseDwellTime(1000);
 	
 	if (debug->IsDebugging() && !config->Debug.allow_edition) SetReadOnlyMode(ROM_DEBUG,true);
 
@@ -2710,7 +2712,12 @@ void mxSource::OnToolTipTime (wxStyledTextEvent &event) {
 		return;
 	}
 	
-	if (++count_p<_DWEEL_FACTOR_) { SetMouseDwellTime(_DWEEL_TIME_); return; } // SetMouseDwellTime is used to relaunch that when mouse doesn't move
+	// this counter was to delay some tooltips (as inspections) more than others
+	// (as breakpoint info), but is not working anymore with wx3
+//	if (++count_p<_DWEEL_FACTOR_) {
+//		// SetMouseDwellTime is used to relaunch that when mouse doesn't move
+//		SetMouseDwellTime(_DWEEL_TIME_); return; 
+//	} 
 	
 	// si no esta depurando, buscar el tipo de dato del simbolo y mostrarlo
 	if (!debug->IsDebugging()) {
