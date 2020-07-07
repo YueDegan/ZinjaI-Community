@@ -261,7 +261,6 @@ void mxCompiler::ParseSomeErrors(compile_and_run_struct_single *compile_and_run)
 		CAR_ERROR_LINE action = ParseSomeErrorsOneLine(compile_and_run,error_line);
 		
 //		// no mostrar taaantos errores/warnings	
-#warning TODO: reestablecer el limite
 //		if (action==CAR_EL_ERROR) {
 //			num_errors++; 
 //			if (num_errors>config->Init.max_errors) {

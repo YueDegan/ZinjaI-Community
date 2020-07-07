@@ -86,7 +86,6 @@ bool mxBacktraceGrid::OnKey(int row, int col, int key, int modifiers) {
 }
 
 void mxBacktraceGrid::OnExploreArgs(wxCommandEvent &event) {
-#warning TODO: reestablecer funcionalidad
 //	int r = selected_row;
 //	long line;
 //	GetCellValue(r,BG_COL_LINE).ToLong(&line);
@@ -109,7 +108,6 @@ void mxBacktraceGrid::OnExploreArgs(wxCommandEvent &event) {
 }
 
 void mxBacktraceGrid::OnExploreLocals(wxCommandEvent &event) {
-#warning TODO: restablecer funcionalidad
 //	int r = selected_row;
 //	long line;
 //	GetCellValue(r,BG_COL_LINE).ToLong(&line);
@@ -144,7 +142,6 @@ void mxBacktraceGrid::OnInspectArgs(wxCommandEvent &event) {
 		}
 		debug->SelectFrame(-1,r);
 	}
-#warning TODO: reestablecer esto
 //	wxArrayString vars;
 //	if (debug->GetArgs(vars,GetCellValue(selected_row,BG_COL_LEVEL)))
 //		main_window->inspection_ctrl->AppendInspections(vars);
@@ -163,7 +160,6 @@ void mxBacktraceGrid::OnInspectLocals(wxCommandEvent &event) {
 		}
 		debug->SelectFrame(-1,r);
 	}
-#warning TODO: reestablecer esto
 //	wxArrayString vars;
 //	if (debug->GetLocals(vars,GetCellValue(selected_row,BG_COL_LEVEL)))
 //		main_window->inspection_ctrl->AppendInspections(vars);
@@ -189,7 +185,6 @@ void mxBacktraceGrid::OnCellPopupMenu(int row, int col) {
 		}
 	}
 	this->SetGridCursor(selected_row,col);
-#warning TODO: restablecer los explorar
 	if (GetCellValue(selected_row,BG_COL_ARGS).Len()) {
 //		menu.Append(mxID_BACKTRACE_INSPECT_ARGS,LANG(BACKTRACE_INSPECT_ARGS,"Inspeccionar Argumentos"));
 //		menu.Append(mxID_BACKTRACE_EXPLORE_ARGS,LANG(BACKTRACE_EXPLORE_ARGS,"Explorar Argumentos"));

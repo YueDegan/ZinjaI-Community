@@ -1,8 +1,6 @@
 #include "EnvVars.h"
 #include "ProjectManager.h"
 
-#warning buscar otros setenv y ver si los puedo poner aca, y dejar el zinjai_dir fijo para el graphviz de algoritmos
-
 #define UNDEF_VAR "<{[UNDEF]}>" // special value for storing in modified_vars for previously unsetted vars
 #include "mxUtils.h"
 #include "ConfigManager.h"

@@ -1168,9 +1168,6 @@ void mxMainWindow::OnSelectError (wxTreeEvent &event) {
 		if (obj_name.Contains("ld: ")) obj_name = obj_name.AfterFirst(' ');
 		LocalListIterator<project_file_item*> fi(&project->files.sources);
 		while(fi.IsValid()) {
-#warning VER SI ANTES ERA SOLO EL NOMBRE DEL OBJ
-/// C:\Program Files (x86)\ZinjaI\src\..\temp\zinjai\debug.w32\mxIconInstaller.o: file not recognized: File format not recognized
-				
 			wxString bin_name = fi->GetBinName(project->GetTempFolder(false));
 			if (obj_name == bin_name) {
 				mxMessageDialog::mdAns ans = 
@@ -1451,7 +1448,6 @@ void mxMainWindow::OnEdit (wxCommandEvent &event) {
 }
 
 void mxMainWindow::OnEditNeedFocus (wxCommandEvent &event) {
-//#warning usar esto para las demas acciones de edicion que tambien tengan atajos compartidos
 	_record_this_action_in_macro(event.GetId());
 	wxWindow *focus = main_window->FindFocus();
 	if (focus && (focus==inspection_ctrl || focus/*->GetParent()*/==inspection_ctrl->GetCurrentInspectionGrid())) { // el GetParent era para wx2, con wx3 no va mas
@@ -2511,8 +2507,9 @@ void mxMainWindow::OpenFileFromGui (wxFileName filename, int *multiple) {
 		// abrir el proyecto
 		project = new ProjectManager(filename);
 		
-		IF_THERE_IS_SOURCE CURRENT_SOURCE->SetFocus();
-		m_aui->Update();
+		IF_THERE_IS_SOURCE 
+			CURRENT_SOURCE->SetFocus();
+		m_aui->Update(); 
 		// mostrar arbol de simbolos
 //		if (!left_panels && project) {
 //			symbols_tree.menuItem->Check(true);
@@ -4455,6 +4452,9 @@ void mxMainWindow::PrepareGuiForProject (bool project_mode) {
 		SetTitle(wxString("ZinjaI - ")+project->project_name);
 		// mostrar el arbol de proyecto
 		m_aui->Show( config->Init.prefer_explorer_tree ? PaneId::Explorer : PaneId::Project , true );
+		// set focus to a tree, otherwise if there is not opened source, it seems that no ctrl will get
+		// the focus, so shorcuts won't work (at least on gtk3)
+		( config->Init.prefer_explorer_tree ? explorer_tree.treeCtrl : project_tree.treeCtrl )->SetFocus();
 	} else {
 		SetTitle("ZinjaI");
 		SetToolchainMode(false);

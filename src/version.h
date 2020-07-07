@@ -1,4 +1,4 @@
-#define VERSION 20200422
+#define VERSION 20200707
 
 #ifdef __WIN32__
 #	define ARCHITECTURE "w32u"

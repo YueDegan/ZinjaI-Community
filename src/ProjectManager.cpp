@@ -1914,8 +1914,6 @@ static wxString get_percent(int cur, int tot) {
 }
 
 void ProjectManager::ExportMakefile(wxString make_file, bool exec_comas, wxString mingw_dir, MakefileTypeEnum mktype, bool cmake_style) {
-#warning TODO: considerar el nuevo significado de strip_executable
-#warning TODO: considerar las opciones de compilacion por fuente
 	
 	// calcular cuantos pasos hay en cada etapa para saber que porcentajes de progreso mostrar en cada comando (para el cmake-style)
 	int steps_extras = active_configuration->extra_steps.GetSize(), 
