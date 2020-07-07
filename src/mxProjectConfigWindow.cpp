@@ -98,7 +98,7 @@ mxProjectConfigWindow::mxProjectConfigWindow(wxWindow* parent)
 	// crear las pestañas con las opciones de la configuracion
 	sizer.BeginNotebook()
 		.AddPageIf(config->Help.show_extra_panels,this,&mxProjectConfigWindow::CreateQuickHelpPanel, LANG(PROJECTCONFIG_HELP,"Ayuda"))
-		.AddPage(this,&mxProjectConfigWindow::CreateGeneralPanel, LANG(PROJECTCONFIG_GENERAL,"General"))
+		.AddPage(this,&mxProjectConfigWindow::CreateGeneralPanel, LANG(PROJECTCONFIG_GENERAL,"Ejecución"))
 		.AddPage(this,&mxProjectConfigWindow::CreateCompilingPanel, LANG(PROJECTCONFIG_COMPILING,"Compilación"))
 		.AddPage(this,&mxProjectConfigWindow::CreateLinkingPanel, LANG(PROJECTCONFIG_LINKING,"Enlazado"))
 		.AddPage(this,&mxProjectConfigWindow::CreateLibsPanel, LANG(PROJECTCONFIG_LIBRARIES,"Bibliotecas"))
@@ -181,7 +181,7 @@ wxPanel *mxProjectConfigWindow::CreateGeneralPanel (wxNotebook *notebook) {
 		
 	sizer.BeginText( LANG(PROJECTCONFIG_GENERAL_EXE_PATH,"Ubicacion del ejecutable") )
 		.Value(configuration->output_file).Button(mxID_PROJECT_GENERAL_EXE_PATH)
-		.RegisterIn(wx_noexe).EndText(general_output_file);
+		./*RegisterIn(wx_noexe).*/EndText(general_output_file);
 					
 	sizer.BeginCombo( LANG(PROJECTCONFIG_GENERAL_EXEC_METHOD,"Mecanismo de ejecución") )
 		.Add(LANG(PROJECTCONFIG_GENERAL_EXEC_METHOD_REGULAR,"Regular (se lanza directamente el ejecutable)"))
@@ -196,26 +196,26 @@ wxPanel *mxProjectConfigWindow::CreateGeneralPanel (wxNotebook *notebook) {
 					
 	sizer.BeginText( LANG(PROJECTCONFIG_GENERAL_WORKDIR,"Directorio de trabajo") )
 		.Value(configuration->working_folder).Button(mxID_PROJECT_CONFIG_WORKING_DIR)
-		.RegisterIn(wx_noexe).EndText(general_working_folder);
+		./*RegisterIn(wx_noexe).*/EndText(general_working_folder);
 	
 	sizer.BeginText( LANG(PROJECTCONFIG_GENERAL_RUNNING_ARGS,"Argumentos para la ejecución") )
 		.Value(configuration->args).Button(mxID_PROJECT_CONFIG_ARGS_BUTTON)
-		.RegisterIn(wx_noexe).EndText(general_args);
+		./*RegisterIn(wx_noexe).*/EndText(general_args);
 	
 	sizer.BeginCheck( LANG(PROJECTCONFIG_GENERAL_ASK_ARGS,"Siempre pedir argumentos al ejecutar") )
-		.Value(configuration->always_ask_args).RegisterIn(wx_noexe).EndCheck(general_always_ask_args);
+		.Value(configuration->always_ask_args)./*RegisterIn(wx_noexe).*/EndCheck(general_always_ask_args);
 	
 
 	sizer.BeginCombo( LANG(PROJECTCONFIG_GENERAL_WAIT_KEY,"Esperar una tecla luego de la ejecución") )
 		.Add(LANG(PROJECTCONFIG_GENERAL_WAIT_KEY_NEVER,"Nunca"))
 		.Add(LANG(PROJECTCONFIG_GENERAL_WAIT_KEY_ERROR,"En caso de error"))
 		.Add(LANG(PROJECTCONFIG_GENERAL_WAIT_KEY_ALWAYS,"Siempre"))
-		.Select(configuration->wait_for_key).RegisterIn(wx_noexe)
+		.Select(configuration->wait_for_key)/*.RegisterIn(wx_noexe)*/
 		.EndCombo(general_wait_for_key);
 					
 	sizer.BeginText( LANG(PROJECTCONFIG_GENERAL_ENV_VARS,"Variables de entorno") )
 		.Value(configuration->env_vars).Button(mxID_PROJECT_CONFIG_ENV_VARS)
-		.RegisterIn(wx_noexe).EndText(general_env_vars);
+		/*.RegisterIn(wx_noexe)*/.EndText(general_env_vars);
 					
 	sizer.SetAndFit();
 	return sizer.GetPanel();

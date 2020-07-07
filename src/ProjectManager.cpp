@@ -1778,10 +1778,10 @@ long int ProjectManager::Strip(compile_and_run_struct_single *compile_and_run, s
 
 long int ProjectManager::Run() {
 	// ver que no sea un proyecto sin ejecutable
-	if (active_configuration->dont_generate_exe) {
+	if (active_configuration->dont_generate_exe and active_configuration->output_file.IsEmpty()) {
 		mxMessageDialog(main_window,LANG(PROJMNGR_RUNNING_NO_EXE,""
 										 "Este proyecto no puede ejecutarse porque está configurado\n"
-										 "para generar solo bibliotecas."))
+										 "para generar solo bibliotecas y no hay ejecutable externo definido."))
 			.Title(LANG(GENERAL_WARNING,"Aviso")).IconWarning().Run();
 		return 0;
 	}
@@ -2141,8 +2141,10 @@ void ProjectManager::Clean() {
 	}
 	
 	// borrar el ejecutable
-	if (wxFileName::FileExists(executable_name)) wxRemoveFile(executable_name);
-	if (wxFileName::FileExists(executable_name+".dbg")) wxRemoveFile(executable_name+".dbg");
+	if (!active_configuration->dont_generate_exe) {
+		if (wxFileName::FileExists(executable_name)) wxRemoveFile(executable_name);
+		if (wxFileName::FileExists(executable_name+".dbg")) wxRemoveFile(executable_name+".dbg");
+	}
 }
 
 
@@ -2286,13 +2288,13 @@ void ProjectManager::AnalizeConfig(wxString path, bool exec_comas, wxString ming
 	// directorios para bibliotecas
 	linking_options<<mxUT::Split(active_configuration->libraries_dirs,"-L")<<" ";
 	// bibliotecas
-	linking_options<<mxUT::Split(active_configuration->libraries,"-l");
+	linking_options<<mxUT::Split(active_configuration->libraries,"-l")<<" ";
 	// reemplazar variables
 	mxUT::ParameterReplace(linking_options,"${MINGW_DIR}",mingw_dir);
 	mxUT::ParameterReplace(linking_options,"${TEMP_DIR}",temp_folder_short);
 	mxUT::ParameterReplace(linking_options,"${ZINJAI_DIR}",config->zinjai_dir);
 	// extra args
-	wxString linking_extra = active_configuration->linking_extra;
+	wxString linking_extra = active_configuration->linking_extra<<" ";
 	mxUT::ParameterReplace(linking_extra,"${MINGW_DIR}",mingw_dir);
 	mxUT::ParameterReplace(linking_extra,"${TEMP_DIR}",temp_folder_short);
 	mxUT::ParameterReplace(linking_extra,"${PROJECT_PATH}",project->path);
@@ -2309,9 +2311,9 @@ void ProjectManager::AnalizeConfig(wxString path, bool exec_comas, wxString ming
 	
 	// reemplazar subcomandos y agregar extras
 	if (exec_comas)
-		linking_options<<" "<<mxUT::ExecComas(path,linking_extra);
+		linking_options<<mxUT::ExecComas(path,linking_extra)<<" ";
 	else
-		linking_options<<" "<<linking_extra;
+		linking_options<<linking_extra<<" ";
 
 	/*executable_name = */GetExePath(false,false,path); // GetExePath ya asigna en executable_name
 	
@@ -2424,10 +2426,10 @@ int ProjectManager::GetFileList(wxArrayString &array, eFileType cuales, bool rel
 }
 
 bool ProjectManager::Debug() {
-	if (active_configuration->dont_generate_exe) {
+	if (active_configuration->dont_generate_exe and active_configuration->output_file.IsEmpty()) {
 		mxMessageDialog(main_window,LANG(PROJMNGR_RUNNING_NO_EXE,""
 										 "Este proyecto no puede ejecutarse porque está configurado\n"
-										 "para generar solo bibliotecas."))
+										 "para generar solo bibliotecas y no hay ejecutable externo definido."))
 			.Title(LANG(GENERAL_WARNING,"Aviso")).IconWarning().Run();
 		return false;
 	}
