@@ -1454,7 +1454,7 @@ void mxMainWindow::OnEditNeedFocus (wxCommandEvent &event) {
 //#warning usar esto para las demas acciones de edicion que tambien tengan atajos compartidos
 	_record_this_action_in_macro(event.GetId());
 	wxWindow *focus = main_window->FindFocus();
-	if (focus && (focus==inspection_ctrl || focus->GetParent()==inspection_ctrl->GetCurrentInspectionGrid())) {
+	if (focus && (focus==inspection_ctrl || focus/*->GetParent()*/==inspection_ctrl->GetCurrentInspectionGrid())) { // el GetParent era para wx2, con wx3 no va mas
 		inspection_ctrl->OnRedirectedEditEvent(event);
 	} else if (focus && focus->IsKindOf(menu_data->toolbar_find_text->GetClassInfo())) {
 		if (event.GetId()<wxID_HIGHEST) focus->GetEventHandler()->ProcessEvent(event); // redirect copy/past/cut, not others (duplicate lines, toggle mark, etc)

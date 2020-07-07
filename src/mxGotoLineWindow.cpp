@@ -31,7 +31,7 @@ mxGotoLineWindow::mxGotoLineWindow(mxSource *a_source, wxWindow* parent, wxWindo
 	slider = new wxSlider(this,wxID_ANY,source->GetCurrentLine()+1,1,source->GetLineCount(),wxDefaultPosition,wxSize(100,1));
 	text_ctrl = new wxTextCtrl(this,wxID_ANY,"",wxDefaultPosition,wxDefaultSize,wxTE_RIGHT,wxTextValidator(wxFILTER_NUMERIC));
 	topSizer->Add(slider, sizers->BA5_Exp1);
-	topSizer->Add(text_ctrl, sizers->BA5_Right);
+	topSizer->Add(text_ctrl, sizers->BA5);
 
 	bottomSizer->Add(cancel_button,sizers->BA5);
 	bottomSizer->Add(goto_button,sizers->BA5);

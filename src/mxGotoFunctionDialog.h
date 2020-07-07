@@ -39,7 +39,7 @@ private:
 		wxTreeItemId get_item() {
 			if (type==1) return get_macro()->item;
 			if (type==2) return get_class()->item;
-			if (type==3) get_func()->item;
+			if (type==3) return get_func()->item;
 			return wxTreeItemId(); // no deberia llegar nunca a este punto
 		}
 		pd_macro *get_macro() { return (pd_macro*)ptr; }

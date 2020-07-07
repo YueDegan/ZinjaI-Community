@@ -49,12 +49,12 @@ void mxGotoFunctionDialog::OnGoto(int pos, wxString key) {
 	gotoff_result &r=m_results[i];
 	Close(); 
 	// process results (simulate double click on parser tree)
-	wxTreeItemId tree_item=r.get_item();
+	wxTreeItemId tree_item = r.get_item();
 	parser->popup_file_def = r.get_file();
 	parser->popup_line_def = r.get_line();
 	parser->OnGotoDef(main_window->notebook_sources);
 	// select the item in symbols tree and ensure definition/declaration visibility in its mxSource (at this point should be the current one)
-	if (main_window->m_aui->IsVisible(PaneId::Symbols)) {
+	if (main_window->m_aui->IsVisible(PaneId::Symbols) && tree_item.IsOk()) {
 		main_window->symbols_tree.treeCtrl->EnsureVisible(tree_item);
 		main_window->symbols_tree.treeCtrl->ScrollTo(tree_item);
 		main_window->symbols_tree.treeCtrl->SelectItem(tree_item);
