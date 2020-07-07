@@ -15,7 +15,6 @@
 #include "mxSizers.h"
 #include "Language.h"
 
-#define TIP_INITIAL_TEXT "<B>Sabias que...?</B><BR><BR>&nbsp;&nbsp;&nbsp;"
 mxTipsWindow *g_tips_window = nullptr;
 
 BEGIN_EVENT_TABLE(mxTipsWindow, wxDialog)
@@ -65,6 +64,7 @@ void mxTipsWindow::ShowAnyTip() {
 		config->Init.version=VERSION;
 	} else {
 		changelog=false;
+		const wxString TIP_INITIAL_TEXT = wxString()<<"<B>"<<LANG(TIP_DID_YOU_KNOW,"Sabias que...?")<<"</B><BR><BR>&nbsp;&nbsp;&nbsp;";
 		wxString tip(TIP_INITIAL_TEXT);
 		if (retry_num==42) {
 			if (config->Init.language_file=="spanish") {
