@@ -782,7 +782,7 @@ void mxProjectConfigWindow::OnStepsRun(wxCommandEvent &evt) {
 	wxString temp_folder_short = configuration->temp_folder;
 	wxString command = project->GetCustomStepCommand(step);
 	if (step->hide_window) {
-		mxOutputView *outwin= new mxOutputView(step->name,mxOV_EXTRA_NULL,"","",mxVO_NULL,"");
+		mxOutputView *outwin= new mxOutputView(step->name);
 		outwin->Launch(project->path,command);
 	} else {
 		mxUT::Execute(project->path,command,wxEXEC_ASYNC|wxEXEC_NOHIDE);

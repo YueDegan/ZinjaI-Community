@@ -187,7 +187,7 @@ mxCustomToolProcess::mxCustomToolProcess(const OneCustomTool &_tool) : tool(_too
 	cwd_guard.RestoreNow();
 	ZLINF2("CustomTools","pid: "<<pid);
 	
-	if (tool.output_mode==CT_OUTPUT_DIALOG) output_view->Launched(this,pid);
+	if (tool.output_mode==CT_OUTPUT_DIALOG) output_view->Launched(this,pid,cmd);
 	else if (!tool.async_exec) OnTerminate(0,pid);
 }
 

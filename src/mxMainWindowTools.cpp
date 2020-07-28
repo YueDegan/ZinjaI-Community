@@ -63,7 +63,8 @@ void mxMainWindow::OnToolsCppCheckConfig(wxCommandEvent &event) {
 void mxMainWindow::OnToolsCppCheckRun(wxCommandEvent &event) {
 	if (!config->CheckCppCheckPresent()) return;
 	if (!project && !notebook_sources->GetPageCount()) return;
-	mxOutputView *cppcheck = new mxOutputView("CppCheck",mxOV_EXTRA_NULL,"","",mxVO_CPPCHECK,DIR_PLUS_FILE(config->temp_dir,"cppcheck.out"));
+	wxString output_file = DIR_PLUS_FILE(config->temp_dir,"cppcheck.out");
+	mxOutputView *cppcheck = new mxOutputView("CppCheck",output_file);
 	
 	wxString file_args, cppargs, toargs, extra_args, path;
 	cppcheck_configuration *project_cppcheck_config = project ? project->GetCppCheckConfiguration() : nullptr;
@@ -159,7 +160,10 @@ void mxMainWindow::OnToolsCppCheckRun(wxCommandEvent &event) {
 	
 	wxString command = mxUT::Quotize(config->Files.cppcheck_command)<<" "<<cppargs<<" --template \"[{file}:{line}] ({severity},{id}) {message}\" "<<args<<" "<<file_args;
 	ZLINF("Tools-cppcheck",command);
-	cppcheck->Launch(path,command);
+	cppcheck->Launch(path,command,[output_file](mxOutputView *oview, int exit_code){
+		main_window->ShowValgrindPanel(mxVO_CPPCHECK,output_file,false);
+		oview->Close();
+	});
 	
 }
 
@@ -550,12 +554,19 @@ void mxMainWindow::OnToolsDoxyConfig(wxCommandEvent &event) {
 void mxMainWindow::OnToolsDoxyGenerate(wxCommandEvent &event) {
 	if (project) {
 		if (config->CheckDoxygenPresent()) {
-			mxOutputView *doxy = new mxOutputView("Doxygen",mxOV_EXTRA_URL,"Ver HTMLs",
-				DIR_PLUS_FILE(project->path,DIR_PLUS_FILE(project->GetDoxygenConfiguration()->destdir,DIR_PLUS_FILE("html","index.html"))),
-				mxVO_DOXYGEN,DIR_PLUS_FILE(config->temp_dir,"doxygen.out"));
 			project->SaveAll(false);
 			project->GenerateDoxyfile(DIR_PLUS_FILE(project->path,"Doxyfile"));
-			doxy->Launch(project->path,wxString("\"")<<config->Files.doxygen_command<<"\" Doxyfile");
+			wxString html_index = DIR_PLUS_FILE(project->path,DIR_PLUS_FILE(project->GetDoxygenConfiguration()->destdir,DIR_PLUS_FILE("html","index.html")));
+			wxString output_file = DIR_PLUS_FILE(config->temp_dir,"doxygen.out");
+			mxOutputView *doxy = new mxOutputView("Doxygen",output_file);
+			auto extra_callback = [html_index](mxOutputView *oview){ 
+				mxUT::OpenInBrowser(html_index); oview->Close(); 
+			};
+			auto otp_callback = [extra_callback,output_file](mxOutputView *oview, int exit_code){
+				if (exit_code==0) oview->SetExtraButton("Ver HTMLs",extra_callback);
+				main_window->ShowValgrindPanel(mxVO_CPPCHECK,output_file,false);
+			};
+			doxy->Launch(project->path,wxString("\"")<<config->Files.doxygen_command<<"\" Doxyfile",otp_callback);
 		}
 	}
 }
@@ -573,10 +584,17 @@ void mxMainWindow::OnToolsGcovRunLCov(wxCommandEvent &event) {
 		wxString cmd2 = "genhtml ";
 		cmd2 << mxUT::Quotize(cov_info) << " --output-directory " << mxUT::Quotize(html_dir);
 		
-		mxOutputView *doxy = new mxOutputView("LCov",mxOV_EXTRA_URL,
-											  "Ver HTMLs",DIR_PLUS_FILE(html_dir,"index.html"),
-											  mxVO_NULL);
-		doxy->Launch(project->path,cmd1, project->path,cmd2);
+		mxOutputView *doxy = new mxOutputView("LCov");
+		auto result_cb = [html_dir](mxOutputView *oview) { 
+			mxUT::OpenInBrowser(DIR_PLUS_FILE(html_dir,"index.html"));
+		};
+		auto opt_stage2_cb = [result_cb](mxOutputView *oview, int retval) {
+			if (retval==0) oview->SetExtraButton("Ver HTMLs",result_cb);
+		};
+		auto opt_stage1_cb = [path=project->path,cmd2,opt_stage2_cb](mxOutputView *oview, int retval) {
+			if (retval==0) oview->Launch(path,cmd2,opt_stage2_cb);
+		};
+		doxy->Launch(project->path,cmd1,opt_stage1_cb);
 	}
 }
 
@@ -585,7 +603,6 @@ void mxMainWindow::OnToolsDoxyView(wxCommandEvent &event) {
 		mxUT::OpenInBrowser(DIR_PLUS_FILE(project->path,DIR_PLUS_FILE(project->GetDoxygenConfiguration()->destdir,DIR_PLUS_FILE("html","index.html"))));
 	}
 }
-
 
 void mxMainWindow::OnToolsDoxyHelp(wxCommandEvent &event) {
 	mxHelpWindow::ShowHelp("doxygen.html");

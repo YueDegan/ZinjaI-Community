@@ -3,6 +3,7 @@
 
 #include <wx/filefn.h>
 #include "Cpp11.h"
+#include "ZLog.h"
 
 // helper for generic raii-like objects
 #define AtExit(name,code) \
@@ -97,9 +98,20 @@ class RaiiWorkDirChanger {
 	wxString old_dir;
 public:
 	RaiiWorkDirChanger(const wxString &new_dir) 
-		: old_dir(wxGetCwd()) { wxSetWorkingDirectory(new_dir); }
-	void RestoreNow() { if (old_dir.Len()) wxSetWorkingDirectory(old_dir); old_dir=""; }
-	~RaiiWorkDirChanger() { if (old_dir.Len()) wxSetWorkingDirectory(old_dir); }
+		: old_dir(wxGetCwd()) 
+	{ 
+		ZLINF2("RaiiWorkDirChanger","Changing to: "+new_dir);
+		wxSetWorkingDirectory(new_dir); 
+	}
+	void RestoreNow() { 
+		if (old_dir.IsEmpty()) return;
+		ZLINF2("RaiiWorkDirChanger","Restoring to: "+old_dir);
+		wxSetWorkingDirectory(old_dir); 
+		old_dir.Clear(); 
+	}
+	~RaiiWorkDirChanger() { 
+		RestoreNow(); 
+	}
 };
 
 #endif
