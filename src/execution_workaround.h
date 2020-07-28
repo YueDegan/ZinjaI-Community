@@ -9,6 +9,6 @@ long mxExecute(wxString command, wxArrayString& output, int flags = 0);
 
 long mxExecute(wxString command, wxArrayString& output, wxArrayString& errors, int flags = 0);
 
-void fix_command_for_wxexecute(wxString &command);
+//void fix_command_for_wxexecute(wxString &command);
 
 #endif

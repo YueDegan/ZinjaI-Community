@@ -2292,7 +2292,7 @@ void ProjectManager::AnalizeConfig(wxString path, bool exec_comas, wxString ming
 	mxUT::ParameterReplace(linking_options,"${TEMP_DIR}",temp_folder_short);
 	mxUT::ParameterReplace(linking_options,"${ZINJAI_DIR}",config->zinjai_dir);
 	// extra args
-	wxString linking_extra = active_configuration->linking_extra<<" ";
+	wxString linking_extra = active_configuration->linking_extra + " ";
 	mxUT::ParameterReplace(linking_extra,"${MINGW_DIR}",mingw_dir);
 	mxUT::ParameterReplace(linking_extra,"${TEMP_DIR}",temp_folder_short);
 	mxUT::ParameterReplace(linking_extra,"${PROJECT_PATH}",project->path);

@@ -181,7 +181,7 @@ mxPreferenceWindow::mxPreferenceWindow(wxWindow* parent) :
 	ReuseSizer(this,mySizer)
 		.BeginBottom().Help().Ok().Cancel().EndBottom(this)
 		.SetAndFit();
-
+	
 	ignore_styles_changes=false;
 	
 	EnableOrDisableControls();

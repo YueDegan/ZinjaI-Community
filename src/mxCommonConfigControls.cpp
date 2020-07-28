@@ -362,5 +362,25 @@ mxDialog::CreatePanelAndSizer::CreatePanelAndSizer(wxWindow *parent) : mxDialog:
 mxDialog::FreeNotebook mxDialog::CreateNotebook(wxWindow *parent) { return FreeNotebook(new wxNotebook(parent,wxID_ANY)); }
 mxDialog::CreateHorizontalSizer::CreateHorizontalSizer(wxWindow *parent) : mxDialog::HorizontalSizer(parent,new wxBoxSizer(wxHORIZONTAL)) {}
 
+void mxDialog::Show() {
+	wxDialog::Show();
+	// this is a workaround for a problem in notebooks...
+	// it seems that in wx3+gtk3 version, notebooks pages
+	// are layout to ther individual "fit" sizes on creation,
+	// but when the notebook as a whole takes the size of the
+	// biggest one, the rest does not update... so if you 
+	// disable this, open compiling settings in a project
+	// and change tab, you'll see the problem... calling 
+	// layout again (tried on the window, on the notebook, 
+	// on the panels) won't work, but a resize will do
+	this->SetSize(this->GetSize()+wxSize(1,1));
+	// moving this rezise before Show makes it work only
+	// first time the dialog is shown (even if second
+	// time is a new instance, I have no explanation 
+	// for this, but see it with mxProjectConfigWindow)
+}
 
+int mxDialog::ShowModal() {
+	return wxDialog::ShowModal();
+}
 	

@@ -359,11 +359,10 @@ int mxUT::Execute(wxString path, wxString command, int sync) {
 	return Execute(path,command,sync,p);
 }
 
-int mxUT::Execute(wxString path, wxString command, int sync, wxProcess *&process) {
+int mxUT::Execute(wxString path, wxString command, int sync, wxProcess *process) {
 	while (command.Len() && command.Last()==' ') command.RemoveLast();
 	RaiiWorkDirChanger cwd_guard(path); // set temp cwd
-	fix_command_for_wxexecute(command);
-	int ret = (sync&wxEXEC_SYNC) ? mxExecute(command, sync, process) : wxExecute(command, sync, process);
+	int ret = (sync&wxEXEC_SYNC) ? mxExecute(command, sync|wxEXEC_MAKE_GROUP_LEADER, process) : wxExecute(command, sync, process);
 	return ret;
 }
 

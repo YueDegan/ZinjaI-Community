@@ -7,31 +7,31 @@ using namespace std;
 
 static bool s_someone_is_running = false;
 
-void fix_command_for_wxexecute(wxString &command) {
-#ifndef __WIN32__
-	// por alguna razon, con wx 2.8 no podemos tener mas de 127 argumentos (ver WXEXECUTE_NARGS en los fuentes de wx 2.8)
-	// asi que hacemos un script con el comando y llamamos al script si ese es el caso
-	int num_args=0, i=0,l=command.Len();
-	while (++i<l) {
-		if (command[i]=='\'') { while (++i<l && command[i]!='\''); }
-		else if (command[i]=='\"') { while (++i<l && command[i]!='\'') if (command[i]=='\\') i++; }
-		else if (command[i]=='\\') i++;
-		else if (command[i]==' ') num_args++;
-	}
-	if (num_args>=127) {
-		wxString aux_file(DIR_PLUS_FILE(config->temp_dir,"long_command"));
-		wxTextFile file(aux_file); 
-		file.Create();
-		file.AddLine(command);
-		file.Write();
-		file.Close();
-		command=wxString("sh ")+aux_file;
-	}
-#endif
-}
+//static void fix_command_for_wxexecute(wxString &command) {
+//#ifndef __WIN32__
+//	// por alguna razon, con wx 2.8 no podemos tener mas de 127 argumentos (ver WXEXECUTE_NARGS en los fuentes de wx 2.8)
+//	// asi que hacemos un script con el comando y llamamos al script si ese es el caso
+//	int num_args=0, i=0,l=command.Len();
+//	while (++i<l) {
+//		if (command[i]=='\'') { while (++i<l && command[i]!='\''); }
+//		else if (command[i]=='\"') { while (++i<l && command[i]!='\'') if (command[i]=='\\') i++; }
+//		else if (command[i]=='\\') i++;
+//		else if (command[i]==' ') num_args++;
+//	}
+//	if (num_args>=127) {
+//		wxString aux_file(DIR_PLUS_FILE(config->temp_dir,"long_command"));
+//		wxTextFile file(aux_file); 
+//		file.Create();
+//		file.AddLine(command);
+//		file.Write();
+//		file.Close();
+//		command=wxString("sh ")+aux_file;
+//	}
+//#endif
+//}
 
 long mxExecute(wxString command, int sync, wxProcess *process) {
-	fix_command_for_wxexecute(command);
+//	fix_command_for_wxexecute(command);
 #ifdef _ZINJAI_DEBUG
 	ZLDBG2("execution_workaround","Enters, command="<<command);
 #endif
@@ -46,7 +46,7 @@ long mxExecute(wxString command, int sync, wxProcess *process) {
 	return ret;
 }
 long mxExecute(wxString command, wxArrayString& output, int flags) {
-	fix_command_for_wxexecute(command);
+//	fix_command_for_wxexecute(command);
 #ifdef _ZINJAI_DEBUG
 	ZLDBG2("execution_workaround","Enters, command="<<command);
 #endif
@@ -62,7 +62,7 @@ long mxExecute(wxString command, wxArrayString& output, int flags) {
 }
 
 long mxExecute(wxString command, wxArrayString& output, wxArrayString& errors, int flags) {
-	fix_command_for_wxexecute(command);
+//	fix_command_for_wxexecute(command);
 #ifdef _ZINJAI_DEBUG
 	ZLDBG2("execution_workaround", "Enters, command="<<command);
 #else

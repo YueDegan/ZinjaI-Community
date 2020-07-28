@@ -138,7 +138,7 @@ public:
 	static wxString Split(wxString str, wxString pre, wxString post="");
 	static int Split(wxString str, wxArrayString &array, bool coma_splits=true,bool keep_quotes=true);
 	static int Execute(wxString path, wxString command, int sync);
-	static int Execute(wxString path, wxString command, int sync, wxProcess *&process);
+	static int Execute(wxString path, wxString command, int sync, wxProcess *process);
 	static bool XCopy(wxString src, wxString dst, bool ask=true, bool replace=false);
 	//! Ejecuta los comandos entre acentos de una cadena y los reemplaza por su salida (simi Makefile)
 	static wxString ExecComas(wxString where, wxString line);

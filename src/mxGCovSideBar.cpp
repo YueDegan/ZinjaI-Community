@@ -28,6 +28,9 @@ void mxGCovSideBar::OnPaint(wxPaintEvent &event) {
 	if (!main_window) return;
 	mxSource* src=main_window->GetCurrentSource();
 	if (!hits || !src) return;
+	wxFont font = src->StyleGetFont(wxSTC_STYLE_LINENUMBER);
+	font.SetPointSize(font.GetPointSize() + src->GetZoom());
+	dc.SetFont(font);
 	int cl=src->GetCurrentLine();
 	int l0=src->GetFirstVisibleLine();
 	int lh=src->TextHeight(l0);
@@ -72,17 +75,14 @@ bool mxGCovSideBar::ShouldLoadData(mxSource *src) {
 }
 
 void mxGCovSideBar::Refresh (mxSource *src) {
-	static int fvl=-1, cl=-1; static mxSource *lsrc=nullptr;	
-	if (lsrc!=src || src->GetCurrentLine()!=cl || src->GetFirstVisibleLine()!=fvl) {
-		lsrc=src;
-		cl=src->GetCurrentLine();
-		fvl=src->GetFirstVisibleLine();
-		if (ShouldLoadData(src)) {
-			class ReloadGCovAction : public mxMainWindow::AfterEventsAction {
-				public: void Run() override { if (mxGCovSideBar::HaveInstance()) mxGCovSideBar::GetInstance().LoadData(); }
-			};
-			main_window->CallAfterEvents(new ReloadGCovAction);
-		} else wxWindow::Refresh();
+	static int fvl=-1, cl=-1, zoom=-1; static mxSource *lsrc=nullptr;	
+	if (lsrc!=src || src->GetCurrentLine()!=cl || src->GetFirstVisibleLine()!=fvl || src->GetZoom()!=zoom) {
+		lsrc = src;
+		cl = src->GetCurrentLine();
+		fvl = src->GetFirstVisibleLine();
+		zoom = src->GetZoom();
+		if (ShouldLoadData(src)) ReloadData();
+		else wxWindow::Refresh();
 	}
 }
 
@@ -102,7 +102,9 @@ void mxGCovSideBar::LoadData (bool force) {
 	if (force || (gcda.FileExists() && (!fname.FileExists() || fname.GetModificationTime()<=gcda.GetModificationTime()))) { 
 		osd.Create(main_window,"Generando y leyendo información de cobertura (gcov)");
 		wxString command="gcov "; command<<mxUT::Quotize(binary.GetName());
-		mxUT::Execute(binary.GetPath(),command,wxEXEC_SYNC);
+		ZLINF2("mxGCovSideBar::LoadData","Running: "<<command);
+		int retval = mxUT::Execute(binary.GetPath(),command,wxEXEC_SYNC);
+		ZLINF2("mxGCovSideBar::LoadData","  retval=: "<<retval);
 	}
 	
 	wxTextFile fil(fname.GetFullPath());
@@ -137,5 +139,12 @@ void mxGCovSideBar::OnPopup (wxMouseEvent & event) {
 
 void mxGCovSideBar::OnRefresh (wxCommandEvent & event) {
 	LoadData(true);
+}
+
+void mxGCovSideBar::ReloadData ( ) {
+	class ReloadGCovAction : public mxMainWindow::AfterEventsAction {
+		public: void Run() override { if (mxGCovSideBar::HaveInstance()) mxGCovSideBar::GetInstance().LoadData(); }
+	};
+	main_window->CallAfterEvents(new ReloadGCovAction);
 }
 

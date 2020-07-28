@@ -68,7 +68,9 @@ public:
 		else if (on_close==OCP_HIDE) this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( mxDialog::OnCloseHide ) );
 	}
 	
-
+	void Show();
+	int ShowModal();
+	
 private:
 	class BaseNotebookAux {
 	protected:

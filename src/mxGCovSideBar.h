@@ -7,14 +7,8 @@
 class mxSource;
 
 class mxGCovSideBar : public wxWindow {
-	static mxGCovSideBar *m_instance;
-	int line_count, *hits, hits_max;
-	wxString last_path;
-	bool ShouldLoadData(mxSource *src);
-	mxSource *should_refresh;
-	mxSource *src_load;
-	mxGCovSideBar();
 public:
+	void ReloadData();
 	void LoadData(bool force=false);
 	void OnPaint(wxPaintEvent &event);
 	void OnPopup(wxMouseEvent &event);
@@ -26,6 +20,14 @@ public:
 		return *m_instance; 
 	}
 	~mxGCovSideBar() { m_instance = nullptr; }
+private:
+	static mxGCovSideBar *m_instance;
+	int line_count, *hits, hits_max;
+	wxString last_path;
+	bool ShouldLoadData(mxSource *src);
+	mxSource *should_refresh;
+	mxSource *src_load;
+	mxGCovSideBar();
 	DECLARE_EVENT_TABLE();
 };
 

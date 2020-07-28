@@ -1703,7 +1703,7 @@ void mxMainWindow::OnProcessTerminate (wxProcessEvent& event) {
 		if (compile_and_run->valgrind_cmd.Len()) ShowValgrindPanel(mxVO_VALGRIND,DIR_PLUS_FILE(config->temp_dir,"valgrind.out"));
 		delete compile_and_run->process;
 		delete compile_and_run;
-		if (mxGCovSideBar::HaveInstance()) mxGCovSideBar::GetInstance().LoadData();
+		if (mxGCovSideBar::HaveInstance()) mxGCovSideBar::GetInstance().ReloadData();
 	}
 }
 
