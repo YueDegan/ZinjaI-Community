@@ -573,7 +573,7 @@ void mxMainWindow::OnToolsDoxyGenerate(wxCommandEvent &event) {
 
 void mxMainWindow::OnToolsGcovRunLCov(wxCommandEvent &event) {
 	if (project) {
-		wxString extra_args = wxGetTextFromUser("Additional arguments","lcov","--exclude /usr/*",this);
+		wxString extra_args = wxGetTextFromUser("Additional arguments","lcov","--no-external",this);
 		
 		wxString tmp_dir = project->GetTempFolder();
 		wxString cov_info = DIR_PLUS_FILE(tmp_dir,"coverage.info");

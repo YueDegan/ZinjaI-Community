@@ -46,29 +46,34 @@ void FixUbuntuMenuTweaks() {
 	}
 }
 
-void FixLocaleSettingsForScintilla() {
-	setenv("LANG","C",1); // workaround for the problem with ansi-wxstyledtext and utf8 locale
-	setenv("LC_CTYPE","C",1); // workaround for the problem with ansi-wxstyledtext and utf8 locale
-}
+//void FixLocaleSettingsForScintilla() {
+//	setenv("LANG","C",1); // workaround for the problem with ansi-wxstyledtext and utf8 locale
+//	setenv("LC_CTYPE","C",1); // workaround for the problem with ansi-wxstyledtext and utf8 locale
+//}
 
+void AddToLDLP(std::string zinjai_path, const std::string &lib_path) {
+	string ld_library_path = my_getenv("LD_LIBRARY_PATH");
+	if (!ld_library_path.empty()) ld_library_path+=":";
+	if (zinjai_path.find('/')==string::npos) zinjai_path="";
+	else zinjai_path=zinjai_path.substr(0,zinjai_path.rfind('/')+1);
+	ld_library_path+=zinjai_path+lib_path;
+	setenv("LD_LIBRARY_PATH",ld_library_path.c_str(),1);
+}
 void FixMissingLibPNG12(string zinjai_path) {
 	void *handle = dlopen ("libpng12.so", RTLD_LAZY);
 	if (!handle) {
-		string ld_library_path = my_getenv("LD_LIBRARY_PATH");
-		if (!ld_library_path.empty()) ld_library_path+=":";
-		if (zinjai_path.find('/')==string::npos) zinjai_path="";
-		else zinjai_path=zinjai_path.substr(0,zinjai_path.rfind('/')+1);
-		ld_library_path+=zinjai_path+"libs";
-		setenv("LD_LIBRARY_PATH",ld_library_path.c_str(),1);
+		AddToLDLP(zinjai_path,"lib/png");
 	} else {
 		dlclose(handle);
 	}
 }
 
+
 int main(int argc, char *argv[]) {
 
 	FixUbuntuMenuTweaks();
-	FixLocaleSettingsForScintilla();
+//	FixLocaleSettingsForScintilla();
+	AddToLDLP(argv[0],"lib/wx");
 	FixMissingLibPNG12(argv[0]);
 	
 	fix_argv(argv);

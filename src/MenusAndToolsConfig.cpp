@@ -33,11 +33,11 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 		AddMenuItem(mnFILE, myMenuItem("open",mxID_FILE_OPEN, LANG(MENUITEM_FILE_OPEN,"&Abrir...")).ShortCut("Ctrl+O").Description("Abrir un archivo o un proyecto existente...").Map());
 		BeginSubMenu(mnFILE,LANG(MENUITEM_FILE_RECENT_SOURCES,"Fuentes Abiertos Recientemente"),"Muestra los ultimos archivos abiertos como programas simples","recentSimple.png",mxID_FILE_SOURCE_RECENT,maMAPPED);
 			AddSeparator(mnFILE);
-			AddMenuItem(mnFILE, myMenuItem("recent_simple",mxID_FILE_SOURCE_HISTORY_MORE,LANG(MENU_FILE_RECENT_MORE,"Mas...")).Description("Muestra un dialogo con la lista completa de archivos recientes"));
+			AddMenuItem(mnFILE, myMenuItem("recent_simple",mxID_FILE_SOURCE_HISTORY_MORE,LANG(MENU_FILE_RECENT_MORE,"Más...")).Description("Muestra un dialogo con la lista completa de archivos recientes"));
 		EndSubMenu(mnFILE);
 		BeginSubMenu(mnFILE,LANG(MENUITEM_FILE_RECENT_PROJECTS,"Proyectos Abiertos Recientemente"),"Muestra los ultimos proyectos abiertos","recentProject.png",mxID_FILE_PROJECT_RECENT,maMAPPED);
 			AddSeparator(mnFILE);
-			AddMenuItem(mnFILE, myMenuItem("recent_project",mxID_FILE_PROJECT_HISTORY_MORE,LANG(MENU_FILE_RECENT_MORE,"Mas...")).Description("Muestra un dialogo con la lista completa de archivos recientes"));
+			AddMenuItem(mnFILE, myMenuItem("recent_project",mxID_FILE_PROJECT_HISTORY_MORE,LANG(MENU_FILE_RECENT_MORE,"Más...")).ShortCut("Ctrl+Shift+O").Description("Muestra un dialogo con la lista completa de proyectos recientes"));
 		EndSubMenu(mnFILE);
 		AddMenuItem(mnFILE, myMenuItem("save",mxID_FILE_SAVE, LANG(MENUITEM_FILE_SAVE,"&Guardar")).ShortCut("Ctrl+S").Description("Guardar el archivo actual").EnableIf(ecSOURCE));
 		AddMenuItem(mnFILE, myMenuItem("save_as",mxID_FILE_SAVE_AS, LANG(MENUITEM_FILE_SAVE_AS,"G&uardar Como...")).ShortCut("Ctrl+Shift+S").Description("Guardar el archivo actual con otro nombre...").EnableIf(ecSOURCE));

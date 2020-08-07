@@ -40,7 +40,7 @@ mxListItemEditor::mxListItemEditor(wxWindow *parent, wxString title, wxListBox *
 	mid_sizer->Add(my_text,sizers->BA5_Exp1);
 	wxButton *button_ok = new mxBitmapButton(this,wxID_OK,bitmaps->buttons.ok,LANG(GENERAL_OK_BUTTON,"&Aceptar"));
 	wxButton *button_cancel = new mxBitmapButton(this,wxID_CANCEL,bitmaps->buttons.cancel,LANG(GENERAL_CANCEL_BUTTON,"&Cancelar"));
-	wxButton *button_more = new wxButton(this,mxID_ARGS_BUTTON,LANG(LONGTEXT_MORE_OPTIONS,"Mas opciones..."));
+	wxButton *button_more = new wxButton(this,mxID_ARGS_BUTTON,LANG(LONGTEXT_MORE_OPTIONS,"Más opciones..."));
 	wxBitmapButton *button_help = new wxBitmapButton (this,mxID_HELP_BUTTON,*bitmaps->buttons.help);
 	bottom_sizer->Add(button_help,sizers->BA5);
 	bottom_sizer->AddStretchSpacer();

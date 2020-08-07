@@ -4746,7 +4746,7 @@ void mxMainWindow::UpdateStylesInSources ( ) {
 
 void mxMainWindow::OnDebugSendSignal (wxCommandEvent & event) {
 	static wxString prev;
-	wxArrayString signames; signames.Add("<none>: continuar sin enviar ninguna señal)");
+	wxArrayString signames; signames.Add(LANG(DEBUG_SIGNAL_NONE,"<none>: continuar sin enviar ninguna señal"));
 	vector<SignalHandlingInfo> vsig;
 	debug->GetSignals(vsig); if(vsig.empty()) return;
 	for(unsigned int i=0;i<vsig.size();i++) signames.Add(vsig[i].name+": "+vsig[i].description);

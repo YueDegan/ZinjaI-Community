@@ -128,6 +128,8 @@ DEBUG_RUN_ANYWAY
 Ejecutar de todas fomas
 PREFERENCES_DEBUG_LOAD_SHARED_LIBS_INFO
 Cargar información de depuracion de bibliotecas externas
+ERRORRECOVERY_OOPS_MESSAGE
+Ha ocurrido un error grave y ZinjaI se cerrara.\nPor suerte, se han podido guardar todos sus\narchivos y proyectos para recuperarlos la\nproxima vez que inicie el entorno.
 PARSERHELP_DEFINED_IN_POST
 en la linea
 PARSERHELP_UNION
@@ -858,116 +860,22 @@ TOOLBAR_DESC_TOOLS_DIFF_CLEAR
 Herramientas -> Comparar Archivos -> Borrar Marcas
 TOOLBAR_CAPTION_TOOLS_CUSTOM_TOOL
 Herramienta Personalizada 
-SYMBOLS_MACROS
-Macros y Otros
-SYMBOLS_GLOBALS
-Variables Globales
-SYMBOLS_FUNCTIONS
-Funciones
-SYMBOLS_CLASSES
-Clases
-SYMBOLS_POPUP_TITLE
-<Visor de Simbolos>
-SYMBOLS_POPUP_GOTO_DEF
-Ir a De&finicion
-SYMBOLS_POPUP_GOTO_DEC
-Ir a De&claracion
-SYMBOLS_POPUP_UPDATE_TREE
-&Actualizar arbol
-SYMBOLS_POPUP_GENERATE_INDEX
-&Generar indice para autocompletado...
-PARSER_PARSING_FILE
-Analizando
-PROJECT_ERROR_OPENING_FATHER
-Error abriendo el proyecto \"<{1}>\" para heredar sus archivos.
-OSD_LOADING_PROJECT_PRE
-Abriendo 
-OSD_LOADING_PROJECT_POST
-...
-PROJMNGR_OPENING
-Abriendo
-PROJMNGR_FILE_NOT_FOUND
-No se encuentra el archivo \"<{1}>\".
-PROJMNGR_CHANGE_PROFILE_OPENNING
-Parece que esta abriendo un proyecto que tiene seleccionado un perfil\nde compilación y ejecución para otro sistema operativo: \"<{1}>\"\n\n¿Desea cambiar el perfil activo por \"<{2}>\"?
-PROJMNGR_CHANGE_PROFILE_OPENNING_CAPTION
-Perfil de Compilación y Ejecución
-PROJMNGR_CHANGE_PROFILE_OPENNING_CHECK
-Seleccionar otro perfil de la lista
-PROJMNGR_CHANGE_PROFILE_OPENNING_CHOICE
-Seleccione el perfil a activar
-PROJECT_REQUIRES_NEWER_ZINJAI
-El proyecto que esta abriendo requiere una version superior de ZinjaI\na la instalada actualmente para cargar todas las opciones de proyecto\ncorrectamente. El proyecto se abrira de todas formas, pero podria encontrar\nproblemas posteriormente.\n
-PROJECT_MINGW_CC_PROBLEM_DESC
-El proyecto que está abriendo fue guardado con una versión de ZinjaI que utilizaba\nversiones ahora desactualizadas de las herramientas de compilación (mingw). Los\narchivos compilados con esas herramientas no serán compatibles con los que se\ncompilen con la nueva versión disponible. Si utiliza el compilador por defecto\ndeberá recompilar todo el proyecto. ¿Desea eliminar ahora los objetos compilados\npara forzar la recompilación del proyecto antes de la próxima ejecución?\n\nNota: si su proyecto utiliza bibliotecas no provistas con ZinjaI, probablemente deba\nobtener además nuevas versiones de las mismas. En caso de no hacerlo, su programa\npodría finalizar anormalmente al intentar ejecutarlo.
-PROJECT_MINGW_CC_PROBLEM_MORE
-Mostrar información (web)...
-PROJECT_ERROR_DUPLICATE_OBJ
-Los archivos \"<{1}>\" y \"<{2}>\" generan el mismo objeto.
-PROJMNGR_CONFIRM_REPLACE
-Ya existe un archivo con ese nombre. Desea Reemplazarlo?
-PROJMNGR_CONFIRM_DETACH_ALSO
-¿Desea quitar tambien el archivo \"<{1}>\" del proyecto?
-PROJMNGR_DELETE_FROM_DISK
-Eliminar el archivo del disco
-PROJMNGR_CONFIRM_DETACH_FILE
-¿Desea quitar el archivo del proyecto?
-PROJMNGR_FUTURE_SOURCE
-El fuente <{1}> tenia fecha de modificación en el futuro. Se reemplazó por la fecha actual.
-PROJMNGR_FUTURE_OBJECT
-El objeto <{1}> tenia fecha de modificación en el futuro. Se recompilara el fuente.
-PROJMNGR_NO_LIB_FOR_THAT_SOURCE
-El fuente \"<{1}>\" no esta asociado a ninguna biblioteca.
-PROJMNGR_LIB_WITHOUT_SOURCES
-La biblioteca \"<{1}>\" no tiene ningun fuente asociado.
-PROJMNGR_ICON_NOT_FOUND
-No se ha encontrado el icono del ejecutable.
-PROJMNGR_MANIFEST_NOT_FOUND
-No se ha encontrado el archivo manifest.xml.
-PROJMNGR_COMPILING
-Compilando
-PROJMNGR_STEP_FROM
-paso <{1}> de <{2}>
-PROJMNGR_RUNNING
-Ejecutando
-PROJMNGR_LINKING
-Enlazando \"
-PROJMNGR_STRIPING
-Extrayendo información de depuración de \"<{1}>\" - paso <{2}> de 3...
-PROJMNGR_RUNNING_NO_EXE
-Este proyecto no puede ejecutarse porque está configurado\npara generar solo bibliotecas y no hay ejecutable externo definido.
-GENERAL_RUNNING_DOTS
-Ejecutando...
-PROJMNGR_REGENERATING_WXFB
-Regenerando proyecto wxFormBuilder...
-PROJMNGR_REGENERATING_ERROR_1
-No se pudo actualizar automáticamente el código generado a partir de:\n<{1}>
-PROJMNGR_REGENERATING_ERROR_4
-(probablemente no se pueda escribir en la carpeta de proyecto).
-OSD_GENERATING_GRAPH
-Generando grafo...
-PROJMNGR_PROJECT_GRAPH_BYTES
- bytes
-PROJMNGR_PROJECT_GRAPH_LINES
- linea(s)
-PROJMNGR_PROJECT_GRAPH_SYMBOLS
- simbolo(s)
-PROJMNGR_PROJECT_GRAPH_TITLE
-Grafo de Proyecto
-WXFB_ASK_BEFORE_AUTO_DELETING
-ZinjaI ha detectado que la clase <{1}> hereda de\notra clase anteriormente autogenerada por wxFormBuilder\n(<{2}>) que ha sido eliminada en el diseñador.\n¿Desea eliminar los fuentes correspondiente a dicha clase?\nLos fuentes son: <{3}>\n\nAdvertencia: debe estar seguro de que no contienen definiciones ajenas\na dicha clase, y de que la clase base no ha sido solo renombrada.
-PROJECT_DIRNOTFOUND_CREATE
-El directorio \"<{1}>\" no existe. Desea crearlo?
-PROJECT_CANT_CREATE_DIR
-No se pudo crear el directorio.
-PROJECT_INVALID_CLASS_NAME
-El nombre de la clase no puede incluir ni espacios ni operadores
-PROJECT_WXFB_NEWFILE_EXISTS
-Ya existe un archivo con ese nombre. ¿Desea reemplazarlo?
-OPENSHARED_ERROR_GETTING_SOURCE
-Ha ocurrido un error al intentar obtener el fuente.\nPruebe actualizar la lista de fuentes compartidos.
-ERRORRECOVERY_OOPS_MESSAGE
-Ha ocurrido un error grave y ZinjaI se cerrara.\nPor suerte, se han podido guardar todos sus\narchivos y proyectos para recuperarlos la\nproxima vez que inicie el entorno.
+ABOUT_CAPTION
+Acerca de...
+ABOUT_CLOSE
+Cerrar
+ARGUMENTS_CAPTION
+Argumentos para la ejecucion
+COMPILECONF_RUNNING_ARGS
+Argumentos para la ejecucion:
+COMPILECONF_WORKDIR
+Directorio de trabajo:
+GENERAL_DONT_ASK_AGAIN
+no volver a preguntar
+ARGUMENTS_WITHOUT_ARGUMENTS
+&Sin Argumentos
+COMPILECONF_WORKDIR_DLG
+Directorio de trabajo
 CAPTION_COMPILER_OUTPUT
 Resultados de la Compilación
 MAINW_AUTOHIDE_COMPILER
@@ -1006,22 +914,6 @@ MAINW_BEGGINERS_PANEL
 Panel de Asistencias
 MAINW_MINIMAP_PANEL
 Mini-mapa
-ABOUT_CAPTION
-Acerca de...
-ABOUT_CLOSE
-Cerrar
-ARGUMENTS_CAPTION
-Argumentos para la ejecucion
-COMPILECONF_RUNNING_ARGS
-Argumentos para la ejecucion:
-COMPILECONF_WORKDIR
-Directorio de trabajo:
-GENERAL_DONT_ASK_AGAIN
-no volver a preguntar
-ARGUMENTS_WITHOUT_ARGUMENTS
-&Sin Argumentos
-COMPILECONF_WORKDIR_DLG
-Directorio de trabajo
 BACKTRACE_LEVEL
 Nivel
 BACKTRACE_FUNCTION
@@ -1312,6 +1204,12 @@ COMPILECONF_POPUP_DEFAULT
 valores por defecto
 COMPILECONF_POPUP_COPY_FROM_TEMPLATE
 copiar de plantilla...
+COMP_ARG_ADD_ARGS
+Incluir argumentos
+COMP_ARG_ALSO_LIBS
+Tambien en bibliotecas
+COMP_ARG_RECOMPILE
+Recompilar todo
 GENERAL_PREPARING_BUILDING
 Preparando compilación...
 MAINW_COMPILATION_INTERRUPTED
@@ -1332,16 +1230,12 @@ MAINW_COMPILATION_CUSTOM_STEP_ERROR
 Error al ejecutar paso de compilación personalizado: 
 MAINW_COMPILING_DOTS
 Compilando...
+PROJMNGR_COMPILING
+Compilando
 MAINW_WARNING_NO_EXCUTABLE_PERMISSION
 El binario no tiene permisos de ejecución.
 MAINW_WARNING_EXCUTABLE_PERMISSION_CHANGED
 Se cambiaron los permisos del binario (chmod a+x).
-COMP_ARG_ADD_ARGS
-Incluir argumentos
-COMP_ARG_ALSO_LIBS
-Tambien en bibliotecas
-COMP_ARG_RECOMPILE
-Recompilar todo
 COMPLEMENTS_CAPTION
 Instalación de Complementos
 COMPLEMENTS_DOWNLOAD
@@ -2050,6 +1944,8 @@ MAINW_SAVE_CHANGES_BEFORE_EXIT_QUESTION
 Hay cambios sin guardar. Desea guardarlos antes de salir?
 PROJMNGR_FUTURE_SOURCE_POST
  tenia fecha de modificación en el futuro. Se reemplazo por la fecha actual.
+PROJMNGR_MANIFEST_NOT_FOUND
+No se ha encontrado el archivo manifest.xml.
 MAINW_SAVE_LINK_ERROR_TRUNCATED_FILE
 Este error puede deberse a compilaciones interrumpidas, o a la presencia\nde objetos compilados en otros sistemas. Si este fuera el caso, podría\nsolucionarse simplemente recompilando el fuente asociado. ¿Desea recompilar\n\"<{1}>\" ahora?
 QUICKHELP_WORDS_TO_SEARCH
@@ -2080,6 +1976,8 @@ MAINW_COULDNOT_LAUNCH_PROCESS
 No se pudo lanzar el proceso
 MAINW_COULDNOT_RUN
 No se pudo lanzar la ejecución!
+GENERAL_RUNNING_DOTS
+Ejecutando...
 MAINW_SAVE_PROJECT_BEFORE_CLOSING_QUESTION
 Desea guardar los cambios del proyecto anterior antes de cerrarlo?
 MAINW_CHANGE_CLOSE_ALL_QUESTION
@@ -2182,6 +2080,8 @@ MAINW_MACRO_START
 Generando macro, presione Ctrl+Shift+Q para finalizar.
 MAINW_MACRO_STOP
 Macro guardada, presione Ctrl+Q para reproducirla.
+DEBUG_SIGNAL_NONE
+<none>: continuar sin enviar ninguna señal)
 MAINW_RUN_HEADER_WARNING
 Esta intentando compilar/ejecutar un archivo de cabecera.\nProbablemente deba intentar ejecutar un archivo fuente que\nincluya esta cabecera. ¿Desea continuar?\n\nNota: puede configurar un fuente para que se ejecute siempre\ndicho fuente sin importar cual otro tenga el foco con click\nderecho sobre la pesataña del mismo.
 MAINW_RUN_HEADER_CHECK
@@ -2196,6 +2096,8 @@ MAINW_GPROF_OUTPUT_MISSING
 No se encontro informacion de profiling.\nPara saber como generarla consulte la ayuda.
 MAINW_GPROF_STATUS_ANALIZING
 Analizando informacion de perfilado...
+OSD_GENERATING_GRAPH
+Generando grafo...
 MAINW_GPROF_EDGE_THERSHOLD
 Eliminar arcos bajo este umbral (%):
 MAINW_GPROF_ASK_TITLE
@@ -3310,6 +3212,106 @@ WXFB_INHERITEDCLASS
 Clase heredada:
 WXFB_CLASSNAME_MISSING
 Debe introducir el nombre de la clase
+SYMBOLS_MACROS
+Macros y Otros
+SYMBOLS_GLOBALS
+Variables Globales
+SYMBOLS_FUNCTIONS
+Funciones
+SYMBOLS_CLASSES
+Clases
+SYMBOLS_POPUP_TITLE
+<Visor de Simbolos>
+SYMBOLS_POPUP_GOTO_DEF
+Ir a De&finicion
+SYMBOLS_POPUP_GOTO_DEC
+Ir a De&claracion
+SYMBOLS_POPUP_UPDATE_TREE
+&Actualizar arbol
+SYMBOLS_POPUP_GENERATE_INDEX
+&Generar indice para autocompletado...
+PARSER_PARSING_FILE
+Analizando
+PROJECT_ERROR_OPENING_FATHER
+Error abriendo el proyecto \"<{1}>\" para heredar sus archivos.
+OSD_LOADING_PROJECT_PRE
+Abriendo 
+OSD_LOADING_PROJECT_POST
+...
+PROJMNGR_OPENING
+Abriendo
+PROJMNGR_FILE_NOT_FOUND
+No se encuentra el archivo \"<{1}>\".
+PROJMNGR_CHANGE_PROFILE_OPENNING
+Parece que esta abriendo un proyecto que tiene seleccionado un perfil\nde compilación y ejecución para otro sistema operativo: \"<{1}>\"\n\n¿Desea cambiar el perfil activo por \"<{2}>\"?
+PROJMNGR_CHANGE_PROFILE_OPENNING_CAPTION
+Perfil de Compilación y Ejecución
+PROJMNGR_CHANGE_PROFILE_OPENNING_CHECK
+Seleccionar otro perfil de la lista
+PROJMNGR_CHANGE_PROFILE_OPENNING_CHOICE
+Seleccione el perfil a activar
+PROJECT_REQUIRES_NEWER_ZINJAI
+El proyecto que esta abriendo requiere una version superior de ZinjaI\na la instalada actualmente para cargar todas las opciones de proyecto\ncorrectamente. El proyecto se abrira de todas formas, pero podria encontrar\nproblemas posteriormente.\n
+PROJECT_MINGW_CC_PROBLEM_DESC
+El proyecto que está abriendo fue guardado con una versión de ZinjaI que utilizaba\nversiones ahora desactualizadas de las herramientas de compilación (mingw). Los\narchivos compilados con esas herramientas no serán compatibles con los que se\ncompilen con la nueva versión disponible. Si utiliza el compilador por defecto\ndeberá recompilar todo el proyecto. ¿Desea eliminar ahora los objetos compilados\npara forzar la recompilación del proyecto antes de la próxima ejecución?\n\nNota: si su proyecto utiliza bibliotecas no provistas con ZinjaI, probablemente deba\nobtener además nuevas versiones de las mismas. En caso de no hacerlo, su programa\npodría finalizar anormalmente al intentar ejecutarlo.
+PROJECT_MINGW_CC_PROBLEM_MORE
+Mostrar información (web)...
+PROJECT_ERROR_DUPLICATE_OBJ
+Los archivos \"<{1}>\" y \"<{2}>\" generan el mismo objeto.
+PROJMNGR_CONFIRM_REPLACE
+Ya existe un archivo con ese nombre. Desea Reemplazarlo?
+PROJMNGR_CONFIRM_DETACH_ALSO
+¿Desea quitar tambien el archivo \"<{1}>\" del proyecto?
+PROJMNGR_DELETE_FROM_DISK
+Eliminar el archivo del disco
+PROJMNGR_CONFIRM_DETACH_FILE
+¿Desea quitar el archivo del proyecto?
+PROJMNGR_FUTURE_SOURCE
+El fuente <{1}> tenia fecha de modificación en el futuro. Se reemplazó por la fecha actual.
+PROJMNGR_FUTURE_OBJECT
+El objeto <{1}> tenia fecha de modificación en el futuro. Se recompilara el fuente.
+PROJMNGR_NO_LIB_FOR_THAT_SOURCE
+El fuente \"<{1}>\" no esta asociado a ninguna biblioteca.
+PROJMNGR_LIB_WITHOUT_SOURCES
+La biblioteca \"<{1}>\" no tiene ningun fuente asociado.
+PROJMNGR_ICON_NOT_FOUND
+No se ha encontrado el icono del ejecutable.
+PROJMNGR_STEP_FROM
+paso <{1}> de <{2}>
+PROJMNGR_RUNNING
+Ejecutando
+PROJMNGR_LINKING
+Enlazando \"
+PROJMNGR_STRIPING
+Extrayendo información de depuración de \"<{1}>\" - paso <{2}> de 3...
+PROJMNGR_RUNNING_NO_EXE
+Este proyecto no puede ejecutarse porque está configurado\npara generar solo bibliotecas y no hay ejecutable externo definido.
+PROJMNGR_REGENERATING_WXFB
+Regenerando proyecto wxFormBuilder...
+PROJMNGR_REGENERATING_ERROR_1
+No se pudo actualizar automáticamente el código generado a partir de:\n<{1}>
+PROJMNGR_REGENERATING_ERROR_4
+(probablemente no se pueda escribir en la carpeta de proyecto).
+PROJMNGR_PROJECT_GRAPH_BYTES
+ bytes
+PROJMNGR_PROJECT_GRAPH_LINES
+ linea(s)
+PROJMNGR_PROJECT_GRAPH_SYMBOLS
+ simbolo(s)
+PROJMNGR_PROJECT_GRAPH_TITLE
+Grafo de Proyecto
+WXFB_ASK_BEFORE_AUTO_DELETING
+ZinjaI ha detectado que la clase <{1}> hereda de\notra clase anteriormente autogenerada por wxFormBuilder\n(<{2}>) que ha sido eliminada en el diseñador.\n¿Desea eliminar los fuentes correspondiente a dicha clase?\nLos fuentes son: <{3}>\n\nAdvertencia: debe estar seguro de que no contienen definiciones ajenas\na dicha clase, y de que la clase base no ha sido solo renombrada.
+PROJECT_DIRNOTFOUND_CREATE
+El directorio \"<{1}>\" no existe. Desea crearlo?
+PROJECT_CANT_CREATE_DIR
+No se pudo crear el directorio.
+PROJECT_INVALID_CLASS_NAME
+El nombre de la clase no puede incluir ni espacios ni operadores
+PROJECT_WXFB_NEWFILE_EXISTS
+Ya existe un archivo con ese nombre. ¿Desea reemplazarlo?
+OPENSHARED_ERROR_GETTING_SOURCE
+Ha ocurrido un error al intentar obtener el fuente.\nPruebe actualizar la lista de fuentes compartidos.
 GENERAL_POPUP_INSERT_TEXT
 editar como texto...
 GENERAL_POPUP_INSERT_LIST
