@@ -786,7 +786,7 @@ bool DebugManager::UpdateBacktrace(const BTInfo &stack, bool is_current) {
 		} else {
 		
 			debug->SetFullOutput(false);
-			wxString args ,args_list = cant_levels ? SendCommand("-stack-list-arguments 1 0 ",cant_levels-1).result : "";
+			wxString args ,args_list = cant_levels ? SendCommand("-stack-list-arguments 2 0 ",cant_levels-1).result : "";
 			const wxChar * chag = args_list.c_str();
 			i=args_list.Find("stack-args=");
 			if (i==wxNOT_FOUND) {
@@ -859,6 +859,7 @@ bool DebugManager::UpdateBacktrace(const BTInfo &stack, bool is_current) {
 						if (args.Len()) args<<", ";
 						args<<GetValueFromAns(sub,"name",true)<<"="<<GetValueFromAns(sub,"value",true,true);
 					}
+					if (args.Len()>200) { args.erase(200); args<<"..."; } // this can be really long and kill wxGrid's performance
 					main_window->backtrace_ctrl->SetCellValue(c,BG_COL_ARGS,args);
 				}	
 			}
