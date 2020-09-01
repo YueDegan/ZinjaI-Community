@@ -42,6 +42,7 @@ struct cfgDebug {
 	bool show_log_panel;
 	bool return_focus_on_continue;
 	bool auto_solibs;
+	bool disable_pretty_printers;
 	bool improve_inspections_by_type;
 	wxArrayString inspection_improving_template_from, inspection_improving_template_to;
 #ifdef __WIN32__

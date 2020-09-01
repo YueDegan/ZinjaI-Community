@@ -1917,6 +1917,10 @@ bool DebugManager::Start_ConfigureGdb (bool check_for_symbols) {
 	SendCommand("set startup-with-shell off");
 #endif
 	SetFullOutput(false,true);
+	if (config->Debug.disable_pretty_printers) {
+		SendCommand("disable pretty-printer");
+		SendCommand("set auto-load python-scripts no");
+	}
 	SetBlacklist();
 	
 	// macros para gdb generales

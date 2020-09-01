@@ -321,6 +321,9 @@ wxPanel *mxPreferenceWindow::CreateDebugPanel2 (wxNotebook *notebook) {
 	sizer.BeginCheck( LANG(PREFERENCES_DEBUG_LOAD_SHARED_LIBS_INFO,"Cargar información de depuracion de bibliotecas externas") )
 		.Bind(m_binder,config->Debug.auto_solibs).EndCheck();
 	
+	sizer.BeginCheck( LANG(PREFERENCES_DEBUG_DISABLE_PRETTY_PRINTERS,"Deshabilitar Pretty-Printers en gdb") )
+		.Bind(m_binder,config->Debug.disable_pretty_printers).EndCheck();
+	
 	sizer.BeginCheck( LANG(PREFERENCES_DEBUG_RECOMPILE_AUTOMATICALLY,"Recompilar automaticamente antes de depurar si es necesario") )
 		.Bind(m_binder,config->Debug.compile_again).EndCheck();
 	

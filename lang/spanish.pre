@@ -243,7 +243,7 @@ MENUITEM_FILE_OPEN
 MENUITEM_FILE_RECENT_SOURCES
 Fuentes Abiertos Recientemente
 MENU_FILE_RECENT_MORE
-Mas...
+Más...
 MENUITEM_FILE_RECENT_PROJECTS
 Proyectos Abiertos Recientemente
 MENUITEM_FILE_SAVE
@@ -1885,7 +1885,7 @@ Debe completar el nombre.
 LIBTOBUILD_NAME_REPEATED
 Ya existe una biblioteca con ese nombre.
 LONGTEXT_MORE_OPTIONS
-Mas opciones...
+Más opciones...
 GENERAL_POPUP_REPLACE_ALL_WITH_FILE
 reemplazar todo por archivo
 GENERAL_POPUP_REPLACE_SELECTION_WITH_FILE
@@ -2083,7 +2083,7 @@ Generando macro, presione Ctrl+Shift+Q para finalizar.
 MAINW_MACRO_STOP
 Macro guardada, presione Ctrl+Q para reproducirla.
 DEBUG_SIGNAL_NONE
-<none>: continuar sin enviar ninguna señal)
+<none>: continuar sin enviar ninguna señal
 MAINW_RUN_HEADER_WARNING
 Esta intentando compilar/ejecutar un archivo de cabecera.\nProbablemente deba intentar ejecutar un archivo fuente que\nincluya esta cabecera. ¿Desea continuar?\n\nNota: puede configurar un fuente para que se ejecute siempre\ndicho fuente sin importar cual otro tenga el foco con click\nderecho sobre la pesataña del mismo.
 MAINW_RUN_HEADER_CHECK
@@ -2464,6 +2464,8 @@ PREFERENCES_DEBUG_CATCH_THROW
 Detenerse al lanzar una excepción (throw)
 PREFERENCES_DEBUG_LOAD_ALL_DEBUG_INFO
 Cargar toda la información de depuracion antes de comenzar
+PREFERENCES_DEBUG_DISABLE_PRETTY_PRINTERS
+Deshabilitar Pretty-Printers en gdb
 PREFERENCES_DEBUG_RECOMPILE_AUTOMATICALLY
 Recompilar automaticamente antes de depurar si es necesario
 PREFERENCES_DEBUG_ALWAYS_RUN_IN_DEBUGGER

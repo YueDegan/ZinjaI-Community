@@ -218,6 +218,7 @@ bool ConfigManager::Load() {
 				else if (p.Key()=="catch_throw") Debug.catch_throw = p.AsBool();
 				else if (p.Key()=="auto_solibs") Debug.auto_solibs = p.AsBool();
 				else if (p.Key()=="readnow") Debug.readnow = p.AsBool();
+				else if (p.Key()=="disable_pretty_printers") Debug.disable_pretty_printers = p.AsBool();
 				else if (p.Key()=="inspections_on_right") Debug.inspections_on_right = p.AsBool();
 				else if (p.Key()=="inspect_on_mouse_over") Debug.inspect_on_mouse_over = p.AsBool();
 				else if (p.Key()=="show_thread_panel") Debug.show_thread_panel = p.AsBool();
@@ -588,6 +589,7 @@ bool ConfigManager::Save(){
 	CFG_BOOL_WRITE_DN("readnow",Debug.readnow);
 	CFG_BOOL_WRITE_DN("catch_throw",Debug.catch_throw);
 	CFG_BOOL_WRITE_DN("auto_solibs",Debug.auto_solibs);
+	CFG_BOOL_WRITE_DN("disable_pretty_printers",Debug.disable_pretty_printers);
 	CFG_BOOL_WRITE_DN("return_focus_on_continue",Debug.return_focus_on_continue);
 	CFG_BOOL_WRITE_DN("improve_inspections_by_type",Debug.improve_inspections_by_type);
 #ifdef __linux__
@@ -881,6 +883,7 @@ void ConfigManager::LoadDefaults(){
 	Debug.show_log_panel = false;
 	Debug.catch_throw = true;
 	Debug.auto_solibs = false;
+	Debug.disable_pretty_printers = false;
 	Debug.readnow = false;
 	Debug.show_do_that = false;
 	Debug.validate_breakpoint_address = true;
