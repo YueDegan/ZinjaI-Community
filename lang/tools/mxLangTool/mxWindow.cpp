@@ -190,7 +190,7 @@ void mxWindow::OnFind(wxCommandEvent &evt) {
 }
 
 void mxWindow::OnApplyNext(wxCommandEvent &evt) {
-	if (sel_item)
+	if (not sel_item.IsEmpty())
 		lang_hash[sel_item]=trans_text->GetValue();
 	int is = list->GetSelection()+1;
 	if (is!=int(list->GetCount()))

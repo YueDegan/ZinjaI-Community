@@ -22,7 +22,7 @@ mxOSD *mxOSD::current_osd = nullptr;
 
 mxOSD::mxOSD(wxWindow *aparent, wxString str, int time, bool corner, GenericAction *aon_cancel) 
 	: wxDialog( aparent?aparent:main_window,wxID_ANY,"",wxPoint(200,200),wxSize(400,100),
-	            (aparent?wxFRAME_FLOAT_ON_PARENT:wxSTAY_ON_TOP)|wxNO_BORDER ),
+	            (aparent?wxFRAME_FLOAT_ON_PARENT:wxSTAY_ON_TOP)|wxNO_BORDER),
 	  on_cancel(aon_cancel), timer(nullptr), parent(aparent)
 {
 	cancel_button = on_cancel ? new wxButton(this,wxID_CANCEL,LANG(GENERAL_CANCEL_BUTTON,"Cancelar")) : nullptr;
@@ -81,16 +81,14 @@ void mxOSD::ShowText(wxString str, int time, bool corner) {
 		cancel_button->Move((tx-cbsz.GetWidth())/2,ty-cbsz.GetHeight()-margin);
 	}
 	
-	if (parent) parent->Raise();
 	if (time){
 		if (!timer)
 			timer = new wxTimer(GetEventHandler(),mxID_TIMER_OSD);
 		timer->Start(time,true);
 	}
-	Show(); Refresh(); 
-	ZLINF("OSD","ShowText wxYield:in");
-	wxYield();
-	ZLINF("OSD","ShowText wxYield:out");
+	
+	ShowWithoutActivating(); Refresh(); wxYield();
+	
 }
 
 void mxOSD::OnPaint (wxPaintEvent &event) {

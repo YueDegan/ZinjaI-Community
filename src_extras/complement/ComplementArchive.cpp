@@ -150,10 +150,11 @@ bool CreateZip(bool (*callback)(wxString message, int progress), const wxString 
 	return true;
 }
 
+static const char *ToCStyleString(const wxString &wx_str) { return static_cast<const char*>(wx_str.To8BitData()); }
+
 bool SetBins(const wxArrayString & files, const wxString aTargetDir) {
-	string target=aTargetDir.c_str();
 	for(unsigned int i=0;i<files.GetCount();i++)
-		system((string("chmod a+x ")+target+files[i].c_str()).c_str());
+		system(ToCStyleString(wxString("chmod a+x ")+aTargetDir+files[i]));
 	return true;
 }
 
