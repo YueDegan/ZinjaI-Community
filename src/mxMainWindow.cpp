@@ -3205,8 +3205,7 @@ void mxMainWindow::OnDebugStop ( wxCommandEvent &event ) {
 void mxMainWindow::OnDebugUpdateInspections ( wxCommandEvent &event ) {
 	if (!debug->IsDebugging()) return;
 	if (debug->IsPaused()) debug->UpdateInspections();
-	_DEBUG_LAMBDA_0( lmbUpdateInspections, { debug->UpdateInspections(); } );
-	debug->PauseFor(new lmbUpdateInspections());
+	debug->PauseFor( { nullptr, [](){ debug->UpdateInspections(); } } );
 }
 
 void mxMainWindow::OnDebugInspect ( wxCommandEvent &event ) {

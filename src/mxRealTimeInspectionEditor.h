@@ -68,6 +68,7 @@ class mxRealTimeInspectionEditor : public wxFrame, public myDIEventHandler, publ
 			}
 #endif
 		}
+		bool IsModified() const { return state==st_mod; }
 		void SetValueFromDI();
 	};
 	SingleList<AuxRTIE> inspections;

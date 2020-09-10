@@ -78,8 +78,7 @@ mxRealTimeInspectionEditor::~mxRealTimeInspectionEditor() {
 
 void mxRealTimeInspectionEditor::Break (int num) {
 	if (!debug->IsPaused()) {
-		_DEBUG_LAMBDA_2( lmbBreakInspection, mxRealTimeInspectionEditor,win, int,num, { win->Break(num); } );
-		debug->PauseFor(new lmbBreakInspection(this,num));
+		debug->PauseFor( { this, [win=this,num](){ win->Break(num); } } ); 
 		return;
 	}
 	if (inspections[num].broken) {
@@ -151,7 +150,8 @@ void mxRealTimeInspectionEditor::Add (int pos, int lev, DebuggerInspection * di)
 	} else {
 		wxWindow *prev_wid = sizer->GetItem(2*pos-1)->GetWindow();
 		sizer->Insert(2*pos+1,aux.ctrl,sizers->Exp1);
-		aux.ctrl->MoveAfterInTabOrder(prev_wid);
+		if (prev_wid) // its null the first time...why?
+			aux.ctrl->MoveAfterInTabOrder(prev_wid);
 	}
 	inspections.Insert(pos,aux);
 }
@@ -173,24 +173,23 @@ void mxRealTimeInspectionEditor::OnApplyChange (wxCommandEvent & evt) {
 	if (mask_events) return;
 	if (!debug->IsDebugging()) return;
 	for(int i=0;i<inspections.GetSize();i++) {
-		if (evt.GetEventObject()==inspections[i].ctrl) {
-			_DEBUG_LAMBDA_2(mlbModifyAndUpdateParents,mxRealTimeInspectionEditor,rte,int,i,{
+		if (evt.GetEventObject()==inspections[i].ctrl or inspections[i].IsModified()) {
+			wxString new_value = inspections[i].GetValue(); // fix new_value, or updating parents in one inspection will reset changes in another
+			if (inspections[i].di->IsCString()) new_value = mxUT::EscapeString(new_value,true);
+			debug->PauseFor( { this, [rte=this,i,new_value]{
 				SingleList<AuxRTIE> &inspections = rte->inspections;
 				// cargar el nuevo valor
-				wxString new_value = inspections[i].GetValue();
-				if (rte->inspections[i].di->IsCString()) new_value = mxUT::EscapeString(new_value,true);
 				bool ok = rte->inspections[i].di->ModifyValue(new_value);
 				rte->inspections[i].SetState(ok?AuxRTIE::st_ok:AuxRTIE::st_err);
 				// forzar la actualizacion de los padres
+				int child = i;
 				while (true) {
-					int p = i-1;
-					while(p>=0 && inspections[p].level==inspections[i].level) --p;
-					if (p<0) break; 
-					i=p; inspections[i].di->UpdateValue(true);
+					int parent = child-1;
+					while(parent>=0 && inspections[parent].level==inspections[child].level) --parent;
+					if (parent<0) break; 
+					child=parent; inspections[child].di->UpdateValue(true);
 				}
-			});
-			debug->PauseFor(new mlbModifyAndUpdateParents(this,i));
-			return;
+			} });
 		}
 	}
 }
@@ -198,7 +197,7 @@ void mxRealTimeInspectionEditor::OnApplyChange (wxCommandEvent & evt) {
 void mxRealTimeInspectionEditor::Resize(bool only_grow_h) {
 	wxSize old_size = WindowToClientSize(GetSize());
 	sizer->Layout(); /*wxYield();*/
-	sizer->RecalcSizes();
+//	sizer->RecalcSizes(); // wx' docs says not to call it from user code, for internal use only (layout should be enought)
 	wxSize fit_size = sizer->ComputeFittingClientSize(this);
 	int h = fit_size.GetHeight() + 10;
 	if  (only_grow_h) {
@@ -242,9 +241,7 @@ void mxRealTimeInspectionEditor::OnDIOutOfScope (DebuggerInspection * di) {
 // but do not now where, evaluations gives old value or nothing)
 void mxRealTimeInspectionEditor::OnUpdateValues (wxCommandEvent & evt) {
 	if (!debug->IsPaused()) {
-		_DEBUG_LAMBDA_1( lmbUpdateRTIEditor, mxRealTimeInspectionEditor,win, 
-			             { wxCommandEvent evt; win->OnUpdateValues(evt); } );
-		debug->PauseFor(new lmbUpdateRTIEditor(this));
+		debug->PauseFor( {this, [win=this](){ wxCommandEvent evt; win->OnUpdateValues(evt); } } );
 	} else {
 		inspections[0].di->ForceVOUpdate();
 		for(int i=0;i<inspections.GetSize();i++) {
