@@ -441,8 +441,12 @@ void mxProjectConfigWindow::OnRenameConfigButton(wxCommandEvent &event) {
 			}
 		configuration->name=res;
 		if (configuration->backup) configuration->backup->name=res;
-		configuration_name->SetString(configuration_name->GetSelection(),res);
-		configuration_name->SetValue(res);
+		int idx = configuration_name->GetSelection();
+		configuration_name->SetString(idx,res);
+		// SetSelectionString won't work (at leas on linux+wx3.1.4+gtk3) for some reason;
+		// we have to force a selection change in order to see the value actually refreshed
+		configuration_name->SetSelection(wxNOT_FOUND);
+		configuration_name->SetSelection(idx);
 	}
 }
 
