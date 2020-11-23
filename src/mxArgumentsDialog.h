@@ -31,6 +31,7 @@ public:
 	void OnWorkdirButton(wxCommandEvent &evt);
 	void OnArgsButton(wxCommandEvent &evt);
 	void OnCharHook(wxKeyEvent &evt);
+	void OnClose(wxCloseEvent &event);
 	DECLARE_EVENT_TABLE();
 };
 

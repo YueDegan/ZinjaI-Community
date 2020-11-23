@@ -29,11 +29,12 @@ BEGIN_EVENT_TABLE(mxArgumentsDialog, wxDialog)
 	EVT_CHAR_HOOK(mxArgumentsDialog::OnCharHook)
 	EVT_BUTTON(mxID_ARGS_BUTTON,mxArgumentsDialog::OnArgsButton)
 	EVT_BUTTON(mxID_WORKING_FOLDER,mxArgumentsDialog::OnWorkdirButton)
+	EVT_CLOSE(mxArgumentsDialog::OnClose)
 END_EVENT_TABLE()
 
 	
 mxArgumentsDialog::mxArgumentsDialog(wxWindow *parent, const wxString &base_path, const wxString &def_args, const wxString &def_dir) 
-	: mxDialog(parent, LANG(ARGUMENTS_CAPTION,"Argumentos para la ejecucion"), mxDialog::OCP_HIDE ), // el false es porque al usarla va a ser siempre con instancias en el stack
+	: mxDialog(parent, LANG(ARGUMENTS_CAPTION,"Argumentos para la ejecucion"), mxDialog::OCP_NULL ), // el false es porque al usarla va a ser siempre con instancias en el stack... el opc_null es para poder retornar 0 en lugar de wxID_CANCEL en el alt+f4
 	  m_base_path (base_path)
 {
 	CreateSizer sizer(this);
@@ -102,5 +103,9 @@ void mxArgumentsDialog::OnCharHook(wxKeyEvent &evt)	{
 
 void mxArgumentsDialog::OnWorkdirButton (wxCommandEvent & evt) {
 	mxThreeDotsUtils::ReplaceAllWithDirectory(this,combo_work,m_base_path, LANG(COMPILECONF_WORKDIR_DLG,"Directorio de trabajo"));
+}
+
+void mxArgumentsDialog::OnClose (wxCloseEvent & event) {
+	EndModal(AD_CANCEL);
 }
 
