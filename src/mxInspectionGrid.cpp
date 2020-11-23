@@ -208,7 +208,7 @@ void mxInspectionGrid::OnCellChange(wxGridEvent &event) {
 				mxGrid::SetCellValue(row,IG_COL_EXPR,arr[0]); // for some reason, SetCellValue effect is dismissed at InsertRows
 			}
 		} else {
-			if ( ModifyExpression(row,new_value,last_return_had_shift_down,false) ) Select(row+1);
+			/*if ( */ModifyExpression(row,new_value,last_return_had_shift_down,false) /*) Select(row+1)*/;
 		}
 	} else if (col==GetRealCol(IG_COL_VALUE)) {
 		if (row<0||row>inspections.GetSize()||inspections[row].IsNull()) return;
