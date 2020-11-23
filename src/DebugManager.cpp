@@ -484,8 +484,9 @@ wxString DebugManager::HowDoesItRuns(bool raise_zinjai_window) {
 		bool should_continue=false; // cuando se pauso solo para colocar un brekapoint y seguir, esto indica que siga sin analizar la salida... puede ser how diga signal-received (lo normal) o que se haya pausado justo por un bp de los que solo actualizan la tabla de inspecciones
 		
 		while (not m_on_pause_actions.empty()) { // si se pauso solo para colocar un brekapoint o algo asi, hacerlo y setear banderas para que siga ejecutando
-			m_on_pause_actions.begin()->action();
+			auto action = *m_on_pause_actions.begin();
 			m_on_pause_actions.pop_front();
+			action.action();
 			if (m_on_pause_actions.empty()) {
 				should_pause=false; // el usuario no generó la pausa, sino que era solo para colocar el breakpoint
 				should_continue=true;
