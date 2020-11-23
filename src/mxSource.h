@@ -118,7 +118,7 @@ public:
 			/// 2170 = replace selection, with a 16-bits keycode stored in the address pointed by lp
 			/// 2001/2003 = add/insert text, wp has lenght/position, lp points to a null-terminated string
 			/// 2002 = add styled text, wp has lenght, lp points to a some data buffer
-			if (lp && msg==2170) { memcpy(data,(void*)lp,2); }
+			if (lp>=0 && msg==2170) { memcpy(data,(void*)lp,2); } /// @todo: cuando el cursor esta justo antes de //, lp<0.. que significa?
 			else if (msg==2003||msg==2001) { 
 				char *aux=(char*)_lp; int i=0; while (aux[i]!='\0') i++;
 				extra=new char[i+1]; i=0; while (aux[i]!='\0') { extra[i]=aux[i]; i++; } extra[i]='\0';
