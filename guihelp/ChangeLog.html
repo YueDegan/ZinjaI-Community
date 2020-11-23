@@ -3,17 +3,17 @@
 <BODY><UL>
 <H3>Registro de Cambios (ChangeLog)</H3>
 
-<!--<I>Note 1: A more detailed and English changelog can be found in the <A href="http://sourceforge.net/p/zinjai/code/ci/master/log/?path=" target="_blank">git repository's history</A>.</I><BR><BR>
-<I>Nota 2: Nuevo código para categorizar los cambios: New=nueva funcionalidad, Imp=mejora sobre una funcionalidad existente, Fix=corrección de un bug</I><BR><UL>-->
-
-</UL><BR><B>Release 202004??</B><BR><UL>
+</UL><BR><B>Release 202011??</B><BR><UL>
 <!--	<LI>Imp: Mejoras en el coloreado de sintaxis de scripts de bash, y agregado el coloreado para textos markdown.</LI> -->
 	<LI>New: Desde las opciones avanzadas de depuración en las preferencias se pueden deshabilitar los pretty-printers de gdb (para acelerar el paso-a-paso).</LI>
+	<LI>Imp: Cambio en la forma en que se trata al comando para ejecutar wxFormBuilder, para poder utilizarlo a través de flatpak en GNU/Linux (además se intenta autodetectar la primera vez).</LI>
 	<LI>Imp: Ahora ZinjaI se compila con la versión 3.1.x de wxWidgets en modo Unicode, y requiere C++11.</LI>
+	<LI>Imp: Al aplicar los cambios desde el editor de inspecciones en tiempo real, si se modificaron varios campos se aplican todos al presionar enter sobre cualquiera, ya no solo el que tiene el foco.</LI>
 	<LI>Imp: En proyectos que solo generan bibliotecas, se habilitan igualmente las opciones de ejecución para poder definir un ejecutable externo que haga uso de la biblioteca.</LI>
 	<LI>Imp: Al plegar secciones de código, se mantienen visibles las lineas en blanco que separan las secciones plegadas.</LI>
 	<LI>Imp: Al abrir un proyecto, si un archivo asociado no existe en disco se genera una advertencia.</LI>
 	<LI>Imp: La columna de argumentos del backtrace no muestra los valores cuando son arreglo o estructuras (para acelerar el paso a paso).</LI>
+	<LI>Fix: Corregido un error en el parser por el cual no detectaba correctamente las sobrecargas del operador &gt;&gt; para el árbol de símbolos.</LI>
 	<LI>Fix: El tamaño de fuente de los contadores de gcov se ajusta al nivel de zoom del código.</LI>
 	<LI>Fix: Corregido un error que geraba un segmentation fault al agregar los argumentos de compilación para gprof o gcov en un programa simple (fuera de proyecto).</LI>
 	<LI>Fix: Corregido un error que geraba un segmentation fault al seleccionar ciertas macros en el cuadro de "ir a Función/Método/Clase...".</LI>

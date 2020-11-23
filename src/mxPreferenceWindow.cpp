@@ -803,7 +803,7 @@ wxPanel *mxPreferenceWindow::CreatePathsPanel2 (wxNotebook *notebook) {
 	sizer.BeginText( LANG(PREFERENCES_COMMANDS_DOXYGEN,"Ubicación del ejecutable de Doxygen") )
 		.Bind(m_binder,config->Files.doxygen_command).Button(mxID_DOXYGEN_PATH).EndText(files_doxygen_command);	
 	
-	sizer.BeginText( LANG(PREFERENCES_COMMANDS_WXFORMBUILDER,"Ubicación del ejecutable de wxFormBuilder") )
+	sizer.BeginText( LANG(PREFERENCES_COMMANDS_WXFORMBUILDER,"Comando para ejecutar wxFormBuilder") )
 		.Bind(m_binder,config->Files.wxfb_command).Button(mxID_WXFB_PATH).EndText(files_wxfb_command);
 
 #ifdef __WIN32__

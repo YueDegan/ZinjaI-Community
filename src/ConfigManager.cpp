@@ -386,6 +386,7 @@ bool ConfigManager::Load() {
 		
 	}
 	
+	if (Init.version<20201123)  Files.wxfb_command = mxUT::Quotize(Files.wxfb_command);
 	if (Init.version<20190916)  Running.cpp_compiler_options += " -Werror=return-type";
 	if (Init.version<20180614 && Debug.macros_file=="debug_macros.gdb") Debug.macros_file = DIR_PLUS_FILE("samples","debug_macros.gdb");
 #ifdef __APPLE__
@@ -930,6 +931,12 @@ bool ConfigManager::CheckWxfbPresent() {
 #else
 		out = mxUT::GetOutput("wxformbuilder -h",true);
 		if (out.Len()) config->Files.wxfb_command = "wxformbuilder";
+		else {
+//			wxString flatpak_cmd = "flatpak run  --command=wxformbuilder --file-forwarding org.wxformbuilder.wxFormBuilder ";
+			wxString flatpak_cmd = "flatpak run org.wxformbuilder.wxFormBuilder";
+			out = mxUT::GetOutput(flatpak_cmd+" -h",true);
+			if (out.Len()) config->Files.wxfb_command = flatpak_cmd;
+		}
 #endif
 	}
 	config->Init.wxfb_seen = out.Len();

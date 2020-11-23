@@ -2375,7 +2375,7 @@ mxSource *mxMainWindow::OpenFile (const wxString &filename, bool add_to_project)
 			project->AddFile(FT_OTHER,filename);
 		} else {
 			mxOSDGuard osd(this,LANG(WXFB_OPENING,"Abriendo wxFormBuilder..."));
-			wxString command = wxString("\"")+config->Files.wxfb_command+"\" \""+filename+"\"";
+			wxString command = config->Files.wxfb_command+" "+mxUT::Quotize(filename);
 			ZLINF2("mxMainWindow::OpenFile","Running: "<<command);
 			int retval = wxExecute(command);
 			ZLINF2("mxMainWindow::OpenFile","retval: "<<retval);

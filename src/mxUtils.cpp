@@ -450,10 +450,15 @@ wxString mxUT::GetOutput(wxString command, bool also_error, bool use_cache) {
 		
 	wxString ret;
 	wxArrayString output,errors;
+	int retval = -1;
 	if (also_error)
-		mxExecute(command, output, errors, wxEXEC_NODISABLE|wxEXEC_SYNC);
+		retval = mxExecute(command, output, errors, wxEXEC_NODISABLE|wxEXEC_SYNC);
 	else
-		mxExecute(command, output, wxEXEC_NODISABLE|wxEXEC_SYNC);
+		retval = mxExecute(command, output, wxEXEC_NODISABLE|wxEXEC_SYNC);
+	if (retval==-1) {
+		// example of returning -1: error = 0x1f6edc0 L"execvp(wxformbuilder, -h) failed with error 2!"
+		output.Clear(); errors.Clear(); 
+	}
 	if (also_error) {
 		for (unsigned int i=0;i<errors.GetCount();i++)
 			if (ret.Len()==0)
