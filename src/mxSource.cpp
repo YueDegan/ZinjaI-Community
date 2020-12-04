@@ -4001,13 +4001,17 @@ bool mxSource::GetCurrentCall (wxString &ftype, wxString &fname, wxArrayString &
 					}
 					// find out argument type
 					if (one_arg!="" && type=="") {
-						StcTypeInfo tinfo = FindTypeOfByPos(p-1,true);
-						if (!tinfo.IsOk()) tinfo.type="???";
-						else if (tinfo.dims>0) { // array or ptr
-							one_arg = wxString("*")+one_arg;
-							while (--tinfo.dims>0) if (one_arg.Last()==']') one_arg = wxString("*")+one_arg; else one_arg<<"[]";
-						} else if (tinfo.dims<0) tinfo.type="???";
-						type = tinfo.type;
+						if (one_arg=="true" or one_arg=="false") {
+							type = "bool"; one_arg = "???";
+						} else {
+							StcTypeInfo tinfo = FindTypeOfByPos(p-1,true);
+							if (!tinfo.IsOk()) tinfo.type="???";
+							else if (tinfo.dims>0) { // array or ptr
+								one_arg = wxString("*")+one_arg;
+								while (--tinfo.dims>0) if (one_arg.Last()==']') one_arg = wxString("*")+one_arg; else one_arg<<"[]";
+							} else if (tinfo.dims<0) tinfo.type="???";
+							type = tinfo.type;
+						}
 					}
 					one_arg = type+" "+one_arg;
 					args.Add(one_arg);
