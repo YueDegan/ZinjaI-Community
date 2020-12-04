@@ -3612,10 +3612,10 @@ bool ProjectManager::WxfbNewClass(wxString base_name, wxString name) {
 		cpp_file.AddLine("}");
 		cpp_file.AddLine("");
 	}
-	cpp_file.AddLine(name+"::~"+name+"() {");
-	cpp_file.AddLine("\t");
-	cpp_file.AddLine("}");
-	cpp_file.AddLine("");
+//	cpp_file.AddLine(name+"::~"+name+"() {");
+//	cpp_file.AddLine("\t");
+//	cpp_file.AddLine("}");
+//	cpp_file.AddLine("");
 	cpp_file.Write();
 	cpp_file.Close();
 	// crear el h
@@ -3639,7 +3639,7 @@ bool ProjectManager::WxfbNewClass(wxString base_name, wxString name) {
 	h_file.AddLine("\t");
 	h_file.AddLine("public:");
 	h_file.AddLine(wxString("\t")+name+"(wxWindow *parent=NULL);");
-	h_file.AddLine(wxString("\t~")+name+"();");
+//	h_file.AddLine(wxString("\t~")+name+"();");
 	h_file.AddLine("};");
 	h_file.AddLine("");
 	h_file.AddLine("#endif");
@@ -3762,7 +3762,9 @@ int ProjectManager::GetCurrentStd (bool cpp) const {
 		if (active_configuration->std_cpp.Contains("17")) return 2017;
 		if (active_configuration->std_cpp.Contains("2a")) return 2020;
 		if (active_configuration->std_cpp.Contains("20")) return 2020;
-		return 1998; // safe default
+		if (active_configuration->std_cpp.Contains("2b")) return 2023;
+		if (active_configuration->std_cpp.Contains("23")) return 2023;
+		return 2011; // safe default
 	} else {
 		if (active_configuration->std_c.Contains("90")) return 1990;
 		if (active_configuration->std_c.Contains("99")) return 1999;
