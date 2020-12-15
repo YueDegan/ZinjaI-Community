@@ -193,7 +193,8 @@ void mxOutputView::GetProcessOutput() {
 			this->SetTitle(wxString(win_caption)<<" ("<<p<<"%)");
 		}
 	}
-	GetProcessOutput_aux(process->GetErrorStream(),ctrl_err);
+	line = GetProcessOutput_aux(process->GetErrorStream(),ctrl_err);
+	if (textfile && not line.IsEmpty()) textfile->Write(line);
 	if (working) timer->Start(500,true);
 }
 
