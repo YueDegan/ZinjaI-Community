@@ -16,18 +16,12 @@ BEGIN_EVENT_TABLE(mxHidenPanel,wxPanel)
 	EVT_SIZE(mxHidenPanel::OnResize)
 END_EVENT_TABLE()
 
-int mxHidenPanel::used_bottom=0;
-int mxHidenPanel::used_bottom_left=0;
-int mxHidenPanel::used_bottom_right=0;
-int mxHidenPanel::used_right=0;
-int mxHidenPanel::used_right_bottom=0;
-int mxHidenPanel::used_left=0;
-int mxHidenPanel::used_left_bottom=0;
 int mxHidenPanel::ignore_autohide=0;
 mxMainWindow *mxHidenPanel::main_window = nullptr;
 	
-mxHidenPanel::mxHidenPanel(wxWindow *parent, wxWindow *acontrol, hp_pos apos, wxString alabel):wxPanel(parent,wxID_ANY,wxDefaultPosition,wxSize(15,15)) {
+mxHidenPanel::mxHidenPanel(wxWindow *parent, wxWindow *acontrol, hp_pos apos, int alayer, int aorder, wxString alabel):wxPanel(parent,wxID_ANY,wxDefaultPosition,wxSize(15,15)) {
 	label=alabel; selected=false; control=acontrol; pos=apos; forced_show=mouse_in=false; showing=false;
+	layer=alayer; order=aorder;
 	if (pos!=HP_BOTTOM) { 
 		unsigned int i=1; 
 		while (i<label.Len()) { 
@@ -57,6 +51,15 @@ void mxHidenPanel::ToggleDock() {
 
 void mxHidenPanel::ShowFloat(bool set_focus) {
 	wxAuiPaneInfo &pane = main_window->m_aui->GetPane(control);
+	pane.Float();
+	pane.Show();
+	pane.MinSize(wxSize(10,10));
+	// With wx 3.x and gtk3, first update takes size from minsize, the second one respects floatingsize, so
+	// we need two (this is the extra one) or the first time the panel appears it does with the wrong size
+	// We also do it here, so if we are toggling a panel from fixed to floating, it considers the
+	// space that it has just released, in the size queries that follows
+	main_window->m_aui->Update(); 
+	
 	int px,py,pw,ph,ax,ay,aw,ah;
 	if (g_welcome_panel && g_welcome_panel->IsVisible()) {
 		g_welcome_panel->GetScreenPosition(&px,&py);
@@ -67,35 +70,29 @@ void mxHidenPanel::ShowFloat(bool set_focus) {
 	}
 	GetScreenPosition(&ax,&ay);
 	GetSize(&aw,&ah);
+//	int used_left = px-ax;
+//	int used_right = (ax+aw)-(px+pw);
+//	int used_bottom = (ay+ah)-(py+ph);
 	if (pos==HP_LEFT) {
 		px=ax+aw;
 		pw/=4;
-		if (used_bottom && used_bottom_left<px+pw) ph-=used_bottom;
-		used_left=pw;
-		used_left_bottom=px+ph;
+//		if (used_bottom && used_bottom_left<px+pw) ph-=used_bottom;
 	} else if (pos==HP_BOTTOM) {
 		ph/=3;
-		py=ay-ph/*-m_aui->GetArtProvider()->GetMetric(wxAUI_DOCKART_CAPTION_SIZE)*/;
-		if (used_left && used_left_bottom>px) { pw-=used_left; px+=used_left; }
-		if (used_right && used_right_bottom<px+pw) pw-=used_right;
-		used_bottom=ph;
-		used_bottom_left=px;
-		used_bottom_right=px+pw;
+		py=ay-ph;
+//		if (used_left && used_left_bottom>px) { pw-=used_left; px+=used_left; }
+//		if (used_right && used_right_bottom<px+pw) pw-=used_right;
 	} else if (pos==HP_RIGHT) {
 		pw/=control==(wxWindow*)main_window->inspection_ctrl?3:4;
 		px=ax-pw;
-		if (used_bottom && used_bottom_right>px) ph-=used_bottom;
-		used_right=pw;
-		used_right_bottom=px;
+//		if (used_bottom && used_bottom_right>px) ph-=used_bottom;
 	}
-	pane.Show();
-	pane.Float();
-	pane.MinSize(wxSize(10,10));
-	pane.FloatingSize(pw,ph);
+	
 	pane.FloatingPosition(px,py);
+	pane.FloatingSize(pw,ph);
+	main_window->m_aui->Update();
 	timer->Start(200,false);
 	selected=false; showing=true; Refresh();
-	main_window->m_aui->Update();
 	if (!set_focus) main_window->Raise(); // los paneles flotando le sacan el foco a la main window y no se soluciona con setfocus
 }
 
@@ -103,21 +100,18 @@ void mxHidenPanel::ShowDock() {
 	timer->Stop();
 	wxAuiPaneInfo &pane = main_window->m_aui->GetPane(control);
 	pane.Show();
-	pane.Row(5);
-	pane.Position(5);
 	pane.Dock();
-	if (pos==HP_LEFT) pane.Left();
+	pane.Layer(layer);
+	pane.Position(order);
+	if      (pos==HP_LEFT)   pane.Left();
 	else if (pos==HP_BOTTOM) pane.Bottom();
-	else if (pos==HP_RIGHT) pane.Right();
+	else if (pos==HP_RIGHT)  pane.Right();
 	showing=true;
 	main_window->m_aui->Update();
 	selected=true; Refresh();
 }
 
 void mxHidenPanel::Hide() {
-	if (pos==HP_LEFT) used_left=0;
-	if (pos==HP_BOTTOM) used_bottom=0;
-	if (pos==HP_RIGHT) used_right=0;
 	timer->Stop();
 	selected=false; mouse_in=false; forced_show=false;
 	main_window->m_aui->GetPane(control).Hide();

@@ -88,7 +88,7 @@ public:
 	bool IsContained() const { return m_inside_of!=PaneId::Invalid && m_inside_of!=PaneId::Container; }
 	bool IsContainer() const { return m_inside_of==PaneId::Container; }
 	PaneId::type GetContainerId() const { return m_inside_of; }
-	int GetLayer() const { return m_layer; }
+	int GetLayer() const;
 	int GetOrder() const { return m_order; }
 	int GetSizeX() const { return m_bs_x; }
 	int GetSizeY() const { return m_bs_y; }

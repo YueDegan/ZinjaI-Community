@@ -64,6 +64,9 @@ void PaneConfig::Init ( ) {
 	m_configs[PaneId::Explorer].InsideOf(id_left);
 }
 
+int PaneConfig::GetLayer() const { return MAX_LAYER-m_layer; }
+
+
 mxAUIFreezeGuard::mxAUIFreezeGuard(mxAUI &aui) : m_aui(aui) { m_aui.Freeze(); }
 mxAUIFreezeGuard::mxAUIFreezeGuard(const mxAUIFreezeGuard &other) : m_aui(other.m_aui) { m_aui.Freeze(); }
 mxAUIFreezeGuard::~mxAUIFreezeGuard() { m_aui.Thaw(); }
@@ -139,7 +142,7 @@ void mxAUI::Create(PaneId::type id, wxWindow * win) {
 		
 		// add the control to the aui
 		wxAuiPaneInfo pinfo;
-		pinfo.Caption(cfg.GetCaption()).CloseButton(true).MaximizeButton(true).Hide().Position(cfg.GetOrder()).Layer(MAX_LAYER-cfg.GetLayer()).MaximizeButton(true);
+		pinfo.Caption(cfg.GetCaption()).CloseButton(true).MaximizeButton(true).Hide().Position(cfg.GetOrder()).Layer(cfg.GetLayer()).MaximizeButton(true);
 		if (cfg.HaveSize()) pinfo.BestSize(cfg.GetSizeX(),cfg.GetSizeY());
 		if (cfg.IsFloating()) pinfo.Float();
 		else {
@@ -156,7 +159,7 @@ void mxAUI::Create(PaneId::type id, wxWindow * win) {
 			hp_pos pos = HP_BOTTOM; int layer = 0;
 			if (cfg.IsLeft()) { pos = HP_LEFT; layer = 1; }
 			if (cfg.IsRight()) { pos = HP_RIGHT; layer = 1; }
-			inf.hidden_helper = new mxHidenPanel(m_wxaui.GetManagedWindow(),inf.window,pos,cfg.GetShortCaption());
+			inf.hidden_helper = new mxHidenPanel(m_wxaui.GetManagedWindow(),inf.window,pos,cfg.GetLayer(),cfg.GetOrder(),cfg.GetShortCaption());
 			wxAuiPaneInfo pinfo;
 			pinfo.CaptionVisible(false).Layer(MAX_LAYER-layer).Position(cfg.GetOrder()).Dock();
 			if      (cfg.IsBottom()) pinfo.Bottom();

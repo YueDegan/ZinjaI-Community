@@ -14,15 +14,14 @@ private:
 	bool showing;
 	bool forced_show;
 	hp_pos pos;
-	static int used_bottom, used_right,used_left;
-	static int used_bottom_right, used_bottom_left, used_right_bottom ,used_left_bottom;
+	int layer, order;
 	static int ignore_autohide;
 	static mxMainWindow *main_window;
 	friend class mxAUI;
 public:
 	wxTimer *timer;
 	wxWindow *control;
-	mxHidenPanel(wxWindow *parent, wxWindow *acontrol, hp_pos apos, wxString alabel);
+	mxHidenPanel(wxWindow *parent, wxWindow *acontrol, hp_pos apos, int alayer, int aorder, wxString alabel);
 	~mxHidenPanel();
 	void OnPaint(wxPaintEvent &evt);
 	void ProcessClose();
