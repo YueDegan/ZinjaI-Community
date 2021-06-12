@@ -4472,6 +4472,9 @@ extern void template_argument_skip( LongString *plstr )
       {
          case '<': i++; break;
          case '>': i--; break;
+         case SN_RS: i-=2; // vector<list<string>> (>> se recibe como un solo operador... si se lo separa en el origen entonces no se detecta operator>>)
+			if( plstr ) LongStringMyAppend( plstr, ">" );
+				break;
          case  0 :
             niveau--;
             return;

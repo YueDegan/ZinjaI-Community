@@ -1,7 +1,6 @@
 #ifndef MXEXTRASTEPWINDOW_H
 #define MXEXTRASTEPWINDOW_H
 
-#include "Cpp11.h"
 #include "mxCommonPopup.h"
 #include "mxCommonConfigControls.h"
 

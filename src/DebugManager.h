@@ -6,7 +6,6 @@
 #include <vector>
 #include <list>
 #include <map>
-#include "Cpp11.h"
 #include "SingleList.h"
 #include "GDBAnsBuffer.h"
 using namespace std;
@@ -341,26 +340,6 @@ public:
 	};
 	
 };
-
-
-
-//#define _DEBUG_LAMBDA_0(Name,Action) \
-//	class Name : public DebugManager::OnPauseAction {\
-//	public: void Run() override Action };
-//
-//#define _DEBUG_LAMBDA_1(Name,PtrType,Arg,Action) \
-//	class Name : public DebugManager::OnPauseAction {\
-//	public: Name(PtrType *arg) : Arg(arg) {} \
-//	public: void Run() override Action  \
-//	public: bool Invalidate(void *ptr) { return ptr==Arg; } \
-//	private: PtrType *Arg; };
-//#define _DEBUG_LAMBDA_2(Name,PtrType1,Arg1,Type2,Arg2,Action) \
-//	class Name : public DebugManager::OnPauseAction {\
-//	public: Name(PtrType1 *arg1, Type2 arg2) : Arg1(arg1),Arg2(arg2) {} \
-//	public: void Run() override Action \
-//	public: bool Invalidate(void *ptr) { return ptr==Arg1; } \
-//	private: PtrType1 *Arg1; Type2 Arg2; };
-
 
 #endif
 

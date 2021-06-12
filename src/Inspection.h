@@ -568,9 +568,6 @@ public:
 		__debug_log_method__;
 		if (dit_type!=DIT_VARIABLE_OBJECT) return false;
 		if (!debug->CanTalkToGDB()) {
-//			_DEBUG_LAMBDA_2( lmbModifyInspectionValue, DebuggerInspection,di, wxString,command, { debug->SendCommand(command); } );
-//			wxString command = wxString("-var-assign ")<<this->variable_object<<" "<<mxUT::EscapeString(new_value,true);
-//			debug->PauseFor(new lmbModifyInspectionValue(this,command));
 			wxString command = wxString("-var-assign ")<<this->variable_object<<" "<<mxUT::EscapeString(new_value,true);
 			debug->PauseFor( {this,[command](){ debug->SendCommand(command); } });
 			return true;

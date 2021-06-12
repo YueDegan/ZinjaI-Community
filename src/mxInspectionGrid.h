@@ -5,7 +5,6 @@
 #include "SingleList.h"
 #include "Inspection.h"
 #include "mxInspectionsPanel.h"
-#include "Cpp11.h"
 #include "raii.h"
 
 enum {IG_COL_LEVEL=0,IG_COL_EXPR,IG_COL_TYPE,IG_COL_VALUE,IG_COLS_COUNT};
@@ -153,16 +152,16 @@ public:
 	
 	// eventos generados por DebuggerInspection globalmente
 //	void OnDebugStart();
-	void OnDebugPausePre();
-	void OnDebugPausePost();
+	void OnDebugPausePre() override;
+	void OnDebugPausePost() override;
 //	void OnDebugStop();
 	// eventos generados por inspecciones individuales DebuggerInspection 
-	void OnDICreated(DebuggerInspection *di);
-	void OnDIError(DebuggerInspection *di);
-	void OnDIValueChanged(DebuggerInspection *di);
-	void OnDIOutOfScope(DebuggerInspection *di);
-	void OnDIInScope(DebuggerInspection *di);
-	void OnDINewType(DebuggerInspection *di);
+	void OnDICreated(DebuggerInspection *di) override;
+	void OnDIError(DebuggerInspection *di) override;
+	void OnDIValueChanged(DebuggerInspection *di) override;
+	void OnDIOutOfScope(DebuggerInspection *di) override;
+	void OnDIInScope(DebuggerInspection *di) override;
+	void OnDINewType(DebuggerInspection *di) override;
 	
 	bool ValidInspection(int r);
 	void BreakCompoundInspection(int r);

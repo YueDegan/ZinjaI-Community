@@ -1,7 +1,6 @@
 #ifndef JAVAVECTOR_H
 #define JAVAVECTOR_H
 #include "SingleList.h"
-#include "Cpp11.h"
 
 template<typename T> class JavaVectorIterator;
 

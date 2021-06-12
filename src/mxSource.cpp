@@ -372,7 +372,7 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 	SetLayoutCache (wxSTC_CACHE_PAGE);
 	
 	SetDropTarget(new mxDropTarget(this));
-	UsePopUp(false);
+	UsePopUp(wxSTC_POPUP_NEVER);
 #ifndef __WIN32__
 	// el default para BufferedDraw es true, pero por alguna razón en algun momento
 	// lo puse en false, tal vez por velocidad o problemas de refresco
@@ -4115,11 +4115,7 @@ void mxSource::MultiSelController::End(mxSource *src) {
 	}
 	m_is_on=false;
 	main_window->SetStatusText(LANG(GENERAL_READY,"Listo"));
-	if (m_on_end) {
-		m_on_end->Run();
-		delete m_on_end;
-		m_on_end = nullptr;
-	}
+	if (m_on_end)m_on_end();
 }
 
 void mxSource::ReloadErrorsList ( ) {

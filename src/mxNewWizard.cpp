@@ -28,7 +28,6 @@
 #include "mxMultipleFileChooser.h"
 #include "parserData.h"
 #include "version.h"
-#include "Cpp11.h"
 #include "SimpleTemplates.h"
 
 mxNewWizard *mxNewWizard::instance = nullptr;

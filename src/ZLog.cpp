@@ -1,5 +1,4 @@
 #include "ZLog.h"
-#include "Cpp11.h"
 
 ZLog *ZLog::s_first = nullptr;
 

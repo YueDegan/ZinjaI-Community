@@ -3,7 +3,6 @@
 #include <wx/timer.h>
 #include <wx/dcmemory.h>
 #include<iostream>
-#include "Cpp11.h"
 using namespace std;
 
 #include "mxSplashScreen.h"

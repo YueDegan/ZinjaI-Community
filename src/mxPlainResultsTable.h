@@ -4,7 +4,6 @@
 #include <wx/grid.h>
 #include <vector>
 #include <algorithm>
-#include "Cpp11.h"
 using namespace std;
 
 class wxTextCtrl;

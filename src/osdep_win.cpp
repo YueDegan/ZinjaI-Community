@@ -1,4 +1,5 @@
 #if defined(__WIN32__) || defined(__WIN64__)
+#include <wx/string.h>
 
 #include <windows.h>
 #include <tlhelp32.h>
@@ -9,7 +10,7 @@
 #include "ZLog.h"
 
 void OSDep::AppInit() {
-	HMODULE user32 = LoadLibrary("user32.dll");
+	HMODULE user32 = LoadLibrary(L"user32.dll");
 	typedef BOOL (WINAPI *SetProcessDPIAwareFunc)();
 	SetProcessDPIAwareFunc setDPIAware = (SetProcessDPIAwareFunc)GetProcAddress(user32,"SetProcessDPIAware");
 	if (setDPIAware) setDPIAware();
@@ -17,7 +18,7 @@ void OSDep::AppInit() {
 }
 
 static int GetDPI_impl() {
-	HMODULE shcore = LoadLibrary("Shcore.dll");
+	HMODULE shcore = LoadLibrary(L"Shcore.dll");
 	if (!shcore) return 0;
 	typedef HRESULT (WINAPI *GetDpiForMonitorFunc)(HMONITOR,DWORD,UINT*,UINT*);
 	GetDpiForMonitorFunc GetDpiForMonitor = (GetDpiForMonitorFunc)GetProcAddress(shcore,"GetDpiForMonitor");
@@ -84,7 +85,7 @@ bool OSDep::winLoadDBP() {
 	if (dbp_checked) return dbp_present;
 	dbp_checked=true;
 	
-	HINSTANCE hinstLib = LoadLibrary("kernel32.dll");
+	HINSTANCE hinstLib = LoadLibrary(L"kernel32.dll");
 	if (hinstLib == nullptr) {
 		ZLERR("OSDep::winLoadDBP","hinstLib==NULL");
 		dbp_present=false;
@@ -125,7 +126,7 @@ long OSDep::GetChildPid(long pid) {
 			{
 //				ZLINF2("OSDep::GetChildPid","Found child_pid="<<int(child_pid));
 //				ZLINF2("OSDep::GetChildPid","Found szExeFile="<<pe.szExeFile);
-				if (child_pid==0 || strcmp(pe.szExeFile,"conhost.exe")!=0)
+				if (child_pid==0 || wcscmp(pe.szExeFile,L"conhost.exe")!=0)
 					child_pid = pe.th32ProcessID;
 			}
 			bContinue = ::Process32Next(hSnap, &pe);

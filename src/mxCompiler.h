@@ -1,14 +1,13 @@
 #ifndef MXCOMPILER_H
 #define MXCOMPILER_H
+#include <functional>
 #include <wx/treectrl.h>
 #include <wx/string.h>
-#include "Cpp11.h"
 #include "CompilerErrorsManager.h"
 
 class wxProcess;
 class mxSource;
 class wxTimer;
-class GenericAction;
 
 enum MXC_OUTPUT {
 	MXC_GCC, ///< output should be parsed and added to compiler tree (regular output)
@@ -37,7 +36,7 @@ typedef int CAR_ERROR_LINE; // information about last error line that may condic
 
 //! Información acerca de una compilación en proceso (puede ser realmente una compilación, o un paso adicional, o hasta una ejecución... es decir, cualquier proceso relacionado a la construcción y/o ejecución)
 struct compile_and_run_struct_single {
-	GenericAction *on_end; ///< what to do after this process if it runs ok
+	std::function<void()> on_end; ///< what to do after this process if it runs ok
 	bool killed; ///< indica si fue interrumpido adrede, para usar en OnProcessTerminate
 	bool compiling; ///< indica si esta compilando/enlazando o ejecutando
 	wxString step_label; ///< nombre del paso especial que se esta ejecutando (para los extra step, usar con ouput_type=MXC_EXTRA)
@@ -67,8 +66,8 @@ public:
 	int NumCompilers();
 	wxString GetCompilingStatusText();
 	
-	void CompileSource (mxSource *source, GenericAction *on_end=nullptr);
-	void BuildOrRunProject(bool prepared, GenericAction *on_end=nullptr);
+	void CompileSource (mxSource *source, std::function<void()> on_end={});
+	void BuildOrRunProject(bool prepared, std::function<void()> on_end={});
 	void ParseSomeExternErrors(compile_and_run_struct_single *compile_and_run);
 	CAR_ERROR_LINE ParseSomeErrorsOneLine(compile_and_run_struct_single *compile_and_run, const wxString &error_line);
 	void SetWarningsAndErrorsNumbersOnTree();

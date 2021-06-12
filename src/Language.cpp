@@ -2,11 +2,11 @@
 #include <cstring>
 #ifdef __APPLE__
 #	include <wx/strconv.h>
-wxCSConv cscUTF8("utf8");
-wxCSConv cscMAC("MAC");
+#	include <wx/string.h>
+wxCSConv cscUTF8(_T("utf8"));
+wxCSConv cscMAC(_T("MAC"));
 #endif
 #include "Language.h"
-#include "Cpp11.h"
 #include "ConfigManager.h"
 #include "mxUtils.h"
 #include "mxSplashScreen.h"

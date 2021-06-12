@@ -717,15 +717,19 @@ newline:
          switch( input())
          {
          case '>':
-            switch( input())
-            {
-            case '=':
-               d_TokenReturn( SN_RSassign )
-            default:
-               unput();
-               d_TokenReturn( SN_RS )
-            }
-
+/*				if (TokenPrev.keyword==282) { // operator>>*/
+/*					unput();*/
+/*					d_TokenReturn( '>' )*/
+/*				} else { // vector<list<string>>*/
+					switch( input())
+					{
+					case '=':
+						d_TokenReturn( SN_RSassign )
+					default:
+							unput();
+							d_TokenReturn( SN_RS )
+					}
+/*				}*/
          case '=':
             d_TokenReturn( SN_GE )
 

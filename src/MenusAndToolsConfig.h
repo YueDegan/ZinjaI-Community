@@ -4,7 +4,6 @@
 #include <wx/menuitem.h>
 #include <wx/textfile.h>
 #include "ids.h"
-#include "Cpp11.h"
 
 #ifdef _ZINJAI_DEBUG
 #include<iostream>

@@ -76,7 +76,6 @@ compile_and_run_struct_single::compile_and_run_struct_single(const char *name) {
 }
 
 compile_and_run_struct_single::~compile_and_run_struct_single() {
-	delete on_end;
 	mxMutexCompiler.Lock();
 	if (next) next->prev=prev;
 	if (prev)
@@ -119,8 +118,7 @@ mxCompiler::mxCompiler(/*wxTreeCtrl *atree, wxTreeItemId s, wxTreeItemId e, wxTr
 *               compilar se la transfiere al proyecto, si está todo listo
 *               la ejecuta y le hace luego el delete.
 **/
-void mxCompiler::BuildOrRunProject(bool prepared, GenericAction *on_end) {
-	RaiiDeletePtr<GenericAction> ga_del(on_end);
+void mxCompiler::BuildOrRunProject(bool prepared, std::function<void()> on_end) {
 	if (project->GetWxfbActivated() && project->GetWxfbConfiguration()->working) return;
 	main_window->extern_compiler_output->Clear();
 	main_window->SetCompilingStatus(LANG(GENERAL_PREPARING_BUILDING,"Preparando compilación..."),true);
@@ -129,7 +127,7 @@ void mxCompiler::BuildOrRunProject(bool prepared, GenericAction *on_end) {
 	ZLINF("Compiler","BuildOrRunProject wxYield:out");
 	if (prepared || project->PrepareForBuilding(nullptr)) { // si hay que compilar/enlazar
 		if (!EnsureCompilerNotRunning()) return;
-		fms_move( fms_delete(project->post_compile_action), on_end );
+		project->post_compile_action = on_end;
 		wxString current;
 		compile_and_run_struct_single *compile_and_run=new compile_and_run_struct_single("BuildOrRunProject 1");
 		project->compile_startup_time = time(nullptr);
@@ -148,7 +146,7 @@ void mxCompiler::BuildOrRunProject(bool prepared, GenericAction *on_end) {
 	} else {
 		if (!project->active_configuration->dont_generate_exe) compiler->CheckForExecutablePermision(project->GetExePath());
 		main_window->SetCompilingStatus(LANG(MAINW_BINARY_ALREADY_UPDATED,"El binario ya esta actualizado"),true);
-		if (on_end) on_end->Run(); 
+		if (on_end) on_end();
 	}	
 }
 
@@ -359,10 +357,10 @@ void mxCompiler::ParseCompilerOutput(compile_and_run_struct_single *compile_and_
 					errors_manager->CompilationFinished();
 //					main_window->SetCompilingStatus(LANG(MAINW_COMPILING_DONE,"Compilación Finalizada"));
 					// ejecutar o depurar
-					GenericAction *on_end = fms_move(compile_and_run->on_end);
+					auto on_end = compile_and_run->on_end;
 					valgrind_cmd=compile_and_run->valgrind_cmd;
 					delete compile_and_run; compile_and_run=nullptr;
-					if (on_end) { on_end->Run(); delete on_end; }
+					if (on_end) on_end();
 					valgrind_cmd="";
 				} else {
 					compile_and_run->compiling=false;
@@ -377,10 +375,10 @@ void mxCompiler::ParseCompilerOutput(compile_and_run_struct_single *compile_and_
 			main_window->SetStatusProgress(0);
 			main_window->SetCompilingStatus(LANG(MAINW_COMPILING_DONE,"Compilación Finalizada"),true);
 			errors_manager->CompilationFinished();
-			GenericAction *on_end = fms_move(compile_and_run->on_end);
+			auto on_end = compile_and_run->on_end;
 			valgrind_cmd=compile_and_run->valgrind_cmd;
 			delete compile_and_run; compile_and_run=nullptr;
-			if (on_end) { on_end->Run(); delete on_end; }
+			if (on_end) on_end();
 			valgrind_cmd="";
 		}
 	} else { // si fallo la compilacion
@@ -419,11 +417,10 @@ void mxCompiler::ParseCompilerOutput(compile_and_run_struct_single *compile_and_
 *               compilacion, sino la destruye, pero en cualquier caso ya no le
 *               pertenece a quien invoque a esta funcion.
 **/
-void mxCompiler::CompileSource (mxSource *source, GenericAction *on_end) {
-	RaiiDeletePtr<GenericAction> oe_del(on_end);
+void mxCompiler::CompileSource (mxSource *source, std::function<void()> on_end) {
 	if (!EnsureCompilerNotRunning()) return;
 	compile_and_run_struct_single *compile_and_run=new compile_and_run_struct_single("CompileSource");
-	fms_move(compile_and_run->on_end,on_end);
+	compile_and_run->on_end = on_end;
 	compile_and_run->output_type=MXC_GCC;
 	parser->ParseSource(source,true);
 	last_compiled=source;

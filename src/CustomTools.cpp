@@ -60,9 +60,9 @@ void CustomToolsPack::Run (int i) {
 		return;
 	}
 	if (tools[i].pre_action==CT_PRE_COMPILE) {
-		_LAMBDA_1( lmbRunTool, OneCustomTool *,tool, { new mxCustomToolProcess(*tool); } );
-		if (project) compiler->BuildOrRunProject(false, new lmbRunTool(&(tools[i])) );
-		else if (main_window->GetCurrentSource()) main_window->CompileSource( false, new lmbRunTool(&(tools[i])) );
+		auto lambda = [tool=&(tools[i])](){ new mxCustomToolProcess(*tool); };
+		if (project) compiler->BuildOrRunProject(false,lambda);
+		else if (main_window->GetCurrentSource()) main_window->CompileSource(false,lambda);
 	} else 
 		new mxCustomToolProcess(tools[i]);
 }

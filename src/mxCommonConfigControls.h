@@ -7,7 +7,6 @@
 #ifdef __WIN32__
 #	include <wx/settings.h>
 #endif
-#include "Cpp11.h"
 #include "ids.h"
 
 #ifdef __APPLE__

@@ -1,7 +1,6 @@
 #ifndef MXINSPECTIONSPANEL_H
 #define MXINSPECTIONSPANEL_H
 #include <wx/aui/auibook.h>
-#include "Cpp11.h"
 #include "SingleList.h"
 
 class mxInspectionsPanelTab {

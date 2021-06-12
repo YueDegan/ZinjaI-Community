@@ -310,9 +310,9 @@ bool ConfigManager::Load() {
 				else if (p.Key()=="fullpath_on_project_tree") Init.fullpath_on_project_tree = p.AsBool();
 				else if (p.Key()=="colour_theme") Init.colour_theme = p.AsString();
 				else if (p.Key()=="complements_timestamp") Init.complements_timestamp = p.AsString();
-#if defined(__APPLE__) && defined(__STC_ZASKAR)
-				else if (p.Key()=="mac_stc_zflags") Init.mac_stc_zflags = p.AsInt();
-#endif
+//#if defined(__APPLE__) && defined(__STC_ZASKAR)
+//				else if (p.Key()=="mac_stc_zflags") Init.mac_stc_zflags = p.AsInt();
+//#endif
 			}
 			
 		} else if (section=="Files") {
@@ -562,9 +562,9 @@ bool ConfigManager::Save(){
 	CFG_BOOL_WRITE_DN("beautify_compiler_errors",Init.beautify_compiler_errors);
 	CFG_GENERIC_WRITE_DN("colour_theme",Init.colour_theme);
 	CFG_GENERIC_WRITE_DN("complements_timestamp",Init.complements_timestamp);
-#ifdef __APPLE__
-	CFG_GENERIC_WRITE_DN("mac_stc_zflags",Init.mac_stc_zflags);
-#endif				
+//#ifdef __APPLE__
+//	CFG_GENERIC_WRITE_DN("mac_stc_zflags",Init.mac_stc_zflags);
+//#endif				
 	fil.AddLine("");
 
 	fil.AddLine("[Debug]");
@@ -810,7 +810,8 @@ void ConfigManager::LoadDefaults(){
 	Styles.forced_dpi=0;
 	Styles.print_size=8;
 	Styles.font_size=10;
-	Styles.font_name=wxFont(10,wxMODERN,wxNORMAL,wxNORMAL).GetFaceName();
+	wxFont font(wxFontInfo(10).Family(wxFONTFAMILY_MODERN).Style(wxFONTSTYLE_NORMAL).Weight(wxFONTWEIGHT_NORMAL));
+	Styles.font_name=font.GetFaceName();
 	Init.colour_theme="default.zcs";
 	
 	Init.wrap_mode=1;
@@ -834,10 +835,10 @@ void ConfigManager::LoadDefaults(){
 	Source.autocompFilters=true;
 	Source.callTips=true;
 	Source.autocompTips=true;
-#ifdef __APPLE__
-	Source.autocompTips=false;
-	Init.mac_stc_zflags=-1;
-#endif
+//#ifdef __APPLE__
+//	Source.autocompTips=false;
+//	Init.mac_stc_zflags=-1;
+//#endif
 	Source.avoidNoNewLineWarning=true;
 
 	Running.cpp_compiler_options="-Wall -pedantic-errors -O0 -Werror=return-type";
@@ -1110,20 +1111,20 @@ void ConfigManager::FinishLoading ( ) {
 	}
 #if defined(__APPLE__) && defined(__STC_ZASKAR)
 	ZLINF("ConfigManager","Fixing mac stuff...");
-	if (Init.mac_stc_zflags==-1) {
-		Init.mac_stc_zflags = 0;
-		if (mxMessageDialog(nullptr,LANG(CONFIG_MAC_DEADKEYS_PROBLEM_QUESTION,""
-						"¿Utiliza un teclado en español donde '[' y '{' se ingresan con\n"
-						"AltGr y las teclas que están a la derecha de las teclas 'P' y 'Ñ'?\n"
-						"\n"
-						"Nota: si más tarde detecta problemas con estas teclas puede volver\n"
-						"a cambiar esta configuación desde el cuadro de preferencias.\n"
-					)).IconQuestion().ButtonsYesNo().Run().yes) 
-		{
-			Init.mac_stc_zflags = ZF_FIXDEADKEYS_ESISO;
-		}
-	}
-	wxSTC_SetZaskarsFlags(Init.mac_stc_zflags);
+//	if (Init.mac_stc_zflags==-1) {
+//		Init.mac_stc_zflags = 0;
+//		if (mxMessageDialog(nullptr,LANG(CONFIG_MAC_DEADKEYS_PROBLEM_QUESTION,""
+//						"¿Utiliza un teclado en español donde '[' y '{' se ingresan con\n"
+//						"AltGr y las teclas que están a la derecha de las teclas 'P' y 'Ñ'?\n"
+//						"\n"
+//						"Nota: si más tarde detecta problemas con estas teclas puede volver\n"
+//						"a cambiar esta configuación desde el cuadro de preferencias.\n"
+//					)).IconQuestion().ButtonsYesNo().Run().yes) 
+//		{
+//			Init.mac_stc_zflags = ZF_FIXDEADKEYS_ESISO;
+//		}
+//	}
+//	wxSTC_SetZaskarsFlags(Init.mac_stc_zflags);
 #endif
 	
 	ZLINF("ConfigManager","Initializing error recovery system...");

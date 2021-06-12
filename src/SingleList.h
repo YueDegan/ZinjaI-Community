@@ -1,7 +1,6 @@
 #ifndef SINGLELIST_H
 #define SINGLELIST_H
 #include <cstddef>
-#include "Cpp11.h"
 
 /** 
 * SingleList is a simple array based container, similar to std::vector, easier and sometimes faster

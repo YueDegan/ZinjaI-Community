@@ -12,7 +12,7 @@ private:
 	bool all_registers;
 public:
 	mxRegistersGrid(wxWindow *parent);
-	void Update();
+	void Update() override;
 	void OnDebugPausePost() override { Update(); }
 	void OnCellPopupMenu(int row, int col) override;
 	void ToggleShowAllRegisters(wxCommandEvent &evt);

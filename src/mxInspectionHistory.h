@@ -21,12 +21,12 @@ public:
 	void OnCopy(wxCommandEvent &evt);
 	void OnSelectAll(wxCommandEvent &evt);
 	// eventos de una instancia individual de DebuggerInspection
-	void OnDICreated(DebuggerInspection *di);
-	void OnDIError(DebuggerInspection *di);
-	void OnDIValueChanged(DebuggerInspection *di);
-	void OnDIOutOfScope(DebuggerInspection *di);
-	void OnDIInScope(DebuggerInspection *di);
-	void OnDINewType(DebuggerInspection *di);
+	void OnDICreated(DebuggerInspection *di) override;
+	void OnDIError(DebuggerInspection *di) override;
+	void OnDIValueChanged(DebuggerInspection *di) override;
+	void OnDIOutOfScope(DebuggerInspection *di) override;
+	void OnDIInScope(DebuggerInspection *di) override;
+	void OnDINewType(DebuggerInspection *di) override;
 	// eventos globales de DebuggerInspection
 	void OnDebugPausePost() override;
 	DECLARE_EVENT_TABLE();

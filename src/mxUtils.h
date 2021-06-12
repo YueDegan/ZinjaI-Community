@@ -41,7 +41,6 @@
 #define WILDCARD_ALL "*"
 #include "enums.h"
 #include "Language.h"
-#include "Cpp11.h"
 
 class wxBoxSizer;
 class wxTextCtrl;

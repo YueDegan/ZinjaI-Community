@@ -38,14 +38,6 @@
 #include "osdep.h"
 using namespace std;
 
-
-
-#ifdef _TIMED_INIT
-wxLongLong start_time = wxGetLocalTimeMillis();
-wxLongLong aux_start_time;
-#endif
-
-
 IMPLEMENT_APP(mxApplication)
 	
 mxApplication *g_application = nullptr;

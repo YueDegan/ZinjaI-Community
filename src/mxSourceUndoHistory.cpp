@@ -1,5 +1,4 @@
 #include "mxSourceUndoHistory.h"
-#include "Cpp11.h"
 #include "mxSource.h"
 #include <wx/sizer.h>
 #include "mxSizers.h"

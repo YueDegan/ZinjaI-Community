@@ -1,13 +1,14 @@
 #ifndef MX_SOURCE_H
 #define MX_SOURCE_H
 
+#include <functional>
+#include <memory>
 #include <wx/stc/stc.h>
 #include <wx/filename.h>
 #include <wx/treebase.h>
 #include "ConfigManager.h"
 //#include <wx/timer.h>
 #include "CompilerErrorsManager.h"
-#include "Cpp11.h"
 #include "raii.h"
 #include "mxSourceBase.h"
 
@@ -414,7 +415,7 @@ public:
 		~UndoActionGuard() { End(); }
 	};
 	
-	NullInitializedPtr<UndoActionGuard> undo_action_guard; ///< si estamos en una "undo action" apunta al UndoActionGuard que hizo se hizo el BeginUndoAction, sino es null
+	UndoActionGuard *undo_action_guard = nullptr; ///< si estamos en una "undo action" apunta al UndoActionGuard que hizo se hizo el BeginUndoAction, sino es null
 	
 private:
 	
@@ -443,7 +444,7 @@ private:
 		bool m_ends_on_enter; ///< si el enter se procesa normalmente, o es para finalizar el multisel
 		bool m_was_rect_select; ///< para saber al aplicar un cambio si habia en el estado anterior una seleccion rectangular (porque en ese caso se modicaron todas las lineas)
 		bool m_keep_highlight; ///< si hay que marcar la nueva edicion como highlighted word
-		GenericAction *m_on_end; ///< action to run on exit of multiple edition mode
+		std::function<void()> m_on_end; ///< action to run on exit of multiple edition mode
 		
 		int m_line, m_offset_beg, m_offset_end; ///< dentro de la linea, en que posicion estamos editando (posicion en la que empezaria ref_str, y cuanto mide)
 		wxString m_ref_str; ///< string de la primer linea de la seleccion rectangular, para comparar y ver como cambio y hacer lo mismo en las otras
@@ -454,7 +455,7 @@ private:
 		// methods to start and setupd multiple-edition operation
 		
 		void Reset() { 
-			m_on_end = nullptr; 
+			m_on_end = {};
 			m_is_on = false; 
 			m_was_rect_select = false; 
 			m_keep_highlight = false; 
@@ -474,7 +475,7 @@ private:
 		
 		MultiSelController &SetKeepHighligth() { m_keep_highlight = true; return *this; }
 		MultiSelController &SetEndsOnEnter() { m_ends_on_enter = true; return *this; }
-		MultiSelController &SetOnEndAction(GenericAction *on_end_function=nullptr) { m_on_end = on_end_function; return *this; }
+		MultiSelController &SetOnEndAction(std::function<void()> on_end_function) { m_on_end = on_end_function; return *this; }
 		void End(mxSource *src);
 		
 		// methods to query multisel state
@@ -509,7 +510,7 @@ public:
 	bool GetCurrentCall (wxString &ftype, wxString &fname, wxArrayString &args, int pos);
 
 private:
-	unique_ptr<mxMiniSource> m_minimap;
+	std::unique_ptr<mxMiniSource> m_minimap;
 public:
 	mxMiniSource *GetMinimap(mxMiniMapPanel *panel);
 };

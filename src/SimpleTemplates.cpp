@@ -1,5 +1,4 @@
 #include "SimpleTemplates.h"
-#include "Cpp11.h"
 #include "ConfigManager.h"
 #include "mxUtils.h"
 

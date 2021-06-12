@@ -1,7 +1,6 @@
 #ifndef ZLOGOSTREAM_H
 #define ZLOGOSTREAM_H
 #include "ZLog.h"
-#include "Cpp11.h"
 #include <iostream>
 
 class ZLogOstream : public ZLog {

@@ -4,12 +4,10 @@
 #include <iostream>
 #include <wx/string.h>
 #include <wx/arrstr.h>
-#include "Cpp11.h"
+#include <functional>
 
 
 class mxSource;
-class GenericAction;
-
 
 class MyAutocompList {
 	wxArrayString keywords;
@@ -101,7 +99,7 @@ public:
 	//! Agrega indices de autocompletado
 	void AppendIndexes(wxString indexes);
 	
-	void TryToSuggestTemplateSolutionForLinkingErrors(const wxArrayString &full_output, GenericAction *&on_end);
+	void TryToSuggestTemplateSolutionForLinkingErrors(const wxArrayString &full_output, std::function<void()> on_end);
 	
 	/// @param mode  0=case-sensitive start, 1=case-insesitive start, 2=case-insensitive any, 3=case-insensitive Levenshtein
 	void SetAutocompletionMatchingMode(int mode);

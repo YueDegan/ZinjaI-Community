@@ -1,6 +1,6 @@
 GPP=g++
 CXXFLAGS=-O2 `wx-config --cppflags`
-LDFLAGS=-s -lwx_gtk2_stc-2.8 `wx-config --libs` 
+LDFLAGS=-s `wx-config --libs` 
 OBJS_DIR=../../temp/img_viewer/release.lnx
 
 all: ../../bin/img_viewer.bin

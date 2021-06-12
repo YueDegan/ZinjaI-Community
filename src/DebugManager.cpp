@@ -25,7 +25,6 @@
 #include "DebugPatcher.h"
 #include "MenusAndToolsConfig.h"
 #include "osdep.h"
-#include "Cpp11.h"
 #include "gdbParser.h"
 #include "ZLog.h"
 #include "asserts.h"
@@ -68,8 +67,7 @@ DebugManager::~DebugManager() {
 bool DebugManager::Start(bool update) {
 	_DBG_LOG_CALL(Open());
 	if (update && project->PrepareForBuilding()) { // ver si hay que recompilar antes
-		_LAMBDA_0( lmbDebugProject, { if (project) debug->Start(false); } );
-		compiler->BuildOrRunProject(true,new lmbDebugProject());
+		compiler->BuildOrRunProject(true,[](){ if (project) debug->Start(false); });
 		return false;
 	}
 	

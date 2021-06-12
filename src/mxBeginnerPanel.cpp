@@ -88,8 +88,8 @@ void mxBeginnerPanel::ShowOptions(int n, wxString help) {
 }
 
 void mxBeginnerPanel::LoadQuickHelp(wxString file) {
-	if (!main_window->quick_help->LoadPage(config->GetHelpFile(wxString("beg_")+file)));
-	main_window->m_aui->Show(PaneId::QuickHelp);
+	if (main_window->quick_help->LoadPage(config->GetHelpFile(wxString("beg_")+file)))
+		main_window->m_aui->Show(PaneId::QuickHelp);
 }
 
 // ----if------

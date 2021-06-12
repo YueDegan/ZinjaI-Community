@@ -73,7 +73,8 @@ void mxCalltip::OnPaint (wxPaintEvent & event) {
 }
 
 void mxCalltip::ShowCommon (wxString text) {
-	my_font = wxFont(config->Styles.font_size+parent->GetZoom(), wxMODERN, wxNORMAL, wxNORMAL,false,config->Styles.font_name);
+	my_font = wxFont(wxFontInfo(config->Styles.font_size+parent->GetZoom()).Family(wxFONTFAMILY_MODERN).Style(wxFONTSTYLE_NORMAL).Weight(wxFONTWEIGHT_NORMAL).FaceName(config->Styles.font_name));
+	
 	entries.Clear();
 	int p = text.Index('\n');
 	while (p!=wxNOT_FOUND) {

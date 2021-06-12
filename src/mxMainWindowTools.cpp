@@ -1178,8 +1178,7 @@ void mxMainWindow::OnToolsLizardHelp(wxCommandEvent &event) {
 	mxHelpWindow::ShowHelp("lizard.html");
 }
 
-void mxMainWindow::AuxToolsDisassemble1(GenericActionEx<wxString> *on_end) {
-	RaiiDeletePtr<GenericActionEx<wxString> > oe_del(on_end);
+void mxMainWindow::AuxToolsDisassemble1(std::function<void(wxString)> on_end) {
 	IF_THERE_ISNT_SOURCE return;
 	
 	static wxString last_disassembled_binary;
@@ -1216,29 +1215,22 @@ void mxMainWindow::AuxToolsDisassemble1(GenericActionEx<wxString> *on_end) {
 #endif
 
 		// grab all arguments the lambda will need
-		wxString *plast_disassembled_binary=&last_disassembled_binary; // to be used in _CAPTURELIST_4
-		_CAPTURELIST_4( s_lmbDasm2oe,lmb_arg,
-			wxString*,plast_disassembled_binary,
-			wxString,in_fname, wxString,out_fname,
-			GenericActionEx<wxString>*,on_end );
-		on_end=nullptr; // avoid double delete, the lambda will do it now
-		
-		// define the lambda for after running the commmand
-		_LAMBDAEX_1( lmbDasm2oe, int,retval, s_lmbDasm2oe,args, {
+		wxString *plast_disassembled_binary=&last_disassembled_binary;
+		auto lambda = [plast_disassembled_binary,in_fname,out_fname,on_end](int retval){
 			ZLINF2("OBJDump","retval: "<<retval);
 			if (retval==0) {
-				(*(args.plast_disassembled_binary))=args.in_fname; // for memoization
-				args.on_end->Do(args.out_fname); delete args.on_end; 
+				(*(plast_disassembled_binary))=in_fname; // for memoization
+				on_end(out_fname);
 			}
 			else { wxArrayString aux; showExternToolErrorMessage(retval, aux, "objdump"); } 
-		} );
+		};
 		
 		// finally launch the process and show the osd message
 		ZLINF2("OBJDump","command: "<<command);
-		mxOSD::Execute( command, LANG(OSD_DISASSEMBLING,"Desensamblando..."), new lmbDasm2oe(lmb_arg) );
+		mxOSD::Execute( command, LANG(OSD_DISASSEMBLING,"Desensamblando..."), lambda);
 		
 	} else // si no necesita volver a correr objdump
-		on_end->Do(out_fname); 
+		on_end(out_fname); 
 }
 
 void mxMainWindow::OnToolsDisassembleOfflineFunc (wxCommandEvent & event) {
@@ -1253,18 +1245,12 @@ void mxMainWindow::OnToolsDisassembleOfflineFunc (wxCommandEvent & event) {
 		}
 		src->mxSource::OnBraceMatch(event);
 		// then run objdump
-		_LAMBDAEX_0( lmbDasmFunc2, wxString,out_fname,
-			{ main_window->AuxToolsDisassemble2(out_fname,true); } 
-		);
-		AuxToolsDisassemble1( new lmbDasmFunc2() );
+		AuxToolsDisassemble1( [](wxString out_fname){ main_window->AuxToolsDisassemble2(out_fname,true); } );
 	};
 }
 
 void mxMainWindow::OnToolsDisassembleOfflineSel (wxCommandEvent & event) {
-	_LAMBDAEX_0( lmbDasmFunc2, wxString,out_fname, 
-		{ main_window->AuxToolsDisassemble2(out_fname,false); } 
-	);
-	AuxToolsDisassemble1( new lmbDasmFunc2() );
+	AuxToolsDisassemble1( [](wxString out_fname){ main_window->AuxToolsDisassemble2(out_fname,false); } );
 }
 
 // aux class for mxMainWindow::AuxToolsDisassemble2

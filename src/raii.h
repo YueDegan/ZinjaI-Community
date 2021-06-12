@@ -2,36 +2,12 @@
 #define RAII_H
 
 #include <wx/filefn.h>
-#include "Cpp11.h"
 #include "ZLog.h"
-
-// helper for generic raii-like objects
-#define AtExit(name,code) \
-	struct name##_t { \
-		bool _do; name##_t():_do(true) {} \
-		void run_now() { code; _do = false; } \
-		void cancel() { _do = false; } \
-		~name##_t() { if (_do) run_now(); } \
-	} name;
-
 
 /**
 * @brief RAII wrapper for objects allocated on heap (new), but with a life-cycle
 * as if it where on the stack (attached to a local scope)
 **/
-template<class T>
-class RaiiDeletePtr {
-	T *&p;
-public:
-	RaiiDeletePtr(T *&ptr) : p(ptr) {}
-	~RaiiDeletePtr() { delete p; }
-};
-
-// fms stands for faked-move-semantics, this project should still compile in pre c++11 compilers
-template<class T> void fms_move(T *&des, T *&src) { des=src; src=nullptr; }
-template<class T> T *fms_move(T *&src) { T *des=src; src=nullptr; return des; }
-template<class T> T *&fms_delete(T *&des) { delete des; des=nullptr; return des; }
-
 class BoolFlag;
 
 /**
@@ -66,19 +42,6 @@ private:
 typedef FlagGuard<BoolFlag,bool,true,false> BoolFlagGuard;
 typedef FlagGuard<bool,bool,true,false> boolFlagGuard;
 
-
-/**
-* Wrapper class for ensuring class member variables initialization
-**/
-template<class T>
-class NullInitializedPtr {
-	T *ptr;
-public:
-	NullInitializedPtr() : ptr(nullptr) {}
-	operator T*&() { return ptr; }
-	operator const T*&() const { return ptr; }
-	T *&operator=(T *other) { ptr=other; return ptr; }
-};
 
 template<class T>
 class RaiiRestoreValue {

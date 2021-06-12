@@ -1,7 +1,6 @@
 #ifndef MXLIBTOBUILDWINDOW_H
 #define MXLIBTOBUILDWINDOW_H
 #include <wx/dialog.h>
-#include "Cpp11.h"
 #include "mxCommonConfigControls.h"
 
 class project_configuration;

@@ -2,7 +2,6 @@
 #define MXGOTOLISTDIALOG_H
 #include <wx/dialog.h>
 #include <wx/timer.h>
-#include "Cpp11.h"
 
 class wxListBox;
 class wxTextCtrl;

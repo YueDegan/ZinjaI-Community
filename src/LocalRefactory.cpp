@@ -145,14 +145,8 @@ void LocalRefactory::ExtractFunction (mxSource * src, int pos) {
 	src->multi_sel.Reset();
 	src->multi_sel.SetEditRegion(src,lmin,src->GetLineIndentPosition(lmin),src->GetLineEndPosition(lmin));
 	src->multi_sel.AddPos(src,line_start,src->GetLineIndentPosition(line_start)+5);
-	_CAPTURELIST_3(s_lmbRefUpdateProto, lmb_arg,
-				mxSource*,src,
-				int,line_start,
-				int,lmin);
-	_LAMBDA_1(lmbRefUpdateProto, s_lmbRefUpdateProto,lmb_arg, {
-		ExtractFunctionPost(lmb_arg.src,lmb_arg.line_start,lmb_arg.lmin);
-	});
-	src->multi_sel.BeginEdition(src,false,true).SetKeepHighligth().SetEndsOnEnter().SetOnEndAction(new lmbRefUpdateProto(lmb_arg));
+	auto lambda = [src,line_start,lmin](){ ExtractFunctionPost(src,line_start,lmin); };
+	src->multi_sel.BeginEdition(src,false,true).SetKeepHighligth().SetEndsOnEnter().SetOnEndAction(lambda);
 	src->HighLightWord("foo"); src->EnsureCaretVisible();
 }
 

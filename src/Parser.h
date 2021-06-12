@@ -9,7 +9,6 @@
 #include <list>
 #include <wx/process.h>
 #include <wx/timer.h>
-#include "Cpp11.h"
 using namespace std;
 
 #include "paf_defs.h"

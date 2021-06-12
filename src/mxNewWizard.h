@@ -4,7 +4,6 @@
 #include <wx/dialog.h>
 #include <wx/arrstr.h>
 #include "mxUtils.h"
-#include "Cpp11.h"
 #include "raii.h"
 
 class mxBitmapButton;

@@ -10,7 +10,6 @@
 #include <wx/stattext.h>
 #include "Inspection.h"
 #include "mxUtils.h"
-#include "Cpp11.h"
 #include "raii.h"
 #include "asserts.h"
 

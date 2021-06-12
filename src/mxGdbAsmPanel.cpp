@@ -1,7 +1,6 @@
 #include <wx/checkbox.h>
 #include <wx/sizer.h>
 #include "mxGdbAsmPanel.h"
-#include "Cpp11.h"
 #include "mxSizers.h"
 #include "mxColoursEditor.h"
 #include "mxStyledOutput.h"

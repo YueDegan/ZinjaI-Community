@@ -11,6 +11,7 @@
 #define PROJECT_MANAGER_H
 
 #include <ctime>
+#include <functional>
 #include <wx/string.h>
 #include <wx/filename.h>
 #include <wx/treebase.h>
@@ -41,7 +42,6 @@
 class BreakPointInfo;
 class mxSource;
 class mxOSDGuard;
-class GenericAction;
 
 /// Posibles ubicaciones para un paso de compilación adicional en el proceso de construcción de un proceso
 enum ces_pos {
@@ -517,7 +517,7 @@ class ProjectManager {
 	float progress_step; ///< temporal para guardar de a cuanto avanza la barra de progreso al avanzar un paso
 public:
 	time_t compile_startup_time;
-	GenericAction *post_compile_action; ///< what to do if building finishes ok, is set in last CompileNext call
+	std::function<void()> post_compile_action; ///< what to do if building finishes ok, is set in last CompileNext call
 	bool force_relink;	///< indica si debe reenlazar si o si en la proxima compilacion, aunque el exe esté al día
 
 private:

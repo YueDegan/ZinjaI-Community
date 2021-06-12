@@ -6,6 +6,7 @@
 #include "mxUtils.h"
 #include "execution_workaround.h"
 #include "ZLog.h"
+#include <functional>
 
 BEGIN_EVENT_TABLE(mxOSD, wxDialog)
 	EVT_PAINT (mxOSD::OnPaint)
@@ -20,7 +21,7 @@ wxColour *mxOSD::cf = nullptr;
 wxBrush *mxOSD::br = nullptr;
 mxOSD *mxOSD::current_osd = nullptr;
 
-mxOSD::mxOSD(wxWindow *aparent, wxString str, int time, bool corner, GenericAction *aon_cancel) 
+mxOSD::mxOSD(wxWindow *aparent, wxString str, int time, bool corner, std::function<void()> aon_cancel) 
 	: wxDialog( aparent?aparent:main_window,wxID_ANY,"",wxPoint(200,200),wxSize(400,100),
 	            (aparent?wxFRAME_FLOAT_ON_PARENT:wxSTAY_ON_TOP)|wxNO_BORDER),
 	  on_cancel(aon_cancel), timer(nullptr), parent(aparent)
@@ -108,7 +109,7 @@ void mxOSD::OnTimer(wxTimerEvent &evt) {
 }
 
 void mxOSD::OnCancel(wxCommandEvent & evt) {
-	on_cancel->Run();
+	on_cancel();
 }
 
 void mxOSD::OnResize (wxSizeEvent & evt) {
@@ -116,7 +117,7 @@ void mxOSD::OnResize (wxSizeEvent & evt) {
 }
 
 
-void mxOSD::Execute(wxString command, wxString message, GenericActionEx<int> *aon_end) {
+void mxOSD::Execute(wxString command, wxString message, std::function<void(int)> aon_end) {
 	
 	class mxOSDProcess : public wxProcess {
 	public:
@@ -124,27 +125,24 @@ void mxOSD::Execute(wxString command, wxString message, GenericActionEx<int> *ao
 		bool cancelled; ///< when trying to cancel, first click uses sigint, thenext one sigkill
 		int pid;
 		mxOSD *osd_win;
-		GenericActionEx<int> *on_end;
-		mxOSDProcess(GenericActionEx<int> *aon_end) 
+		std::function<void(int)> on_end;
+		mxOSDProcess(std::function<void(int)> aon_end) 
 			: ended(false), cancelled(false), osd_win(nullptr), on_end(aon_end) {}
 		void OnTerminate(int pid, int status) { 
 			ended=true;
 			if (osd_win) { osd_win->Destroy(); osd_win=nullptr; }
-			if (on_end && !cancelled) on_end->Do(status);
-			delete on_end; 
+			if (on_end && !cancelled) on_end(status);
 		}
 	};
 	
 	mxOSDProcess *osd_proc = new mxOSDProcess(aon_end);
 	osd_proc->Redirect();
 	osd_proc->pid = mxExecute(command, /*wxEXEC_NODISABLE|*/wxEXEC_ASYNC|wxEXEC_MAKE_GROUP_LEADER,osd_proc); // el wxEXEC_MAKE_GROUP_LEADER es para que funcione el wxKILL_CHILDREN en linux
-	if (!osd_proc->pid) { delete osd_proc; aon_end->Do(-1); delete aon_end; return; } // si no se lanzó
+	if (!osd_proc->pid) { delete osd_proc; aon_end(-1); return; } // si no se lanzó
 	
 	osd_proc->Detach();
-	_LAMBDA_1( lmbKillProcess, mxOSDProcess*,proc, {
-		wxProcess::Kill(proc->pid,wxSIGKILL,wxKILL_CHILDREN); proc->cancelled=true; 
-	} );
-	osd_proc->osd_win = new mxOSD(main_window,message,0,false,new lmbKillProcess(osd_proc));
+	auto lambda = [osd_proc](){ wxProcess::Kill(osd_proc->pid,wxSIGKILL,wxKILL_CHILDREN); osd_proc->cancelled=true; };
+	osd_proc->osd_win = new mxOSD(main_window,message,0,false,lambda);
 	if (osd_proc->ended && osd_proc->osd_win) // can happen, some yield hidden over there called from mxOSD constructor
 		osd_proc->osd_win->Destroy();
 	

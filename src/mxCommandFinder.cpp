@@ -2,7 +2,6 @@
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/settings.h>
-#include "Cpp11.h"
 #include "Language.h"
 #include "mxCommandFinder.h"
 #include "mxMainWindow.h"
@@ -64,7 +63,11 @@ void mxCommandFinderList::SetPattern (wxString str, int x, int y) {
 			if (props&MenusAndToolsConfig::maSEPARATOR) {
 				continue;
 			} else if (props&MenusAndToolsConfig::maBEGIN_SUBMENU) { 
-				if (full_label!=label) { while (!(menu.items[++j].properties&MenusAndToolsConfig::maEND_SUBMENU)); continue; } // gprof's sub-sub-menu
+				if (full_label!=label) {
+					while (!(menu.items[++j].properties&MenusAndToolsConfig::maEND_SUBMENU))
+						;
+					continue;
+				} // gprof's sub-sub-menu
 				full_label = label + menu.items[j].label + " -> "; continue; 
 			} else if (props&MenusAndToolsConfig::maEND_SUBMENU) { 
 				full_label = label; continue; 

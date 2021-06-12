@@ -2,7 +2,6 @@
 #define MXMINIMAPPANEL_H
 #include <wx/panel.h>
 #include <wx/sizer.h>
-#include "Cpp11.h"
 
 class mxSource;
 class mxMiniSource;

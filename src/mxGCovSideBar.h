@@ -2,7 +2,6 @@
 #define MXGCOVSIDEBAR_H
 #include <wx/panel.h>
 #include <wx/timer.h>
-#include "Cpp11.h"
 
 class mxSource;
 

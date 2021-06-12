@@ -4,7 +4,6 @@
 #include <stack>
 #include <map>
 #include <vector>
-#include "Cpp11.h"
 using namespace std;
 
 class mxReferenceWindow:public mxGenericHelpWindow {
@@ -37,13 +36,13 @@ public:
 	
 	void LoadHelp(wxString file, bool update_history=true);
 	
-	void OnPrev();
-	void OnNext();
-	void OnTree(wxTreeItemId item);
-	void ShowIndex();
-	void OnSearch(wxString value);
+	void OnPrev() override;
+	void OnNext() override;
+	void OnTree(wxTreeItemId item) override;
+	void ShowIndex() override;
+	void OnSearch(wxString value) override;
 	void OnSearch(wxString value, bool update_history);
-	bool OnLink(wxString href);
+	bool OnLink(wxString href) override;
 	
 	~mxReferenceWindow();
 };

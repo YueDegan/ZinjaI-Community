@@ -1,7 +1,6 @@
 #ifndef EXECUTION_WORKAROUND_H
 #define EXECUTION_WORKAROUND_H
 #include <wx/utils.h>
-#include "Cpp11.h"
 
 long mxExecute(wxString command, int sync, wxProcess *process=nullptr);
 

@@ -1,6 +1,5 @@
 #include <wx/treectrl.h>
 #include "CompilerErrorsManager.h"
-#include "Cpp11.h"
 #include "mxAUI.h"
 #include "ConfigManager.h"
 #include "Toolchain.h"

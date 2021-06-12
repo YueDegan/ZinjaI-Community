@@ -1,6 +1,6 @@
 #include <cstdio>
 #include <fstream>
-#include <cstring>
+#include <cwchar>
 #include <iostream>
 #include <wx/file.h>
 #include "mxCommonConfigControls.h"
@@ -172,10 +172,10 @@ void mxComplementInstallerWindow::Install(wxWindow *parent, wxString fname) {
 	wxString command = mxUT::Quotize(exe)+" "+args;
 #ifdef __WIN32__
 	if (!writable) {
-		char *cexe= new char[exe.Len()+1];
-		strcpy(cexe,exe.c_str());
-		char *cargs=new char[args.Len()+1];
-		strcpy(cargs,args.c_str());
+		wchar_t *cexe= new wchar_t[exe.Len()+1];
+		wcscpy(cexe,exe.wc_str());
+		wchar_t *cargs=new wchar_t[args.Len()+1];
+		wcscpy(cargs,args.wc_str());
 		SHELLEXECUTEINFO sinfo;
 		memset(&sinfo, 0, sizeof(SHELLEXECUTEINFO));
 		sinfo.cbSize       = sizeof(SHELLEXECUTEINFO);
@@ -183,7 +183,7 @@ void mxComplementInstallerWindow::Install(wxWindow *parent, wxString fname) {
 		sinfo.hwnd         = nullptr;
 		sinfo.lpFile       = cexe;
 		sinfo.lpParameters = cargs;
-		sinfo.lpVerb       = "runas"; // <<-- this is what makes a UAC prompt show up
+		sinfo.lpVerb       = L"runas"; // <<-- this is what makes a UAC prompt show up
 		sinfo.nShow        = SW_NORMAL;
 		// The only way to get a UAC prompt to show up
 		// is by calling ShellExecuteEx() with the correct

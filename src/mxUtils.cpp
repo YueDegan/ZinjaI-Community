@@ -1065,24 +1065,20 @@ void mxUT::ProcessGraph (wxString graph_file, bool use_fdp, wxString output, wxS
 #endif
 	command<<" "<<Quotize(graph_file)<<" -T"<<format<<" -o "<<Quotize(output);
 		
-	_CAPTURELIST_5( s_lmbProcGraph,lmb_args, 
-				bool,show, bool,as_image, 
-				wxString,title, wxString,command, wxString,output );
-		
-	_LAMBDAEX_1( lmbProcGraph, int,retval, s_lmbProcGraph,args, {
-		ZLINF2("Utils","ProcessGraph, command: "<<args.command);
+	auto lambda = [show,as_image,title,command,output](int retval) {
+		ZLINF2("Utils","ProcessGraph, command: "<<command);
 		ZLINF2("Utils","ProcessGraph, retval: "<<retval);
-		if (!retval && args.show) {
-			if (args.as_image) mxUT::LaunchImageViewer(args.title,args.output);
-			else               mxUT::LaunchGraphViewer(args.title,args.output);
+		if (!retval && show) {
+			if (as_image) mxUT::LaunchImageViewer(title,output);
+			else               mxUT::LaunchGraphViewer(title,output);
 		} else if (retval) {
 			mxMessageDialog(main_window,LANG(MAINW_GRAPHVIZ_ERROR,"Ha ocurrido un error al procesar el grafo"))
 				.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
 		}
 		main_window->SetStatusText(LANG(GENERAL_READY,"Listo"));
-	}; );
+	};
 	
-	mxOSD::Execute(command,LANG(OSD_GENERATING_GRAPH,"Generando grafo..."),new lmbProcGraph(lmb_args));
+	mxOSD::Execute(command,LANG(OSD_GENERATING_GRAPH,"Generando grafo..."),lambda);
 #ifdef __WIN32__
 	cwd_guard.RestoreNow();
 #endif

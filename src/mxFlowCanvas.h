@@ -4,7 +4,6 @@
 #include <wx/scrolwin.h>
 #include <wx/dcclient.h>
 #include <list>
-#include "Cpp11.h"
 using namespace std;
 
 

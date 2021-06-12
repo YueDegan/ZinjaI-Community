@@ -1312,7 +1312,7 @@ bool ProjectManager::PrepareForBuilding(project_file_item *only_one) {
 		
 		// agregar los items extra previos a los fuentes
 		for(JavaVectorIterator<compile_extra_step> extra_step(active_configuration->extra_steps); extra_step.IsValid(); extra_step.Next()) {
-			if (!extra_step->pos==CES_BEFORE_SOURCES) continue;
+			if (extra_step->pos!=CES_BEFORE_SOURCES) continue;
 			if (ShouldDoExtraStep(extra_step)) {
 				steps_count++;
 				step = step->next = new compile_step(CNS_EXTRA,extra_step);
@@ -1742,7 +1742,7 @@ long int ProjectManager::CompileNext(compile_and_run_struct_single *compile_and_
 		first_compile_step = step->next;
 		delete step;
 	}
-	if (!compile_and_run->pid) fms_move(compile_and_run->on_end,post_compile_action);
+	if (!compile_and_run->pid) compile_and_run->on_end = post_compile_action;
 	return compile_and_run->pid;
 }
 

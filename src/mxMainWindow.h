@@ -1,6 +1,7 @@
 #ifndef MX_MAIN_WINDOW_H
 #define MX_MAIN_WINDOW_H
 
+#include <functional>
 #include <wx/frame.h>
 #include <wx/process.h>
 #include <wx/treebase.h>
@@ -333,7 +334,7 @@ public:
 	void OnToolsValgrindView(wxCommandEvent &event);
 	void OnToolsValgrindHelp(wxCommandEvent &event);
 #endif
-	void AuxToolsDisassemble1(GenericActionEx<wxString> *on_end); ///< ejecuta objdump y retorna el path del archivo de salida
+	void AuxToolsDisassemble1(std::function<void(wxString)> on_end); ///< ejecuta objdump y retorna el path del archivo de salida
 	void AuxToolsDisassemble2(wxString out_fname, bool full_scope); ///< filtra la salida y muestra el panel con los resultados
 	void OnToolsDisassembleOfflineSel(wxCommandEvent &event);
 	void OnToolsDisassembleOfflineFunc(wxCommandEvent &event);
@@ -495,7 +496,7 @@ public:
 
 	void ShowQuickHelp (wxString keyword, bool hide_compiler_tree=true);
 	
-	void CompileSource(bool force_compile, GenericAction *action=nullptr);
+	void CompileSource(bool force_compile, std::function<void()> action);
 	void RunSource(mxSource *source);
 	void UpdateSymbols();
 	

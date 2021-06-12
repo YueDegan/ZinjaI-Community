@@ -1,5 +1,4 @@
 #include "mxCompilerArgEnabler.h"
-#include "Cpp11.h"
 #include "ProjectManager.h"
 #include "mxMainWindow.h"
 #include "Language.h"

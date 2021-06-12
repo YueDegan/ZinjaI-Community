@@ -1,5 +1,4 @@
 #include "mxSourceBase.h"
-#include "Cpp11.h"
 #include "ConfigManager.h"
 #include "mxColoursEditor.h"
 
@@ -7,7 +6,7 @@ mxSourceBase::mxSourceBase (wxWindow * parent)
 	: wxStyledTextCtrl (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxVSCROLL)
 {
 	wxStyledTextCtrl::Connect(wxEVT_MOUSEWHEEL,wxMouseEventHandler(mxSourceBase::OnMouseWheel),nullptr,this);
-	wxFont font (config->Styles.font_size, wxMODERN, wxNORMAL, wxNORMAL);
+	wxFont font(wxFontInfo(config->Styles.font_size).Family(wxFONTFAMILY_MODERN).Style(wxFONTSTYLE_NORMAL).Weight(wxFONTWEIGHT_NORMAL));
 	StyleSetFont (wxSTC_STYLE_DEFAULT, font);
 	
 	//	CmdKeyClearAll(); // desactiva hasta delete, backspace, flechas, tabs, etc

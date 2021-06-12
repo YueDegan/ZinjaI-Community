@@ -2,7 +2,6 @@
 #define MXDIFFSIDEBAR_H
 #include <wx/window.h>
 #include <wx/pen.h>
-#include "Cpp11.h"
 
 class mxSource;
 

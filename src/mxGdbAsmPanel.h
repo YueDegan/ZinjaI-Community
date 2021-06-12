@@ -2,7 +2,6 @@
 #define MXGDBASMPANEL_H
 #include <wx/panel.h>
 #include "Inspection.h"
-#include "Cpp11.h"
 #include <map>
 #include "StringConv.h"
 
@@ -37,9 +36,9 @@ class mxGdbAsmPanel : public wxPanel, public myDIGlobalEventHandler {
 	AddressRange ParseCode(wxString ans); 
 public:
 	mxGdbAsmPanel(wxWindow *parent);
-	void Update();
+	void Update() override;
 	void OnDebugPausePost() override { Update(); }
-	void OnDebugStart();
+	void OnDebugStart()override ;
 	void OnCheckStepMove(wxCommandEvent &evt);
 	DECLARE_EVENT_TABLE();
 };

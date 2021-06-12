@@ -1,7 +1,6 @@
 #ifndef MXDIFFWINDOW_H
 #define MXDIFFWINDOW_H
 #include <wx/dialog.h>
-#include "Cpp11.h"
 
 class wxCheckBox;
 class wxComboBox;

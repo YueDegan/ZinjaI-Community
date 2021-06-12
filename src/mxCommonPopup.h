@@ -4,7 +4,6 @@
 #include <wx/string.h>
 #include "ids.h"
 #include "Language.h"
-#include "Cpp11.h"
 
 /**
 * @brief Provides functionality for very frequently used popup menus

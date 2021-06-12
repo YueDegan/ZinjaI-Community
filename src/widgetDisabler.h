@@ -4,7 +4,6 @@
 #include <vector>
 #include <wx/string.h>
 #include "widgetDisabler.h"
-#include "Cpp11.h"
 class wxControl;
 class wxTextCtrl;
 class wxComboBox;

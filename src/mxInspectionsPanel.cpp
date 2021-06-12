@@ -3,7 +3,6 @@
 #include "mxInspectionGrid.h"
 #include "mxLocalsGrid.h"
 #include "ids.h"
-#include "Cpp11.h"
 
 BEGIN_EVENT_TABLE(mxInspectionsPanel,wxAuiNotebook)
 	EVT_AUINOTEBOOK_PAGE_CLOSE(mxID_NOTEBOOK_INSPECTIONS, mxInspectionsPanel::OnPageClosing)

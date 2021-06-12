@@ -1,7 +1,6 @@
 #ifndef MXHELPWINDOW_H
 #define MXHELPWINDOW_H
 #include "mxGenericHelpWindow.h"
-#include "Cpp11.h"
 
 class wxDialog;
 
@@ -25,10 +24,10 @@ public:
 	
 //	void LoadPage(wxString file);
 	
-	void ShowIndex();
-	void OnTree(wxTreeItemId item);
-	void OnSearch(wxString value);
-	bool OnLink(wxString href);
+	void ShowIndex() override;
+	void OnTree(wxTreeItemId item) override;
+	void OnSearch(wxString value) override;
+	bool OnLink(wxString href) override;
 //	bool CurrentPageIsHome() override;
 	
 	void OnForum(wxCommandEvent &event);

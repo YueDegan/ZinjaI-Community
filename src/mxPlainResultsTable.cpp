@@ -3,7 +3,6 @@
 #include "mxSizers.h"
 #include <wx/textctrl.h>
 #include <wx/stattext.h>
-#include "Cpp11.h"
 
 BEGIN_EVENT_TABLE(mxPlainResultsTable,wxPanel)
 	EVT_GRID_CMD_CELL_LEFT_CLICK(wxID_ANY,mxPlainResultsTable::OnClickTableCell)

@@ -1262,7 +1262,7 @@ void CodeHelper::AppendIndexes(wxString indexes) {
 *               en nullptr para indicarlo), sino lo deja como esta, no lo ejecuta, y
 *               sigue siendo responsabilidad de quien llamo
 **/
-void CodeHelper::TryToSuggestTemplateSolutionForLinkingErrors (const wxArrayString &full_output, GenericAction *&on_end) {
+void CodeHelper::TryToSuggestTemplateSolutionForLinkingErrors (const wxArrayString &full_output, std::function<void()> on_end) {
 
 	static bool dont_check=false; if (dont_check) return;
 
@@ -1383,7 +1383,7 @@ void CodeHelper::TryToSuggestTemplateSolutionForLinkingErrors (const wxArrayStri
 	if (cual.Len()==0) return;
 	source->SetCompilerOptions(candidatos[cual]);
 	wxCommandEvent evt;
-	main_window->CompileSource(true,fms_move(on_end)); // null caller's compile_and_run_struct_single to avoid double-delete
+	main_window->CompileSource(true,on_end); // null caller's compile_and_run_struct_single to avoid double-delete
 }
 
 void MyAutocompList::Add(const wxString &keyword, const wxString &icon, const wxString &help) {

@@ -10,11 +10,11 @@ class mxLocalsGrid : public mxGrid, public myDIGlobalEventHandler, public mxInsp
 	wxString command;
 public:
 	mxLocalsGrid(wxWindow *parent);
-	void Update();
+	void Update() override;
 	void OnColumnHideOrUnhide (int col, bool visible) override { Update(); }
 	void OnDebugPausePost() override { Update(); }
 	void OnInspectionsPanelTabSelected() override { Update(); }
-	void OnCellPopupMenu(int row, int col);
+	void OnCellPopupMenu(int row, int col) override;
 	
 	void OnAddToInspectionsGrid(wxCommandEvent &evt);
 	void OnShowInText(wxCommandEvent &evt);

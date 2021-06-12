@@ -3,7 +3,6 @@
 #include <wx/aui/aui.h>
 #include <wx/textfile.h>
 #include "SingleList.h"
-#include "Cpp11.h"
 
 class mxAUIContainer;
 

@@ -72,7 +72,6 @@
 #include "mxExternCompilerOutput.h"
 #include "mxBySourceCompilingOpts.h"
 #include "mxRegistersGrid.h"
-#include "Cpp11.h"
 #include "LocalRefactory.h"
 #include "mxCommandFinder.h"
 #include "SimpleTemplates.h"
@@ -1761,8 +1760,7 @@ void mxMainWindow::OnRunRun (wxCommandEvent &event) {
 	}
 	IF_THERE_IS_SOURCE CURRENT_SOURCE->HideCalltip();
 	if (project) { // si hay que ejecutar un proyecto
-		_LAMBDA_0( lmbRunProject, { if (project) project->Run(); } );
-		compiler->BuildOrRunProject(false,new lmbRunProject());
+		compiler->BuildOrRunProject(false,[](){ if (project) project->Run(); });
 		
 	} else IF_THERE_IS_SOURCE { // si hay que ejecutar un ejercicio
 		mxSource *source=CURRENT_SOURCE;
@@ -1770,8 +1768,8 @@ void mxMainWindow::OnRunRun (wxCommandEvent &event) {
 			if (source->GetLine(0).StartsWith("make me a sandwich")) { wxMessageBox("No way!"); return; }
 			else if (source->GetLine(0).StartsWith("sudo make me a sandwich")) source->SetText(wxString("/** Ok, you win! **/")+wxString(250,' ')+"#include <iostream>\n"+wxString(250,' ')+"int main(int argc, char *argv[]) {std::cout<<\"Here you are:\\n\\n   /-----------\\\\\\n  ~~~~~~~~~~~~~~~\\n   \\\\-----------/\\n\";return 0;}\n\n");
 		}
-		_LAMBDA_1( lmdRunSource, mxSource *,src, { main_window->RunSource(src); } );
-		CompileSource(false,new lmdRunSource(master_source?master_source:CURRENT_SOURCE));
+		mxSource *src = master_source?master_source:CURRENT_SOURCE;
+		CompileSource(false,[src](){ main_window->RunSource(src); });
 	}
 }
 
@@ -3175,11 +3173,11 @@ void mxMainWindow::OnDebugRun( wxCommandEvent &event ) {
 			debug->Start(config->Debug.compile_again);
 		} else IF_THERE_IS_SOURCE {
 			mxSource *src = master_source?master_source:CURRENT_SOURCE;
-			_LAMBDA_1( lmbDebugSource, mxSource*,src, { EnvVars::SetMode(EnvVars::DEBUGGING); debug->Start(src); } );
+			auto lambda = [src](){ EnvVars::SetMode(EnvVars::DEBUGGING); debug->Start(src); };
 			if (config->Debug.compile_again) {
-				CompileSource(false,new lmbDebugSource(src));
+				CompileSource(false,lambda);
 			} else {
-				lmbDebugSource(src).Run();
+				lambda();
 			}
 		}
 	}
@@ -3965,9 +3963,8 @@ wxString mxMainWindow::AvoidDuplicatePageText(wxString ptext) {
 }
 
 void mxMainWindow::OnDebugPatch (wxCommandEvent &event) {
-	_LAMBDA_0( lmbDebugPatch , { debug->Patch(); } );
-	if (project) compiler->BuildOrRunProject(false, new lmbDebugPatch);
-	else main_window->CompileSource(false, new lmbDebugPatch);
+	if (project) compiler->BuildOrRunProject(false, [](){ debug->Patch(); });
+	else main_window->CompileSource(false, [](){ debug->Patch(); });
 }
 
 void mxMainWindow::OnDebugCoreDump (wxCommandEvent &event) {
@@ -4823,8 +4820,7 @@ void mxMainWindow::OnFileSetAsMaster (wxCommandEvent & event) {
 * @param action En cualquier caso se hace cargo de esta accion, o la ejecuta
 *               o se la pasa al proceso de compilacion
 **/
-void mxMainWindow::CompileSource (bool force_compile, GenericAction *action) {
-	RaiiDeletePtr<GenericAction> oe_del(action);
+void mxMainWindow::CompileSource (bool force_compile, std::function<void()> action) {
 	mxSource *source = CURRENT_SOURCE;
 	if (master_source) {
 		if (!source->sin_titulo && source->GetModify()) source->SaveSource(); // guardar el actual
@@ -4834,7 +4830,7 @@ void mxMainWindow::CompileSource (bool force_compile, GenericAction *action) {
 		if (source->GetLine(0).StartsWith("make me a sandwich")) { wxMessageBox("No way!"); return; }
 		else if (source->GetLine(0).StartsWith("sudo make me a sandwich")) source->SetText(wxString("/** Ok, you win! **/")+wxString(250,' ')+"#include <iostream>\n"+wxString(250,' ')+"int main(int argc, char *argv[]) {std::cout<<\"Here you are:\\n\\n   /-----------\\\\\\n  ~~~~~~~~~~~~~~~\\n   \\\\-----------/\\n\";return 0;}\n\n");
 		source->SaveTemp();
-		compiler->CompileSource(source,fms_move(action));
+		compiler->CompileSource(source,action);
 	} else { // si estaba guardado ver si cambio
 		// si es un .h, avisar que probablemente sea un error intentar ejecutarlo
 		wxFileName source_filename = source->GetFullPath();
@@ -4864,8 +4860,8 @@ void mxMainWindow::CompileSource (bool force_compile, GenericAction *action) {
 			|| source->GetBinaryFileName().GetModificationTime()<source_filename.GetModificationTime() // si el binario es mas viejo que fuente
 			|| (config->Running.check_includes && mxUT::AreIncludesUpdated(source->GetBinaryFileName().GetModificationTime(),source_filename)); // si el binario es mas viejo que algun include
 		// compilar, o depurar, o ejecutar, segun corresponda
-		if (should_compile) compiler->CompileSource(source,fms_move(action));
-		else if (action) action->Run();
+		if (should_compile) compiler->CompileSource(source,action);
+		else if (action) action();
 	}
 }
 
