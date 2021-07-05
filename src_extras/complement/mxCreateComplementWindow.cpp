@@ -16,6 +16,7 @@
 #include <wx/sstream.h>
 #include <iostream>
 #include "Application.h"
+#include "string_convs.h"
 using namespace std;
 
 BEGIN_EVENT_TABLE(mxCreateComplementWindow,wxFrame)
@@ -40,7 +41,7 @@ enum STEPS_CREATE {STEP_ASKING,STEP_ANALYSING,STEP_BUILDING,STEP_DONE,STEP_ABORT
 // devuelve true si el compresor puede seguir, false si debe abortar
 bool callback_create(wxString message, int progress) {
 	if (message.Len()) create_win->Notify(message);
-	return create_win->GetStep()!=STEP_ABORTING || wxYES!=wxMessageBox(spanish?"¿Desea interrumpir el proceso?":"Abort the process?",spanish?"Generación de Complementos":"Complement Generation",wxYES_NO);
+	return create_win->GetStep()!=STEP_ABORTING || wxYES!=wxMessageBox(SP("¿Desea interrumpir el proceso?","Abort the process?"),SP("Generación de Complementos","Complement Generation"),wxYES_NO);
 }
 	
 
@@ -74,7 +75,7 @@ void FindFiles(wxArrayString &array, wxString where, wxString sub, wxArrayString
 }
 	
 mxCreateComplementWindow::mxCreateComplementWindow(wxString in_path, wxString out_fname)
-	: wxFrame(NULL,wxID_ANY,spanish?"Generación de complementos":"Complement Generation",wxDefaultPosition,wxDefaultSize)
+	: wxFrame(NULL,wxID_ANY,SP("Generación de complementos","Complement Generation"),wxDefaultPosition,wxDefaultSize)
 	, autoclose(false), step(STEP_ASKING)
 {
 	create_win=this;
@@ -84,7 +85,7 @@ mxCreateComplementWindow::mxCreateComplementWindow(wxString in_path, wxString ou
 	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 	
 	wxBoxSizer *folder_sizer = new wxBoxSizer(wxHORIZONTAL);
-	wxStaticText *sfolder = new wxStaticText(this,wxID_ANY,spanish?"Directorio con archivos a incluir:":"Directory with files to be included:");
+	wxStaticText *sfolder = new wxStaticText(this,wxID_ANY,SP("Directorio con archivos a incluir:","Directory with files to be included:"));
 	sizer->Add(sfolder,wxSizerFlags().Proportion(0).Expand().Border(wxTOP|wxLEFT|wxRIGHT,5));
 	folder = new wxTextCtrl(this,wxID_ANY,"",wxDefaultPosition,wxDefaultSize);
 	folder_sizer->Add(folder,wxSizerFlags().Proportion(1).Expand());
@@ -92,13 +93,13 @@ mxCreateComplementWindow::mxCreateComplementWindow(wxString in_path, wxString ou
 	folder_sizer->Add(but_folder);
 	sizer->Add(folder_sizer,wxSizerFlags().Proportion(0).Expand().Border(wxALL,5));
 	
-	wxStaticText *stext_en = new wxStaticText(this,wxID_ANY,spanish?"Descripción del complemento (ingles):":"Complement's description (english):");
+	wxStaticText *stext_en = new wxStaticText(this,wxID_ANY,SP("Descripción del complemento (ingles):","Complement's description (english):"));
 	sizer->Add(stext_en,wxSizerFlags().Proportion(0).Expand().Border(wxTOP|wxLEFT|wxRIGHT,5));
 	text_en = new wxTextCtrl(this,wxID_ANY,"",wxDefaultPosition,wxDefaultSize,wxTE_MULTILINE|wxTE_WORDWRAP);
 	text_en->SetMinSize(wxSize(400,150));
 	sizer->Add(text_en,wxSizerFlags().Proportion(1).Expand().Border(wxALL,5));
 	
-	wxStaticText *stext_es = new wxStaticText(this,wxID_ANY,spanish?"Descripción del complemento (español):":"Complement's description (spanish):");
+	wxStaticText *stext_es = new wxStaticText(this,wxID_ANY,SP("Descripción del complemento (español):","Complement's description (spanish):"));
 	sizer->Add(stext_es,wxSizerFlags().Proportion(0).Expand().Border(wxTOP|wxLEFT|wxRIGHT,5));
 	text_es = new wxTextCtrl(this,wxID_ANY,"",wxDefaultPosition,wxDefaultSize,wxTE_MULTILINE|wxTE_WORDWRAP);
 	text_es->SetMinSize(wxSize(400,150));
@@ -109,24 +110,24 @@ mxCreateComplementWindow::mxCreateComplementWindow(wxString in_path, wxString ou
 	text->Hide();
 	
 	wxBoxSizer *version_sizer = new wxBoxSizer(wxHORIZONTAL);
-	wxStaticText *sversion = new wxStaticText(this,wxID_ANY,spanish?"Versión de ZinjaI requerida: ":"Required ZinjaI version: ");
+	wxStaticText *sversion = new wxStaticText(this,wxID_ANY,SP("Versión de ZinjaI requerida: ","Required ZinjaI version: "));
 	version_sizer->Add(sversion,wxSizerFlags().Center());
 	version = new wxTextCtrl(this,wxID_ANY,"",wxDefaultPosition,wxDefaultSize);
 	version_sizer->Add(version,wxSizerFlags().Proportion(1).Expand());
 	sizer->Add(version_sizer,wxSizerFlags().Proportion(0).Expand().Border(wxALL,5));
 	
-	close = new wxCheckBox(this,wxID_ANY,spanish?"Requiere cerrar ZinjaI durante la instalación":"Requires closing ZinjaI for correct installation");
+	close = new wxCheckBox(this,wxID_ANY,SP("Requiere cerrar ZinjaI durante la instalación","Requires closing ZinjaI for correct installation"));
 	sizer->Add(close,wxSizerFlags().Proportion(0).Expand().Border(wxALL,5));
 	
-	reset = new wxCheckBox(this,wxID_ANY,spanish?"Requiere reiniciar ZinjaI para completar la instalación":"Requires restarting ZinjaI after installation");
+	reset = new wxCheckBox(this,wxID_ANY,SP("Requiere reiniciar ZinjaI para completar la instalación","Requires restarting ZinjaI after installation"));
 	sizer->Add(reset,wxSizerFlags().Proportion(0).Expand().Border(wxALL,5));
 
-	check_details = new wxCheckBox(this,wxID_ANY,spanish?"Mostrar detalles durante la compresión":"Show details while generating the zcp file");
+	check_details = new wxCheckBox(this,wxID_ANY,SP("Mostrar detalles durante la compresión","Show details while generating the zcp file"));
 	sizer->Add(check_details,wxSizerFlags().Proportion(0).Expand().Border(wxALL,5));
 	
 	
 	wxBoxSizer *dest_sizer = new wxBoxSizer(wxHORIZONTAL);
-	wxStaticText *sdest= new wxStaticText(this,wxID_ANY,spanish?"Archivo de complemento a generar:":"Ouput file:");
+	wxStaticText *sdest= new wxStaticText(this,wxID_ANY,SP("Archivo de complemento a generar:","Ouput file:"));
 	sizer->Add(sdest,wxSizerFlags().Proportion(0).Expand().Border(wxTOP|wxLEFT|wxRIGHT,5));
 	dest = new wxTextCtrl(this,wxID_ANY,"",wxDefaultPosition,wxDefaultSize);
 	dest_sizer->Add(dest,wxSizerFlags().Proportion(1).Expand());
@@ -136,8 +137,8 @@ mxCreateComplementWindow::mxCreateComplementWindow(wxString in_path, wxString ou
 	
 	
 	wxBoxSizer *but_sizer = new wxBoxSizer(wxHORIZONTAL);
-	but_create = new wxButton(this,wxID_OK,spanish?"Generar...":"Generate...");
-	but_cancel = new wxButton(this,wxID_CANCEL,spanish?"Cancelar":"Cancel");
+	but_create = new wxButton(this,wxID_OK,SP("Generar...","Generate..."));
+	but_cancel = new wxButton(this,wxID_CANCEL,SP("Cancelar","Cancel"));
 	but_sizer->Add(but_cancel,wxSizerFlags().Border(wxALL,5));
 	but_sizer->AddStretchSpacer();
 	but_sizer->Add(but_create,wxSizerFlags().Border(wxALL,5));
@@ -166,8 +167,8 @@ step=STEP_ASKING;\
 text_es->Show();\
 text_en->Show();\
 text->Hide();\
-but_create->SetLabel(spanish?"Generar...":"Generate..."); \
-but_cancel->SetLabel(spanish?"Cancelar":"Cancel"); \
+but_create->SetLabel(SP("Generar...","Generate...")); \
+but_cancel->SetLabel(SP("Cancelar","Cancel")); \
 but_create->Enable(); \
 Layout();\
 return
@@ -176,12 +177,12 @@ void mxCreateComplementWindow::OnButtonCreate (wxCommandEvent & evt) {
 	if (step==STEP_DONE) { _return; }
 	if (step==STEP_ASKING) {
 		wxString desc_en=text_en->GetValue(), desc_es=text_es->GetValue();
-		if (!desc_es.Len() && !desc_en.Len()) { wxMessageBox(spanish?"La descripción no debe quedar en blanco.":"You must complete at least one description.");  _return; }
+		if (!desc_es.Len() && !desc_en.Len()) { wxMessageBox(SP("La descripción no debe quedar en blanco.","You must complete at least one description."));  _return; }
 		if (!desc_es.Len()) desc_es=desc_en;
 		else if (!desc_en.Len()) desc_en=desc_es;
-		if (!folder->GetValue().Len()) { wxMessageBox(spanish?"Falta especificar la carpeta de donde tomar los archivos.":"You must specify the origin folder");  _return; }
-		if (!dest->GetValue().Len()) { wxMessageBox(spanish?"Falta especificar el archivo de destino.":"You must specify the complement filename.");  _return; }
-		text->SetValue(spanish?"Generando...\n":"Generating...\n");
+		if (!folder->GetValue().Len()) { wxMessageBox(SP("Falta especificar la carpeta de donde tomar los archivos.","You must specify the origin folder"));  _return; }
+		if (!dest->GetValue().Len()) { wxMessageBox(SP("Falta especificar el archivo de destino.","You must specify the complement filename."));  _return; }
+		text->SetValue(SP("Generando...\n","Generating...\n"));
 		but_create->Enable(false);
 		details = check_details->GetValue();
 		text->Show(); text_en->Hide(); text_es->Hide(); Layout();
@@ -191,7 +192,7 @@ void mxCreateComplementWindow::OnButtonCreate (wxCommandEvent & evt) {
 		if (!version->GetValue().Len()) {
 			info.reqver=0;
 		} else if (!version->GetValue().ToLong(&info.reqver)) {
-			wxMessageBox(spanish?"El número de versión requerida no es correcto.":"Wrong version number."); 
+			wxMessageBox(SP("El número de versión requerida no es correcto.","Wrong version number.")); 
 			_return;
 		}
 		info.closereq=close->GetValue();
@@ -208,7 +209,7 @@ void mxCreateComplementWindow::OnButtonCreate (wxCommandEvent & evt) {
 		if (where.EndsWith(sep)) where.RemoveLast();
 		wxFile file(where+sep+"temp"+sep+"desc.ini",wxFile::write);
 		if (!file.IsOpened()) {
-			wxMessageBox(spanish?"No se pudo crear el archivo desc.ini (debe tener\npermisos de escritura en el directorio seleccionado).":"Couldn't create desc.ini file (you must\nhave write privilege in the origin folder)."); 
+			wxMessageBox(SP("No se pudo crear el archivo desc.ini (debe tener\npermisos de escritura en el directorio seleccionado).","Couldn't create desc.ini file (you must\nhave write privilege in the origin folder).")); 
 			_return;
 		}
 		wxFileOutputStream fos(file);
@@ -218,14 +219,14 @@ void mxCreateComplementWindow::OnButtonCreate (wxCommandEvent & evt) {
 
 		step=STEP_BUILDING;
 		if (!CreateZip(callback_create,dest->GetValue(),folder->GetValue(),files)) { 
-			wxMessageBox(spanish?"Ha ocurrido un error durante la compresión (CreateZip).":"There's been a error while creating the complement file (CreateZip)."); 
+			wxMessageBox(SP("Ha ocurrido un error durante la compresión (CreateZip).","There's been a error while creating the complement file (CreateZip).")); 
 			_return;
 		}
 		if (step==STEP_ABORTING) { _return; }
 		
-		Notify(spanish?"Generación Finalizada.":"Generation completed.");
+		Notify(SP("Generación Finalizada.","Generation completed."));
 		if (autoclose) Close();
-		step=STEP_DONE; but_create->SetLabel(spanish?"Aceptar":"Ok"); but_cancel->SetLabel(spanish?"Cerrar":"Close"); but_create->Enable();
+		step=STEP_DONE; but_create->SetLabel(SP("Aceptar","Ok")); but_cancel->SetLabel(SP("Cerrar","Close")); but_create->Enable();
 	}
 }
 
@@ -248,12 +249,12 @@ void mxCreateComplementWindow::Notify(const wxString &message) {
 }
 
 void mxCreateComplementWindow::OnButtonFolder (wxCommandEvent & evt) {
-	wxDirDialog dlg(this,spanish?"Directorio con archivos para el complemento:":"Directory with files to be included:",folder->GetValue());
+	wxDirDialog dlg(this,SP("Directorio con archivos para el complemento:","Directory with files to be included:"),folder->GetValue());
 	if (wxID_OK==dlg.ShowModal()) SetFolder(dlg.GetPath());
 }
 
 void mxCreateComplementWindow::OnButtonDest (wxCommandEvent & evt) {
-	wxFileDialog dlg(this,spanish?"Archivo a generar:":"File to generate:","",dest->GetValue(),"*.zcp;*.ZCP",wxFD_SAVE);
+	wxFileDialog dlg(this,SP("Archivo a generar:","File to generate:"),"",dest->GetValue(),"*.zcp;*.ZCP",wxFD_SAVE);
 	if (wxID_OK==dlg.ShowModal()) { dest->SetValue(dlg.GetPath()); }
 }
 

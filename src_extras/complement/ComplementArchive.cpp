@@ -10,6 +10,7 @@
 #include <wx/sstream.h>
 #include "Application.h"
 #include "../../src/fix_filename.h"
+#include "string_convs.h"
 using namespace std;
 
 #ifdef __WIN32__
@@ -85,13 +86,13 @@ bool CreateDirectories(bool (*callback)(wxString message, int progress), const w
 			if (legal_name(name)) {
 				name = aTargetDir + name;
 				if (!wxFileName::DirExists(name)) {
-					if (!callback(wxString(spanish?"Creando directorio ":"Creating directory ")<<name,1)) return true;
+					if (!callback(SP("Creando directorio ","Creating directory ")<<name,1)) return true;
 					wxFileName::Mkdir(name, 0777, wxPATH_MKDIR_FULL);
 				} else {
-					if (!callback(wxString(spanish?"Ya existe el directorio ":"Directory exists ")<<name,1)) return true;
+					if (!callback(SP("Ya existe el directorio ","Directory exists ")<<name,1)) return true;
 				}
 			} else
-				if (!callback(wxString(spanish?"Nombre de directorio incorrecto: ":"Wrong directory name: ")<<name,1)) return true;
+				if (!callback(SP("Nombre de directorio incorrecto: ","Wrong directory name: ")<<name,1)) return true;
 		}
 	}
 	return true;
@@ -110,12 +111,12 @@ bool ExtractFiles(bool (*callback)(wxString message, int progress), const wxStri
 				name = aTargetDir + fix_filename(name);
 				zip.OpenEntry(*entry);
 				if (!zip.CanRead()) return false;
-				if (!callback(wxString(spanish?"Descomprimiendo archivo ":"Uncompressing file ")<<name,2)) return true;
+				if (!callback(SP("Descomprimiendo archivo ","Uncompressing file ")<<name,2)) return true;
 				wxFFileOutputStream file(name);
 				if (!file) return false;
 				zip.Read(file);
 			} else
-				if (!callback(wxString(spanish?"Nombre de archivo incorrecto: ":"Wrong file name: ")<<name,2)) return true;
+				if (!callback(SP("Nombre de archivo incorrecto: ","Wrong file name: ")<<name,2)) return true;
 		}
 	}
 	return true;
@@ -134,7 +135,7 @@ bool CreateZip(bool (*callback)(wxString message, int progress), const wxString 
 	wxArrayString dirs;
 	for(unsigned int i=0;i<files.GetCount();i++) {
 		wxString dir=GetDir(aTargetDir,files[i]);
-		if (!callback(wxString(spanish?"Agregando ":"Adding ")<<files[i],1)) return true;
+		if (!callback(SP("Agregando ","Adding ")<<files[i],1)) return true;
 		if (dir.Len() && dirs.Index(dir)==wxNOT_FOUND) {
 			wxZipEntry *entry=new wxZipEntry(dir);
 			entry->SetIsDir(true);
