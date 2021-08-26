@@ -386,8 +386,17 @@ bool ConfigManager::Load() {
 		
 	}
 	
+	if (Init.version<20210705) {
+		if (not Running.cpp_compiler_options.Contains("-D_DEBUG"))
+			Running.cpp_compiler_options += " -D_DEBUG";
+		if (not Running.cpp_compiler_options.Contains("-D_GLIBCXX_DEBUG"))
+			Running.cpp_compiler_options += " -D_GLIBCXX_DEBUG -D_DEBUG";
+	}
 	if (Init.version<20201123)  Files.wxfb_command = mxUT::Quotize(Files.wxfb_command);
-	if (Init.version<20190916)  Running.cpp_compiler_options += " -Werror=return-type";
+	if (Init.version<20190916) {
+		if (not Running.cpp_compiler_options.Contains("-Werror=return-type"))
+			Running.cpp_compiler_options += " -Werror=return-type";
+	}
 	if (Init.version<20180614 && Debug.macros_file=="debug_macros.gdb") Debug.macros_file = DIR_PLUS_FILE("samples","debug_macros.gdb");
 #ifdef __APPLE__
 	if (Init.version<20170926 && Files.debugger_command=="gdb") Files.debugger_command = "~/.zinjai/gdb.bin";
@@ -841,7 +850,7 @@ void ConfigManager::LoadDefaults(){
 //#endif
 	Source.avoidNoNewLineWarning=true;
 
-	Running.cpp_compiler_options="-Wall -pedantic-errors -O0 -Werror=return-type";
+	Running.cpp_compiler_options="-Wall -pedantic-errors -O0 -Werror=return-type -D_GLIBCXX_DEBUG";
 	Running.c_compiler_options="-Wall -pedantic-errors -O0";
 #ifdef __WIN32__
 	Running.c_compiler_options+=" -finput-charset=iso-8859-1 -fexec-charset=cp437";
@@ -924,17 +933,16 @@ bool ConfigManager::CheckWxfbPresent() {
 	if (!out.Len()) {
 #ifdef __WIN32__
 		if (wxFileName::FileExists("c:\\archivos de programa\\wxformbuilder\\wxformbuilder.exe"))
-			out = config->Files.wxfb_command="c:\\archivos de programa\\wxformbuilder\\wxformbuilder.exe";
+			out = config->Files.wxfb_command="\"c:\\archivos de programa\\wxformbuilder\\wxformbuilder.exe\"";
 		else if (wxFileName::FileExists("c:\\Program Files\\wxformbuilder\\wxformbuilder.exe"))
-			out = config->Files.wxfb_command="c:\\Program Files\\wxformbuilder\\wxformbuilder.exe";
+			out = config->Files.wxfb_command="\"c:\\Program Files\\wxformbuilder\\wxformbuilder.exe\"";
 		else if (wxFileName::FileExists("c:\\Program Files (x86)\\wxformbuilder\\wxformbuilder.exe"))
-			out = config->Files.wxfb_command="c:\\Program Files (x86)\\wxformbuilder\\wxformbuilder.exe";
+			out = config->Files.wxfb_command="\"c:\\Program Files (x86)\\wxformbuilder\\wxformbuilder.exe\"";
 #else
 		out = mxUT::GetOutput("wxformbuilder -h",true);
 		if (out.Len()) config->Files.wxfb_command = "wxformbuilder";
 		else {
-//			wxString flatpak_cmd = "flatpak run  --command=wxformbuilder --file-forwarding org.wxformbuilder.wxFormBuilder ";
-			wxString flatpak_cmd = "flatpak run org.wxformbuilder.wxFormBuilder";
+			wxString flatpak_cmd = "flatpak run  --command=wxformbuilder --file-forwarding org.wxformbuilder.wxFormBuilder";
 			out = mxUT::GetOutput(flatpak_cmd+" -h",true);
 			if (out.Len()) config->Files.wxfb_command = flatpak_cmd;
 		}

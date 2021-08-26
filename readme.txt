@@ -21,6 +21,6 @@ Se distribuye bajo la Licencia Pública General v2 (ver guihelp/license.html).
 Abrir guihelp/about.html para más información para el usuario.
 
 Abrir compiling.txt para más información acerca de cómo compilar ZinjaI desde los
-fuentes. Si no tiene este archivo, descague el paquete de fuentes o acceda al repositorio 
+fuentes. Si no tiene este archivo, descargue el paquete de fuentes o acceda al repositorio 
 del proyecto desde http://zinjai.sourceforge.net/index.php?page=descargas.php
 

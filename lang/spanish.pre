@@ -4,6 +4,16 @@ HTMLEXPORT_STATUS
 Exportando...
 GENERAL_READY
 Listo
+CODEHELP_SUGGEST_TEMPLATE
+Los errores de compilación/enlazado podrían deberse a la falta de argumentos\nde compilación adecuados para las bibliotecas que utiliza.\n¿Desea que ZinjaI modifique automáticamente los argumentos en base a una plantilla?
+CODEHELP_COMPILATION_OR_LINKING_ERRORS
+Errores de compilacion/enlazado
+CODEHELP_DONT_SHOW_AGAIN
+No volver a mostrar este mensaje
+CODEHELP_SELECT_A_TEMPLATE
+Seleccione una plantilla
+CODEHELP_EXTRA_COMPILER_ARGUMENTS
+Parametros extra para el compilador
 MAINW_CT_ERRORS
 Errores
 MAINW_CT_WARNINGS
@@ -35,7 +45,7 @@ Valgrind no se encuentra correctamente instalado/configurado\nen su pc. Si ya se
 MAINW_CPPCHECK_MISSING
 CppCheck no se encuentra correctamente instalado/configurado\nen su pc. Si ya se encuentra instalado debe configurar su\nubiciación en el cuadro de \"Preferencias\".
 CONFIG_MAC_DEADKEYS_PROBLEM_QUESTION
-¿Utiliza un teclado en español donde '[' y '{' se ingresan con\nAltGr y las teclas que están a la derecha de las teclas 'P' y 'Ñ'?\n\nNota: si más tarde detecta problemas con estas teclas puede volver\na cambiar esta configuación desde el cuadro de preferencias.\n
+
 CONFIG_APTGET_BUILD_ESSENTIAL
 Intentar instalar ahora
 CONFIG_GOTO_PACKAGE_WEBSITE
@@ -2661,7 +2671,7 @@ Comando del visor de grafos (xdot)
 PREFERENCES_COMMANDS_DOXYGEN
 Ubicación del ejecutable de Doxygen
 PREFERENCES_COMMANDS_WXFORMBUILDER
-Ubicación del ejecutable de wxFormBuilder
+Comando para ejecutar wxFormBuilder
 PREFERENCES_COMMANDS_VALGRIND
 Ubicación del ejecutable de Valgrind
 PREFERENCES_COMMANDS_CPPCHECK

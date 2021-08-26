@@ -15,6 +15,8 @@
 #include "mxSizers.h"
 #include "Language.h"
 
+#define _Z(x) wxString::From8BitData(x)
+
 mxTipsWindow *g_tips_window = nullptr;
 
 BEGIN_EVENT_TABLE(mxTipsWindow, wxDialog)
@@ -53,8 +55,8 @@ void mxTipsWindow::ShowAnyTip() {
 	if (config->Init.version!=VERSION) {
 		wxString tip(wxString("<B>")<<LANG(TIPS_WELCOME,"Bienvenido a ZinjaI ")<<VERSION<<"</B><BR><BR>");
 #ifdef __APPLE__
-		tip<<"[EN] Important notice: due to the lack of propper hardware, ZinjaI's Mac binaries are released without being properly tested, so you should expect to find some bugs. You can report them and ask for help in ZinjaI's forums.<BR><BR>";
-		tip<<"[ES] Importante: por falta de hardware adecuado, las versiones para Mac de ZinjaI se publican sin haber sido testeadas, por lo que seguramente encontrará bugs. Puede reportarlos y solicitar ayuda en los foros del sitio web de ZinjaI.<BR><BR>";
+		tip<<_Z("[EN] Important notice: due to the lack of propper hardware, ZinjaI's Mac binaries are released without being properly tested, so you should expect to find some bugs. You can report them and ask for help in ZinjaI's forums.<BR><BR>");
+		tip<<_Z("[ES] Importante: por falta de hardware adecuado, las versiones para Mac de ZinjaI se publican sin haber sido testeadas, por lo que seguramente encontrará bugs. Puede reportarlos y solicitar ayuda en los foros del sitio web de ZinjaI.<BR><BR>");
 #else
 		tip<<file[config->Init.version?1:0];
 #endif
@@ -68,9 +70,9 @@ void mxTipsWindow::ShowAnyTip() {
 		wxString tip(TIP_INITIAL_TEXT);
 		if (retry_num==42) {
 			if (config->Init.language_file=="spanish") {
-				tip = "<center><br><br>Tip especial nro 42:<br><h2>¡NO SE ASUSTE!</h2></center>";
+				tip = _Z("<center><br><br>Tip especial nro 42:<br><h2>¡NO SE ASUSTE!</h2></center>");
 			} else {
-				tip = "<center><br><br>Special tip number 42:<br><h2>DON'T PANIC!</h2></center>";
+				tip = _Z("<center><br><br>Special tip number 42:<br><h2>DON'T PANIC!</h2></center>");
 			}
 		} else {
 			while (tip==TIP_INITIAL_TEXT)

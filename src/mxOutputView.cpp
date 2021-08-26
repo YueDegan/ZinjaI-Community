@@ -174,10 +174,9 @@ void mxOutputView::OnTimer(wxTimerEvent &evt) {
 }
 
 static wxString GetProcessOutput_aux(wxInputStream *stream, wxTextCtrl *ctrl) {
-	wxTextInputStream input(*stream);
 	static wxString line; line.Clear();
-	for(wxChar c; (c=input.GetChar()); ) // GetChar returns 0 when there's no more data
-		if (c!='\r') line<<c;
+	for(int c; stream->CanRead() && (c=stream->GetC())!=wxEOF; ) 
+		if (c!='\r') line<<wxChar(c);
 	ctrl->AppendText(line);
 	ctrl->ShowPosition(ctrl->GetLastPosition());
 	return line;

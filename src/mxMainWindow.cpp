@@ -2039,12 +2039,15 @@ bool mxMainWindow::CloseSource (mxSource *src) {
 
 bool mxMainWindow::CloseSource (int i) {
 	mxSource *source=(mxSource*)notebook_sources->GetPage(i);
+	/// @todo: ver porque este codigo esta dos veces, se repite en mxMainWindow::OnNotebookPageClose
 	if (g_share_manager && g_share_manager->Exists(source))  {
 		mxMessageDialog::mdAns ans = 
-			mxMessageDialog(main_window,"El archivo esta siendo compartido con modificaciones.\n"
-										 "Si lo cierra dejara de estar disponible.\n"
-										 "¿Realmente desea cerrar el archivo?")
-				.Check1("Continuar compartiendo (\"sin modificaciones\") despues de cerrarlo.",false)
+			mxMessageDialog(main_window,LANG(MAINW_ASK_CLOSE_SHARED,""
+											 "El archivo está siendo compartido con modificaciones.\n"
+											 "Si lo cierra dejara de estar disponible.\n"
+											 "¿Realmente desea cerrar el archivo?"))
+				.Check1(LANG(MAINW_SHARE_AFTER_CLOSE,""
+							 "Continuar compartiendo (\"sin modificaciones\") despues de cerrarlo."),false)
 				.Title(source->page_text).ButtonsYesNo().Run();
 		if (ans.yes) {
 			if (ans.check1)

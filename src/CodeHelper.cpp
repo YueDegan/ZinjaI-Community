@@ -1370,16 +1370,16 @@ void CodeHelper::TryToSuggestTemplateSolutionForLinkingErrors (const wxArrayStri
 		vals.Add(it->first);
 		++it;
 	}
-	mxMessageDialog::mdAns ans = mxMessageDialog(main_window,("Los errores de compilación/enlazado podrían deberse a la falta de argumentos\n"
+	mxMessageDialog::mdAns ans = mxMessageDialog(main_window,(LANG(CODEHELP_SUGGEST_TEMPLATE,"Los errores de compilación/enlazado podrían deberse a la falta de argumentos\n"
 										 "de compilación adecuados para las bibliotecas que utiliza.\n"
-										 "¿Desea que ZinjaI modifique automáticamente los argumentos en base a una plantilla?"))
-									.Title("Errores de compilacion/enlazado").ButtonsYesNo().IconQuestion()
-									.Check1("No volver a mostrar este mensaje",false).Run();
+										 "¿Desea que ZinjaI modifique automáticamente los argumentos en base a una plantilla?")))
+									.Title(LANG(CODEHELP_COMPILATION_OR_LINKING_ERRORS,"Errores de compilacion/enlazado")).ButtonsYesNo().IconQuestion()
+									.Check1(LANG(CODEHELP_DONT_SHOW_AGAIN,"No volver a mostrar este mensaje"),false).Run();
 	if (ans.no) {
 		if (ans.check1) dont_check=false;
 		return;
 	}
-	wxString cual = wxGetSingleChoice("Seleccione una plantilla","Parametros extra para el compilador",vals,main_window);
+	wxString cual = wxGetSingleChoice(LANG(CODEHELP_SELECT_A_TEMPLATE,"Seleccione una plantilla"),LANG(CODEHELP_EXTRA_COMPILER_ARGUMENTS,"Parametros extra para el compilador"),vals,main_window);
 	if (cual.Len()==0) return;
 	source->SetCompilerOptions(candidatos[cual]);
 	wxCommandEvent evt;

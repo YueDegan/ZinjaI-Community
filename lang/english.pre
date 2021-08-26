@@ -4,6 +4,16 @@ HTMLEXPORT_STATUS
 Generating_html...
 GENERAL_READY
 Ready
+CODEHELP_SUGGEST_TEMPLATE
+Current compiler or link errors can be caused by missing compiler arguments for some specific libraries. Would you like ZinjaI to automatically add arguments from a known template?
+CODEHELP_COMPILATION_OR_LINKING_ERRORS
+Compiling/Linking errors
+CODEHELP_DONT_SHOW_AGAIN
+Do not show this message again
+CODEHELP_SELECT_A_TEMPLATE
+Select a template
+CODEHELP_EXTRA_COMPILER_ARGUMENTS
+Additional compiler arguments
 MAINW_CT_ERRORS
 Errors
 MAINW_CT_WARNINGS
