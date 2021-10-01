@@ -220,7 +220,9 @@ void Toolchain::SetArgumets ( ) {
 
 wxString Toolchain::GetExtraCompilingArguments (bool cpp) {
 	if (type==TC_GCC) {
-		if (CheckVersion(cpp,4,8)) return "-fshow-column -fno-diagnostics-show-caret";
+		if (CheckVersion(cpp,4,8)) 
+			return wxString("-fshow-column -fno-diagnostics-show-caret ") 
+				   + (CheckVersion(cpp,11,0)?"-fdiagnostics-column-unit=byte":"");
 		else return "-fshow-column";
 	} else if (type==TC_CLANG) {
 		return "-fno-caret-diagnostics";

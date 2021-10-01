@@ -141,7 +141,7 @@ bool DebugManager::Start(mxSource *source) {
 }
 
 bool DebugManager::Start(wxString workdir, wxString exe, wxString args, bool show_console, int wait_for_key) {
-	mxOSDGuard osd(main_window,project?LANG(OSD_STARTING_DEBUGGER,"Iniciando depuracion..."):"");
+	mxOSDGuard osd(main_window,project?LANG(OSD_STARTING_DEBUGGER,"Iniciando depuración..."):"");
 	ResetDebuggingStuff(); 
 	debug_patcher->Init(exe);
 #ifndef __WIN32__
@@ -208,6 +208,7 @@ bool DebugManager::Start(wxString workdir, wxString exe, wxString args, bool sho
 			<<". "<<DIR_PLUS_FILE(project->path,project->active_configuration->exec_script)<<" &>/dev/null; "<<command);
 	}
 #endif
+	if (status!=DBGST_STARTING) return false; // si el proceso de la terminal finalizo rapidamente
 	
 	ZLINF("DebugManager","Debug starting");
 	ZLINF2("DebugManager","cmd: "<<command);
@@ -1435,7 +1436,8 @@ void DebugManager::ProcessKilled() {
 #ifndef __WIN32__
 void DebugManager::TtyProcessKilled() {
 	ZLINF("DebugManager","TtyProcessKilled");
-	if (gdb_pid && debugging && status!=DBGST_STOPPING) Stop();
+	if (gdb_pid && debugging && status!=DBGST_STOPPING) Stop(); // caso normal
+	else if (status==DBGST_STARTING) status==DBGST_STOPPING; // caso en que la terminal falla al arrancar (gnome-terminal)
 	delete tty_process;
 	tty_process = nullptr;
 	tty_pid = 0;
@@ -1932,7 +1934,7 @@ bool DebugManager::Start_ConfigureGdb (bool check_for_symbols) {
 	DebuggerInspection::OnDebugStart();
 	for(int i=0;i<backtrace_consumers.GetSize();i++) backtrace_consumers[i]->OnDebugStart();
 	
-	return true;
+	return status==DBGST_STARTING; // por si el proceso de la terminal finalizo rapidamente
 }
 
 void DebugManager::Initialize() {
