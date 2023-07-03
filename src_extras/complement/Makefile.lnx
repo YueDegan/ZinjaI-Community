@@ -1,6 +1,6 @@
 GPP=g++
-CXXFLAGS=-O3 `wx-config --cppflags --unicode=yes --version=3.1`
-LDFLAGS=-s `wx-config --libs --unicode=yes --version=3.1` 
+CXXFLAGS=-O3 `wx-config --cppflags --unicode=yes`
+LDFLAGS=-s `wx-config --libs --unicode=yes` 
 OBJS_DIR=../../temp/complement/release.lnx
 
 all: ../../bin/complement.bin ../../bin/complement_wrap.bin

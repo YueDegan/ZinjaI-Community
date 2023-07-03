@@ -31,7 +31,7 @@ bool mxApplication::OnInit() {
 	if (fname.Len() && !for_autobuilding )
 		new mxInfoWindow(zpath,fname);
 	else
-		new mxCreateComplementWindow(zpath,fname);
+		new mxCreateComplementWindow(zpath,fname,false);
 	return true;
 }
 

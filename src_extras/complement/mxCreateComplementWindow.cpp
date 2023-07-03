@@ -74,9 +74,9 @@ void FindFiles(wxArrayString &array, wxString where, wxString sub, wxArrayString
 	
 }
 	
-mxCreateComplementWindow::mxCreateComplementWindow(wxString in_path, wxString out_fname)
+mxCreateComplementWindow::mxCreateComplementWindow(wxString in_path, wxString out_fname, bool write_desc) 
 	: wxFrame(NULL,wxID_ANY,SP("Generación de complementos","Complement Generation"),wxDefaultPosition,wxDefaultSize)
-	, autoclose(false), step(STEP_ASKING)
+	, autoclose(false), step(STEP_ASKING), write_desc_ini(write_desc)
 {
 	create_win=this;
 	wxFileSystem::AddHandler(new wxArchiveFSHandler);
@@ -201,21 +201,24 @@ void mxCreateComplementWindow::OnButtonCreate (wxCommandEvent & evt) {
 		info.bins.Clear();
 		FindFiles(files,folder->GetValue(),"",info.bins);
 		
-		wxString desc_text;
-		desc_merge(info,desc_text);
-		wxString where=folder->GetValue();
-		if (!wxFileName::DirExists(where+sep+"temp"))
-			wxFileName::Mkdir(where+sep+"temp");
-		if (where.EndsWith(sep)) where.RemoveLast();
-		wxFile file(where+sep+"temp"+sep+"desc.ini",wxFile::write);
-		if (!file.IsOpened()) {
-			wxMessageBox(SP("No se pudo crear el archivo desc.ini (debe tener\npermisos de escritura en el directorio seleccionado).","Couldn't create desc.ini file (you must\nhave write privilege in the origin folder).")); 
-			_return;
+		if (write_desc_ini) {
+			wxString desc_text;
+			desc_merge(info,desc_text);
+			wxString where=folder->GetValue();
+			if (!wxFileName::DirExists(where+sep+"temp"))
+				wxFileName::Mkdir(where+sep+"temp");
+			if (where.EndsWith(sep)) where.RemoveLast();
+			wxFile file(where+sep+"temp"+sep+"desc.ini",wxFile::write);
+			if (!file.IsOpened()) {
+				wxMessageBox(SP("No se pudo crear el archivo desc.ini (debe tener\npermisos de escritura en el directorio seleccionado).","Couldn't create desc.ini file (you must\nhave write privilege in the origin folder).")); 
+				_return;
+			}
+			wxFileOutputStream fos(file);
+			string desc_str = _W2S(desc_text);
+			fos.Write(desc_str.c_str(),desc_str.size());
+			fos.Close();
+			file.Close();
 		}
-		wxFileOutputStream fos(file);
-		fos.Write(desc_text.c_str(),desc_text.Len());
-		fos.Close();
-		file.Close();
 
 		step=STEP_BUILDING;
 		if (!CreateZip(callback_create,dest->GetValue(),folder->GetValue(),files)) { 
