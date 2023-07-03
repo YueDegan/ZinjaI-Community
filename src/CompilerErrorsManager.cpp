@@ -67,7 +67,8 @@ void CompilerErrorsManager::ShowCompilerTreePanel() {
 
 bool CompilerErrorsManager::FinishStep (CEMState &cem_state) {
 	if (cem_state.HaveError()) DoAddError(cem_state);
-	else if (cem_state.HaveNotes()) cem_state.parsing_was_ok = false;
+	else if (cem_state.HaveNotes())
+		cem_state.parsing_was_ok = false;
 	m_num_errors += cem_state.num_errors;
 	m_num_warnings += cem_state.num_warnings;
 	for(unsigned int i=0;i<cem_state.full_output.GetCount();i++)
@@ -347,7 +348,8 @@ void CompilerErrorsManager::AddError (CEMState & cem_state, bool is_error, const
 
 void CompilerErrorsManager::AddNoteForLastOne (CEMState & cem_state, const wxString &error_line, int flags) {
 	AddToFullOutput(cem_state,error_line);
-	if (!cem_state.HaveError()) cem_state.parsing_was_ok = false;
+	if (!cem_state.HaveError())
+		cem_state.parsing_was_ok = false;
 	else cem_state.AddNote(error_line,flags);
 //	if (!cem_state.last_is_ok) return false;
 //	wxString nice_error = GetNiceErrorLine(error_line);

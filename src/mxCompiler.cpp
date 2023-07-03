@@ -150,30 +150,50 @@ void mxCompiler::BuildOrRunProject(bool prepared, std::function<void()> on_end) 
 	}	
 }
 
+static bool AuxCompare(const wxString &s, int p, const char *c) {
+	int l = s.Len();
+	while (*c!='\0' and p<l and *c==s[p]) ++c, ++p;
+	return *c=='\0';
+}
+
+static void AuxSkip(const wxString &s, int &p, int l, int &ns) {
+	while (p<l && s[p]!=':') ++p; 
+	++p; ns = 0;
+	while (p<l && s[p]==' ') ++p, ++ns;
+}
 static inline bool ErrorLineIsChild(const wxString &error_line) {
 	// si el mensaje de error empieza con 3 espacios, es porque en realidad sigue del mensaje anterior
-	int p=2,l=error_line.Len();
-	while (p<l && error_line[p]!=':') p++; // saltear el nombre del archivo
-	if (error_line[0]!='<') { // algunos errores dicen "<command-line>: note: blah..." como al redefinir una macro
-		if (p==l) return false; else p++;
-		while (p<l && error_line[p]!=':') p++; // saltear el numero de linea
-		if (p==l) return false; else p++;
-		while (p<l && error_line[p]!=':') p++; // saltear el la columna
-	}
-	if (p==l) return false; else p++;
-	if (p+2<l && error_line[p]==' '&&error_line[p+1]==' '&&error_line[p+2]==' ') return true; // puede venir directo el mensaje
-	if (p+5<l && error_line[p+1]=='n'&&error_line[p+2]=='o'&&error_line[p+3]=='t'&&error_line[p+5]==':') return true; // o la palabra note
-	while (p<l && error_line[p]!=':') p++; // o la palabra error/warning/
-	if (p==l) return false; else p++;
-	if (p+2<l && error_line[p]==' '&&error_line[p+1]==' '&&error_line[p+2]==' ') return true; // puede venir directo el mensaje
+	int p=2, l=error_line.Len(), ns = 0; // ns guarda cuantos espacios habia al final salteo AuxSkip
+
+	// saltear el nombre del archivo
+	AuxSkip(error_line,p,l,ns);
+	// algunos errores dicen "<command-line>: note: blah..." como al redefinir una macro, o "lto-wrapper: note: bla..."
+	// ahi tambien salteamos el comando salteando hasta los dos puntos
+	
+	// saltear el numero de linea y de columna si existen (por ej, cuando es error de lto no existe, no saltear o salteamos el "note:" o "warning", etc)
+	if (p<l and (error_line[p]>='0' and error_line[p]<='9'))
+		AuxSkip(error_line,p,l,ns);
+	if (p<l and (error_line[p]>='0' and error_line[p]<='9'))
+		AuxSkip(error_line,p,l,ns);
+	
+	if (ns>=3) return true; // puede venir directo el mensaje.. si empieza "indentado" con 3 espacios, es child
+	if (AuxCompare(error_line,p,"note:")) return true; // o la palabra note
+	AuxSkip(error_line,p,l,ns); // palabra "error:" o "warning:"
+	if (ns>=3) return true; // puede venir directo el mensaje.. si empieza "indentado" con 3 espacios, es child
 	return false;
 }
 
 
 CAR_ERROR_LINE mxCompiler::ParseSomeErrorsOneLine(compile_and_run_struct_single *compile_and_run, const wxString &error_line) {
 	
+	// ignore context info... the ide will point the location and provide context
+	// if starts with "In member function ..."
+	if (error_line.StartsWith(EN_COMPOUT_IN_MEMBER_FUNCTION)/* || error_line.Contains(ES_COMPOUT_IN_MEMBER_FUNCTION*/) {
+		compile_and_run->error_line_flag=CAR_LL_NULL;
+		return CAR_EL_TYPE_IGNORE;
+	}
 	// if it starts or continues an "In included file from ....., \n from ...., \n from .....:" list, ignore
-	if (compile_and_run->error_line_flag==CAR_LL_IN_INCLUDED_FILE || error_line.Contains(EN_COMPOUT_IN_FILE_INCLUDED_FROM) || error_line.Contains(ES_COMPOUT_IN_FILE_INCLUDED_FROM) ) {
+	if (compile_and_run->error_line_flag==CAR_LL_IN_INCLUDED_FILE || error_line.StartsWith(EN_COMPOUT_IN_FILE_INCLUDED_FROM) || error_line.StartsWith(ES_COMPOUT_IN_FILE_INCLUDED_FROM) ) {
 		if (error_line.Last()==',') compile_and_run->error_line_flag=CAR_LL_IN_INCLUDED_FILE;
 		else compile_and_run->error_line_flag=CAR_LL_NULL;
 		return CAR_EL_TYPE_IGNORE;
@@ -286,8 +306,9 @@ void mxCompiler::ParseSomeErrors(compile_and_run_struct_single *compile_and_run)
 			errors_manager->AddNoteForLastOne(compile_and_run->m_cem_state,error_line,action);
 		} else if (action&CAR_EL_TYPE_CHILD_NEXT) { // parte (hijos) del siguiente error
 			errors_manager->AddNoteForNextOne(compile_and_run->m_cem_state,error_line,action);
-		}
-			
+		} else
+			errors_manager->AddExtraOutput(compile_and_run->m_cem_state,error_line);
+		
 	}
 }
 

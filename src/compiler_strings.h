@@ -17,6 +17,7 @@
 #define EN_COMPOUT_WITHIN_THIS_CONTEXT _T(": within this context")
 #define EN_COMPOUT_NOTE _T(": note: ")
 #define EN_COMPOUT_IN_FILE_INCLUDED_FROM _T("In file included from ")
+#define EN_COMPOUT_IN_MEMBER_FUNCTION _T("In member function ")
 #define EN_COMPOUT_IN_EXPANSION_OF_MACRO _T("in expansion of macro")
 
 #define EN_COMPOUT_DID_YOU_MEAN _T("did you mean \'")
@@ -42,6 +43,8 @@
 #define ES_COMPOUT_WITHIN_THIS_CONTEXT _T(": en este contexto")
 #define ES_COMPOUT_NOTE _T(": nota: ")
 #define ES_COMPOUT_IN_FILE_INCLUDED_FROM _T("En el fichero inclu\u00EDdo de ")
+//#define ES_COMPOUT_IN_MEMBER_FUNCTION _T("todo... ver como es en español")
+//#define ES_COMPOUT_IN_EXPANSION_OF_MACRO _T("todo... ver como es en español")
 //#define ES_COMPOUT_WARNING _T(": aviso: ")
 //#define ES_COMPOUT_IN_PASSING_ARGUMENT _T(": en el paso del argumento")
 //#define ES_COMPOUT_FORWARD_DECLARATION_OF _T(": forward declaration of ")
