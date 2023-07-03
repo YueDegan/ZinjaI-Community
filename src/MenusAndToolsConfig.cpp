@@ -1,3 +1,4 @@
+#include <wx/srchctrl.h>
 #include "MenusAndToolsConfig.h"
 #include "Language.h"
 #include "mxUtils.h"
@@ -8,7 +9,6 @@
 #include "DebugManager.h"
 #include "mxAUI.h"
 #include "osdep.h"
-#include <wx/srchctrl.h>
 
 MenusAndToolsConfig *menu_data;
 
@@ -893,7 +893,8 @@ void MenusAndToolsConfig::CreateToolbars() {
 	}
 	
 	// create empty wxToolBars 
-	for(unsigned int tb_id=0;tb_id<tbCOUNT_FULL;tb_id++) CreateWxToolbar(tb_id);
+	for(unsigned int tb_id=0;tb_id<tbCOUNT_FULL;tb_id++)
+		if (tb_id!=tbSTATUS) CreateWxToolbar(tb_id);
 	
 	// barras estandar: FILE, EDIT, VIEW, RUN, DEBUG, TOOLS, MISC, PROJECT
 	for(int tb_id=0;tb_id<tbPROJECT;tb_id++) PopulateToolbar(tb_id); 
@@ -909,8 +910,19 @@ void MenusAndToolsConfig::CreateToolbars() {
 	// barras especiales: estado de la depuracion
 	{
 		myToolbar &tb = toolbars[tbSTATUS];
-		tb.wx_toolbar->AddControl( toolbar_status_text = new wxStaticText(tb.wx_toolbar,wxID_ANY,"",wxDefaultPosition,wxSize(500,20)) );
-		toolbar_status_text->SetForegroundColour(wxColour("Z DARK BLUE"));
+//		tb.wx_toolbar->AddControl( toolbar_status_text = new wxStaticText(tb.wx_toolbar,wxID_ANY,"",wxDefaultPosition,wxSize(5000,20)) );
+//		toolbar_status_text->SetForegroundColour(wxColour("Z DARK BLUE"));
+		wxSize size(5000,-1);
+		debug_status_panel = new wxPanel(main_window,wxID_ANY,wxDefaultPosition,size);
+		debug_status_panel->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
+		wxBoxSizer *debug_status_sizer = new wxBoxSizer(wxVERTICAL);
+		debug_status_text = new wxStaticText(debug_status_panel,wxID_ANY,"",wxDefaultPosition,size);
+		debug_status_text->SetForegroundColour(wxColour("Z DARK BLUE"));
+		debug_status_sizer->AddStretchSpacer();
+		debug_status_sizer->Add(debug_status_text);
+		debug_status_sizer->AddStretchSpacer();
+		debug_status_panel->SetSizer(debug_status_sizer);
+		main_window->m_aui->AddPane(debug_status_panel , wxAuiPaneInfo().Name(wxString("toolbar_")+tb.key).Caption(tb.label).ToolbarPane().Hide().Floatable(false));
 	}
 	
 	// barras especiales: diff

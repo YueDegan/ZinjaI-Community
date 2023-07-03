@@ -85,7 +85,7 @@ void mxMainWindow::SortToolbars(bool update_aui) {
 	wxAuiManager &a=*m_aui;
 	int c[10]={0};
 #define _aui_update_toolbar_pos(NAME) { \
-	wxAuiPaneInfo &pi=a.GetPane(_get_toolbar(tb##NAME)); \
+	wxAuiPaneInfo &pi=a.GetPane(_get_toolbar_w(tb##NAME)); \
 	MenusAndToolsConfig::toolbarPosition &t=menu_data->GetToolbarPosition(MenusAndToolsConfig::tb##NAME); \
 	pi.LeftDockable(t.right||t.left); \
 	pi.RightDockable(t.right||t.left); \
@@ -112,7 +112,7 @@ void mxMainWindow::GetToolbarsPositions() {
 	if ((gui_debug_mode&&config->Debug.autohide_toolbars) || (gui_fullscreen_mode&&config->Init.autohide_toolbars_fs)) return;
 	
 	for(int tb_id=0;tb_id<MenusAndToolsConfig::tbCOUNT_FULL;tb_id++) {
-		wxAuiPaneInfo &pi=m_aui->GetPane(menu_data->GetToolbar(tb_id));
+		wxAuiPaneInfo &pi=m_aui->GetPane(menu_data->GetToolbarW(tb_id));
 		MenusAndToolsConfig::toolbarPosition &position = menu_data->GetToolbarPosition(tb_id);
 		if (pi.IsOk() && pi.IsShown()) {
 			position.visible=true;

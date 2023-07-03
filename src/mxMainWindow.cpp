@@ -940,7 +940,7 @@ void mxMainWindow::OnClose (wxCloseEvent &event) {
 	while (notebook_sources->GetPageCount()) notebook_sources->DeletePage(0); // close sources to avoid paint events and other calls that could use some just deleted objects
 	if (g_share_manager) delete g_share_manager;
 #ifdef __APPLE__
-	m_aui->GetPane(_get_toolbar(tbFIND)).Hide();
+	m_aui->GetPane(_get_toolbar_w(tbFIND)).Hide();
 	m_aui->Update(); wxYield();
 #endif
 	main_window=nullptr;
@@ -2080,8 +2080,8 @@ void mxMainWindow::OnViewFullScreen(wxCommandEvent &event) {
 		_menu_item(mxID_VIEW_FULLSCREEN)->Check(false);
 		if (config->Init.autohide_toolbars_fs && (!debug->debugging || !config->Debug.autohide_toolbars)) { // reacomodar las barras de herramientas (si no esta depurando, por que si esta depurando las reacomoda el depurador cuando termina)
 #define _aux_fstb_1(NAME) \
-			if (_toolbar_visible(tb##NAME)) { _menu_item(mxID_VIEW_TOOLBAR_##NAME)->Check(true); m_aui->GetPane(_get_toolbar(tb##NAME)).Show(); } \
-			else { _menu_item(mxID_VIEW_TOOLBAR_##NAME)->Check(false); m_aui->GetPane(_get_toolbar(tb##NAME)).Hide(); }
+			if (_toolbar_visible(tb##NAME)) { _menu_item(mxID_VIEW_TOOLBAR_##NAME)->Check(true); m_aui->GetPane(_get_toolbar_w(tb##NAME)).Show(); } \
+			else { _menu_item(mxID_VIEW_TOOLBAR_##NAME)->Check(false); m_aui->GetPane(_get_toolbar_w(tb##NAME)).Hide(); }
 			_aux_fstb_1(FILE);
 			_aux_fstb_1(EDIT);
 			_aux_fstb_1(VIEW);
@@ -2103,7 +2103,7 @@ void mxMainWindow::OnViewFullScreen(wxCommandEvent &event) {
 			if (!debug->debugging || !config->Debug.autohide_toolbars) { // si esta depurando, las oculta el depurador cuando termina, sino...
 #define _on_view_fullscreen_aux_1(ID) { \
 	wxMenuItem *menu_item = _menu_item(mxID_VIEW_TOOLBAR_##ID); \
-	if (menu_item->IsChecked()) { menu_item->Check(false); m_aui->GetPane(_get_toolbar(tb##ID)).Hide(); } \
+	if (menu_item->IsChecked()) { menu_item->Check(false); m_aui->GetPane(_get_toolbar_w(tb##ID)).Hide(); } \
 }
 				_on_view_fullscreen_aux_1(FILE);
 				_on_view_fullscreen_aux_1(VIEW);
@@ -3439,14 +3439,14 @@ void mxMainWindow::PrepareGuiForDebugging(bool debug_mode) {
 		}
 
 		if (config->Debug.autohide_toolbars) { // reacomodar las barras de herramientas
-			m_aui->GetPane(_get_toolbar(tbSTATUS)).Show();
+			m_aui->GetPane(_get_toolbar_w(tbSTATUS)).Show();
 			
 #define _aux_pfd_2(NAME) \
 			{ wxMenuItem *mitem = _menu_item(mxID_VIEW_TOOLBAR_##NAME); \
-			if (mitem->IsChecked()) { mitem->Check(false); m_aui->GetPane(_get_toolbar(tb##NAME)).Hide(); } }
+			if (mitem->IsChecked()) { mitem->Check(false); m_aui->GetPane(_get_toolbar_w(tb##NAME)).Hide(); } }
 #define _aux_pfd_2_not(NAME) \
 			{ wxMenuItem *mitem = _menu_item(mxID_VIEW_TOOLBAR_##NAME); \
-			if (!mitem->IsChecked()) { mitem->Check(true); m_aui->GetPane(_get_toolbar(tb##NAME)).Show(); } }
+			if (!mitem->IsChecked()) { mitem->Check(true); m_aui->GetPane(_get_toolbar_w(tb##NAME)).Show(); } }
 			
 			_aux_pfd_2(FILE);
 			_aux_pfd_2(EDIT);
@@ -3468,13 +3468,13 @@ void mxMainWindow::PrepareGuiForDebugging(bool debug_mode) {
 			((mxSource*)(notebook_sources->GetPage(i)))->SetReadOnlyMode(ROM_DEBUG,false);
 		
 		if (config->Debug.autohide_toolbars) { // reacomodar las barras de herramientas
-			m_aui->GetPane(_get_toolbar(tbSTATUS)).Hide();
+			m_aui->GetPane(_get_toolbar_w(tbSTATUS)).Hide();
 			if (gui_fullscreen_mode) {
-				_menu_item(mxID_VIEW_TOOLBAR_DEBUG)->Check(false); m_aui->GetPane(_get_toolbar(tbDEBUG)).Hide();
+				_menu_item(mxID_VIEW_TOOLBAR_DEBUG)->Check(false); m_aui->GetPane(_get_toolbar_w(tbDEBUG)).Hide();
 			} else {
 			#define _aux_pfd_1(NAME) \
-				if (_toolbar_visible(tb##NAME)) { _menu_item(mxID_VIEW_TOOLBAR_##NAME)->Check(true); m_aui->GetPane(_get_toolbar(tb##NAME)).Show(); } \
-				else { _menu_item(mxID_VIEW_TOOLBAR_##NAME)->Check(false); m_aui->GetPane(_get_toolbar(tb##NAME)).Hide(); }
+				if (_toolbar_visible(tb##NAME)) { _menu_item(mxID_VIEW_TOOLBAR_##NAME)->Check(true); m_aui->GetPane(_get_toolbar_w(tb##NAME)).Show(); } \
+				else { _menu_item(mxID_VIEW_TOOLBAR_##NAME)->Check(false); m_aui->GetPane(_get_toolbar_w(tb##NAME)).Hide(); }
 				_aux_pfd_1(DEBUG);
 				_aux_pfd_1(FILE);
 				_aux_pfd_1(EDIT);
@@ -4290,7 +4290,7 @@ void mxMainWindow::ShowDiffSideBar(bool bar, bool map) {
 		}
 	}
 	if (bar) {
-		m_aui->GetPane(_get_toolbar(tbDIFF)).Show();
+		m_aui->GetPane(_get_toolbar_w(tbDIFF)).Show();
 		m_aui->Update();
 	}
 }
@@ -4429,10 +4429,10 @@ void mxMainWindow::PrepareGuiForProject (bool project_mode) {
 	menu_data->UpdateToolbar(MenusAndToolsConfig::tbPROJECT,true);
 	if (_toolbar_visible(tbPROJECT)) {
 		if (project_mode) {
-			m_aui->GetPane(_get_toolbar(tbPROJECT)).Show();
+			m_aui->GetPane(_get_toolbar_w(tbPROJECT)).Show();
 			SortToolbars(false);
 		} else
-			m_aui->GetPane(_get_toolbar(tbPROJECT)).Hide();
+			m_aui->GetPane(_get_toolbar_w(tbPROJECT)).Hide();
 		m_aui->Update();
 	}
 	

@@ -273,8 +273,9 @@ private:
 	}
 	
 	// elementos de las barras de tratamiento especial
-	wxStaticText *toolbar_status_text;
-	wxSearchCtrl* toolbar_find_text;
+	wxPanel *debug_status_panel = nullptr;
+	wxStaticText *debug_status_text = nullptr;
+	wxSearchCtrl* toolbar_find_text = nullptr;
 	
 public:
 	
@@ -311,6 +312,14 @@ public:
 	/// update a wxToolBar to match new settings in its myToolbar (use only_items=false when orientation or icon size also changes)
 	void UpdateToolbar(int tb_id, bool only_items);
 	wxToolBar *GetToolbar(int toolbar_id) { return toolbars[toolbar_id].wx_toolbar; }
+	wxWindow *GetToolbarW(int toolbar_id) {
+		// most of the times we just need the control as a generic one (example: for
+		// locating its pane in the aui manager), si this version can include controls
+		// that presents as toolbars but are not wxToolBars, such a the text used for
+		// debug messages and status (toolbar_status_text)
+		if (toolbar_id==tbSTATUS) return debug_status_panel;
+		else return toolbars[toolbar_id].wx_toolbar; 
+	}
 	toolbarPosition &GetToolbarPosition(int toolbar_id) { return toolbars[toolbar_id].position; }
 	/// finds wich toolbar has an item with the given id
 	int ToolbarFromTool(int tool_id);
@@ -344,6 +353,7 @@ extern MenusAndToolsConfig *menu_data;
 #define _menu_item_2(menu_id,item_id) menu_data->GetMyMenuItem(MenusAndToolsConfig::menu_id,item_id)
 #define _menu_item(id) menu_data->GetItem(id)
 #define _get_toolbar(id) menu_data->GetToolbar(MenusAndToolsConfig::id)
+#define _get_toolbar_w(id) menu_data->GetToolbarW(MenusAndToolsConfig::id)
 #define _toolbar_visible(id) menu_data->GetToolbarPosition(MenusAndToolsConfig::id).visible
 #endif
 

@@ -1301,7 +1301,7 @@ wxString DebugManager::GetSubValueFromAns(wxString ans, wxString key1, wxString 
 
 void DebugManager::SetStateText(wxString text, bool refresh) {
 	main_window->SetCompilingStatus(text);
-	menu_data->toolbar_status_text->SetLabel(wxString(LANG(DEBUG_STATUS_PREFIX,"  Depuracion: "))+text);
+	menu_data->debug_status_text->SetLabel(wxString(LANG(DEBUG_STATUS_PREFIX,"  Depuracion: "))+text);
 	if (refresh) wxYield();
 }
 
