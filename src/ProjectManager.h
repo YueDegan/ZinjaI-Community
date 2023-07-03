@@ -338,7 +338,7 @@ struct project_configuration {
 		dont_generate_exe=false;
 		toolchain="";
 		std_c=""; 
-		std_cpp="c++14";
+		std_cpp="";
 		for(int i=0;i<TOOLCHAIN_MAX_ARGS;i++) toolchain_arguments[i]="${DEFAULT}";
 	}
 	

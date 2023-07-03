@@ -352,8 +352,6 @@ ProjectManager::ProjectManager(wxFileName name):custom_tools(MAX_PROJECT_CUSTOM_
 						last_file = AddFile(FT_OTHER,filepath,false);
 					else if (section=="blacklist")
 						last_file = AddFile(FT_BLACKLIST,filepath,false);
-					if (section!="blacklist" && !wxFileExists(last_file->GetFullPath()))
-						errors_manager->AddZinjaiError(true,LANG1(PROJMNGR_FILE_NOT_FOUND,"No se encuentra el archivo \"<{1}>\".",filepath));
 				} else if (p.Key()=="obj_path") {
 					if (last_file) last_file->m_binary_fname_tpl = p.AsString();
 				} else if (p.Key()=="cursor") {
@@ -464,6 +462,12 @@ ProjectManager::ProjectManager(wxFileName name):custom_tools(MAX_PROJECT_CUSTOM_
 	// completar los archivos heredados
 	inherits_from = fix_path_char(file_path_char,inherits_from);
 	ReloadFatherProjects();
+
+	// advertir si faltan archivos
+	for (GlobalListIterator<project_file_item*> it(&files.all); it.IsValid(); it.Next()) {
+		if (not wxFileExists(it->GetFullPath()))
+			errors_manager->AddZinjaiError(true,LANG1(PROJMNGR_FILE_NOT_FOUND,"No se encuentra el archivo \"<{1}>\".",it->GetRelativePath()));
+	}
 	
 	modified=false;
 	force_relink=false;
@@ -3749,7 +3753,7 @@ wxString project_file_item::GetBinName (const wxString & temp_dir) const {
 	return ret;
 }
 
-int ProjectManager::GetCurrentStd (bool cpp) const {
+int ProjectManager::GetCurrentStd(bool cpp) const {
 	if (cpp) {
 		if (active_configuration->std_cpp.Contains("98")) return 1998;
 		if (active_configuration->std_cpp.Contains("03")) return 2003;
@@ -3764,11 +3768,18 @@ int ProjectManager::GetCurrentStd (bool cpp) const {
 		if (active_configuration->std_cpp.Contains("20")) return 2020;
 		if (active_configuration->std_cpp.Contains("2b")) return 2023;
 		if (active_configuration->std_cpp.Contains("23")) return 2023;
-		return 2011; // safe default
+		if (active_configuration->std_cpp.Contains("2c")) return 2026;
+		if (active_configuration->std_cpp.Contains("26")) return 2026;
+		return 2017; // safe default
 	} else {
 		if (active_configuration->std_c.Contains("90")) return 1990;
+		if (active_configuration->std_c.Contains("9x")) return 1999;
 		if (active_configuration->std_c.Contains("99")) return 1999;
+		if (active_configuration->std_c.Contains("1x")) return 2011;
 		if (active_configuration->std_c.Contains("11")) return 2011;
+		if (active_configuration->std_c.Contains("17")) return 2017;
+		if (active_configuration->std_c.Contains("18")) return 2017;
+		if (active_configuration->std_c.Contains("2x")) return 2023;
 		return 1999; // safe default
 	}
 }

@@ -259,15 +259,31 @@ bool Toolchain::CheckVersion(bool cpp, int _v, int _s) {
 wxString Toolchain::FixArgument (bool cpp, wxString arg) {
 	if (type==TC_GCC) {
 		if (arg=="-Og" && !CheckVersion(cpp,4,8)) return "-O0";
-		if (arg=="-std=c++11" && !CheckVersion(cpp,4,7)) return "-std=c++0x";
-		if (arg=="-std=gnu++11" && !CheckVersion(cpp,4,7)) return "-std=gnu++0x";
-		if (arg=="-std=c++14" && !CheckVersion(cpp,4,9)) return "-std=c++1y";
-		if (arg=="-std=gnu++14" && !CheckVersion(cpp,4,9)) return "-std=gnu++1y";
+		if (arg=="-std=c++11"   && !CheckVersion(cpp, 4,7)) return "-std=c++0x";
+		if (arg=="-std=gnu++11" && !CheckVersion(cpp, 4,7)) return "-std=gnu++0x";
+		if (arg=="-std=c++14"   && !CheckVersion(cpp, 4,9)) return "-std=c++1y";
+		if (arg=="-std=gnu++14" && !CheckVersion(cpp, 4,9)) return "-std=gnu++1y";
+		if (arg=="-std=c++17"   && !CheckVersion(cpp, 5,0)) return "-std=c++1z";
+		if (arg=="-std=gnu++17" && !CheckVersion(cpp, 5,0)) return "-std=gnu++1z";
+		if (arg=="-std=c++20"   && !CheckVersion(cpp, 9,0)) return "-std=c++2a";
+		if (arg=="-std=gnu++20" && !CheckVersion(cpp, 9,0)) return "-std=gnu++2a";
+		if (arg=="-std=c++23"   && !CheckVersion(cpp,12,0)) return "-std=c++2b";
+		if (arg=="-std=gnu++23" && !CheckVersion(cpp,12,0)) return "-std=gnu++2b";
+		if (arg=="-std=c++26"   && !CheckVersion(cpp,14,0)) return "-std=c++2c";
+		if (arg=="-std=gnu++26" && !CheckVersion(cpp,14,0)) return "-std=gnu++2c";
+		
+		
 	} else if (type==TC_CLANG) {
-		if (arg=="-std=c++14" && !CheckVersion(cpp,3,4)) return "-std=c++1y";
-		if (arg=="-std=gnu++14" && !CheckVersion(cpp,3,4)) return "-std=gnu++1y";
-		if (arg=="-std=c++17" && !CheckVersion(cpp,5,0)) return "-std=c++1z";
-		if (arg=="-std=gnu++17" && !CheckVersion(cpp,5,0)) return "-std=gnu++1z";
+		if (arg=="-std=c++14"   && !CheckVersion(cpp, 3,4)) return "-std=c++1y";
+		if (arg=="-std=gnu++14" && !CheckVersion(cpp, 3,4)) return "-std=gnu++1y";
+		if (arg=="-std=c++17"   && !CheckVersion(cpp, 5,0)) return "-std=c++1z";
+		if (arg=="-std=gnu++17" && !CheckVersion(cpp, 5,0)) return "-std=gnu++1z";
+		if (arg=="-std=c++20"   && !CheckVersion(cpp,10,0)) return "-std=c++2a";
+		if (arg=="-std=gnu++20" && !CheckVersion(cpp,10,0)) return "-std=gnu++2a";
+		if (arg=="-std=c++23"   && !CheckVersion(cpp,17,0)) return "-std=c++2b";
+		if (arg=="-std=gnu++23" && !CheckVersion(cpp,17,0)) return "-std=gnu++2b";
+		if (arg=="-std=c++26"   /*&& !CheckVersion(cpp,10,0)*/) return "-std=c++2c";
+		if (arg=="-std=gnu++26" /*&& !CheckVersion(cpp,10,0)*/) return "-std=gnu++2c";
 	}
 	return arg;
 }
