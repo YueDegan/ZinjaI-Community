@@ -12,7 +12,7 @@
 * diálogo permite elegir el complemento y invoca a otro ejecutable para
 * que complete la instalación pasándole los datos que necesita.
 **/
-class mxComplementInstallerWindow : wxDialog {
+class mxComplementInstallerWindow : public wxDialog {
 private:
 protected:
 public:

@@ -1,8 +1,8 @@
 GPP=g++
 STRIP=strip
 OBJCOPY=objcopy
-CXXFLAGS=-O3 -g `wx-config --cppflags --version=3.1 --unicode=yes --debug=no` -DWX3 -std=gnu++14
-LIBS=-s -lX11 `wx-config --version=3.1 --unicode=yes --libs std,stc,aui`
+CXXFLAGS=-O3 -g `wx-config --cppflags --unicode=yes --debug=no` -DWX3 -std=gnu++17
+LIBS=-s -lX11 `wx-config --unicode=yes --libs std,stc,aui`
 OBJS_DIR=../temp/zinjai/release.lnx
 ARCH=`../src_extras/get-arch.sh`
 

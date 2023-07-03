@@ -110,7 +110,7 @@ private:
 	
 	friend class NavigationHistory;
 	friend class LocalRefactory;
-	int old_current_line; ///< for detecting jumps long enought to record in g_navigation_history
+	int old_current_line = -1000; ///< for detecting jumps long enought to record in g_navigation_history
 	
 public:
 	struct MacroAction { 
@@ -133,28 +133,27 @@ public:
 	};
 	void OnMacroAction(wxStyledTextEvent &evt);
 
-	bool ignore_char_added; ///< algunas operaciones (pegar,autocode,etc) necesitan desactivar el evento
+	bool ignore_char_added = false; ///< algunas operaciones (pegar,autocode,etc) necesitan desactivar el evento
 	
-	SourceExtras *m_extras; ///< breakpoints, highlighted lines, saved cursor positio (see m_owns_extras)
+	SourceExtras *m_extras = nullptr; ///< breakpoints, highlighted lines, saved cursor positio (see m_owns_extras)
 	bool m_owns_extras; ///< if true, this objtec is the owner of m_extras and should delete it on its destructor; if false, m_owns_extras points to an instance owned by ProjectManager
 	void UpdateExtras(); ///< updates info in m_extras
 	
-	int lexer;
-	bool first_view, never_parsed;
-	er_source_register *er_register;
+	int lexer = wxSTC_LEX_CPP;
+	bool first_view = true, never_parsed = true;
+	er_source_register *er_register = nullptr;
 	
 private:
 	void SetSourceTime(wxDateTime stime);
 	wxDateTime source_time; ///< para saber si alguien lo modifico desde afuera
-	bool source_time_dont_ask, source_time_reload;
+	bool source_time_dont_ask = false, source_time_reload = false;
 	
 public:
 	void SplitFrom(mxSource *orig);
 	mxSource *next_source_with_same_file; // lista circular de mxSource que muestran el mismo archivo
 
 private:
-	bool ro_quejado;
-	int readonly_mode;
+	int readonly_mode = ROM_NONE;
 	void OnModifyOnRO(wxStyledTextEvent &event);
 	void SetReadOnly(bool b) { wxStyledTextCtrl::SetReadOnly(b); } // private so we are force to use SetReadOnlyMode from outside
 	friend struct TemporaryDisableReadOnly;
@@ -172,9 +171,9 @@ public:
 	
 	void CheckForExternalModifications(); ///< checks if the file has changed, if it did, enqueue a call to ThereAreExternalModifications for the end of the main_window event loop
 	void ThereAreExternalModifications(); ///< show the warning dialog or reload the file when we know it has changed
-	mxSourceUndoHistory *m_undo_history_panel;
-	mxSource *diff_brother;
-	DiffInfo *first_diff_info, *last_diff_info;
+	mxSourceUndoHistory *m_undo_history_panel = nullptr;
+	mxSource *diff_brother = nullptr;
+	DiffInfo *first_diff_info = nullptr, *last_diff_info = nullptr;
 	wxString page_text;
 	void SetPageText(wxString ptext);
 	void MakeUntitled(wxString ptext); // para abrir resultados de compilacion, salidas de gprof, y cosas asi
@@ -320,11 +319,11 @@ private:
 	
 private:
 	friend class CodeHelper;
-	mxInspectionBaloon *inspection_baloon;
+	mxInspectionBaloon *inspection_baloon = nullptr;
 	enum MXS_CALLTIP_MODE { MXS_NULL, MXS_CALLTIP, MXS_INSPECTION, MXS_BALOON, MXS_AUTOCOMP };
-	MXS_CALLTIP_MODE calltip_mode;
+	MXS_CALLTIP_MODE calltip_mode = MXS_NULL;
 	void SetCalltipMode(MXS_CALLTIP_MODE new_mode) { if (new_mode!=calltip_mode) HideCalltip(); calltip_mode=new_mode; }
-	mxCalltip *calltip; ///< frame used (and reuse) for custom calltip (null until first use, created on ShowCalltip)
+	mxCalltip *calltip = nullptr; ///< frame used (and reuse) for custom calltip (null until first use, created on ShowCalltip)
 	int calltip_brace, calltip_line;
 	wxArrayString autocomp_help_text;
 	void OnAutocompSelection(wxStyledTextEvent &event);
@@ -430,7 +429,7 @@ private:
 		undo_action_guard = nullptr;
 	}
 	
-	int brace_1, brace_2;
+	int brace_1=-1, brace_2=-1;
 	void MyBraceHighLight(int b1=wxSTC_INVALID_POSITION, int b2=wxSTC_INVALID_POSITION);
 	
 	
@@ -517,15 +516,14 @@ public:
 
 
 struct DiffInfo {
-	DiffInfo *brother; // para saber de que cambio es, e identificar el mismo en el hermano
-	mxSource *src;
-	int *handles, *bhandles, len, marker;
+	DiffInfo *brother = nullptr; // para saber de que cambio es, e identificar el mismo en el hermano
+	mxSource *src = nullptr;
+	int *handles = nullptr, *bhandles = nullptr, len  = -1, marker = -1;
 	wxString extra;
-	DiffInfo *prev,*next;
+	DiffInfo *prev=nullptr, *next=nullptr;
 	DiffInfo(mxSource *s, int *h, int l, int m, wxString e):
-		brother(nullptr),src(s),handles(h),bhandles(nullptr),len(l),marker(m),extra(e) {
+		src(s),handles(h),len(l),marker(m),extra(e) {
 			prev=src->last_diff_info;
-			next=nullptr;
 			if (prev)
 				prev->next=this;
 			else

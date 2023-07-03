@@ -167,13 +167,13 @@ static const wxChar* s_doxygen_keywords = _T(
 	"a addindex addtogroup anchor arg attention author b brief bug c "
 	"class code date def defgroup deprecated dontinclude e em endcode "
 	"endhtmlonly endif endlatexonly endlink endverbatim enum example "
-	"exception f$ f[ f] file fn hideinitializer htmlinclude "
+	"exception f file fn hideinitializer htmlinclude "
 	"htmlonly if image include ingroup internal invariant interface "
 	"latexonly li line link mainpage n name namespace nosubgrouping note "
 	"overload p page par param post pre ref relates remarks return "
 	"retval sa section see showinitializer since skip skipline struct "
 	"subsection test throw todo tparam typedef union until var verbatim "
-	"verbinclude version warning weakgroup $ @ \"\" & < > # { }" );
+	"verbinclude version warning weakgroup" );
 
 static const wxChar *s_bash_keywords = _T(
 	"case do done elif else esac fi for function if in select then time until while");
@@ -245,18 +245,7 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 
 //	AutoCompSetDropRestOfWord(true); // esto se torna muy molesto en muchos casos (por ejemplo, intentar agregar unsigned antes de int), mejor no usar
 	
-	calltip = nullptr;	calltip_mode = MXS_NULL; inspection_baloon = nullptr;
-	
-	old_current_line=-1000;
-	
-	brace_1=-1; brace_2=-1;
-	
 	next_source_with_same_file=this;
-	
-	source_time_dont_ask = false; source_time_reload = false;
-	diff_brother=nullptr; first_diff_info=last_diff_info=nullptr;
-	
-	readonly_mode = ROM_NONE; m_undo_history_panel = nullptr;
 	
 	LoadSourceConfig();
 	
@@ -270,8 +259,6 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 		m_owns_extras=true;
 		m_extras = new SourceExtras();
 	}
-	
-	ignore_char_added=false;
 	
 	page_text = ptext;
 	
@@ -296,8 +283,6 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 	RegisterImage(20,*(bitmaps->parser.icon20_argument));
 	RegisterImage(21,*(bitmaps->parser.icon21_local));
 	
-	lexer = wxSTC_LEX_CPP;
-	
 	config_running = config->Running;
 	
 	wxString fname = DIR_PLUS_FILE(config->temp_dir,"sin_titulo.cpp");
@@ -309,8 +294,6 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 
 	sin_titulo = true;
 	cpp_or_just_c = true;
-	never_parsed = true;
-	first_view = true;
 //	current_line = 0; current_marker = -1;
 	
 //	SetViewEOL (false); // no mostrar fin de lineas
@@ -1141,9 +1124,22 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
 			int s, l=GetLength(); char c='\n'; // auxiliares para los II_*
 			
 			// curr_last: caracter no nulo previo al enter 
-			int p_curr_last = current_pos-1;
+			int p_curr_last = current_pos-2; // current_pos es donde quedo el cursor
+                                             // -1 es donde esta el enter, -2 lo que habia antes
+			
+			// eliminar espacios al final de la linea anterior
+			II_BACK(p_curr_last,II_IS_2(p_curr_last,' ','\t'));
+			int prev_line_end = GetLineEndPosition(current_line-1);
+			int n = prev_line_end-(p_curr_last+1);
+			if (n!=0 and p_curr_last>=PositionFromLine(current_line-1)) {
+				DeleteText(p_curr_last+1,n);
+				current_pos -= n; l-=n;
+			}
+			
 			II_BACK(p_curr_last,II_IS_NOTHING_4(p_curr_last));
 			if (!p_curr_last) return;
+			
+			// aplicar indentacion y bajar llave que cierra si corresponde
 			char c_curr_last = c; // ultimo caracter antes del evento
 			
 			// next_char proximo caracter no nulo en la misma linea de current_pos (o \n)
@@ -1275,11 +1271,17 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
 		
 	} else if (chr=='\n') {
 		int currentLine = GetCurrentLine();
-		int lineInd = 0;
-		if (currentLine > 0)
-			lineInd = GetLineIndentation(currentLine - 1);
+		if (currentLine == 0) return;
+		// remove trailing space
+		int pend = GetLineEndPosition(currentLine-1);
+		while (pend>=0 and GetCharAt(pend)==' ') {
+			DeleteText(pend,1);
+			--pend;
+		}
+		// apply indentation
+		int lineInd = GetLineIndentation(currentLine - 1);
 		if (lineInd == 0) return;
-		SetLineIndentation (currentLine, lineInd);
+		SetLineIndentation(currentLine, lineInd);
 		wxStyledTextCtrl::GotoPos(GetLineIndentPosition(currentLine));
 	}
 	
@@ -2807,7 +2809,6 @@ void mxSource::OnKillFocus(wxFocusEvent &event) {
 }
 
 void mxSource::OnSetFocus(wxFocusEvent &event) {
-	ro_quejado=false;
 	if (main_window) {
 		if (main_window->focus_source!=this) {
 			g_navigation_history.OnFocus(this);
@@ -3315,7 +3316,6 @@ bool mxSource::MySaveFile(const wxString &fname) {
 	
 void mxSource::OnModifyOnRO (wxStyledTextEvent &event) {
 	if (readonly_mode==ROM_DEBUG) {
-		ro_quejado=true;
 		mxMessageDialog::mdAns ans =
 			mxMessageDialog(main_window,LANG(DEBUG_CANT_EDIT_WHILE_DEBUGGING,""
 											 "Por defecto, no se puede modificar el fuente mientras se encuentra\n"
