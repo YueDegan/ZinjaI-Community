@@ -357,8 +357,8 @@ void mxNewWizard::OnProjectCreate() {
 			def.MakeUpper();
 			wxTextFile h_file(h_name);
 			h_file.Create();
-			h_file.AddLine(wxString("#ifndef ")+def+"_H");
-			h_file.AddLine(wxString("#define ")+def+"_H");
+			h_file.AddLine(wxString("#ifndef ")+def+"_"+project->default_fext_header.Upper());
+			h_file.AddLine(wxString("#define ")+def+"_"+project->default_fext_header.Upper());
 			
 			for (int i=0;i<config->Init.inherit_num;i++) { // #includes para las clases bases
 				wxString aux = onproject_inherit_class[i]->GetValue();
@@ -445,7 +445,7 @@ void mxNewWizard::OnProjectCreate() {
 			wxTextFile cpp_file(filename.GetFullPath());
 			cpp_file.Create();
 			if (sel==1) {
-				wxString cte = filename.GetName()+"_H";
+				wxString cte = filename.GetName()+"_"+project->default_fext_header.Upper();
 				cte.MakeUpper();
 				cpp_file.AddLine(wxString("#ifndef ")+cte);
 				cpp_file.AddLine(wxString("#define ")+cte);
