@@ -1746,7 +1746,7 @@ long int ProjectManager::CompileNext(compile_and_run_struct_single *compile_and_
 		first_compile_step = step->next;
 		delete step;
 	}
-	if (!compile_and_run->pid) compile_and_run->on_end = post_compile_action;
+	if (!compile_and_run->pid) compile_and_run->on_end = std::move(post_compile_action);
 	return compile_and_run->pid;
 }
 
