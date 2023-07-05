@@ -1128,12 +1128,14 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
                                              // -1 es donde esta el enter, -2 lo que habia antes
 			
 			// eliminar espacios al final de la linea anterior
-			II_BACK(p_curr_last,II_IS_2(p_curr_last,' ','\t'));
-			int prev_line_end = GetLineEndPosition(current_line-1);
-			int n = prev_line_end-(p_curr_last+1);
-			if (n!=0 and p_curr_last>=PositionFromLine(current_line-1)) {
-				DeleteText(p_curr_last+1,n);
-				current_pos -= n; l-=n;
+			if (config->Source.removeTrailingSpaces) {
+				II_BACK(p_curr_last,II_IS_2(p_curr_last,' ','\t'));
+				int prev_line_end = GetLineEndPosition(current_line-1);
+				int n = prev_line_end-(p_curr_last+1);
+				if (n!=0 and p_curr_last>=PositionFromLine(current_line-1)) {
+					DeleteText(p_curr_last+1,n);
+					current_pos -= n; l-=n;
+				}
 			}
 			
 			II_BACK(p_curr_last,II_IS_NOTHING_4(p_curr_last));
@@ -1203,7 +1205,7 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
 							if (p_otra_llave!=wxSTC_INVALID_POSITION && LineFromPosition(p_otra_llave)==current_line) {
 								InsertText(p_otra_llave,"\n");
 								CopyIndentation(current_line+1,p_prev_ind);
-							} else { 
+							} else {
 								// no estaba, hay que agregarla, ver si va "}" o "};"
 								int p_aux = p_curr_last-1;
 								II_BACK(p_aux,II_IS_NOTHING_4(p_aux)); 
@@ -1218,6 +1220,7 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
 									} else if (TextRangeWas(p_aux,"do")) // si es "do" agregar tambien el "while(...);"
 										to_insert = "\n} while();";
 								} else if (s==wxSTC_C_OPERATOR && (c==']'||c=='&')) { // ...o para la sobrecarga por tipo de refencia, o atributos
+									/// @todo: podría ser una lambda... si es ... = [](){ ... habría que agregar el punto y coma
 									to_insert="\n}";
 								}
 										
@@ -1272,12 +1275,12 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
 	} else if (chr=='\n') {
 		int currentLine = GetCurrentLine();
 		if (currentLine == 0) return;
-		// remove trailing space
-		int pend = GetLineEndPosition(currentLine-1);
-		while (pend>=0 and GetCharAt(pend)==' ') {
-			DeleteText(pend,1);
-			--pend;
-		}
+//		// remove trailing space
+//		int pend = GetLineEndPosition(currentLine-1);
+//		while (pend>=0 and GetCharAt(pend)==' ') {
+//			DeleteText(pend,1);
+//			--pend;
+//		}
 		// apply indentation
 		int lineInd = GetLineIndentation(currentLine - 1);
 		if (lineInd == 0) return;

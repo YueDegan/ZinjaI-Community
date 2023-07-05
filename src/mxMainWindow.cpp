@@ -1113,7 +1113,7 @@ void mxMainWindow::OnSelectTreeItem (wxTreeEvent &event){
 
 void mxMainWindow::OnSelectSource (wxTreeEvent &event){
 	wxTreeItemId item=event.GetItem();
-	for (int i=0,j=notebook_sources->GetPageCount();i<j;i++)
+	for (int i=0,j=notebook_sources->GetPageCount();i<j;i++) {
 		if (((mxSource*)(notebook_sources->GetPage(i)))->GetTreeItem()==item) {
 			notebook_sources->SetSelection(i);
 #ifdef __WIN32__
@@ -1121,6 +1121,7 @@ void mxMainWindow::OnSelectSource (wxTreeEvent &event){
 #endif
 			return;
 		}
+	}
 	if (project) {
 		if (item==project_tree.headers||item==project_tree.sources||item==project_tree.others) {
 			event.Skip(); return;
@@ -2459,6 +2460,12 @@ void mxMainWindow::OpenFileFromGui (wxFileName filename, int *multiple) {
 		}
 		return;
 	}
+	
+	if (config->ExtIsExtern(filename.GetExt())) {
+		mxUT::ShellExecute(filename.GetFullPath(),filename.GetPath());
+		return;
+	}
+	
 	status_bar->SetStatusText(wxString("Abriendo ")<<filename.GetFullPath());
 	if (!project) config->Files.last_dir=filename.GetPath();
 	if (filename.GetExt().CmpNoCase(_T(PROJECT_EXT))==0) { // si es un proyecto
@@ -3751,7 +3758,7 @@ void mxMainWindow::OnExplorerTreePathUp(wxCommandEvent &evy) {
 void mxMainWindow::OnExplorerTreeOpenOneZinjaI(wxCommandEvent &evt) {
 	
 	wxString path = GetExplorerItemPath(explorer_tree.selected_item);
-	if (explorer_tree.treeCtrl->GetItemImage(explorer_tree.selected_item)) {
+	if (explorer_tree.treeCtrl->GetItemImage(explorer_tree.selected_item)) { // el icono 0 es el de carpeta, los demas son tipos de archivos
 		OpenFileFromGui(path);
 #ifdef __WIN32__
 		SetFocusToSourceAfterEvents();
@@ -3800,7 +3807,7 @@ void mxMainWindow::OnExplorerTreeOpenOneZinjaI(wxCommandEvent &evt) {
 
 void mxMainWindow::OnExplorerTreeOpenOneExtern(wxCommandEvent &evt) {
 	wxString path = GetExplorerItemPath(explorer_tree.selected_item);
-	mxUT::ShellExecute(path,wxFileName(path).GetFullPath());
+	mxUT::ShellExecute(path,wxFileName(path).GetPath());
 }
 
 void mxMainWindow::OnExplorerTreeSetAsPath(wxCommandEvent &evt) {

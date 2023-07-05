@@ -199,6 +199,7 @@ bool ConfigManager::Load() {
 				else if (p.Key()=="toolTips") Source.toolTips = p.AsBool();
 				else if (p.Key()=="autoCompletion") Source.autoCompletion = p.AsInt();
 				else if (p.Key()=="avoidNoNewLineWarning") Source.avoidNoNewLineWarning = p.AsBool();
+				else if (p.Key()=="removeTrailingSpaces") Source.removeTrailingSpaces = p.AsBool();
 			}		
 		} else if (section=="Debug") {
 			for( IniFileReader::Pair p = fil.GetNextPair(); p.IsOk(); p = fil.GetNextPair() ) {
@@ -352,6 +353,10 @@ bool ConfigManager::Load() {
 					if (p.Key().Mid(13).ToLong(&l) && l>=0 && l<CM_HISTORY_MAX_LEN)
 						Files.last_project[l]=p.AsString();
 				}
+				else if (p.Key()=="extern_file_extensions") Files.extern_file_extensions = p.AsString().Lower();
+				else if (p.Key()=="header_file_extensions") Files.header_file_extensions = p.AsString().Lower();
+				else if (p.Key()=="source_file_extensions") Files.source_file_extensions = p.AsString().Lower();
+				else if (p.Key()=="extra_file_extensions")  Files.extra_file_extensions  = p.AsString().Lower();
 			}
 			
 		} else if (section=="Columns") {
@@ -638,6 +643,7 @@ bool ConfigManager::Save(){
 	CFG_BOOL_WRITE_DN("autocloseStuff",Source.autocloseStuff);
 	CFG_GENERIC_WRITE_DN("autoCompletion",Source.autoCompletion);
 	CFG_BOOL_WRITE_DN("avoidNoNewLineWarning",Source.avoidNoNewLineWarning);
+	CFG_BOOL_WRITE_DN("removeTrailingSpaces",Source.removeTrailingSpaces);
 	CFG_GENERIC_WRITE_DN("edgeColumn",Source.edgeColumn);
 	CFG_GENERIC_WRITE_DN("alignComments",Source.alignComments);
 	CFG_GENERIC_WRITE_DN("tabWidth",Source.tabWidth);
@@ -685,6 +691,10 @@ bool ConfigManager::Save(){
 		if (Files.last_source[i].Len()) fil.AddLine(wxString("last_source_")<<i<<"="<<Files.last_source[i]);
 	for (int i=0;i<CM_HISTORY_MAX_LEN;i++)
 		if (Files.last_project[i].Len()) fil.AddLine(wxString("last_project_")<<i<<"="<<Files.last_project[i]);
+	CFG_GENERIC_WRITE_DN("header_file_extensions",Files.header_file_extensions);
+	CFG_GENERIC_WRITE_DN("source_file_extensions",Files.source_file_extensions);
+	CFG_GENERIC_WRITE_DN("extenr_file_extensions",Files.extern_file_extensions);
+	CFG_GENERIC_WRITE_DN("extra_file_extensions",Files.extra_file_extensions);
 	fil.AddLine("");
 	
 	fil.AddLine("[Columns]");
@@ -727,6 +737,7 @@ void ConfigManager::LoadDefaults(){
 	Files.source_file_extensions = "c cc cpp cxx c++";
 	Files.header_file_extensions = "h hh hpp hxx h++";
 	Files.extra_file_extensions = "vert frag glsl";
+	Files.extern_file_extensions = "exe png jpg";
 	
 	Files.temp_dir=DIR_PLUS_FILE(config_dir,"tmp");
 	Files.skin_dir="imgs";
@@ -848,7 +859,8 @@ void ConfigManager::LoadDefaults(){
 //	Source.autocompTips=false;
 //	Init.mac_stc_zflags=-1;
 //#endif
-	Source.avoidNoNewLineWarning=true;
+	Source.avoidNoNewLineWarning = true;
+	Source.removeTrailingSpaces = true;
 
 	Running.cpp_compiler_options="-Wall -pedantic-errors -O0 -Werror=return-type -D_GLIBCXX_DEBUG";
 	Running.c_compiler_options="-Wall -pedantic-errors -O0";

@@ -81,6 +81,7 @@ struct cfgSource {
 	bool callTips;
 	bool autocompTips;
 	bool avoidNoNewLineWarning;
+	bool removeTrailingSpaces;
 	bool toolTips;
 	bool autotextEnabled;
 	bool autocloseStuff;
@@ -187,7 +188,8 @@ struct cfgFiles {
 	wxString doxygen_command;
 	wxString wxfb_command;
 	wxString autocodes_file;
-	wxString source_file_extensions, header_file_extensions, extra_file_extensions;
+	wxString source_file_extensions, header_file_extensions,
+		     extra_file_extensions, extern_file_extensions;
 };
 
 struct cfgCols {
@@ -286,11 +288,12 @@ public:
 	int GetDPI() const;
 	bool HighDPI() const;
 	
-	bool ExtInList(const wxString &list, const wxString &ext) const;
+	bool ExtInList(const wxString &lower_case_list, const wxString &lower_case_ext) const;
 	
-	bool ExtIsSource(const wxString &lcase_ext) const { return ExtInList(Files.source_file_extensions,lcase_ext); }
-	bool ExtIsHeader(const wxString &lcase_ext) const { return ExtInList(Files.header_file_extensions,lcase_ext); }
-	bool ExtIsExtra(const wxString &lcase_ext) const { return ExtInList(Files.extra_file_extensions,lcase_ext); }
+	bool ExtIsSource(const wxString &file_ext) const { return ExtInList(Files.source_file_extensions,file_ext.Lower()); }
+	bool ExtIsHeader(const wxString &file_ext) const { return ExtInList(Files.header_file_extensions,file_ext.Lower()); }
+	bool ExtIsExtra (const wxString &file_ext) const { return ExtInList(Files.extra_file_extensions, file_ext.Lower()); }
+	bool ExtIsExtern(const wxString &file_ext) const { return ExtInList(Files.extern_file_extensions,file_ext.Lower()); }
 	
 	wxString GetHelpFile(const wxString &name);
 	wxString GetHelpFileEx(const wxString &path, const wxString &name, const wxString &ext=".html", const wxString &anchor="");

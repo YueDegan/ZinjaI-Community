@@ -2532,6 +2532,8 @@ PREFERENCES_FILE_EXTENSION_SOURCE
 Filename's extensions to be considered C/C++ source files
 PREFERENCES_FILE_EXTENSION_HEADER
 Filename's extensions to be considered C/C++ header files
+PREFERENCES_FILE_EXTENSION_EXTERN
+File extensiones to open externally
 PREFERENCES_SIMPLE_NEW_ACTION
 Action for "New file" command
 PREFERENCES_SIMPLE_CREATE_EMPTY_FILE
@@ -2608,6 +2610,8 @@ PREFERENCES_WRITING_INDENT_ON_PASTE
 Fix indentation on paste (requires sintax highlighting)
 PREFERENCES_WRITING_CHECK_FOR_EMPTY_LAST_LINE
 Ensure empty line precense at end of file
+PREFERENCES_WRITING_REMOVE_TRAILING_SPACSE
+Delete trailing spaces a the end of a line when pressing enter
 PREFERENCES_WRITING_SHOW_TOOLTIPS_FOR_VAR_TYPES
 Use tooltip for variable type identification
 PREFERENCES_WRITTING_AUTOCODES_FILE

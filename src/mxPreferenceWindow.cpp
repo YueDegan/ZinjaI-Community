@@ -468,6 +468,9 @@ wxPanel *mxPreferenceWindow::CreateCompilePanelProject (wxNotebook *notebook) {
 	sizer.BeginText( LANG(PREFERENCES_FILE_EXTENSION_HEADER,"Extensiones de archivo considerados cabeceras") )
 		.Bind(m_binder,config->Files.header_file_extensions).Short().EndText();
 	
+	sizer.BeginText( LANG(PREFERENCES_FILE_EXTENSION_EXTERN,"Extensiones de archivo a abrir con editores externos") )
+		.Bind(m_binder,config->Files.extern_file_extensions).Short().EndText();
+	
 	
 	sizer.SetAndFit();
 	return sizer.GetPanel();
@@ -626,6 +629,9 @@ wxPanel *mxPreferenceWindow::CreateWritingPanel1 (wxNotebook *notebook) {
 	
 	sizer.BeginCheck( LANG(PREFERENCES_WRITING_CHECK_FOR_EMPTY_LAST_LINE,"Controlar que quede una linea en blanco al final de cada archivo") )
 		.Bind(m_binder,config->Source.avoidNoNewLineWarning).EndCheck();
+	
+	sizer.BeginCheck( LANG(PREFERENCES_WRITING_REMOVE_TRAILING_SPACSE,"Eliminar espacios en blanco del final de una linea al presionar enter") )
+		.Bind(m_binder,config->Source.removeTrailingSpaces).EndCheck();
 	
 	sizer.BeginCheck( LANG(PREFERENCES_WRITING_SHOW_TOOLTIPS_FOR_VAR_TYPES,"Utilizar tooltips para identificar tipos de variables") )
 		.Bind(m_binder,config->Source.toolTips).EndCheck();
@@ -841,6 +847,11 @@ void mxPreferenceWindow::OnOkButton(wxCommandEvent &event) {
 	wxString lang_prev = config->Init.language_file;
 	
 	m_binder.FromWidgets();
+	
+	config->Files.extern_file_extensions.MakeLower();
+	config->Files.extra_file_extensions.MakeLower();
+	config->Files.header_file_extensions.MakeLower();
+	config->Files.source_file_extensions.MakeLower();
 	
 	if (!m_force_dpi_bool) config->Styles.forced_dpi=0;
 	

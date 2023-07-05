@@ -67,7 +67,7 @@ DEBUG_ERROR_STARTING_SPACES
 DEBUG_ERROR_STARTING
 Error al iniciar el proceso.
 OSD_STARTING_DEBUGGER
-Iniciando depuracion...
+Iniciando depuración...
 GENERA_CONSOLE_CAPTION
 ZinjaI - Consola de Ejecucion
 DEBUG_ERROR_WITH_TERMINAL
@@ -2532,6 +2532,8 @@ PREFERENCES_FILE_EXTENSION_SOURCE
 Extensiones de archivo considerados fuentes
 PREFERENCES_FILE_EXTENSION_HEADER
 Extensiones de archivo considerados cabeceras
+PREFERENCES_FILE_EXTENSION_EXTERN
+Extensiones de archivo a abrir con editores externos
 PREFERENCES_SIMPLE_NEW_ACTION
 Accion para Nuevo Archivo
 PREFERENCES_SIMPLE_CREATE_EMPTY_FILE
@@ -2608,6 +2610,8 @@ PREFERENCES_WRITING_INDENT_ON_PASTE
 Corregir indentado al pegar
 PREFERENCES_WRITING_CHECK_FOR_EMPTY_LAST_LINE
 Controlar que quede una linea en blanco al final de cada archivo
+PREFERENCES_WRITING_REMOVE_TRAILING_SPACSE
+Eliminar espacios en blanco del final de una linea al presionar enter
 PREFERENCES_WRITING_SHOW_TOOLTIPS_FOR_VAR_TYPES
 Utilizar tooltips para identificar tipos de variables
 PREFERENCES_WRITTING_AUTOCODES_FILE
