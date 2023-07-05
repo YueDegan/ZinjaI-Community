@@ -105,7 +105,7 @@ void mxComplementInstallerWindow::OnClose (wxCloseEvent & evt) {
 
 void mxComplementInstallerWindow::Install(wxWindow *parent, wxString fname) {
 	bool writable=true;
-	wxString wtestf=DIR_PLUS_FILE(config->zinjai_dir,"complement.tmp");
+	wxString wtestf=mxFN::Join(config->zinjai_dir,"complement.tmp");
 	if (wxFileName::FileExists(wtestf)) {
 		remove(wtestf.c_str());
 		if (wxFileName::FileExists(wtestf)) writable=false;

@@ -253,6 +253,10 @@ mxShortcutsDialog::mxShortcutsDialog(wxWindow *parent) : wxDialog(parent,wxID_AN
 }
 
 void mxShortcutsDialog::OnTimer (wxTimerEvent & evt) {
+	SearchNow();
+}
+
+void mxShortcutsDialog::SearchNow() {
 	wxString text = filter->GetValue().Upper();
 	wxString keys = normalize(filter->GetValue());
 	for(int i=0;i<actions.GetSize();i++) { 
@@ -288,7 +292,7 @@ void mxShortcutsDialog::OnOkButton (wxCommandEvent & evt) {
 				mxMessageDialog(this,LANG2(SHORCUTS_COLLISION,"Dos acciones tienen el mismo atajo:\n     <{1}>\n     <{2}>",actions[i].label->GetLabel(),actions[j].label->GetLabel()))
 					.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
 				filter->SetValue(actions[j].text->GetValue());
-				wxTimerEvent t_evt;	OnTimer(t_evt);
+				SearchNow();
 				return;
 			}
 		}
@@ -296,7 +300,7 @@ void mxShortcutsDialog::OnOkButton (wxCommandEvent & evt) {
 	
 	for(int i=0;i<actions.GetSize();i++) 
 		actions[i].menu_item->RedefineShortcut(actions[i].text->GetValue());
-	menu_data->SaveShortcutsSettings(DIR_PLUS_FILE(config->config_dir,"shortcuts.zsc"));
+	menu_data->SaveShortcutsSettings(mxFN::Join(config->config_dir,"shortcuts.zsc"));
 	
 	menu_data->CreateMenues();
 	EndModal(1);

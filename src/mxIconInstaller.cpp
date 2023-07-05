@@ -82,7 +82,7 @@ void mxIconInstaller::InstallIcons ( ) {
 	if (icon_installed) return;
 	
 	for (const char (*sz)[5] = icon_sizes; (*sz)[0]!='\0';++sz) {
-		wxString icon_file = DIR_PLUS_FILE(config->zinjai_dir,wxString("imgs/icons/")<<*sz<<"/zinjai.png");
+		wxString icon_file = mxFN::Join(config->zinjai_dir,wxString("imgs/icons/")<<*sz<<"/zinjai.png");
 		Execute("InstallIcons",wxString("xdg-icon-resource install --novendor --size ")<<*sz<<" \""<<icon_file<<"\"");
 	}
 	
@@ -92,7 +92,7 @@ void mxIconInstaller::InstallIcons ( ) {
 void mxIconInstaller::InstallDesktop ( bool menu ) {
 	if (!xdg_found) { MakeDesktopIcon(); return; }
 	InstallIcons();
-	wxString desk_file=DIR_PLUS_FILE(config->temp_dir,_T("zinjai.desktop"));
+	wxString desk_file=mxFN::Join(config->temp_dir,_T("zinjai.desktop"));
 	wxTextFile fil(desk_file);
 	if (fil.Exists())
 		fil.Open();
@@ -108,7 +108,7 @@ void mxIconInstaller::InstallDesktop ( bool menu ) {
 	fil.AddLine(_T("Categories=Development"));
 	fil.AddLine(_T("Icon=zinjai"));
 	fil.AddLine(_T("MimeType=text/x-zinjai"));
-	fil.AddLine(wxString(_T("Exec="))<<DIR_PLUS_FILE(config->zinjai_dir,_T("zinjai"))<<" %f");
+	fil.AddLine(wxString(_T("Exec="))<<mxFN::Join(config->zinjai_dir,_T("zinjai"))<<" %f");
 	fil.Write();
 	fil.Close();
 	if (menu)
@@ -173,7 +173,7 @@ void mxIconInstaller::InstallMimeSource() { // todavia no se usa
 
 void mxIconInstaller::InstallMime ( wxString gen_mime, wxString zin_mime, wxString mime_desc, wxString icon, wxArrayString exts ) {
 	wxString icon_name = zin_mime; icon_name.Replace("/","-");
-	wxString xml_file=DIR_PLUS_FILE(config->temp_dir,icon+".xml");
+	wxString xml_file=mxFN::Join(config->temp_dir,icon+".xml");
 	wxTextFile fil(xml_file);
 	if (fil.Exists())
 		fil.Open();
@@ -195,7 +195,7 @@ void mxIconInstaller::InstallMime ( wxString gen_mime, wxString zin_mime, wxStri
 	Execute("InstallMime",wxString("xdg-mime install --novendor \"")<<xml_file<<"\"");
 	wxString icon_file;
 	for (const char (*sz)[5] = icon_sizes; (*sz)[0]!='\0';++sz) {
-		icon_file=DIR_PLUS_FILE(config->zinjai_dir,DIR_PLUS_FILE("imgs",DIR_PLUS_FILE("icons",DIR_PLUS_FILE(*sz,icon+".png"))));
+		icon_file=mxFN::Join(config->zinjai_dir,mxFN::Join("imgs",mxFN::Join("icons",mxFN::Join(*sz,icon+".png"))));
 		Execute("InstallMime",wxString("xdg-icon-resource install --context mimetypes --size ")<<*sz<<" \""<<icon_file<<"\" "<<icon_name);
 	}
 	Execute("InstallMime",wxString("xdg-mime default zinjai.desktop ")<<gen_mime);
@@ -203,11 +203,11 @@ void mxIconInstaller::InstallMime ( wxString gen_mime, wxString zin_mime, wxStri
 
 void mxIconInstaller::MakeDesktopIcon() {
 		
-	wxString desk_dir = DIR_PLUS_FILE(wxFileName::GetHomeDir(),_T("Desktop"));
-	if (!wxFileName::DirExists(desk_dir) && wxFileName::DirExists(DIR_PLUS_FILE(wxFileName::GetHomeDir(),_T("Escritorio"))))
-		desk_dir=DIR_PLUS_FILE(wxFileName::GetHomeDir(),_T("Escritorio"));
+	wxString desk_dir = mxFN::Join(wxFileName::GetHomeDir(),_T("Desktop"));
+	if (!wxFileName::DirExists(desk_dir) && wxFileName::DirExists(mxFN::Join(wxFileName::GetHomeDir(),_T("Escritorio"))))
+		desk_dir=mxFN::Join(wxFileName::GetHomeDir(),_T("Escritorio"));
 	
-	wxTextFile fil(DIR_PLUS_FILE(desk_dir,_T("ZinjaI.desktop")));
+	wxTextFile fil(mxFN::Join(desk_dir,_T("ZinjaI.desktop")));
 	if (fil.Exists())
 		fil.Open();
 	else
@@ -217,11 +217,11 @@ void mxIconInstaller::MakeDesktopIcon() {
 	fil.AddLine(_T("Comment=IDE for C++ programming"));
 	fil.AddLine(_T("Comment[es]=IDE para programar en C++"));
 	fil.AddLine(_T("Encoding=UTF-8"));
-	fil.AddLine(wxString(_T("Icon="))<<DIR_PLUS_FILE(config->zinjai_dir,_T("imgs/zinjai-64x64.png")));
+	fil.AddLine(wxString(_T("Icon="))<<mxFN::Join(config->zinjai_dir,_T("imgs/zinjai-64x64.png")));
 	fil.AddLine(_T("Name=ZinjaI"));
 	fil.AddLine(_T("Name[es]=ZinjaI"));
 	fil.AddLine(_T("Type=Link"));
-	fil.AddLine(wxString(_T("URL="))<<DIR_PLUS_FILE(config->zinjai_dir,_T("zinjai")));
+	fil.AddLine(wxString(_T("URL="))<<mxFN::Join(config->zinjai_dir,_T("zinjai")));
 	fil.Write();
 	fil.Close();
 }

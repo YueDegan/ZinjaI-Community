@@ -62,8 +62,8 @@ mxColoursEditor::mxColoursEditor(wxWindow *aparent)
 	if (sel==wxNOT_FOUND) sel=color_profiles.GetCount()-1;
 	combo->SetSelection(sel);
 	
-	wxBitmapButton *open_button = new wxBitmapButton(this,wxID_OPEN,bitmaps->GetBitmap(DIR_PLUS_FILE("16","open.png")));
-	wxBitmapButton *save_button=new wxBitmapButton(this,wxID_SAVE,bitmaps->GetBitmap(DIR_PLUS_FILE("16","save.png")));
+	wxBitmapButton *open_button = new wxBitmapButton(this,wxID_OPEN,bitmaps->GetBitmap(mxFN::Join("16","open.png")));
+	wxBitmapButton *save_button=new wxBitmapButton(this,wxID_SAVE,bitmaps->GetBitmap(mxFN::Join("16","save.png")));
 	open_button->SetToolTip(LANG(COLOURS_TIP_OPEN,"Cargar un esquema de colores personalizado desde un archivo .zcs"));
 	save_button->SetToolTip(LANG(COLOURS_TIP_SAVE,"Guardar un esquema de colores personalizado en un archivo .zcs"));
 	bottomSizer->Add(open_button,sizers->BA5_Center);
@@ -218,7 +218,7 @@ void mxColoursEditor::OnClose (wxCloseEvent & evt) {
 
 void mxColoursEditor::OnButtonOk (wxCommandEvent & evt) {
 	if (combo->GetSelection()==int(combo->GetCount())-1) {
-		g_ctheme->Save(DIR_PLUS_FILE(config->config_dir,"colours.zcs"));
+		g_ctheme->Save(mxFN::Join(config->config_dir,"colours.zcs"));
 		config->Init.colour_theme="";
 	} else {
 		config->Init.colour_theme=combo->GetString(combo->GetSelection());
@@ -459,9 +459,9 @@ void color_theme::Initialize() {
 #if 0
 	// para generar los perfiles de color y que concuerden con los valores por defecto
 	g_ctheme->SetDefaults(true);
-	g_ctheme->Save(DIR_PLUS_FILE(("colours"),"inverted.zcs"));
+	g_ctheme->Save(mxFN::Join(("colours"),"inverted.zcs"));
 	g_ctheme->SetDefaults();
-	g_ctheme->Save(DIR_PLUS_FILE(("colours"),"default.zcs"));
+	g_ctheme->Save(mxFN::Join(("colours"),"default.zcs"));
 #else
 	g_ctheme->SetDefaults();
 #endif
@@ -537,9 +537,9 @@ void mxColoursEditor::OnSave (wxCommandEvent & evt) {
 	wxString fname=wxGetTextFromUser(LANG(COLOURS_ESCHEME,"Esquema:"),LANG(GENERAL_SAVE,"Guardar"),"custom_color_scheme", this);
 	if (fname.Len()) {
 		if (!fname.Upper().EndsWith(".ZCS")) fname<<".zcs";
-		wxString folder = DIR_PLUS_FILE(config->config_dir,"colours"); 
+		wxString folder = mxFN::Join(config->config_dir,"colours"); 
 		if (!wxFileName::DirExists(folder)) wxFileName::Mkdir(folder);
-		g_ctheme->Save(DIR_PLUS_FILE(folder,fname));
+		g_ctheme->Save(mxFN::Join(folder,fname));
 #ifdef __WIN32__
 		bool os_case=false;
 #else

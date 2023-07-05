@@ -63,7 +63,7 @@ void mxMainWindow::OnToolsCppCheckConfig(wxCommandEvent &event) {
 void mxMainWindow::OnToolsCppCheckRun(wxCommandEvent &event) {
 	if (!config->CheckCppCheckPresent()) return;
 	if (!project && !notebook_sources->GetPageCount()) return;
-	wxString output_file = DIR_PLUS_FILE(config->temp_dir,"cppcheck.out");
+	wxString output_file = mxFN::Join(config->temp_dir,"cppcheck.out");
 	mxOutputView *cppcheck = new mxOutputView("CppCheck",output_file);
 	
 	wxString file_args, cppargs, toargs, extra_args, path;
@@ -78,12 +78,12 @@ void mxMainWindow::OnToolsCppCheckRun(wxCommandEvent &event) {
 		mxUT::Split(project_cppcheck_config->exclude_list,exclude_list,true,false);
 		project->GetFileList(files,FT_SOURCE,true);
 		if (!project_cppcheck_config->exclude_headers) project->GetFileList(files,FT_HEADER,true);
-		wxString list(DIR_PLUS_FILE(config->temp_dir,"cppcheck.lst"));
+		wxString list(mxFN::Join(config->temp_dir,"cppcheck.lst"));
 		wxFile flist(list,wxFile::write);
 		char el='\n';
 		for (unsigned int i=0;i<files.GetCount();i++) {
 			if (exclude_list.Index(files[i])==wxNOT_FOUND) {
-				flist.Write(/*mxUT::Quotize(*/DIR_PLUS_FILE(project->path,files[i])/*)*/);
+				flist.Write(/*mxUT::Quotize(*/mxFN::Join(project->path,files[i])/*)*/);
 				flist.Write((void*)&el,1);
 			}
 		}
@@ -102,7 +102,7 @@ void mxMainWindow::OnToolsCppCheckRun(wxCommandEvent &event) {
 		cppargs<<mxUT::Split(project_cppcheck_config->platform,"--platform=")<<" ";
 		cppargs<<mxUT::Split(project_cppcheck_config->standard,"--std=")<<" ";
 		cppargs<<mxUT::Split(project_cppcheck_config->suppress_ids,"--suppress=")<<" ";
-		if (project_cppcheck_config->suppress_file.Len()) cppargs<<"--suppressions_list="<<mxUT::Quotize(DIR_PLUS_FILE(project->path,project_cppcheck_config->suppress_file))<<" ";
+		if (project_cppcheck_config->suppress_file.Len()) cppargs<<"--suppressions_list="<<mxUT::Quotize(mxFN::Join(project->path,project_cppcheck_config->suppress_file))<<" ";
 		if (project_cppcheck_config->inline_suppr) cppargs<<"--inline-suppr ";
 		if (project_cppcheck_config->parallelize && config->Init.max_jobs>1) cppargs<<"-j "<<config->Init.max_jobs<<" ";
 		
@@ -169,7 +169,7 @@ void mxMainWindow::OnToolsCppCheckRun(wxCommandEvent &event) {
 
 /// @brief Despliega el panel de valgrind para mostrar los resultados de CppCheck
 void mxMainWindow::OnToolsCppCheckView(wxCommandEvent &event) {
-	ShowValgrindPanel(mxVO_CPPCHECK,DIR_PLUS_FILE(config->temp_dir,"cppcheck.out"));
+	ShowValgrindPanel(mxVO_CPPCHECK,mxFN::Join(config->temp_dir,"cppcheck.out"));
 }
 
 void mxMainWindow::OnToolsCppCheckHelp(wxCommandEvent &event) {
@@ -195,7 +195,7 @@ void mxMainWindow::OnToolsValgrindCommon(bool debug) {
 	valgrind_config.SetArg("--vgdb-error=0",debug);
 	if (valgrind_config.ShowModal()==0) return;
 	
-	wxString val_file = DIR_PLUS_FILE(config->temp_dir,"valgrind.out");
+	wxString val_file = mxFN::Join(config->temp_dir,"valgrind.out");
 	val_file.Replace(" ","\\ ");
 	compiler->valgrind_cmd = config->Files.valgrind_command+" "<<valgrind_config.GetArgs()<<" --log-file="+val_file;
 	wxCommandEvent event;
@@ -213,7 +213,7 @@ void mxMainWindow::OnToolsValgrindDebug(wxCommandEvent &event) {
 
 /// @brief Despliega el panel de Valgrind para mostrar los resultados del analisis dinamico
 void mxMainWindow::OnToolsValgrindView(wxCommandEvent &event) {
-	ShowValgrindPanel(mxVO_VALGRIND,DIR_PLUS_FILE(config->temp_dir,"valgrind.out"));
+	ShowValgrindPanel(mxVO_VALGRIND,mxFN::Join(config->temp_dir,"valgrind.out"));
 }
 
 void mxMainWindow::OnToolsValgrindHelp(wxCommandEvent &event) {
@@ -249,7 +249,7 @@ void mxMainWindow::OnToolsWxfbNewRes(wxCommandEvent &event) {
 		wxString name=mxGetTextFromUser("Nombre del archivo:","Nuevo Proyecto wxFormBuilder","",this);
 		if (name.Len()==0) return;
 		
-		wxString fname=DIR_PLUS_FILE(project->path,name);
+		wxString fname=mxFN::Join(project->path,name);
 		wxString fbase=fname;
 		if (mxUT::EndsWithNC(fbase,".FBP"))
 			fbase=fbase.Mid(0,fbase.Len()-4);
@@ -372,13 +372,9 @@ void mxMainWindow::OnToolsWxfbLoadRes(wxCommandEvent &event) {
 		
 		wxString fbase = project->WxfbGetSourceFile(fbp_name);
 		
-		wxFileName fn_header(fbase+".h");
-		fn_header.Normalize();
-		wxString h_name=fn_header.GetFullPath();
+		wxString h_name = mxFN::Normalize(fbase+".h");
 		
-		wxFileName fn_source(fbase+".cpp");
-		fn_source.Normalize();
-		wxString cpp_name=fn_source.GetFullPath();
+		wxString cpp_name = mxFN::Normalize(fbase+".cpp");
 		
 		if (!project->GetWxfbActivated()) project->ActivateWxfb(true);
 		
@@ -413,14 +409,14 @@ void mxMainWindow::OnToolsWxfbHelpWx(wxCommandEvent &event) {
 	wxString help_file = config->Help.wxhelp_index;
 	if (help_file.IsEmpty()) {
 		wxString defb = config->GetZinjaiComplementsPath("docs");
-		wxString def2 = DIR_PLUS_FILE(DIR_PLUS_FILE(defb,"wx2"),"wx_contents.html");
-		wxString def3 = DIR_PLUS_FILE(DIR_PLUS_FILE(defb,"wx3"),"index.html");
+		wxString def2 = mxFN::Join(mxFN::Join(defb,"wx2"),"wx_contents.html");
+		wxString def3 = mxFN::Join(mxFN::Join(defb,"wx3"),"index.html");
 		if (wxFileExists(def3)) help_file = def3; else if (wxFileExists(def2)) help_file = def2;
 	} else {
-		help_file = DIR_PLUS_FILE(config->zinjai_dir,help_file);
+		help_file = mxFN::Join(config->zinjai_dir,help_file);
 	}
 	
-	if (help_file.IsEmpty() || !wxFileName::FileExists(DIR_PLUS_FILE(config->zinjai_dir,config->Help.wxhelp_index)))
+	if (help_file.IsEmpty() || !wxFileName::FileExists(mxFN::Join(config->zinjai_dir,config->Help.wxhelp_index)))
 		mxUT::OpenInBrowser(help_file);
 	else if (mxMessageDialog(this,"ZinjaI no pudo encontrar la ayuda de wxWidgets. A continuacion se le permitirá buscarla\n"
 								  "manualmente y luego se recordará esta seleccion (en cualquier momento se puede modificar\n"
@@ -430,7 +426,7 @@ void mxMainWindow::OnToolsWxfbHelpWx(wxCommandEvent &event) {
 		wxFileDialog dlg(this,"Indice de ayuda wxWidgets:",config->Help.wxhelp_index);
 		if (wxID_OK==dlg.ShowModal()) {
 			config->Help.wxhelp_index=dlg.GetPath();
-			mxUT::OpenInBrowser(DIR_PLUS_FILE(config->zinjai_dir,config->Help.wxhelp_index));
+			mxUT::OpenInBrowser(mxFN::Join(config->zinjai_dir,config->Help.wxhelp_index));
 		}
 	}
 }
@@ -555,9 +551,9 @@ void mxMainWindow::OnToolsDoxyGenerate(wxCommandEvent &event) {
 	if (project) {
 		if (config->CheckDoxygenPresent()) {
 			project->SaveAll(false);
-			project->GenerateDoxyfile(DIR_PLUS_FILE(project->path,"Doxyfile"));
-			wxString html_index = DIR_PLUS_FILE(project->path,DIR_PLUS_FILE(project->GetDoxygenConfiguration()->destdir,DIR_PLUS_FILE("html","index.html")));
-			wxString output_file = DIR_PLUS_FILE(config->temp_dir,"doxygen.out");
+			project->GenerateDoxyfile(mxFN::Join(project->path,"Doxyfile"));
+			wxString html_index = mxFN::Join(project->path,mxFN::Join(project->GetDoxygenConfiguration()->destdir,mxFN::Join("html","index.html")));
+			wxString output_file = mxFN::Join(config->temp_dir,"doxygen.out");
 			mxOutputView *doxy = new mxOutputView("Doxygen",output_file);
 			auto extra_callback = [html_index](mxOutputView *oview){ 
 				mxUT::OpenInBrowser(html_index); oview->Close(); 
@@ -576,8 +572,8 @@ void mxMainWindow::OnToolsGcovRunLCov(wxCommandEvent &event) {
 		wxString extra_args = wxGetTextFromUser("Additional arguments","lcov","--no-external",this);
 		
 		wxString tmp_dir = project->GetTempFolder();
-		wxString cov_info = DIR_PLUS_FILE(tmp_dir,"coverage.info");
-		wxString html_dir = DIR_PLUS_FILE(tmp_dir,"lcov");
+		wxString cov_info = mxFN::Join(tmp_dir,"coverage.info");
+		wxString html_dir = mxFN::Join(tmp_dir,"lcov");
 		wxString cmd1 = "lcov --capture --directory ";
 		cmd1 << mxUT::Quotize(tmp_dir) << " --output " << mxUT::Quotize(cov_info);
 		cmd1 << " -b " << mxUT::Quotize(project->path) << " " << extra_args;
@@ -586,7 +582,7 @@ void mxMainWindow::OnToolsGcovRunLCov(wxCommandEvent &event) {
 		
 		mxOutputView *doxy = new mxOutputView("LCov");
 		auto result_cb = [html_dir](mxOutputView *oview) { 
-			mxUT::OpenInBrowser(DIR_PLUS_FILE(html_dir,"index.html"));
+			mxUT::OpenInBrowser(mxFN::Join(html_dir,"index.html"));
 		};
 		auto opt_stage2_cb = [result_cb](mxOutputView *oview, int retval) {
 			if (retval==0) oview->SetExtraButton("Ver HTMLs",result_cb);
@@ -600,7 +596,7 @@ void mxMainWindow::OnToolsGcovRunLCov(wxCommandEvent &event) {
 
 void mxMainWindow::OnToolsDoxyView(wxCommandEvent &event) {
 	if (project) {
-		mxUT::OpenInBrowser(DIR_PLUS_FILE(project->path,DIR_PLUS_FILE(project->GetDoxygenConfiguration()->destdir,DIR_PLUS_FILE("html","index.html"))));
+		mxUT::OpenInBrowser(mxFN::Join(project->path,mxFN::Join(project->GetDoxygenConfiguration()->destdir,mxFN::Join("html","index.html"))));
 	}
 }
 
@@ -670,7 +666,7 @@ wxString mxMainWindow::OnToolsGprofShowListAux(bool include_command) {
 	if (!project && notebook_sources->GetPageCount()==0) return "";
 	
 	// ver si hay informacion de profiling
-	wxString gmon = project ? (DIR_PLUS_FILE(project->active_configuration->working_folder.Len()?DIR_PLUS_FILE(project->path,project->active_configuration->working_folder):project->path,"gmon.out")) : (DIR_PLUS_FILE(CURRENT_SOURCE->working_folder.GetFullPath(),"gmon.out"));
+	wxString gmon = project ? (mxFN::Join(project->active_configuration->working_folder.Len()?mxFN::Join(project->path,project->active_configuration->working_folder):project->path,"gmon.out")) : (mxFN::Join(CURRENT_SOURCE->working_folder.GetFullPath(),"gmon.out"));
 	if (!wxFile::Exists(gmon)) {
 		mxMessageDialog(this,LANG(MAINW_GPROF_OUTPUT_MISSING,""
 								  "No se encontro informacion de profiling.\n"
@@ -689,7 +685,7 @@ wxString mxMainWindow::OnToolsGprofShowListAux(bool include_command) {
 		command<<mxUT::Quotize(CURRENT_SOURCE->GetBinaryFileName().GetFullPath());
 	command<<" "<<mxUT::Quotize(gmon);
 	// ...y capturar salida en un archivo de texto
-	wxString gout = DIR_PLUS_FILE(config->temp_dir,"gprof.txt");
+	wxString gout = mxFN::Join(config->temp_dir,"gprof.txt");
 	wxRemoveFile(gout); // eliminar resultados previos para evitar problemas
 	wxFFile fgout(gout,"w+");
 	wxArrayString output, errors;
@@ -725,7 +721,7 @@ void mxMainWindow::OnToolsGprofShow (wxCommandEvent &event) {
 	
 	// procesar salida con gprof2dot para obtener el grafo
 	status_bar->SetStatusText(LANG(MAINW_GPROF_DRAWING,"Dibujando grafo..."));
-	wxString pout = DIR_PLUS_FILE(config->temp_dir,"gprof.dot");
+	wxString pout = mxFN::Join(config->temp_dir,"gprof.dot");
 	wxString command = mxUT::Quotize( config->GetZinjaiThirdPath(_if_win32("gprof2dot/gprof2dot.exe","gprof2dot/gprof2dot.py")) );
 	nodt.ToDouble(&edge_tres); edgt.ToDouble(&node_tres);
 	command<<" "<<mxUT::Quotize(gout)<<" -e "<<edge_tres<<" -n "<<node_tres<<" -o "<<mxUT::Quotize(pout);
@@ -961,7 +957,7 @@ void mxMainWindow::ToolsPreproc( int id_command ) {
 	mxOSDGuard osd(this,LANG(MAINW_PREPROC_OSD,"Preprocesando..."));
 	mxSource *src=CURRENT_SOURCE;
 	wxString bin_name;
-	bin_name = DIR_PLUS_FILE(config->temp_dir,"preprocessed.tmp");
+	bin_name = mxFN::Join(config->temp_dir,"preprocessed.tmp");
 	if (project) {
 		if (src->GetModify()) src->SaveSource();
 //		file_item *item = project->FindFromName(src->source_filename.GetFullPath());
@@ -1059,7 +1055,7 @@ void mxMainWindow::OnToolsInstallComplements(wxCommandEvent &evt) {
 }
 
 void mxMainWindow::OnToolsCreateTemplate(wxCommandEvent &evt) {
-	wxString user_templates_dir=DIR_PLUS_FILE(config->config_dir,"templates");
+	wxString user_templates_dir=mxFN::Join(config->config_dir,"templates");
 	if (!wxFileName::DirExists(user_templates_dir)) 
 		wxFileName::Mkdir(user_templates_dir);
 	if (project) {
@@ -1073,11 +1069,11 @@ void mxMainWindow::OnToolsCreateTemplate(wxCommandEvent &evt) {
 		project->Save(true); // save in place as template
 		project->project_name=project_name; // restore original project name
 		project->CleanAll(); // remove temp files
-		wxString dest_dir=DIR_PLUS_FILE(user_templates_dir,filename);
+		wxString dest_dir=mxFN::Join(user_templates_dir,filename);
 		wxFileName::Mkdir(dest_dir); mxUT::XCopy(project->path,dest_dir,true); // copy all project files
 		wxString zpr=wxFileName(project->filename).GetFullName(); 
-		wxString orig_zpr=DIR_PLUS_FILE(dest_dir,zpr);
-		wxString dest_zpr=DIR_PLUS_FILE(dest_dir,filename+DOT_PROJECT_EXT);
+		wxString orig_zpr=mxFN::Join(dest_dir,zpr);
+		wxString dest_zpr=mxFN::Join(dest_dir,filename+DOT_PROJECT_EXT);
 		if (dest_zpr!=orig_zpr) wxRenameFile(orig_zpr,dest_zpr); // rename .zpr
 		project->Save(); // restore real project file to non-template status
 	} else IF_THERE_IS_SOURCE {
@@ -1086,7 +1082,7 @@ void mxMainWindow::OnToolsCreateTemplate(wxCommandEvent &evt) {
 		wxString filename = wxGetTextFromUser(LANG(MAINW_ENTER_FILE_NAME_FOR_NEW_SIMPLE_PROGRAM_TEMPLATE,"Ingrese el nombre del archivo del nuevo template de programa simple"));
 		if (!filename.Len()) return; 
 		mxSource *src=CURRENT_SOURCE;
-		wxString dest_file=DIR_PLUS_FILE(user_templates_dir,filename+".tpl");
+		wxString dest_file=mxFN::Join(user_templates_dir,filename+".tpl");
 		// create the template file
 		wxTextFile template_file(dest_file);
 		template_file.Create();
@@ -1128,13 +1124,13 @@ void mxMainWindow::OnToolsGcovReset (wxCommandEvent & event) {
 		mxUT::GetFilesFromDir(array,path,true);
 		for(unsigned int i=0;i<array.GetCount();i++) { 
 			if (array[i].EndsWith(".gcov")||array[i].EndsWith(".gcda")/*||array[i].EndsWith(".gcno")*/)
-				wxRemoveFile(DIR_PLUS_FILE(path,array[i]));
+				wxRemoveFile(mxFN::Join(path,array[i]));
 		}
 	} else IF_THERE_IS_SOURCE {
 		mxSource *src=CURRENT_SOURCE;
-		wxRemoveFile(DIR_PLUS_FILE(src->GetPath(false),src->GetFileName(true))+".gcov");
-		wxRemoveFile(DIR_PLUS_FILE(src->GetPath(false),src->GetFileName(false))+".gcda");
-//		wxRemoveFile(DIR_PLUS_FILE(src->GetPath(false),src->GetFileName(false))+".gcno");
+		wxRemoveFile(mxFN::Join(src->GetPath(false),src->GetFileName(true))+".gcov");
+		wxRemoveFile(mxFN::Join(src->GetPath(false),src->GetFileName(false))+".gcda");
+//		wxRemoveFile(mxFN::Join(src->GetPath(false),src->GetFileName(false))+".gcno");
 	}
 }
 
@@ -1153,7 +1149,7 @@ void mxMainWindow::OnToolsLizardRun(wxCommandEvent &event) {
 	mxOSDGuard osd(this,LANG(MAINW_GPROF_STATUS_LIZARD,"Ejecutando lizard..."));
 	
 	// ejecutar lizard...
-	wxString command(DIR_PLUS_FILE_2(config->GetZinjaiThirdDir(),"lizard",_if_win32("lizard.exe","lizard.py")));
+	wxString command(mxFN::Join(config->GetZinjaiThirdDir(),"lizard",_if_win32("lizard.exe","lizard.py")));
 	if (project) {
 		wxArrayString files;
 		project->GetFileList(files,FT_SOURCE,false);
@@ -1186,7 +1182,7 @@ void mxMainWindow::AuxToolsDisassemble1(std::function<void(wxString)> on_end) {
 	mxSource *src=CURRENT_SOURCE;
 	
 	// compose required command
-	wxString out_fname = DIR_PLUS_FILE(config->temp_dir,"objdump.txt"), in_fname;	
+	wxString out_fname = mxFN::Join(config->temp_dir,"objdump.txt"), in_fname;	
 	if (project) {
 		project_file_item *pi = project->files.FindFromItem(src->GetTreeItem());
 		if (pi && pi->GetCategory()==FT_SOURCE) {

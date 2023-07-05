@@ -35,7 +35,7 @@ mxExeInfo::mxExeInfo(wxWindow *parent, ei_mode mode, wxFileName fname, mxSource 
 		}
 	}
 	
-	m_fname.Normalize(wxPATH_NORM_DOTS|wxPATH_NORM_LONG);
+	m_fname.Normalize(mxFN::NORMALIZE_FLAGS);
 	
 	SetSize(wxSize(450,400));
 	CreateSizer sizer(this);

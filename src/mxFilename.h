@@ -3,25 +3,25 @@
 
 #include <wx/string.h>
 
-#define DIR_PLUS_FILE mxFilename::JoinDirAndFile
-#define DIR_PLUS_FILE_2(a,b,c) mxFilename::JoinDirAndFile(mxFilename::JoinDirAndFile(a,b),c)
-
-class mxFilename {
+class mxFN {
 public:
 	/** @brief Concatena una ruta y un nombre de archivo **/
-	static wxString JoinDirAndFile(wxString dir, wxString fil);
+	static wxString Join(const wxString &dir, const wxString &fil);
+	static wxString Join(const wxString &dir_p1, const wxString &dir_p2, const wxString &fil);
 	
 	/** @brief Convierte un path absoluto en relativo **/
-	static wxString Relativize(wxString fname, wxString path);
+	static wxString MakeRelative(wxString fname, wxString path);
 	
 	/** @brief Contrae los ".." de los paths **/
-	static wxString Normalize(wxString path);
+	static wxString Normalize(const wxString &path);
 	/** @brief Extrae solo el nombre del archivo, sin la ruta **/
 	static wxString GetFileName(const wxString &fullpath, bool with_extension=true);
 	/** @brief Extrae solo la ruta, sin el nombre del archivo **/
 	static wxString GetPath(const wxString &fullpath, bool or_dot=false);
 	/** @brief Si el path termina en '/' o '\', pero no es el raiz, lo remueve**/
 	static wxString RemoveTrailingSlash(const wxString &fullpath);
+	
+	static int NORMALIZE_FLAGS;
 };
 
 #endif

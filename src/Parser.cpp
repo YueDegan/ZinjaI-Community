@@ -337,7 +337,7 @@ long Parser::ParseNextFileStart(wxFileName filename, wxString HashName, bool hid
 	PD_REGISTER_FILE(process->file, HashName,filename.GetModificationTime());
 	process->file->hide_symbols=hide_symbols;
 	static wxString parser_command = "";
-	if (parser_command.IsEmpty()) parser_command = DIR_PLUS_FILE(config->GetZinjaiBinDir(),
+	if (parser_command.IsEmpty()) parser_command = mxFN::Join(config->GetZinjaiBinDir(),
 #ifdef __WIN32__
 		"cbrowser.exe"
 #else
@@ -560,7 +560,7 @@ void Parser::ParseNextFileContinue(const wxString &s) {
 	
 		case PAF_INCLUDE_DEF: {
 	//				if (follow_includes) {
-	//					wxFileName inc_file(DIR_PLUS_FILE(my_home,PARSER_PARTE(0)));
+	//					wxFileName inc_file(mxFN::Join(my_home,PARSER_PARTE(0)));
 	//					if (inc_file.FileExists()) {
 	//						parser_filename *it=first_file;
 	//						bool found=first_file->name==inc_file;
@@ -730,9 +730,7 @@ bool Parser::ParseNextCleanAll() {
 }
 
 void Parser::ParseFile(wxString filename) {
-	wxFileName fname(filename);
-	fname.Normalize();
-	actions.insert(actions.end(),parserAction::ParseSavedFile(fname.GetFullPath()));
+	actions.insert(actions.end(),parserAction::ParseSavedFile( mxFN::Normalize(filename) ));
 	Parse();
 }
 

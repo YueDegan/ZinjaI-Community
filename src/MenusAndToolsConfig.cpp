@@ -824,7 +824,7 @@ void MenusAndToolsConfig::CreateMenues () {
 	
 	// create some special submenues
 //	main_window->UpdateCustomTools(false);
-	wxString ipre=DIR_PLUS_FILE(config->HighDPI()?"24":"16","recent");
+	wxString ipre=mxFN::Join(config->HighDPI()?"24":"16","recent");
 	for(int k=0;k<2;k++) { 
 		wxString *cfglast = k==0?config->Files.last_project:config->Files.last_source;
 		wxMenuItem **mnihistory = k==0?menu_data->file_project_history:menu_data->file_source_history;
@@ -878,9 +878,9 @@ void MenusAndToolsConfig::UpdateToolbar(int tb_id, bool only_items) {
 	
 void MenusAndToolsConfig::CreateToolbars() {
 	
-	wxString ipre=DIR_PLUS_FILE(wxString()<<icon_size,"");
+	wxString ipre=mxFN::Join(wxString()<<icon_size,"");
 	
-	if (!wxFileName::DirExists(DIR_PLUS_FILE(config->Files.skin_dir,wxString()<<icon_size))) {
+	if (!wxFileName::DirExists(mxFN::Join(config->Files.skin_dir,wxString()<<icon_size))) {
 		wxString icsz = wxString()<<icon_size<<"x"<<icon_size;
 		mxMessageDialog(nullptr,
 			wxString()<<LANG1(MAIN_WINDOW_NO_ICON_SIZE,""
@@ -889,7 +889,7 @@ void MenusAndToolsConfig::CreateToolbars() {
 			"Para modificarlo utilice el cuadro de Preferencias (menu Archivo).",wxString()<<icsz))
 			.Title(LANG(GENERAL_WARNING,"Advertencia")).IconWarning().Run();
 		icon_size=16;
-		ipre=DIR_PLUS_FILE("16","");
+		ipre=mxFN::Join("16","");
 	}
 	
 	// create empty wxToolBars 
@@ -945,7 +945,7 @@ void MenusAndToolsConfig::CreateToolbars() {
 void MenusAndToolsConfig::PopulateToolbar(int tb_id) {
 	
 	wxToolBar *wx_toolbar = toolbars[tb_id].wx_toolbar;
-	wxString ipre=DIR_PLUS_FILE(wxString()<<icon_size,"");
+	wxString ipre=mxFN::Join(wxString()<<icon_size,"");
 	
 	if (tb_id!=tbPROJECT) { // items de la base de items
 		vector<myToolbarItem> &items = toolbars[tb_id].items;

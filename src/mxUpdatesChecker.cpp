@@ -89,7 +89,7 @@ void mxUpdatesChecker::CheckNow() {
 	if (proxy_address.Len()) 
 		command<<"--proxy "<<proxy_address<<" ";
 	
-	wxString temp_file(DIR_PLUS_FILE(config->temp_dir,"updatem.res"));
+	wxString temp_file(mxFN::Join(config->temp_dir,"updatem.res"));
 	command<<"--child \""<<temp_file<<"\"";
 	command<<" zinjai ";
 	
@@ -138,7 +138,7 @@ void mxUpdatesChecker::OnChangesButton(wxCommandEvent &evt) {
 void mxUpdatesChecker::BackgroundCheck() {
 	
 	wxString cur_date(wxDateTime::Now().Format("%Y%m%d"));
-	wxString temp_file(DIR_PLUS_FILE(config->temp_dir,"updatem.ts"));
+	wxString temp_file(mxFN::Join(config->temp_dir,"updatem.ts"));
 	wxTextFile fil(temp_file);
 	if (fil.Exists() && fil.Open() && fil.GetLineCount() && fil.GetFirstLine()==cur_date) {
 		fil.Close();
@@ -156,7 +156,7 @@ void mxUpdatesChecker::BackgroundCheck() {
 
 void mxUpdatesChecker::OnProcessEnds(wxProcessEvent &evt) {
 	delete process; process=nullptr;
-	wxString temp_file(DIR_PLUS_FILE(config->temp_dir,"updatem.res"));
+	wxString temp_file(mxFN::Join(config->temp_dir,"updatem.res"));
 	wxTextFile fil(temp_file);
 	if (!fil.Exists() || !fil.Open() || !fil.GetLineCount()) {
 		main_window->SetStatusText(LANG(UPDATE_ERROR_CONNECTING_STATUS,"Buscar actualizaciones: Error al conectarse al servidor."));

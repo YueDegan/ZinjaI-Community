@@ -123,7 +123,7 @@ void mxOpenRecentDialog::UpdateList() {
 	for (unsigned int i=0,count=0;i<CM_HISTORY_MAX_LEN;i++) {
 		if (array[i].Len()==0) break;
 		wxFileName fn(array[i]);
-		fn.Normalize();
+		fn.Normalize(mxFN::NORMALIZE_FLAGS);
 		wxString file(fn.GetFullPath());
 		if (file.Upper().Find(key)!=wxNOT_FOUND) {
 			list_ctrl->InsertItem(count,file);

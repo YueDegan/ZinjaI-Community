@@ -164,7 +164,7 @@ void mxProjectGeneralConfig::OnOkButton(wxCommandEvent &evt) {
 //	main_window->menu.tools_wxfb_activate->Check(project->use_wxfb);
 	if (project->autocodes_file != project_autocodes->GetValue()) {
 		project->autocodes_file = project_autocodes->GetValue();
-		Autocoder::GetInstance()->Reset(DIR_PLUS_FILE(project->path,project->autocodes_file));
+		Autocoder::GetInstance()->Reset(mxFN::Join(project->path,project->autocodes_file));
 	}
 	m_binder.FromWidgets();
 	if (project) {
@@ -198,8 +198,8 @@ void mxProjectGeneralConfig::OnIndexesButton(wxCommandEvent &evt) {
 
 void mxProjectGeneralConfig::OnDebugMacrosEdit(wxCommandEvent &evt) {
 	wxString file=project_debug_macros->GetValue();
-	if (wxFileName(DIR_PLUS_FILE(project->path,file)).FileExists())
-		main_window->OpenFileFromGui(DIR_PLUS_FILE(project->path,file),nullptr);
+	if (wxFileName(mxFN::Join(project->path,file)).FileExists())
+		main_window->OpenFileFromGui(mxFN::Join(project->path,file),nullptr);
 	else {
 		mxMessageDialog(main_window,LANG(PROJECTGENERAL_FILE_NOT_EXISTS,"El archivo no existe"))
 			.Title(LANG(PREFERENCES_DEBUG_GDB_MACROS_FILE,"Archivo de macros")).IconWarning().Run();
@@ -207,7 +207,7 @@ void mxProjectGeneralConfig::OnDebugMacrosEdit(wxCommandEvent &evt) {
 }
 
 void mxProjectGeneralConfig::OnDebugMacrosOpen(wxCommandEvent &evt) {
-	wxFileDialog dlg(this,LANG(PREFERENCES_DEBUG_GDB_MACROS_FILE,"Archivo de macros para gdb"),"",DIR_PLUS_FILE(project->path,project_debug_macros->GetValue()));
+	wxFileDialog dlg(this,LANG(PREFERENCES_DEBUG_GDB_MACROS_FILE,"Archivo de macros para gdb"),"",mxFN::Join(project->path,project_debug_macros->GetValue()));
 	if (wxID_OK==dlg.ShowModal()) {
 		wxFileName fn(dlg.GetPath());
 		fn.MakeRelativeTo(project->path);
@@ -224,8 +224,8 @@ void mxProjectGeneralConfig::OnDebugMacros(wxCommandEvent &evt) {
 
 void mxProjectGeneralConfig::OnAutocodesEdit(wxCommandEvent &evt) {
 	wxString file=project_autocodes->GetValue();
-	if (wxFileName(DIR_PLUS_FILE(project->path,file)).FileExists())
-		main_window->OpenFileFromGui(DIR_PLUS_FILE(project->path,file),nullptr);
+	if (wxFileName(mxFN::Join(project->path,file)).FileExists())
+		main_window->OpenFileFromGui(mxFN::Join(project->path,file),nullptr);
 	else {
 		mxMessageDialog(main_window,LANG(PROJECTGENERAL_FILE_NOT_EXISTS,"El archivo no existe"))
 			.Title(LANG(PREFERENCES_WRITTING_AUTOCODES_FILE,"Archivo con definiciones de autocodigos"))
@@ -234,7 +234,7 @@ void mxProjectGeneralConfig::OnAutocodesEdit(wxCommandEvent &evt) {
 }
 
 void mxProjectGeneralConfig::OnAutocodesOpen(wxCommandEvent &evt) {
-	wxFileDialog dlg(this,LANG(PREFERENCES_WRITTING_AUTOCODES_FILE,"Archivo con definiciones de autocodigos"),"",DIR_PLUS_FILE(project->path,project_autocodes->GetValue()));
+	wxFileDialog dlg(this,LANG(PREFERENCES_WRITTING_AUTOCODES_FILE,"Archivo con definiciones de autocodigos"),"",mxFN::Join(project->path,project_autocodes->GetValue()));
 	if (wxID_OK==dlg.ShowModal()) {
 		wxFileName fn(dlg.GetPath());
 		fn.MakeRelativeTo(project->path);

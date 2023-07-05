@@ -163,7 +163,7 @@ void mxLibToBuildWindow::OnCombo(wxCommandEvent &evt) {
 void mxLibToBuildWindow::SetFName() {
 	if (!m_constructed) return;
 	bool is_static = m_type->GetSelection()==1;
-	wxString fname = DIR_PLUS_FILE(m_path->GetValue(),wxString("lib")<<m_name->GetValue());
+	wxString fname = mxFN::Join(m_path->GetValue(),wxString("lib")<<m_name->GetValue());
 	mxUT::ParameterReplace(fname,"${TEMP_DIR}",project->active_configuration->temp_folder);
 #ifdef __WIN32__
 	fname << (is_static?".a":".dll");

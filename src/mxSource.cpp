@@ -285,11 +285,11 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 	
 	config_running = config->Running;
 	
-	wxString fname = DIR_PLUS_FILE(config->temp_dir,"sin_titulo.cpp");
+	wxString fname = mxFN::Join(config->temp_dir,"sin_titulo.cpp");
 	source_filename = wxEmptyString;
 	temp_filename = fname;
 	m_cem_ref.SetFName(fname);
-	binary_filename = DIR_PLUS_FILE(config->temp_dir,"sin_titulo")+_T(BINARY_EXTENSION);
+	binary_filename = mxFN::Join(config->temp_dir,"sin_titulo")+_T(BINARY_EXTENSION);
 	working_folder = wxFileName::GetHomeDir();
 
 	sin_titulo = true;
@@ -829,7 +829,7 @@ bool mxSource::SaveSource() {
 	sin_titulo = false;
 	bool ret=MySaveFile(source_filename.GetFullPath());
 	SetSourceTime(source_filename.GetModificationTime());
-	if (source_filename==config->Files.autocodes_file||(project&&source_filename==DIR_PLUS_FILE(project->path,project->autocodes_file)))
+	if (source_filename==config->Files.autocodes_file||(project&&source_filename==mxFN::Join(project->path,project->autocodes_file)))
 		Autocoder::GetInstance()->Reset(project?project->autocodes_file:"");
 	return ret;
 }
@@ -1908,7 +1908,7 @@ void mxSource::OnPopupMenuInside(wxMouseEvent &evt, bool fix_current_pos) {
 			while (GetCharAt(p2)=='.' || GetCharAt(p2)=='/' || GetCharAt(p2)=='\\' || GetCharAt(p2)==':')
 				p2=WordEndPosition(p2+1,true);
 		}
-		wxFileName the_one (sin_titulo?GetTextRange(p1,p2):DIR_PLUS_FILE(source_filename.GetPath(),GetTextRange(p1,p2)));
+		wxFileName the_one (sin_titulo?GetTextRange(p1,p2):mxFN::Join(source_filename.GetPath(),GetTextRange(p1,p2)));
 		if (wxFileName::FileExists(the_one.GetFullPath()))
 			mxUT::AddItemToMenu(&menu,_menu_item_2(mnHIDDEN,mxID_FILE_OPEN_SELECTED),LANG1(SOURCE_POPUP_OPEN_SELECTED,"&Abrir \"<{1}>\"",GetTextRange(p1,p2)));
 	}
@@ -3573,7 +3573,7 @@ bool mxSource::IsCppOrJustC() {
 
 wxFileName mxSource::GetBinaryFileName ( ) {
 	if (project && !sin_titulo) 
-		return DIR_PLUS_FILE(project->GetTempFolder(),source_filename.GetName()+".o");
+		return mxFN::Join(project->GetTempFolder(),source_filename.GetName()+".o");
 	else
 		return binary_filename;
 }

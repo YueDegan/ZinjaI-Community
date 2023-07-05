@@ -116,7 +116,7 @@ void DebugPatcher::Patch ( ) {
 
 int DebugPatcher::Patch (mem_seg & ms) {
 	
-	if (!temp_file.Len()) temp_file=DIR_PLUS_FILE(config->temp_dir,"gdb_dump.for_patch");
+	if (!temp_file.Len()) temp_file=mxFN::Join(config->temp_dir,"gdb_dump.for_patch");
 	
 	DebugManager::GDBAnswer &ans=debug->SendCommand(wxString("dump memory ")<<mxUT::EscapeString(temp_file)<<" "<<ms.mini<<" "<<ms.mend);
 	if (!ans.result.Contains("^done")) return DP_ERROR_DUMP;

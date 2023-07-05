@@ -14,7 +14,7 @@ static char path_sep = wxFileName::GetPathSeparator();
 * @param fil El archivo. Puede ser solo un nombre, la parte final de una ruta, o una ruta completa
 * @return Un wxString con la ruta resultante completa
 **/
-wxString mxFilename::JoinDirAndFile(wxString dir, wxString fil) {
+wxString mxFN::Join(const wxString &dir, const wxString &fil) {
 	if (dir.Len()==0 || (fil.Len()>1 && (fil[0]=='\\' || fil[0]=='/' || fil[1]==':')))
 		return fil;
 	else if (dir.Last()==path_sep)
@@ -23,11 +23,14 @@ wxString mxFilename::JoinDirAndFile(wxString dir, wxString fil) {
 		return dir+path_sep+fil;
 }
 
+wxString mxFN::Join(const wxString &dir1, const wxString &dir2, const wxString &fil) {
+	return Join(Join(dir1,dir2),fil);
+}
 /** 
 * Convierte un path absoluto en relativo, siempre y cuando no deba subir más
 * de 2 niveles desde el path de referencia
 **/
-wxString mxFilename::Relativize(wxString name, wxString path) {
+wxString mxFN::MakeRelative(wxString name, wxString path) {
 	if (path.Last()=='\\' || path.Last()=='/') path.RemoveLast();
 	bool rr=false;
 	if (rr) name.RemoveLast();
@@ -47,31 +50,15 @@ wxString mxFilename::Relativize(wxString name, wxString path) {
 #	define _is_path_char(str,p) (str[p]=='/')
 #endif
 
-wxString mxFilename::Normalize (wxString path) {
-	int len = path.Len();
-	int p = 0, p0 = 0, delta=0;
-	do {
-		char c = path[p];
-		if (p==len || _is_path_char(path,p)) {
-			if (p0==p-2 && path[p-1]=='.' && path[p-2]=='.') {
-				int pa = p0-delta-2;
-				while(pa>0 && !_is_path_char(path,pa)) --pa;
-				if (pa>0) {
-					delta=p-pa;
-				}
-			} else if (p0==p-1 && path[p-1]=='.') {
-				delta+=2;
-			}
-			p0=p+1;
-		}
-		if (delta) path[p-delta]=c;
-		++p;
-	} while(p<=len);
-	if (delta) path.erase(len-delta);
-	return path;
+int mxFN::NORMALIZE_FLAGS = wxPATH_NORM_DOTS|wxPATH_NORM_TILDE|wxPATH_NORM_LONG;
+
+wxString mxFN::Normalize (const wxString &path) {
+	wxFileName fname(path);
+	fname.Normalize(mxFN::NORMALIZE_FLAGS);
+	return fname.GetFullPath();
 }
 
-wxString mxFilename::GetFileName (const wxString &fullpath, bool with_extension) {
+wxString mxFN::GetFileName (const wxString &fullpath, bool with_extension) {
 	if (fullpath.IsEmpty()) return "";
 	int i = fullpath.Len()-1, pdot=-1;
 	while (i>=0 && !_is_path_char(fullpath,i)) {
@@ -81,7 +68,7 @@ wxString mxFilename::GetFileName (const wxString &fullpath, bool with_extension)
 	return fullpath.Mid(i+1,pdot==-1?wxString::npos:(pdot-i-1));
 }
 
-wxString mxFilename::GetPath (const wxString &fullpath, bool or_dot) {
+wxString mxFN::GetPath (const wxString &fullpath, bool or_dot) {
 	if (fullpath.IsEmpty()) return or_dot?".":"";
 	int i = fullpath.Len()-1;
 	while (i>=0 && !_is_path_char(fullpath,i)) --i;
@@ -89,7 +76,7 @@ wxString mxFilename::GetPath (const wxString &fullpath, bool or_dot) {
 	return fullpath.Mid(0,(i<0||(i==1&&fullpath[i]==':'))?i+1:i);
 }
 
-wxString mxFilename::RemoveTrailingSlash (const wxString & fullpath) {
+wxString mxFN::RemoveTrailingSlash (const wxString & fullpath) {
 	if (fullpath.IsEmpty()) return fullpath;
 	if (fullpath.Last()!='/' _if_win32(&& fullpath.Last()!='\\',)) return fullpath;
 	if (fullpath.Len()==1 _if_win32(|| (fullpath.Len()==3&&fullpath[1]==':'),)) return fullpath;

@@ -39,7 +39,7 @@ mxMakefileDialog::mxMakefileDialog(wxWindow* parent)
 	expand_comas = AddCheckBox(mySizer,this,LANG(MAKEFILE_EXPAND_SUBCOMMANDS,"Expandir subcomandos (comandos entre acentos)."),false);
 #endif
 	
-	file_path = AddDirCtrl(mySizer,this,LANG(MAKEFILE_DESTINATION_FILE,"Destino"),DIR_PLUS_FILE(project->path,"Makefile"),mxID_MAKEFILE_EXPLORE);
+	file_path = AddDirCtrl(mySizer,this,LANG(MAKEFILE_DESTINATION_FILE,"Destino"),mxFN::Join(project->path,"Makefile"),mxID_MAKEFILE_EXPLORE);
 	
 	wxArrayString split_values;
 	split_values.Add(LANG(MAKEFILE_TYPE_FULL,"Completo"));
@@ -81,7 +81,7 @@ void mxMakefileDialog::OnOkButton(wxCommandEvent &event) {
 		if (split_type->GetSelection()==1) mktype=MKTYPE_CONFIG;
 		if (split_type->GetSelection()==2) mktype=MKTYPE_OBJS;
 		wxString fpath=file_path->GetValue();
-		if (mktype==MKTYPE_OBJS) fpath=DIR_PLUS_FILE(wxFileName(fpath).GetPath(),"Makefile.common");
+		if (mktype==MKTYPE_OBJS) fpath=mxFN::Join(wxFileName(fpath).GetPath(),"Makefile.common");
 		project->ExportMakefile(fpath,expand_comas->GetValue(),mingw_dir->GetValue(),mktype,cmake_style->GetValue());
 		project->active_configuration = orig;
 		Close();

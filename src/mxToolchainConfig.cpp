@@ -66,9 +66,9 @@ void mxToolchainConfig::OnButtonOk (wxCommandEvent & event) {
 	tc.cpp_linker_options = cpp_linker_options->GetValue();
 	tc.dynamic_lib_linker = dynamic_lib_linker->GetValue();
 	tc.static_lib_linker = static_lib_linker->GetValue();
-	wxString dirname = DIR_PLUS_FILE(config->config_dir,"toolchains");
+	wxString dirname = mxFN::Join(config->config_dir,"toolchains");
 	if (!wxFileName::DirExists(dirname)) wxMkdir(dirname);
-	tc.Save(DIR_PLUS_FILE(dirname,tc.file));
+	tc.Save(mxFN::Join(dirname,tc.file));
 	Toolchain::LoadToolchains();
 	Toolchain::SelectToolchain();
 	Close();

@@ -963,7 +963,7 @@ static wxString simplify_include(wxString path, wxString fname) {
 		mxUT::Split(project->active_configuration->headers_dirs,header_dirs_array,true,false);
 		for(unsigned int i=0;i<header_dirs_array.GetCount();i++) { 
 			wxFileName fn2(fname);
-			fn2.MakeRelativeTo( DIR_PLUS_FILE(project->GetPath(),header_dirs_array[i]) );
+			fn2.MakeRelativeTo( mxFN::Join(project->GetPath(),header_dirs_array[i]) );
 			wxString aux = fn2.GetFullPath();
 			if (fn2.GetFullPath().Len()<fn.GetFullPath().Len()) fn = fn2;
 		}
@@ -1129,9 +1129,9 @@ void CodeHelper::AddReservedWords(wxString &typed/*, int max_str_dist*/) {
 }
 
 bool CodeHelper::GenerateAutocompletionIndex(wxString path, wxString filename) {
-	wxString autocomp_dir = DIR_PLUS_FILE(config->config_dir,"autocomp");
+	wxString autocomp_dir = mxFN::Join(config->config_dir,"autocomp");
 	if (!wxFileName::DirExists(autocomp_dir)) wxFileName::Mkdir(autocomp_dir);
-	wxFFile idx(DIR_PLUS_FILE(autocomp_dir,filename),_T("w+"));
+	wxFFile idx(mxFN::Join(autocomp_dir,filename),_T("w+"));
 	if (!idx.IsOpened()) return false;
 	
 	pd_file *fil = parser->last_file->next;

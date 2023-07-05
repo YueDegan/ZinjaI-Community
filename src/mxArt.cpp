@@ -107,17 +107,17 @@ mxArt::~mxArt() {
 }
 
 wxString mxArt::GetSkinImagePath(const wxString &fname, bool replace_if_missing) {
-	static wxString default_path=DIR_PLUS_FILE(config->zinjai_dir,"imgs");
-	static wxString skin_path=DIR_PLUS_FILE(config->zinjai_dir,config->Files.skin_dir);
+	static wxString default_path=mxFN::Join(config->zinjai_dir,"imgs");
+	static wxString skin_path=mxFN::Join(config->zinjai_dir,config->Files.skin_dir);
 	static bool is_default = default_path==skin_path;
 	if (is_default) {
 #ifdef _ZINJAI_DEBUG
-		if (!wxFileName::FileExists(DIR_PLUS_FILE(default_path,fname)))
-			ZLWAR2("Art","GetSkinImagePath, Missing image: "<<DIR_PLUS_FILE(default_path,fname));
+		if (!wxFileName::FileExists(mxFN::Join(default_path,fname)))
+			ZLWAR2("Art","GetSkinImagePath, Missing image: "<<mxFN::Join(default_path,fname));
 #endif
-		return DIR_PLUS_FILE(default_path,fname);
+		return mxFN::Join(default_path,fname);
 	} else {
-		wxString fskin = DIR_PLUS_FILE(skin_path,fname);
+		wxString fskin = mxFN::Join(skin_path,fname);
 		if (!replace_if_missing || wxFileName::FileExists(fskin)) {
 #ifdef _ZINJAI_DEBUG
 			if (!wxFileName::FileExists(fskin))
@@ -126,10 +126,10 @@ wxString mxArt::GetSkinImagePath(const wxString &fname, bool replace_if_missing)
 			return fskin;
 		} else {
 #ifdef _ZINJAI_DEBUG
-			if (!wxFileName::FileExists(DIR_PLUS_FILE(default_path,fname)))
-				ZLWAR2("Art","GetSkinImagePath, Missing image: "<<DIR_PLUS_FILE(default_path,fname));
+			if (!wxFileName::FileExists(mxFN::Join(default_path,fname)))
+				ZLWAR2("Art","GetSkinImagePath, Missing image: "<<mxFN::Join(default_path,fname));
 #endif
-			return DIR_PLUS_FILE(default_path,fname);
+			return mxFN::Join(default_path,fname);
 		}
 	}
 }
@@ -144,11 +144,11 @@ bool mxArt::HasBitmap (const wxString &fname, bool is_optional) {
 	static bool last_is_optional;
 	if (fname==last_fname && is_optional==last_is_optional) return last_bmp;
 	
-	static wxString skin_path=DIR_PLUS_FILE(config->zinjai_dir,config->Files.skin_dir);
-	static wxString default_path=DIR_PLUS_FILE(config->zinjai_dir,"imgs");
-	last_bmp = auxHasBitmap(DIR_PLUS_FILE(skin_path,fname));
+	static wxString skin_path=mxFN::Join(config->zinjai_dir,config->Files.skin_dir);
+	static wxString default_path=mxFN::Join(config->zinjai_dir,"imgs");
+	last_bmp = auxHasBitmap(mxFN::Join(skin_path,fname));
 	if (!last_bmp && !is_optional)
-		last_bmp = auxHasBitmap(DIR_PLUS_FILE(default_path,fname));
+		last_bmp = auxHasBitmap(mxFN::Join(default_path,fname));
 	return last_bmp;
 	
 }	
@@ -177,13 +177,13 @@ const wxBitmap & mxArt::GetBitmap(const wxString &fname, bool is_optional) {
 mxArt::BitmapPack *mxArt::LoadPack (const wxString & path) {
 	BitmapPack *pack = new BitmapPack();
 #ifdef _USE_PACKED_BITMAPS
-	wxTextFile fil(DIR_PLUS_FILE(path,"bitmaps.idx"));
+	wxTextFile fil(mxFN::Join(path,"bitmaps.idx"));
 	if (fil.Exists()) {
-		wxFFileInputStream fpack(DIR_PLUS_FILE(path,"bitmaps.pack"));
+		wxFFileInputStream fpack(mxFN::Join(path,"bitmaps.pack"));
 		fil.Open();
 		pack->pack_exists=true;
 		for ( wxString str = fil.GetFirstLine(); !fil.Eof(); str = fil.GetNextLine() ) {
-			pack->bitmaps[DIR_PLUS_FILE(path,str)]=new wxBitmap(wxImage(fpack,wxBITMAP_TYPE_PNG));
+			pack->bitmaps[mxFN::Join(path,str)]=new wxBitmap(wxImage(fpack,wxBITMAP_TYPE_PNG));
 		}
 	}
 #endif

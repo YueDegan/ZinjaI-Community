@@ -20,7 +20,7 @@ void mxGotoFileDialog::OnGoto(int pos, wxString key) {
 	if (key.Len()) {
 		if (project) {
 			Close();
-			mxSource *src=main_window->OpenFile(DIR_PLUS_FILE(project->GetPath(),key),false);
+			mxSource *src=main_window->OpenFile(mxFN::Join(project->GetPath(),key),false);
 			if (goto_line!=-1 && src && src!=EXTERNAL_SOURCE) src->MarkError(goto_line); /// for errors with incomplete or relative path from external building tools
 		} else {
 			for (unsigned int i=0;i<main_window->notebook_sources->GetPageCount();i++) {

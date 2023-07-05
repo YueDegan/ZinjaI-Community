@@ -16,9 +16,9 @@ mxHelpWindow *mxHelpWindow::instance=nullptr;
 
 void mxHelpWindow::PopulateIndex(wxTreeItemId node, wxString dir) {
 	wxString index_file = mxUT::WichOne(
-			DIR_PLUS_FILE(dir,"index_"+config->Init.language_file),
-			DIR_PLUS_FILE(dir,"index_spanish"),
-			DIR_PLUS_FILE(dir,"index") );
+			mxFN::Join(dir,"index_"+config->Init.language_file),
+			mxFN::Join(dir,"index_spanish"),
+			mxFN::Join(dir,"index") );
 	wxTextFile fil(index_file);
 	if (fil.Exists()) {
 		fil.Open();
@@ -36,7 +36,7 @@ void mxHelpWindow::PopulateIndex(wxTreeItemId node, wxString dir) {
 						node = tree->GetItemParent(node);
 					node = tree->AppendItem(tree->GetItemParent(node),_ZS(str.Mid(tabs_cur+2).AfterFirst(' ')),str[tabs_cur]-'0');
 				}
-				items[DIR_PLUS_FILE(dir,str.Mid(tabs_cur+2).BeforeFirst(' '))] = node;
+				items[mxFN::Join(dir,str.Mid(tabs_cur+2).BeforeFirst(' '))] = node;
 				tabs_prev=tabs_cur;
 			}
 		}
@@ -45,19 +45,19 @@ void mxHelpWindow::PopulateIndex(wxTreeItemId node, wxString dir) {
 }
 
 mxHelpWindow::mxHelpWindow(wxString file) : mxGenericHelpWindow(LANG(HELPW_CAPTION,"Ayuda de ZinjaI"),true) {
-	current_dir = DIR_PLUS_FILE(config->zinjai_dir,"guihelp");
+	current_dir = mxFN::Join(config->zinjai_dir,"guihelp");
 	ignore_tree_event=false;
 	// populate index tree
 	wxTreeItemId root_node = tree->AddRoot("Temas de Ayuda",0);
 	PopulateIndex(root_node,current_dir);
 	
 	wxTreeItemId complements_node = tree->AppendItem(root_node,LANG(HELPW_COMPLEMENTS_SECTION,"Ayudas de Complementos"),0);
-	items[DIR_PLUS_FILE(current_dir,"complements_section.html")] = complements_node;
+	items[mxFN::Join(current_dir,"complements_section.html")] = complements_node;
 	wxArrayString complements;
 	wxString complements_dir = config->GetZinjaiComplementsPath("guihelp");
 	if (mxUT::GetFilesFromDir(complements,complements_dir,false)) {
 		for(unsigned int i=0;i<complements.GetCount();i++) {
-			PopulateIndex(complements_node, DIR_PLUS_FILE(complements_dir,complements[i]));
+			PopulateIndex(complements_node, mxFN::Join(complements_dir,complements[i]));
 		}
 	}
 		
@@ -67,7 +67,7 @@ mxHelpWindow::mxHelpWindow(wxString file) : mxGenericHelpWindow(LANG(HELPW_CAPTI
 		if (mxUT::GetFilesFromDir(complements,complements_dir)) {
 			for(unsigned int i=0;i<complements.GetCount();i++) {
 				wxString page_name = complements[i].BeforeLast('.');
-				wxString file = DIR_PLUS_FILE(complements_dir,complements[i]);
+				wxString file = mxFN::Join(complements_dir,complements[i]);
 				items[file] = tree->AppendItem(complements_node,page_name,1);
 			}
 		}
@@ -224,7 +224,7 @@ bool mxHelpWindow::OnLink (wxString href) {
 		if (project) mxUT::DirParameterReplace(path,"PROJECT",project->GetPath(),false);
 		mxUT::OpenFolder(path);
 	} else if (href.StartsWith("foropen:")) {
-		main_window->NewFileFromTemplate(DIR_PLUS_FILE(current_dir,href.AfterFirst(':')),true);
+		main_window->NewFileFromTemplate(mxFN::Join(current_dir,href.AfterFirst(':')),true);
 	} else if (href.Contains("://")) {
 		mxUT::OpenInBrowser(href);
 	} else {
@@ -263,7 +263,7 @@ wxString mxHelpWindow::FixURL(wxString url, bool set_dir, bool select_tree, bool
 	wxString name = url.Mid(pos_name, (pos_ext==-1?pos_args:pos_ext)-pos_name);
 	wxString path = url.Mid(0,pos_name);
 	// corregir y guardar el directorio actual
-	path = DIR_PLUS_FILE(current_dir,path);
+	path = mxFN::Join(current_dir,path);
 	if (set_dir) current_dir = path;
 	// seleccionar el item en el arbol
 	if (select_tree) {

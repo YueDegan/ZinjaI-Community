@@ -17,7 +17,7 @@
 
 
 void mxMainWindow::UpdateInHistory(wxString filename, bool is_project) {
-	wxString ipre=DIR_PLUS_FILE(config->HighDPI()?"24":"16","recent");
+	wxString ipre=mxFN::Join(config->HighDPI()?"24":"16","recent");
 	wxString *cfglast = is_project?config->Files.last_project:config->Files.last_source;
 	wxMenuItem **mnihistory = is_project?menu_data->file_project_history:menu_data->file_source_history;
 	wxMenu *mnurecent = menu_data->GetMenu(is_project?mxID_FILE_PROJECT_RECENT:mxID_FILE_SOURCE_RECENT);
@@ -69,7 +69,7 @@ void mxMainWindow::UpdateCustomTools(bool for_project) {
 		// update data in menu_data->menues based con data on config
 		menu_data->TransferStatesFromConfig();
 		// create new items
-		wxString ipre=DIR_PLUS_FILE(config->HighDPI()?"24":"16","");
+		wxString ipre=mxFN::Join(config->HighDPI()?"24":"16","");
 		for (int i=0,c=0;i<count;i++) {
 			MenusAndToolsConfig::myMenuItem &mitem = *menu_data->GetMyMenuItem(MenusAndToolsConfig::mnTOOLS,mxID_CUSTOM_TOOL_0+i);
 			if (!(mitem.properties&MenusAndToolsConfig::maHIDDEN))

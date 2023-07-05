@@ -120,10 +120,10 @@ void mxDrawClasses::OnOkButton(wxCommandEvent &evt) {
 		return;
 	}
 	// generar grafo con dot/fdp y guardar/mostrar
-	wxString gout=DIR_PLUS_FILE(config->temp_dir,"graph.dot"), output; // graph_viz input (gout) y archivo de salida para exportar el resultado (output, vacio para solo visualizar)
+	wxString gout=mxFN::Join(config->temp_dir,"graph.dot"), output; // graph_viz input (gout) y archivo de salida para exportar el resultado (output, vacio para solo visualizar)
 	if (where_store->GetSelection()) {
 		wxString ext = where_store->GetValue().AfterLast(' ');
-		wxFileDialog dlg (this, LANG(DRAW_CLASSES_SAVE,"Guardar grafo"), project?DIR_PLUS_FILE(project->path,project->last_dir):config->Files.last_dir, " ", where_store->GetValue().AfterFirst(' ').AfterFirst(' ')+_T("|*.")+ext, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+		wxFileDialog dlg (this, LANG(DRAW_CLASSES_SAVE,"Guardar grafo"), project?mxFN::Join(project->path,project->last_dir):config->Files.last_dir, " ", where_store->GetValue().AfterFirst(' ').AfterFirst(' ')+_T("|*.")+ext, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 		if (dlg.ShowModal() != wxID_OK) return;
 		output=dlg.GetPath();
 	}
@@ -136,7 +136,7 @@ void mxDrawClasses::OnOkButton(wxCommandEvent &evt) {
 
 int mxDrawClasses::GenerateGraph(wxString file, bool one_class, bool related, bool indirect, bool inside, bool only_public, bool only_name) {
 	
-	wxTextFile fil(DIR_PLUS_FILE(config->temp_dir,_T("graph.dot")));
+	wxTextFile fil(mxFN::Join(config->temp_dir,_T("graph.dot")));
 	if (fil.Exists())
 		fil.Open();
 	else

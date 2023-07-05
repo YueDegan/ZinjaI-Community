@@ -604,7 +604,7 @@ wxString HelpManager::GetDoxyInfo(pd_class *aclass, wxString &desc) {
 	wxString key = aclass->name;
 	it = doxy_index.find(wxString("+class+")<<key);
 	if (it!=doxy_index.end()) {
-		wxTextFile fil(DIR_PLUS_FILE(project->path,DIR_PLUS_FILE(project->GetDoxygenConfiguration()->destdir,DIR_PLUS_FILE("html",it->second))));
+		wxTextFile fil(mxFN::Join(project->path,mxFN::Join(project->GetDoxygenConfiguration()->destdir,mxFN::Join("html",it->second))));
 		if (!fil.Exists()) return "";
 		fil.Open();
 		wxString str;
@@ -621,7 +621,7 @@ wxString HelpManager::GetDoxyInfo(pd_class *aclass, wxString &desc) {
 			} else if ( str.Contains("name=\"_details\"")||str.Contains("name=\"details\"")) on_desc=true;
 		}
 		fil.Close();
-		return DIR_PLUS_FILE_2(project->path,DIR_PLUS_FILE(project->GetDoxygenConfiguration()->destdir,_T("html")),it->second);
+		return mxFN::Join(project->path,mxFN::Join(project->GetDoxygenConfiguration()->destdir,_T("html")),it->second);
 	}
 	return "";	
 }
@@ -637,7 +637,7 @@ wxString HelpManager::GetDoxyInfo(pd_func *afunc, wxString &desc) {
 	while (it!=doxy_index.end()) {
 		wxString auxp = ParseDoxyText(it->second,desc);
 		if (auxp==args)
-			return DIR_PLUS_FILE_2(project->path,DIR_PLUS_FILE(project->GetDoxygenConfiguration()->destdir,_T("html")),it->second);
+			return mxFN::Join(project->path,mxFN::Join(project->GetDoxygenConfiguration()->destdir,_T("html")),it->second);
 		key<<"*";
 		it = doxy_index.find(key);
 	}
@@ -647,7 +647,7 @@ wxString HelpManager::GetDoxyInfo(pd_func *afunc, wxString &desc) {
 wxString HelpManager::ParseDoxyText(wxString link, wxString &desc) {
 	desc.Clear();
 //	cerr<<"FILE:  "<<link<<endl;
-	wxString file = DIR_PLUS_FILE(project->path,DIR_PLUS_FILE_2(project->GetDoxygenConfiguration()->destdir,_T("html"),link.BeforeLast('#')));
+	wxString file = mxFN::Join(project->path,mxFN::Join(project->GetDoxygenConfiguration()->destdir,_T("html"),link.BeforeLast('#')));
 	if (!file.Len()) return "";
 	if (!wxFileName(file).FileExists()) return "";
 	wxString anchor=link.AfterLast('#');

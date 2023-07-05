@@ -24,6 +24,7 @@ class mxShortcutsDialog : public wxDialog {
 	wxTextCtrl *filter;
 	wxTimer timer;
 public:
+	void SearchNow();
 	void OnTimer(wxTimerEvent &evt);
 	mxShortcutsDialog(wxWindow *parent);
 	void OnFilter(wxCommandEvent &evt);

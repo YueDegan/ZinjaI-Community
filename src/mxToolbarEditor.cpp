@@ -24,7 +24,7 @@ mxToolbarEditor::mxToolbarEditor(wxWindow *parent, int toolbar_id, wxString name
 {
 	
 	this->toolbar_id=toolbar_id;
-	ipre=DIR_PLUS_FILE(wxString()<<menu_data->GetToolbarIconSize(),"");
+	ipre=mxFN::Join(wxString()<<menu_data->GetToolbarIconSize(),"");
 	
 	count = 0;
 	

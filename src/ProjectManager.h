@@ -320,7 +320,7 @@ struct project_configuration {
 		exec_method=EMETHOD_REGULAR;
 		wait_for_key=WKEY_ALWAYS;
 		temp_folder=cname;
-		output_file=DIR_PLUS_FILE("${TEMP_DIR}",pname+_T(BINARY_EXTENSION));
+		output_file=mxFN::Join("${TEMP_DIR}",pname+_T(BINARY_EXTENSION));
 		compiling_extra="";
 		macros="";
 		headers_dirs="";
@@ -437,7 +437,7 @@ private:
 	bool FatherProjectIsUnknown() const { return m_inherited_from == "<unknown father>"; }
 	void Rename(const wxString &project_path, const wxString &new_relative_path) { 
 		m_relative_path = new_relative_path;
-		m_full_path = mxFilename::Normalize(DIR_PLUS_FILE(project_path,new_relative_path));
+		m_full_path = mxFN::Normalize( mxFN::Join(project_path,new_relative_path) );
 	}
 };
 

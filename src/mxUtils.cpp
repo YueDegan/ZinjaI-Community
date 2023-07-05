@@ -106,7 +106,7 @@ wxMenuItem *mxUT::AddItemToMenu(wxMenu *menu, const void *a_myMenuItem, const wx
 
 wxMenuItem *mxUT::AddItemToMenu(wxMenu *menu, wxWindowID id, const wxString &caption, const wxString &accel, const wxString &help, const wxString &filename, int where) {
 	wxMenuItem *item = new wxMenuItem(menu,id,accel.Len()?caption+"\t"+accel:caption,help);
-	wxString bmp_fname = DIR_PLUS_FILE(config->HighDPI()?"24":"16",filename);
+	wxString bmp_fname = mxFN::Join(config->HighDPI()?"24":"16",filename);
 	if (filename.Len() && bitmaps->HasBitmap(bmp_fname,true))
 		item->SetBitmap(bitmaps->GetBitmap(bmp_fname,true));
 	if (where==-1) menu->Append (item);
@@ -118,7 +118,7 @@ wxMenuItem *mxUT::AddItemToMenu(wxMenu *menu, wxWindowID id, const wxString &cap
 wxMenuItem *mxUT::AddSubMenuToMenu(wxMenu *menu, wxMenu *menu_h, const wxString &caption, const wxString &help, const wxString &filename) {
 	wxMenuItem *item = 	menu->AppendSubMenu(menu_h, caption, help);
 	// en windows, al menos con wx 2.8, si le pongo icono me cambia el tamaño de la fuente
-	wxString bmp_fname = DIR_PLUS_FILE(config->HighDPI()?"24":"16",filename);
+	wxString bmp_fname = mxFN::Join(config->HighDPI()?"24":"16",filename);
 	// el if_win32 es porque en win10 con hidpi al setear el icono el tamano de fuente se vuelve al "normal" (sin el zoom)
 	if (_if_win32(OSDep::GetDPI()<=96 &&,) filename.Len() && bitmaps->HasBitmap(bmp_fname,true))
 		item->SetBitmap(bitmaps->GetBitmap(bmp_fname,true));
@@ -132,7 +132,7 @@ wxMenuItem *mxUT::AddCheckToMenu(wxMenu *menu, wxWindowID id, const wxString &ca
 }
 
 void mxUT::AddTool(wxToolBar *toolbar, wxWindowID id, const wxString &caption, const wxString &filename, const wxString &status_text, wxItemKind kind) {
-	wxString full_filename=DIR_PLUS_FILE(config->Files.skin_dir,filename);
+	wxString full_filename=mxFN::Join(config->Files.skin_dir,filename);
 	if (wxFileName::FileExists(full_filename)) {
 		toolbar->AddTool(id, caption, wxBitmap(full_filename,wxBITMAP_TYPE_PNG),caption, kind);
 		toolbar->SetToolLongHelp(id,status_text);
@@ -224,7 +224,7 @@ bool mxUT::AreIncludesUpdated(wxDateTime bin_date, wxFileName filename, wxArrayS
 void mxUT::FindIncludes(wxString path, wxString filename, wxArrayString &already_processed, wxArrayString &header_dirs, bool recursive, bool use_cache) {
 	
 	if (!use_cache) ClearIncludesCache();
-	wxString fullname = DIR_PLUS_FILE_2(already_processed[0],path,filename);
+	wxString fullname = mxFN::Join(already_processed[0],path,filename);
 	bool was_on_cache = FindIncludes_cache.count(fullname);
 	wxArrayString results = FindIncludes_cache[fullname];
 	if (!was_on_cache) {
@@ -261,11 +261,9 @@ void mxUT::FindIncludes(wxString path, wxString filename, wxArrayString &already
 					this_one=line.Mid(ini,end);
 					// si el archivo existe
 					if (this_one.Len())
-						this_one=GetOnePath(DIR_PLUS_FILE(already_processed[0],path),project?project->path:DIR_PLUS_FILE(already_processed[0],path),this_one,header_dirs);
+						this_one=GetOnePath(mxFN::Join(already_processed[0],path),project?project->path:mxFN::Join(already_processed[0],path),this_one,header_dirs);
 					if (this_one.Len()) {
-						file_name=this_one;
-						file_name.Normalize(wxPATH_NORM_DOTS);
-						this_one=file_name.GetFullPath();
+						this_one = mxFN::Normalize(this_one);
 						results.Add(this_one);
 					}
 				}
@@ -388,13 +386,13 @@ bool mxUT::XCopy(wxString src,wxString dst, bool ask, bool replace) {
 	wxString spec;
 	bool cont = dir.GetFirst(&filename, spec , wxDIR_DIRS);
 	while ( cont ) {
-		if (!XCopy(DIR_PLUS_FILE(src,filename),DIR_PLUS_FILE(dst,filename),true))
+		if (!XCopy(mxFN::Join(src,filename),mxFN::Join(dst,filename),true))
 			return false;
 		cont = dir.GetNext(&filename);
 	}	
 	cont = dir.GetFirst(&filename, spec , wxDIR_FILES);
 	while ( cont ) {
-		wxString dest_file = DIR_PLUS_FILE(dst,filename);
+		wxString dest_file = mxFN::Join(dst,filename);
 		cont = (!ask&&replace)||!(wxFileName::FileExists(dest_file));
 		if (!cont && ask) { // si ya existe preguntar si hay que pisar
 			mxMessageDialog::mdAns ret = 
@@ -407,7 +405,7 @@ bool mxUT::XCopy(wxString src,wxString dst, bool ask, bool replace) {
 				replace=cont;
 			}
 		}  
-		if (cont && !wxCopyFile(DIR_PLUS_FILE(src,filename),dest_file))
+		if (cont && !wxCopyFile(mxFN::Join(src,filename),dest_file))
 			return false;
 		cont = dir.GetNext(&filename);
 	}
@@ -549,7 +547,7 @@ void mxUT::ParameterReplace(wxString &str, wxString from, wxString to, bool quot
 }
 
 //void mxUT::MakeDesktopIcon (wxString desk_dir) {
-//	wxTextFile fil(DIR_PLUS_FILE(desk_dir,_T("ZinjaI.desktop")));
+//	wxTextFile fil(mxFN::Join(desk_dir,_T("ZinjaI.desktop")));
 //	if (fil.Exists())
 //		fil.Open();
 //	else
@@ -559,24 +557,24 @@ void mxUT::ParameterReplace(wxString &str, wxString from, wxString to, bool quot
 //	fil.AddLine(_T("Comment=IDE for C++ programming"));
 //	fil.AddLine(_T("Comment[es]=IDE para programar en C++"));
 //	fil.AddLine(_T("Encoding=UTF-8"));
-//	fil.AddLine(wxString(_T("Icon="))<<DIR_PLUS_FILE(config->zinjai_dir,_T("imgs/zinjai-64x64.png")));
+//	fil.AddLine(wxString(_T("Icon="))<<mxFN::Join(config->zinjai_dir,_T("imgs/zinjai-64x64.png")));
 //	fil.AddLine(_T("Name=ZinjaI"));
 //	fil.AddLine(_T("Name[es]=ZinjaI"));
 //	fil.AddLine(_T("Type=Link"));
-//	fil.AddLine(wxString(_T("URL="))<<DIR_PLUS_FILE(config->zinjai_dir,_T("zinjai")));
+//	fil.AddLine(wxString(_T("URL="))<<mxFN::Join(config->zinjai_dir,_T("zinjai")));
 //	fil.Write();
 //	fil.Close();
 // }
 
 
 wxString mxUT::GetOnePath(wxString orig_path, wxString project_path, wxString fname, wxArrayString &header_dirs) {
-	wxString theone(DIR_PLUS_FILE(orig_path,fname));
+	wxString theone(mxFN::Join(orig_path,fname));
 	if (wxFileName::FileExists(theone))
 		return theone;
 	if (header_dirs.GetCount()) {
 		unsigned int hi=0;
 		do {
-			theone = DIR_PLUS_FILE_2(project_path,header_dirs[hi++],fname);
+			theone = mxFN::Join(project_path,header_dirs[hi++],fname);
 			if (wxFileName::FileExists(theone))
 				return theone;
 		} while (hi<header_dirs.GetCount());
@@ -994,22 +992,22 @@ int mxUT::Unique (wxArrayString &array, bool do_sort) {
 }
 
 wxString mxUT::WichOne(wxString file, wxString dir_name, bool is_file) {
-	return WichOne(file,DIR_PLUS_FILE(config->config_dir,dir_name),DIR_PLUS_FILE(config->zinjai_dir,dir_name),is_file);
+	return WichOne(file,mxFN::Join(config->config_dir,dir_name),mxFN::Join(config->zinjai_dir,dir_name),is_file);
 }
 
 wxString mxUT::WichOne(wxString file, wxString path1, wxString path2, bool is_file) {
-	wxString res=DIR_PLUS_FILE(path1,file);
+	wxString res=mxFN::Join(path1,file);
 	if (is_file) { if (wxFileExists(res)) return res; }
 	else { if (wxDirExists(res)) return res; }
-	res=DIR_PLUS_FILE(path2,file);
+	res=mxFN::Join(path2,file);
 	if (is_file) { if (wxFileExists(res)) return res; }
 	else { if (wxDirExists(res)) return res; }
 	return "";
 }
 
 void mxUT::GetFilesFromBothDirs (wxArrayString & array, wxString dir_name, bool is_file, wxString extra_element) {
-	GetFilesFromDir(array,DIR_PLUS_FILE(config->zinjai_dir,dir_name),is_file);
-	GetFilesFromDir(array,DIR_PLUS_FILE(config->config_dir,dir_name),is_file);
+	GetFilesFromDir(array,mxFN::Join(config->zinjai_dir,dir_name),is_file);
+	GetFilesFromDir(array,mxFN::Join(config->config_dir,dir_name),is_file);
 	mxUT::Unique(array,true);
 	if (extra_element.Len()) array.Add(extra_element);
 }
@@ -1053,9 +1051,9 @@ void mxUT::ProcessGraph (wxString graph_file, bool use_fdp, wxString output, wxS
 	bool show=!output.Len(), as_image=!config->Files.xdot_command.Len();
 	if (show) {
 		if (as_image)
-			output=DIR_PLUS_FILE(config->temp_dir,"temp.png");
+			output=mxFN::Join(config->temp_dir,"temp.png");
 		else
-			output=DIR_PLUS_FILE(config->temp_dir,"temp.xdot");
+			output=mxFN::Join(config->temp_dir,"temp.xdot");
 	}
 	wxString format=output.AfterLast('.').Lower(); if (!format.Len()) return;
 	wxString command =(use_fdp?"fdp":"dot");
@@ -1215,3 +1213,4 @@ wxColour mxUT::mix_colors(wxColour cback, wxColour cfore, float u) {
 					 (unsigned char)((1-u)*cback.Green()+ u*cfore.Green()),
 					  (unsigned char)((1-u)*cback.Blue() + u*cfore.Blue() ) );
 }
+

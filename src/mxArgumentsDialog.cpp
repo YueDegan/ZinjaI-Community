@@ -85,7 +85,7 @@ void mxArgumentsDialog::OnCancelButton(wxCommandEvent &evt) {
 }
 
 void mxArgumentsDialog::OnArgsButton(wxCommandEvent &evt) {
-	wxString base_path = DIR_PLUS_FILE(project
+	wxString base_path = mxFN::Join(project
 									   ? project->GetPath()
 									   : main_window->GetCurrentSource()->GetPath(true)
 									  ,combo_work->GetValue());

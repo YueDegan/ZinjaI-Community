@@ -94,7 +94,7 @@ mxTipsWindow::mxTipsWindow(wxWindow* parent, wxWindowID id, const wxPoint& pos, 
 	wxBoxSizer *bottomSizer = new wxBoxSizer(wxHORIZONTAL);
 	tooltip = new wxHtmlWindow(this, wxID_ANY, wxDefaultPosition, wxSize(300,175));
 	
-	wxString tips_file=DIR_PLUS_FILE(config->Help.guihelp_dir,wxString("tips_")<<config->Init.language_file);
+	wxString tips_file=mxFN::Join(config->Help.guihelp_dir,wxString("tips_")<<config->Init.language_file);
 	if (wxFileName::FileExists(tips_file)) file.Open(tips_file);
 
 	if (file.IsOpened())	

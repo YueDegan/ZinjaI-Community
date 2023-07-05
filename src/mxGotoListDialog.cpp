@@ -122,8 +122,7 @@ void mxGotoListDialog::OnCharHook (wxKeyEvent &event) {
 
 void mxGotoListDialog::OnCaseCheck(wxCommandEvent &event) {
 	if (timer) timer->Stop();
-	wxTimerEvent evt;
-	OnTimerInput(evt);
+	SearchNow();
 	text_ctrl->SetFocus();
 }
 
@@ -150,8 +149,7 @@ void mxGotoListDialog::GotoNow() {
 	// update results if needed
 	if (timer && timer->IsRunning()) {
 		timer->Stop();
-		wxTimerEvent evt;
-		OnTimerInput(evt);
+		SearchNow();
 	}
 	if (list_ctrl->IsEmpty()) return;
 	OnGoto(list_ctrl->GetSelection(), list_ctrl->GetString(list_ctrl->GetSelection()));

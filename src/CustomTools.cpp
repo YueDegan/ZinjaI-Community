@@ -108,12 +108,12 @@ mxCustomToolProcess::mxCustomToolProcess(const OneCustomTool &_tool) : tool(_too
 		args=src->exec_args;
 	}
 	if (project) {
-		temp_dir=DIR_PLUS_FILE(project->path,project->active_configuration->temp_folder);
+		temp_dir=mxFN::Join(project->path,project->active_configuration->temp_folder);
 		project_path = project->path;
 		project_bin = project->active_configuration->output_file;
 		project_bin.Replace("${TEMP_DIR}",temp_dir);
-		project_bin = DIR_PLUS_FILE(project->path,project_bin);
-		bin_workdir=DIR_PLUS_FILE(project->path,project->active_configuration->working_folder);
+		project_bin = mxFN::Join(project->path,project_bin);
+		bin_workdir=mxFN::Join(project->path,project->active_configuration->working_folder);
 		args=project->active_configuration->args;
 	}
 	if (bin_workdir.EndsWith("\\")||bin_workdir.EndsWith("/")) bin_workdir.RemoveLast();

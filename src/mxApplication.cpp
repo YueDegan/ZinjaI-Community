@@ -102,14 +102,14 @@ bool mxApplication::OnInit() {
 	wxString zpath(f_zpath.GetPathWithSep());
 	bool flag=false;
 	if (f_zpath!=f_path) {
-		if ( ( flag = wxFileName::FileExists(DIR_PLUS_FILE(zpath,"zinjai.dir")) ) ) {
+		if ( ( flag = wxFileName::FileExists(mxFN::Join(zpath,"zinjai.dir")) ) ) {
 			wxSetWorkingDirectory(zpath);
-		} else if ( ( flag = wxFileName::FileExists(DIR_PLUS_FILE(zpath,"../zinjai.dir")) ) ) {
-			zpath = DIR_PLUS_FILE(zpath,"../");
+		} else if ( ( flag = wxFileName::FileExists(mxFN::Join(zpath,"../zinjai.dir")) ) ) {
+			zpath = mxFN::Join(zpath,"../");
 			wxSetWorkingDirectory(zpath);
 #ifdef __APPLE__
-		} else if ( ( flag = wxFileName::FileExists(DIR_PLUS_FILE(zpath,"../Resources/zinjai.dir")) ) )  {
-			zpath = DIR_PLUS_FILE(zpath,"../Resources");
+		} else if ( ( flag = wxFileName::FileExists(mxFN::Join(zpath,"../Resources/zinjai.dir")) ) )  {
+			zpath = mxFN::Join(zpath,"../Resources");
 			wxSetWorkingDirectory(zpath);
 #endif
 		} else zpath = cmd_path;
@@ -262,11 +262,11 @@ bool mxApplication::InitSingleton(const wxString &cmd_path, bool allow_singleton
 			continue; 
 		}
 		if (name.AfterLast('.').Lower()!=PROJECT_EXT) {
-			bool opened = g_singleton->RemoteOpen(DIR_PLUS_FILE(cmd_path,name));
+			bool opened = g_singleton->RemoteOpen(mxFN::Join(cmd_path,name));
 			int ret=0;
 			while (!opened && ret<2) { // dos reintentos, por si estaba muy ocupado
 				wxMilliSleep(10*rand()%50); // delay aleatorio tipo ethernet
-				opened = g_singleton->RemoteOpen(DIR_PLUS_FILE(cmd_path,name));
+				opened = g_singleton->RemoteOpen(mxFN::Join(cmd_path,name));
 				ret++;
 			}
 			if (opened) argv[i][0]='\0';
@@ -284,8 +284,8 @@ void mxApplication::ShowSplash ( ) {
 			argv[i][0]='\0';
 			no_splash=true;
 		}
-	if (!no_splash && wxFileName(DIR_PLUS_FILE("imgs",SPLASH_FILE)).FileExists()) 
-		g_splash = new mxSplashScreen(DIR_PLUS_FILE("imgs",SPLASH_FILE));
+	if (!no_splash && wxFileName(mxFN::Join("imgs",SPLASH_FILE)).FileExists()) 
+		g_splash = new mxSplashScreen(mxFN::Join("imgs",SPLASH_FILE));
 }
 
 void mxApplication::LoadFilesOrWelcomePanel(const wxString &cmd_path) {
@@ -323,7 +323,7 @@ void mxApplication::LoadFilesOrWelcomePanel(const wxString &cmd_path) {
 //			} else if (wxString(argv[i])==".") {
 //				main_window->ShowExplorerTreePanel();
 			} else if (!argi.IsEmpty()) {
-				main_window->OpenFileFromGui(wxFileName(DIR_PLUS_FILE(cmd_path,argv[i])).GetLongPath());
+				main_window->OpenFileFromGui(wxFileName(mxFN::Join(cmd_path,argv[i])).GetLongPath());
 			}
 		}
 		if (!project && main_window->notebook_sources->GetPageCount()==0 && config->Init.show_welcome) {

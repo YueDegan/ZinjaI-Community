@@ -23,7 +23,7 @@ mxReferenceWindow::mxReferenceWindow(wxString page):mxGenericHelpWindow(LANG(CPP
 		search_text->SetValue("error: index file not found - search disabled");
 		search_text->Enable(false);
 	}
-	LoadHelp(DIR_PLUS_FILE(config->Help.cppreference_dir,_index));
+	LoadHelp(mxFN::Join(config->Help.cppreference_dir,_index));
 	Show();
 }
 
@@ -33,7 +33,7 @@ mxReferenceWindow::~mxReferenceWindow() {
 
 void mxReferenceWindow::ShowPage(wxString page) {
 	if (page=="") page=_index;
-	page=DIR_PLUS_FILE(config->Help.cppreference_dir,page);
+	page=mxFN::Join(config->Help.cppreference_dir,page);
 	if (instance) {
 		if (!instance->PopulateInitialTree()) return;
 		if (!instance->IsShown()) instance->Show(); 
@@ -66,7 +66,7 @@ void mxReferenceWindow::LoadHelp (wxString fname, bool update_history) {
 }
 
 void mxReferenceWindow::ShowIndex ( ) {
-	LoadHelp(DIR_PLUS_FILE(config->Help.cppreference_dir,_index));
+	LoadHelp(mxFN::Join(config->Help.cppreference_dir,_index));
 }
 
 void mxReferenceWindow::OnSearch (wxString value) {
@@ -124,14 +124,14 @@ bool mxReferenceWindow::OnLink (wxString href) {
 		mxUT::OpenInBrowser(href);
 	} else if (href.StartsWith("file:")) {
 		wxString fname = fix_filename(href.Mid(5));
-		mxUT::OpenInBrowser(DIR_PLUS_FILE(current_path,fname));
+		mxUT::OpenInBrowser(mxFN::Join(current_path,fname));
 	} else if (href[0]=='#') {
 		html->ScrollToAnchor(href.AfterFirst('#'));
 	} else if (href.Contains("#")) {
-		LoadHelp(DIR_PLUS_FILE(current_path,href.BeforeFirst('#')));
+		LoadHelp(mxFN::Join(current_path,href.BeforeFirst('#')));
 		html->ScrollToAnchor(href.AfterFirst('#'));
 	} else {
-		LoadHelp(DIR_PLUS_FILE(current_path,fix_filename(href)));
+		LoadHelp(mxFN::Join(current_path,fix_filename(href)));
 	}
 	return true;
 }
@@ -261,7 +261,7 @@ bool mxReferenceWindow::LoadSearchIndex ( ) {
 	if (search_index.size()) return true; // already loaded
 	
 	// index tree
-	wxTextFile findex(DIR_PLUS_FILE(config->Help.cppreference_dir,"zinjai_index"));
+	wxTextFile findex(mxFN::Join(config->Help.cppreference_dir,"zinjai_index"));
 	if (!findex.Exists()) return false;
 	findex.Open();
 	for ( wxString str = findex.GetFirstLine(); !findex.Eof(); str = findex.GetNextLine() ) {
@@ -272,7 +272,7 @@ bool mxReferenceWindow::LoadSearchIndex ( ) {
 	findex.Close();
 	
 	// reference's version
-	wxTextFile fver(DIR_PLUS_FILE(config->Help.cppreference_dir,"version"));
+	wxTextFile fver(mxFN::Join(config->Help.cppreference_dir,"version"));
 	if (fver.Exists()) { fver.Open(); m_doc_version = fver.GetFirstLine(); fver.Close(); }
 	
 	return true;
@@ -281,7 +281,7 @@ bool mxReferenceWindow::LoadSearchIndex ( ) {
 bool mxReferenceWindow::PopulateInitialTree ( ) {
 	static bool index_loaded=false;
 	if (index_loaded) return true;
-	wxTextFile fil(DIR_PLUS_FILE(config->Help.cppreference_dir,_index));
+	wxTextFile fil(mxFN::Join(config->Help.cppreference_dir,_index));
 	if (!fil.Exists()) {
 		mxMessageDialog::mdAns res = 
 			mxMessageDialog(main_window,LANG(CPPREF_NOT_FOUND,""

@@ -272,18 +272,18 @@ public:
 	wxString GetDefaultCompilerOptions(bool for_cpp) { return for_cpp?Running.cpp_compiler_options:Running.c_compiler_options; }
 	
 	// funciones para consultar directorios comunes
-	wxString GetZinjaiBinDir() const { return DIR_PLUS_FILE(zinjai_dir,"bin"); }
-	wxString GetZinjaiBinPath(const wxString &append_filename) const { return DIR_PLUS_FILE_2(zinjai_dir,"bin",append_filename); }
-	wxString GetZinjaiComplementsDir() const { return DIR_PLUS_FILE(zinjai_dir,"complements"); }
-	wxString GetZinjaiComplementsPath(const wxString &append_filename) const { return DIR_PLUS_FILE_2(zinjai_dir,"complements",append_filename); }
-	wxString GetZinjaiThirdDir() const { return DIR_PLUS_FILE(zinjai_dir,"third"); }
-	wxString GetZinjaiThirdPath(const wxString &append_filename) const { return DIR_PLUS_FILE_2(zinjai_dir,"third",append_filename); }
-	wxString GetZinjaiSamplesDir() const { return DIR_PLUS_FILE(zinjai_dir,"samples"); }
-	wxString GetZinjaiSamplesPath(const wxString &append_filename) const { return DIR_PLUS_FILE_2(zinjai_dir,"samples",append_filename); }
+	wxString GetZinjaiBinDir() const { return mxFN::Join(zinjai_dir,"bin"); }
+	wxString GetZinjaiBinPath(const wxString &append_filename) const { return mxFN::Join(zinjai_dir,"bin",append_filename); }
+	wxString GetZinjaiComplementsDir() const { return mxFN::Join(zinjai_dir,"complements"); }
+	wxString GetZinjaiComplementsPath(const wxString &append_filename) const { return mxFN::Join(zinjai_dir,"complements",append_filename); }
+	wxString GetZinjaiThirdDir() const { return mxFN::Join(zinjai_dir,"third"); }
+	wxString GetZinjaiThirdPath(const wxString &append_filename) const { return mxFN::Join(zinjai_dir,"third",append_filename); }
+	wxString GetZinjaiSamplesDir() const { return mxFN::Join(zinjai_dir,"samples"); }
+	wxString GetZinjaiSamplesPath(const wxString &append_filename) const { return mxFN::Join(zinjai_dir,"samples",append_filename); }
 	wxString GetUserTempDir() const { return temp_dir; }
-	wxString GetUserTempPath(const wxString &append_filename) const { return DIR_PLUS_FILE(temp_dir,append_filename); }
+	wxString GetUserTempPath(const wxString &append_filename) const { return mxFN::Join(temp_dir,append_filename); }
 	wxString GetUserConfigDir() const { return config_dir; }
-	wxString GetUserConfigPath(const wxString &append_filename) const { return DIR_PLUS_FILE(config_dir,append_filename); }
+	wxString GetUserConfigPath(const wxString &append_filename) const { return mxFN::Join(config_dir,append_filename); }
 
 	int GetDPI() const;
 	bool HighDPI() const;

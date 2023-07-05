@@ -123,7 +123,7 @@ wxPanel *mxProjectConfigWindow::CreateQuickHelpPanel (wxNotebook *notebook) {
 	wxPanel *panel = new wxPanel(notebook, wxID_ANY );
 	wxHtmlWindow *html = new wxHtmlWindow(panel,wxID_ANY);
 	sizer->Add(html,sizers->Exp1);
-	html->LoadFile(DIR_PLUS_FILE(config->Help.guihelp_dir,wxString("proy_help_")<<config->Init.language_file<<".html"));
+	html->LoadFile(mxFN::Join(config->Help.guihelp_dir,wxString("proy_help_")<<config->Init.language_file<<".html"));
 	panel->SetSizerAndFit(sizer);
 	return panel;	
 }
@@ -322,23 +322,23 @@ void mxProjectConfigWindow::OnClose(wxCloseEvent &event){
 }
 
 void mxProjectConfigWindow::OnIconDirButton(wxCommandEvent &event){
-	wxFileDialog dlg(this,"Icono:",DIR_PLUS_FILE(project->path,linking_icon->GetValue()));
+	wxFileDialog dlg(this,"Icono:",mxFN::Join(project->path,linking_icon->GetValue()));
 	dlg.SetWildcard("Iconos|*.ico;*.ICO");
 	if (wxID_OK==dlg.ShowModal()) 
-		linking_icon->SetValue(mxFilename::Relativize(dlg.GetPath(),project->path));
+		linking_icon->SetValue(mxFN::MakeRelative(dlg.GetPath(),project->path));
 }
 
 void mxProjectConfigWindow::OnManifestDirButton(wxCommandEvent &event){
-	wxFileDialog dlg(this,"Manifest:",DIR_PLUS_FILE(project->path,linking_manifest->GetValue()));
+	wxFileDialog dlg(this,"Manifest:",mxFN::Join(project->path,linking_manifest->GetValue()));
 	dlg.SetWildcard("XMLs|*.xml;*.XML");
 	if (wxID_OK==dlg.ShowModal()) 
-		linking_manifest->SetValue(mxFilename::Relativize(dlg.GetPath(),project->path));
+		linking_manifest->SetValue(mxFN::MakeRelative(dlg.GetPath(),project->path));
 }
 
 void mxProjectConfigWindow::OnTempDirButton(wxCommandEvent &event){
-	wxDirDialog dlg(this,"Carpeta para archivos temporales e intermedios:",DIR_PLUS_FILE(project->path,compiling_temp_folder->GetValue()));
+	wxDirDialog dlg(this,"Carpeta para archivos temporales e intermedios:",mxFN::Join(project->path,compiling_temp_folder->GetValue()));
 	if (wxID_OK==dlg.ShowModal())
-		compiling_temp_folder->SetValue(mxFilename::Relativize(dlg.GetPath(),project->path));
+		compiling_temp_folder->SetValue(mxFN::MakeRelative(dlg.GetPath(),project->path));
 }
 
 void mxProjectConfigWindow::OnEnvVarsButton(wxCommandEvent &event){
@@ -636,16 +636,16 @@ void mxProjectConfigWindow::OnLinkingLibrariesButton(wxCommandEvent &evt) {
 }
 
 void mxProjectConfigWindow::OnGeneralArgsButton(wxCommandEvent &evt) {
-	CommonPopup(general_args).CommaSplit(false).BasePath(DIR_PLUS_FILE(project->path,general_working_folder->GetValue()))
+	CommonPopup(general_args).CommaSplit(false).BasePath(mxFN::Join(project->path,general_working_folder->GetValue()))
 		.Caption( LANG(PROJECTCONFIG_GENERAL_RUNNING_ARGS,"Argumentos para la ejecución") )
 		.AddEditAsText().AddEditAsList().AddFilename().AddPath().Run(this);
 }
 
 void mxProjectConfigWindow::OnGeneralExePathButton(wxCommandEvent &evt) {
 	wxString sel = general_output_file->GetStringSelection();
-	wxFileDialog dlg(this,"Ubicacion del ejecutable:",DIR_PLUS_FILE(project->path,general_output_file->GetValue()));
+	wxFileDialog dlg(this,"Ubicacion del ejecutable:",mxFN::Join(project->path,general_output_file->GetValue()));
 	if (wxID_OK==dlg.ShowModal())
-		general_output_file->SetValue(mxFilename::Relativize(dlg.GetPath(),project->path));
+		general_output_file->SetValue(mxFN::MakeRelative(dlg.GetPath(),project->path));
 }
 
 wxPanel *mxProjectConfigWindow::CreateStepsPanel (wxNotebook *notebook) {

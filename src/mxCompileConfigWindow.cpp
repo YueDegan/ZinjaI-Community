@@ -99,7 +99,7 @@ void mxCompileConfigWindow::OnHelpButton(wxCommandEvent &evt) {
 void mxCompileConfigWindow::OnArgsButton(wxCommandEvent &evt) {
 	CommonPopup(args_ctrl)
 		.Caption( LANG(COMPILECONF_RUNNING_ARGS,"Argumentos para la ejecucion") )
-		.BasePath( DIR_PLUS_FILE(m_source->GetPath(true),working_folder_ctrl->GetValue()) )
+		.BasePath( mxFN::Join(m_source->GetPath(true),working_folder_ctrl->GetValue()) )
 		.AddEditAsText().AddEditAsList().AddFilename().AddPath().Run(this);
 }
 

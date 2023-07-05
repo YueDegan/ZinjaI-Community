@@ -24,7 +24,7 @@ static bool stHelperFunction1(wxWindow *parent, wxCtrl_t *text_ctrl, wxString re
 	wxString sel_value = orig_value.Mid(pbeg,pend-pbeg);
 	// use selection and relative_path to get a valid dir for openning the file picker in
 	wxString def_path, def_name, res;
-	stGetPathAndName(def_path,def_name,DIR_PLUS_FILE(relative_path,sel_value));
+	stGetPathAndName(def_path,def_name,mxFN::Join(relative_path,sel_value));
 	// show dialog, and after that return focus to the text control
 	if (file) {
 		wxFileDialog dlg(parent,message,def_path,def_name);
@@ -37,7 +37,7 @@ static bool stHelperFunction1(wxWindow *parent, wxCtrl_t *text_ctrl, wxString re
 	}
 	text_ctrl->SetFocus();
 	// build the new value, set it to the control, and fix selection
-	if (!relative_path.IsEmpty()) res = mxFilename::Relativize(res,relative_path);
+	if (!relative_path.IsEmpty()) res = mxFN::MakeRelative(res,relative_path);
 	if (add_comillas) res = mxUT::Quotize(res);
 	wxString new_value = orig_value.Mid(0,pbeg) + res + orig_value.Mid(pend);
 	text_ctrl->SetValue(new_value);

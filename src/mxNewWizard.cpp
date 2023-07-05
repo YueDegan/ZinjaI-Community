@@ -202,7 +202,7 @@ void mxNewWizard::OnProjectCreate() {
 			name=name.Mid(pos2+1);
 		}
 		if (folder.Len()) {
-			folder = DIR_PLUS_FILE(project->path,folder);
+			folder = mxFN::Join(project->path,folder);
 			if (!wxFileName::DirExists(folder)) {
 				mxMessageDialog::mdAns ans = mxMessageDialog(this,LANG1(NEWWIZARD_DIRECTORY_NOT_FOUND,""
 																		"El directorio \"<{1}>\" no existe. Desea crearlo?",folder))
@@ -237,8 +237,8 @@ void mxNewWizard::OnProjectCreate() {
 			return;
 		}
 		// controlar que no exista
-		wxString cpp_name = DIR_PLUS_FILE(project->path,(folder.Len()?DIR_PLUS_FILE(folder,name):name)+"."+project->default_fext_source);
-		wxString h_name = DIR_PLUS_FILE(project->path,(folder.Len()?DIR_PLUS_FILE(folder,name):name)+"."+project->default_fext_header);
+		wxString cpp_name = mxFN::Join(project->path,(folder.Len()?mxFN::Join(folder,name):name)+"."+project->default_fext_source);
+		wxString h_name = mxFN::Join(project->path,(folder.Len()?mxFN::Join(folder,name):name)+"."+project->default_fext_header);
 		if (wxFileName::FileExists(cpp_name)) {
 			mxMessageDialog(this,LANG(NEWWIZARD_FILE_EXISTS,"Ya existe un archivo con ese nombre")).Title(cpp_name).IconError().Run();
 			return;
@@ -431,7 +431,7 @@ void mxNewWizard::OnProjectCreate() {
 			onproject_name->SetFocus();
 			return;
 		}
-		wxFileName filename(DIR_PLUS_FILE(project->path,name));
+		wxFileName filename(mxFN::Join(project->path,name));
 		if (filename.GetExt()=="") {
 			if (sel==0)
 				filename.SetExt(project->default_fext_source);
@@ -511,7 +511,7 @@ void mxNewWizard::ProjectCreate() {
 		project_folder_path->SetFocus();
 		return;
 	}
-	wxString full=project_folder_create->GetValue()?DIR_PLUS_FILE(folder,filename):folder;
+	wxString full=project_folder_create->GetValue()?mxFN::Join(folder,filename):folder;
 	if (wxFileName::FileExists(full)) {
 		mxMessageDialog(this,LANG(NEWWIZARD_PROJECT_DIR_IS_FILE,"No se puede crear el proyecto porque ya existe un archivo con ese nombre en la ubicacion seleccionada. Elimine el archivo o modifique el nombre."))
 			.Title(LANG(GENERIC_ERROR,"Error")).IconError().Run();
@@ -519,7 +519,7 @@ void mxNewWizard::ProjectCreate() {
 		return;
 	}
 	if (wxFileName::DirExists(full)) {
-		if (wxFileName::FileExists(DIR_PLUS_FILE(full,filename+"."+_T(PROJECT_EXT)))) {
+		if (wxFileName::FileExists(mxFN::Join(full,filename+"."+_T(PROJECT_EXT)))) {
 			if ( mxMessageDialog(this,LANG(NEWWIZARD_CONFIRM_REPLACE,""
 										   "Ya existe un proyecto en esa ubicacion y con ese nombre.\n"
 										   "Desea reemplazarlo?"))
@@ -544,7 +544,7 @@ void mxNewWizard::ProjectCreate() {
 	bool custom_files = project_current_files->GetValue()||project_dir_files->GetValue();
 	if (cual<2) {
 		// crear el archivo de proyecto
-		wxTextFile project_file(DIR_PLUS_FILE(full,filename+"."+_T(PROJECT_EXT)));
+		wxTextFile project_file(mxFN::Join(full,filename+"."+_T(PROJECT_EXT)));
 		if (project_file.Exists())
 			project_file.Open();
 		else
@@ -561,7 +561,7 @@ void mxNewWizard::ProjectCreate() {
 			project_file.AddLine("cursor=78");
 			project_file.AddLine("open=true");
 			// crearlo en disco
-			wxString main_file=DIR_PLUS_FILE(full,"main.cpp");
+			wxString main_file=mxFN::Join(full,"main.cpp");
 			wxTextFile fil(main_file);
 			if (fil.Exists())
 				fil.Open();
@@ -588,8 +588,8 @@ void mxNewWizard::ProjectCreate() {
 		wxString ofull=mxUT::WichOne(project_templates[cual],"templates",false);
 		if (custom_files) { // si usa los archivos actuales, copiar solo el archivo de proyecto
 			wxString str;
-			wxTextFile fin(DIR_PLUS_FILE(ofull,project_templates[cual]+"."+_T(PROJECT_EXT))); fin.Open();
-			wxTextFile fout(DIR_PLUS_FILE(full,filename+"."+_T(PROJECT_EXT)));
+			wxTextFile fin(mxFN::Join(ofull,project_templates[cual]+"."+_T(PROJECT_EXT))); fin.Open();
+			wxTextFile fout(mxFN::Join(full,filename+"."+_T(PROJECT_EXT)));
 			if (fout.Exists()) fout.Open(); else fout.Create();
 			fout.Clear();
 			bool add=true;
@@ -611,7 +611,7 @@ void mxNewWizard::ProjectCreate() {
 					.Title(LANG(GENERIC_ERROR,"Error")).IconError().Run();
 				return;
 			}
-			wxRenameFile(DIR_PLUS_FILE(full,project_templates[cual]+"."+_T(PROJECT_EXT)),DIR_PLUS_FILE(full,filename+"."+_T(PROJECT_EXT)),true);
+			wxRenameFile(mxFN::Join(full,project_templates[cual]+"."+_T(PROJECT_EXT)),mxFN::Join(full,filename+"."+_T(PROJECT_EXT)),true);
 		}
 	}
 	
@@ -622,7 +622,7 @@ void mxNewWizard::ProjectCreate() {
 	}
 	Close();
 	int multiple=project_current_files->GetValue()?1024:0; // 1024 es valor especial para que no cierre los fuentes abiertos, 0 no significa nada en especial
-	main_window->OpenFileFromGui(DIR_PLUS_FILE(full,filename+"."+_T(PROJECT_EXT)),&multiple);
+	main_window->OpenFileFromGui(mxFN::Join(full,filename+"."+_T(PROJECT_EXT)),&multiple);
 	if (!project) return; // si por alguna razon no se abre el proyecto (puede el usuario cancelarlo, por alguna pregunta?)
 	project->FixTemplateData(filename);
 	// agregar los archivos abiertos si van
@@ -722,7 +722,7 @@ void mxNewWizard::CreatePanelStart() {
 		start_tooltip->Hide();
 		wxHtmlWindow *html = new wxHtmlWindow(panel_start,wxID_ANY);
 		sizer->Add(html,sizers->Exp1);
-		html->LoadFile(DIR_PLUS_FILE(config->Help.guihelp_dir,wxString("new_help_")<<config->Init.language_file<<(".html")));
+		html->LoadFile(mxFN::Join(config->Help.guihelp_dir,wxString("new_help_")<<config->Init.language_file<<(".html")));
 	}
 	
 	
@@ -908,7 +908,7 @@ void mxNewWizard::CreatePanelProject1() {
 	sizer->Add(project_name,sizers->Exp0);
 	
 	sizer->Add(new wxStaticText(panel_project_1,wxID_ANY,LANG(NEWWIZARD_PROJECT_PATH,"Ubicacion del Proyecto:"),wxDefaultPosition,wxDefaultSize),sizers->BT10_Exp0);
-	project_folder_path = new wxTextCtrl(panel_project_1,mxID_WIZARD_PROJECT_FOLDER_TEXT,DIR_PLUS_FILE(config->zinjai_dir,config->Files.project_folder),wxDefaultPosition,wxDefaultSize);
+	project_folder_path = new wxTextCtrl(panel_project_1,mxID_WIZARD_PROJECT_FOLDER_TEXT,mxFN::Join(config->zinjai_dir,config->Files.project_folder),wxDefaultPosition,wxDefaultSize);
 	wxButton *folders = new wxButton(panel_project_1,mxID_WIZARD_FOLDER,"...",wxDefaultPosition,wxSize(30,10));	
 	
 	wxString choices[4];
@@ -1002,7 +1002,7 @@ void mxNewWizard::RunWizard(wxString how) {
 }
 
 void mxNewWizard::OnButtonFolder(wxCommandEvent &event){
-	wxDirDialog dlg(this,LANG(NEWWIZARD_CHOOSE_PATH,"Seleccione la ubicacion:"),DIR_PLUS_FILE(config->zinjai_dir,project_folder_path->GetValue()));
+	wxDirDialog dlg(this,LANG(NEWWIZARD_CHOOSE_PATH,"Seleccione la ubicacion:"),mxFN::Join(config->zinjai_dir,project_folder_path->GetValue()));
 	if (wxID_OK==dlg.ShowModal()) {
 		project_folder_path->SetValue(dlg.GetPath());
 		project_folder_radio->SetSelection(3);
@@ -1032,7 +1032,7 @@ void mxNewWizard::OnProjectPathRadio(wxCommandEvent &event){
 	switch (project_folder_radio->GetSelection()) {
 	case 0:
 		project_folder_create->SetValue(true);
-		project_folder_path->SetValue(DIR_PLUS_FILE(config->zinjai_dir,config->Files.project_folder));
+		project_folder_path->SetValue(mxFN::Join(config->zinjai_dir,config->Files.project_folder));
 		break;
 	case 1:
 		project_folder_create->SetValue(false);
@@ -1077,13 +1077,13 @@ void mxNewWizard::OnProjectNameChange(wxCommandEvent &evt) {
 void mxNewWizard::UpdateProjectFullPath() {
 	if (!project_full_path) return;
 	if (project_folder_create->GetValue())
-		project_full_path->SetValue(wxString(LANG(NEWWIZARD_FINAL_PATH,"Destino final: "))<<DIR_PLUS_FILE_2(project_folder_path->GetValue(),project_name->GetValue(),project_name->GetValue())+"."+_T(PROJECT_EXT));
+		project_full_path->SetValue(wxString(LANG(NEWWIZARD_FINAL_PATH,"Destino final: "))<<mxFN::Join(project_folder_path->GetValue(),project_name->GetValue(),project_name->GetValue())+"."+_T(PROJECT_EXT));
 	else
-		project_full_path->SetValue(wxString(LANG(NEWWIZARD_FINAL_PATH,"Destino final: "))<<DIR_PLUS_FILE(project_folder_path->GetValue(),project_name->GetValue())+"."+_T(PROJECT_EXT));	
+		project_full_path->SetValue(wxString(LANG(NEWWIZARD_FINAL_PATH,"Destino final: "))<<mxFN::Join(project_folder_path->GetValue(),project_name->GetValue())+"."+_T(PROJECT_EXT));	
 }
 
 void mxNewWizard::OnButtonNewFilePath(wxCommandEvent &evt) {
-	wxFileName fname(DIR_PLUS_FILE(project->path,onproject_name->GetValue()));
+	wxFileName fname(mxFN::Join(project->path,onproject_name->GetValue()));
 	wxFileDialog dlg(this, LANG(NEWWIZARD_CREATE_FILE,"Crear Archivo"), fname.GetPath(), fname.GetFullName(), wxString(LANG(WILDCARD_ANY,"Todos los archivos"))<<"|*", wxFD_SAVE);
 	switch (onproject_radio->GetSelection()) {
 	case 0:
@@ -1125,7 +1125,7 @@ int mxNewWizard::GetProjectTemplates (wxArrayString &dirs, wxArrayString & names
 	for(unsigned int i=osize;i<dirs.GetCount();i++) {
 		wxString name = dirs[i];
 		wxString full = mxUT::WichOne(name,"templates",false);
-		wxString zpr = DIR_PLUS_FILE(full,name+DOT_PROJECT_EXT);
+		wxString zpr = mxFN::Join(full,name+DOT_PROJECT_EXT);
 		wxTextFile file(zpr);
 		if (file.Open()) {
 			for (wxString line=file.GetFirstLine();!file.Eof();line=file.GetNextLine()) {

@@ -93,13 +93,13 @@ void mxDiffWindow::OnOkButton(wxCommandEvent &evt) {
 }
 
 void mxDiffWindow::DiffSourceFile(mxSource *src, wxString fname) {
-	src->SaveTemp(DIR_PLUS_FILE(config->temp_dir,"fordiff"));
+	src->SaveTemp(mxFN::Join(config->temp_dir,"fordiff"));
 	wxString command( _if_win32( config->GetZinjaiThirdPath("gnuwin32\\bin\\diff.exe") , "diff" ) );
 	command << " ";
 	if (ignore_empty_lines->GetValue()) command<<"-B ";
 	if (ignore_spaces->GetValue()) command<<"-E -b ";
 	if (ignore_case->GetValue()) command<<"-i ";
-	command<<DIR_PLUS_FILE(config->temp_dir,"fordiff");
+	command<<mxFN::Join(config->temp_dir,"fordiff");
 	command<<" "<<fname;
 	src->MarkDiffs(0,src->GetLineCount()-1,mxSTC_MARK_DIFF_NONE);
 	wxArrayString output;
@@ -159,14 +159,14 @@ void mxDiffWindow::DiffSourceFile(mxSource *src, wxString fname) {
 }
 
 void mxDiffWindow::DiffTwoSources(mxSource *src1, mxSource *src2) {
-	src1->SaveTemp(DIR_PLUS_FILE(config->temp_dir,"fordiff1"));
-	src2->SaveTemp(DIR_PLUS_FILE(config->temp_dir,"fordiff2"));
+	src1->SaveTemp(mxFN::Join(config->temp_dir,"fordiff1"));
+	src2->SaveTemp(mxFN::Join(config->temp_dir,"fordiff2"));
 	wxString command("diff --strip-trailing-cr ");
 	if (ignore_empty_lines->GetValue()) command<<"-B ";
 	if (ignore_spaces->GetValue()) command<<"-E -b ";
 	if (ignore_case->GetValue()) command<<"-i ";
-	command<<"\""<<DIR_PLUS_FILE(config->temp_dir,"fordiff1\"");
-	command<<" \""<<DIR_PLUS_FILE(config->temp_dir,"fordiff2\"");
+	command<<"\""<<mxFN::Join(config->temp_dir,"fordiff1\"");
+	command<<" \""<<mxFN::Join(config->temp_dir,"fordiff2\"");
 	src1->MarkDiffs(0,src1->GetLineCount()-1,mxSTC_MARK_DIFF_NONE);
 	src2->MarkDiffs(0,src2->GetLineCount()-1,mxSTC_MARK_DIFF_NONE);
 	wxArrayString output;

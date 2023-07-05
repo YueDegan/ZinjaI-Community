@@ -46,7 +46,7 @@ mxAboutWindow::mxAboutWindow(wxWindow* parent) : wxDialog(parent, wxID_ANY, LANG
 		,sizers->Exp1);
 	mySizer->Add(bottomSizer,sizers->Exp0);
 	SetSizerAndFit(mySizer);
-	html->LoadPage(DIR_PLUS_FILE(config->Help.guihelp_dir,wxString("about_")<<config->Init.language_file<<".html"));
+	html->LoadPage(mxFN::Join(config->Help.guihelp_dir,wxString("about_")<<config->Init.language_file<<".html"));
 	ShowModal();
 
 }

@@ -115,7 +115,7 @@ void er_sigsev(int sig) {
 		project->filename<<_T(".kaboom");
 		project->Save();
 		ofstream zpr((g_er_dir+"kboom.zpr").c_str());
-		zpr<<DIR_PLUS_FILE(project->path,pfile)<<endl;
+		zpr<<mxFN::Join(project->path,pfile)<<endl;
 		zpr<<pfile<<endl;
 		zpr.close();
 	}

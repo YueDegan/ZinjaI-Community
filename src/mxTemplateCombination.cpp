@@ -260,7 +260,7 @@ void mxTemplateCombination::Run (wxWindow * parent) {
 		zpr_path = dlg.GetPath();
 	} else {
 		wxString fname = dirs[names.Index(choice)];
-		zpr_path = DIR_PLUS_FILE( mxUT::WichOne(fname,"templates",false), fname+DOT_PROJECT_EXT );
+		zpr_path = mxFN::Join( mxUT::WichOne(fname,"templates",false), fname+DOT_PROJECT_EXT );
 	}
 	( new mxTemplateCombination(parent,zpr_path) )->ShowModal();
 }

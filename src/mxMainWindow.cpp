@@ -799,7 +799,7 @@ void mxMainWindow::OnProjectTreeOpenAll(wxCommandEvent &event) {
 }
 
 void mxMainWindow::OnProjectTreeRename(wxCommandEvent &event) {
-	wxFileName fn(DIR_PLUS_FILE(project->path,project->GetNameFromItem(project_tree.selected_item,true)));
+	wxFileName fn(mxFN::Join(project->path,project->GetNameFromItem(project_tree.selected_item,true)));
 	wxFileDialog dlg (this, "Renombrar",fn.GetPath(),fn.GetFullName(), "Any file (*)|*", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 	dlg.SetDirectory(fn.GetPath());
 	dlg.SetWildcard("Todos los archivos|" WILDCARD_ALL "|Archivos de C/C++|" WILDCARD_CPP "|Fuentes|" WILDCARD_SOURCE "|Cabeceras|" WILDCARD_HEADER);
@@ -1151,18 +1151,18 @@ void mxMainWindow::OnSelectError (wxTreeEvent &event) {
 	// ver si es alguno de los mensajes de zinjai
 	wxString item_text=(compiler_tree.treeCtrl->GetItemText(event.GetItem()));
 	if (item_text==LANG(MAINW_WARNING_NO_EXCUTABLE_PERMISSION,"El binario no tiene permisos de ejecución.")) {
-		LoadInQuickHelpPanel(DIR_PLUS_FILE(config->Help.guihelp_dir,"zerror_noexecperm.html"),false); return;
+		LoadInQuickHelpPanel(mxFN::Join(config->Help.guihelp_dir,"zerror_noexecperm.html"),false); return;
 	} else if (item_text.EndsWith(LANG(PROJMNGR_FUTURE_SOURCE_POST," tenia fecha de modificación en el futuro. Se reemplazo por la fecha actual."))) {
-		LoadInQuickHelpPanel(DIR_PLUS_FILE(config->Help.guihelp_dir,"zerror_futuretimestamp.html"),false); return;
+		LoadInQuickHelpPanel(mxFN::Join(config->Help.guihelp_dir,"zerror_futuretimestamp.html"),false); return;
 	} else if (item_text==LANG(PROJMNGR_MANIFEST_NOT_FOUND,"No se ha encontrado el archivo manifest.xml.")) {
-		LoadInQuickHelpPanel(DIR_PLUS_FILE(config->Help.guihelp_dir,"zerror_missingiconmanifest.html"),false); return;
+		LoadInQuickHelpPanel(mxFN::Join(config->Help.guihelp_dir,"zerror_missingiconmanifest.html"),false); return;
 	} else if (project && item_text.StartsWith(LANG(MAINW_COMPILATION_CUSTOM_STEP_ERROR,"Error al ejecutar paso de compilación personalizado: "))) {
 		int n = wxString(LANG(MAINW_COMPILATION_CUSTOM_STEP_ERROR,"Error al ejecutar paso de compilación personalizado: ")).Len();
 		wxString custom_step_name = item_text.Mid(n); 
 		mxProjectConfigWindow *pwin = new mxProjectConfigWindow(this);
 		pwin->SelectCustomStep(custom_step_name);
 	} else if (item_text.StartsWith(EN_COMPOUT_EXE_RUNNING_PRE) && item_text.StartsWith(EN_COMPOUT_EXE_RUNNING_POST)) {
-		LoadInQuickHelpPanel(DIR_PLUS_FILE(config->Help.guihelp_dir,"zerror_cannotopenoutputfile.html"),false); return;
+		LoadInQuickHelpPanel(mxFN::Join(config->Help.guihelp_dir,"zerror_cannotopenoutputfile.html"),false); return;
 	} else if (item_text.Contains(EN_COMPOUT_FILE_NOT_RECOGNIZED)) {
 		wxString obj_name = item_text.Mid(0,item_text.Find(EN_COMPOUT_FILE_NOT_RECOGNIZED)+2);
 		if (obj_name.Contains("ld: ")) obj_name = obj_name.AfterFirst(' ');
@@ -1231,7 +1231,7 @@ void mxMainWindow::OnFileOpenSelected(wxCommandEvent &event){
 		}
 		wxString fname=source->GetTextRange(p1,p2);
 		if (source->GetStyleAt(p1-1)==wxSTC_C_STRING) fname.Replace("\\\\","\\");
-		wxFileName the_one (DIR_PLUS_FILE(base_path,fname));
+		wxFileName the_one (mxFN::Join(base_path,fname));
 		if (wxFileName::FileExists(the_one.GetFullPath()))
 			OpenFile(the_one.GetFullPath());
 		else 
@@ -1700,7 +1700,7 @@ void mxMainWindow::OnProcessTerminate (wxProcessEvent& event) {
 		compiler->ParseCompilerOutput(compile_and_run,event.GetExitCode()==0);
 	} else { // si termino la ejecucion
 		SetCompilingStatus(LANG(MAINW_STATUS_RUN_FINISHED,"Ejecución Finalizada"));
-		if (compile_and_run->valgrind_cmd.Len()) ShowValgrindPanel(mxVO_VALGRIND,DIR_PLUS_FILE(config->temp_dir,"valgrind.out"));
+		if (compile_and_run->valgrind_cmd.Len()) ShowValgrindPanel(mxVO_VALGRIND,mxFN::Join(config->temp_dir,"valgrind.out"));
 		delete compile_and_run->process;
 		delete compile_and_run;
 		if (mxGCovSideBar::HaveInstance()) mxGCovSideBar::GetInstance().ReloadData();
@@ -2451,7 +2451,7 @@ void mxMainWindow::OpenFileFromGui (wxFileName filename, int *multiple) {
 	}
 #endif
 	if (!file_exists) {
-		if (wxFileName::DirExists(DIR_PLUS_FILE(filename.GetFullPath(),"."))) {
+		if (wxFileName::DirExists(mxFN::Join(filename.GetFullPath(),"."))) {
 			SetExplorerPath(filename.GetFullPath());
 			ShowExplorerTreePanel();
 		} else {
@@ -2470,7 +2470,7 @@ void mxMainWindow::OpenFileFromGui (wxFileName filename, int *multiple) {
 	if (!project) config->Files.last_dir=filename.GetPath();
 	if (filename.GetExt().CmpNoCase(_T(PROJECT_EXT))==0) { // si es un proyecto
 		// cerrar si habia un proyecto anterior
-		if (project && filename!=DIR_PLUS_FILE(project->path,project->filename)) { // la segunda condicion es porque puedo estar creando uno nuevo encima del abierto, en ese caso, si guardo el abiero pierdo el que creo el asistente
+		if (project && filename!=mxFN::Join(project->path,project->filename)) { // la segunda condicion es porque puedo estar creando uno nuevo encima del abierto, en ese caso, si guardo el abiero pierdo el que creo el asistente
 			mxMessageDialog::mdAns ret;
 			if (config->Init.save_project || 
 				(/*project->modified && */
@@ -2558,7 +2558,7 @@ void mxMainWindow::OpenFileFromGui (wxFileName filename, int *multiple) {
 				aux_project_path.MakeLower();
 #endif
 				if (!aux_file_path.StartsWith(aux_project_path)) {
-					wxString dest_filename=DIR_PLUS_FILE(project->path,filename.GetFullName());
+					wxString dest_filename=mxFN::Join(project->path,filename.GetFullName());
 					bool move=false;
 					if (multiple && (*multiple)&(always_move|never_move)) {
 						move=(*multiple)&always_move;
@@ -2588,7 +2588,7 @@ void mxMainWindow::OpenFileFromGui (wxFileName filename, int *multiple) {
 						if (!replace) move=false;
 					}
 					if (move) {
-						wxCopyFile(filename.GetFullPath(),DIR_PLUS_FILE(project->path,filename.GetFullName()));
+						wxCopyFile(filename.GetFullPath(),mxFN::Join(project->path,filename.GetFullName()));
 						filename=dest_filename;
 					}
 				}
@@ -3508,10 +3508,10 @@ void mxMainWindow::OnWhereAmI(wxCommandEvent &event) {
 		if (src->config_source.syntaxEnable) {
 			wxString where;
 			if (!src->sin_titulo) {
-				wxFileName fname=src->source_filename;
-				fname.Normalize();
-				where<<fname.GetFullPath()<<" - "<<LANG(FIND_LINE,"linea")<<" "<<src->GetCurrentLine()+1<<" col "<<
-					src->GetCurrentPos()-src->PositionFromLine(src->GetCurrentLine())+1<<"\n";
+				where << mxFN::Normalize(src->source_filename.GetFullPath()) << " - "
+					  << LANG(FIND_LINE,"linea") << " " << src->GetCurrentLine()+1
+					  << " col " << src->GetCurrentPos()-src->PositionFromLine(src->GetCurrentLine())+1
+					  << "\n";
 			}
 			where<<src->WhereAmI();
 			src->ShowBaloon(where);
@@ -3630,7 +3630,7 @@ void mxMainWindow::SetExplorerPath(wxString path) {
 	explorer_tree.treeCtrl->DeleteAllItems();
 	explorer_tree.root = explorer_tree.treeCtrl->AddRoot("Archivos Abiertos", 0);
 	{ // fix dir if it doesn't exists
-		wxFileName fn(DIR_PLUS_FILE(path,"."));
+		wxFileName fn(mxFN::Join(path,"."));
 		while (fn.GetDirCount()>0 && !fn.DirExists()) fn.RemoveLastDir(); 
 //		if (fn.GetDirCount()==0) fn = (project?project->path:wxFileName::GetHomeDir());
 		path = fn.GetPath();
@@ -3824,7 +3824,7 @@ void mxMainWindow::OnExplorerTreeOpenAll(wxCommandEvent &evt) {
 	wxTreeItemId item = explorer_tree.treeCtrl->GetFirstChild(explorer_tree.selected_item,cookie);
 	while (item.IsOk()) {
 		if (explorer_tree.treeCtrl->GetItemImage(item)!=0 && explorer_tree.treeCtrl->GetItemImage(item)!=5) // 0=folder, 5=zpr
-			OpenFileFromGui(DIR_PLUS_FILE(path,explorer_tree.treeCtrl->GetItemText(item)));
+			OpenFileFromGui(mxFN::Join(path,explorer_tree.treeCtrl->GetItemText(item)));
 		item = explorer_tree.treeCtrl->GetNextChild(explorer_tree.selected_item,cookie);
 	}
 }
@@ -3839,7 +3839,7 @@ void mxMainWindow::OnExplorerTreeOpenSources(wxCommandEvent &evt) {
 	wxTreeItemId item = explorer_tree.treeCtrl->GetFirstChild(explorer_tree.selected_item,cookie);
 	while (item.IsOk()) {
 		if (explorer_tree.treeCtrl->GetItemImage(item)!=0 && explorer_tree.treeCtrl->GetItemImage(item)<3)
-			OpenFileFromGui(DIR_PLUS_FILE(path,explorer_tree.treeCtrl->GetItemText(item)));
+			OpenFileFromGui(mxFN::Join(path,explorer_tree.treeCtrl->GetItemText(item)));
 		item = explorer_tree.treeCtrl->GetNextChild(explorer_tree.selected_item,cookie);
 	}
 }
@@ -3855,10 +3855,10 @@ wxString mxMainWindow::GetExplorerItemPath(wxTreeItemId item) {
 	wxTreeItemId parent = explorer_tree.treeCtrl->GetItemParent(item);
 	wxString path = explorer_tree.treeCtrl->GetItemText(item);
 	while (parent!=explorer_tree.root) {
-		path = DIR_PLUS_FILE(explorer_tree.treeCtrl->GetItemText(parent),path);
+		path = mxFN::Join(explorer_tree.treeCtrl->GetItemText(parent),path);
 		parent = explorer_tree.treeCtrl->GetItemParent(parent);
 	}
-	path = DIR_PLUS_FILE(explorer_tree.path,path);	
+	path = mxFN::Join(explorer_tree.path,path);	
 	return path;
 }
 
@@ -3876,7 +3876,7 @@ void mxMainWindow::OnSymbolsGenerateAutocompletionIndex(wxCommandEvent &evt) {
 		LANG(MAINW_GENERATE_AUTOCOMP_INDEX_CAPTION,"Generación de índice de autocompletado"),
 		"",this);
 	if (!fname.Len()) return;
-	fname=DIR_PLUS_FILE_2(config->config_dir,"autocomp",fname);
+	fname=mxFN::Join(config->config_dir,"autocomp",fname);
 	if (wxFileName::FileExists(fname)) {
 		if ( mxMessageDialog(main_window,LANG(MAINW_GENERATE_AUTOCOMP_INDEX_OVERWRITE,"El indice ya existe, ¿desea reemplazarlo?"))
 			.Title(LANG(MAINW_GENERATE_AUTOCOMP_INDEX_CAPTION,"Generación de índice de autocompletado")).ButtonsYesNo().IconQuestion().Run().no )
@@ -3890,8 +3890,7 @@ void mxMainWindow::OnSymbolsGenerateAutocompletionIndex(wxCommandEvent &evt) {
 	wxString def_dir="<NULL>";
 	pd_file *fil = parser->last_file->next;
 	while (fil) {
-		wxFileName fn(fil->name); fn.Normalize();
-		wxString new_path = fn.GetPath();
+		wxString new_path = mxFN::Normalize(fil->name);
 		if (def_dir=="<NULL>") def_dir=new_path;
 		else {
 			unsigned int i=0;
@@ -3980,7 +3979,7 @@ void mxMainWindow::OnDebugPatch (wxCommandEvent &event) {
 void mxMainWindow::OnDebugCoreDump (wxCommandEvent &event) {
 	if (notebook_sources->GetPageCount()>0||project) {
 		if (!debug->IsDebugging() && (project || notebook_sources->GetPageCount())) {
-			wxString dir = project?DIR_PLUS_FILE(project->path,project->active_configuration->working_folder):CURRENT_SOURCE->working_folder.GetFullPath();
+			wxString dir = project?mxFN::Join(project->path,project->active_configuration->working_folder):CURRENT_SOURCE->working_folder.GetFullPath();
 			wxFileDialog dlg (this, _menu_item_2(mnDEBUG,mxID_DEBUG_LOAD_CORE_DUMP)->GetPlainLabel(), dir, " ", "Core dumps|core*|Todos los Archivos|*", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 			if (dlg.ShowModal() == wxID_OK)
 				debug->LoadCoreDump(dlg.GetPath(),project?nullptr:CURRENT_SOURCE);
@@ -4534,8 +4533,8 @@ void mxMainWindow::OnSelectErrorCommon (const wxString & error, const wxString &
 			else if (sthe_one.StartsWith(ES_COMPOUT_IN_FILE_INCLUDED_FROM)) sthe_one = sthe_one.Mid(wxString(ES_COMPOUT_IN_FILE_INCLUDED_FROM).Len());
 		}
 		wxFileName the_one;
-		if (project)             the_one=sthe_one=DIR_PLUS_FILE(project->path,sthe_one);
-		else IF_THERE_IS_SOURCE  the_one=sthe_one=DIR_PLUS_FILE(CURRENT_SOURCE->source_filename.GetPath(),sthe_one);
+		if (project)             the_one=sthe_one=mxFN::Join(project->path,sthe_one);
+		else IF_THERE_IS_SOURCE  the_one=sthe_one=mxFN::Join(CURRENT_SOURCE->source_filename.GetPath(),sthe_one);
 		else                     the_one=sthe_one;
 		mxSource *source = nullptr;
 		for (int i=0,j=notebook_sources->GetPageCount();i<j;i++) {
@@ -4883,7 +4882,7 @@ void mxMainWindow::OnHelpProject(wxCommandEvent & evt) {
 		mxUT::OpenInBrowser(file);
 	} else {
 		if (! (file.StartsWith("$")||file.StartsWith("\\")||file.StartsWith("/")||(file.Len()>2&&file[1]==':')) )
-			file = DIR_PLUS_FILE(project->GetPath(),file);
+			file = mxFN::Join(project->GetPath(),file);
 		mxHelpWindow::ShowHelp(file);
 	}
 }

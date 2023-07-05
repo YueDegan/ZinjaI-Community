@@ -26,15 +26,15 @@ END_EVENT_TABLE()
 
 mxWelcomePanel::mxWelcomePanel(wxWindow *parent):wxHtmlWindow(parent,wxID_ANY,wxDefaultPosition,wxDefaultSize,wxHW_NO_SELECTION|wxHW_DEFAULT_STYLE) {
 	is_visible=false;
-	wxString tips_file=DIR_PLUS_FILE(config->Help.guihelp_dir,wxString(_T("tips_"))<<config->Init.language_file);
+	wxString tips_file=mxFN::Join(config->Help.guihelp_dir,wxString(_T("tips_"))<<config->Init.language_file);
 	if (wxFileName::FileExists(tips_file)) file.Open(tips_file);
 }
 
 void mxWelcomePanel::Reload(bool reread_source) {
 	static wxString source; if (reread_source) source.Clear();
-	bool skin_file=wxFileName::FileExists(DIR_PLUS_FILE_2(config->Files.skin_dir,"welcome",config->Init.language_file+".html"));
+	bool skin_file=wxFileName::FileExists(mxFN::Join(config->Files.skin_dir,"welcome",config->Init.language_file+".html"));
 	if (!source.Len()) {
-		wxTextFile fil(SKIN_FILE(DIR_PLUS_FILE("welcome",config->Init.language_file+".html")));
+		wxTextFile fil(SKIN_FILE(mxFN::Join("welcome",config->Init.language_file+".html")));
 		fil.Open();
 		for ( wxString str = fil.GetFirstLine(); !fil.Eof(); str = fil.GetNextLine() ) {
 			source<<str;
@@ -43,9 +43,9 @@ void mxWelcomePanel::Reload(bool reread_source) {
 	}
 	wxString text=source;
 	if (skin_file)
-		text.Replace(_T("src=\""),wxString(_T("src=\""))<<DIR_PLUS_FILE_2(config->Files.skin_dir,"welcome",""));
+		text.Replace(_T("src=\""),wxString(_T("src=\""))<<mxFN::Join(config->Files.skin_dir,"welcome",""));
 	else
-		text.Replace(_T("src=\""),wxString(_T("src=\""))<<DIR_PLUS_FILE_2("imgs","welcome",""));
+		text.Replace(_T("src=\""),wxString(_T("src=\""))<<mxFN::Join("imgs","welcome",""));
 	text.Replace(_T("${ZVERSION}"),wxString()<<VERSION);
 	wxColour background_colour=wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
 	wxColour foreground_colour=wxSystemSettings::GetColour( wxSYS_COLOUR_BTNTEXT );

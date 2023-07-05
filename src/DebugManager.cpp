@@ -76,7 +76,7 @@ bool DebugManager::Start(bool update) {
 	project->SetBreakpoints(); // setear los puntos de interrupcion del proyecto
 	if (!Run() && has_symbols) {
 #ifdef __WIN32__
-		if (wxFileName(DIR_PLUS_FILE(project->path,project->executable_name)).GetPath().Contains(' '))
+		if (wxFileName(mxFN::Join(project->path,project->executable_name)).GetPath().Contains(' '))
 			mxMessageDialog(main_window,LANG(DEBUG_ERROR_STARTING_SPACES, ""
 											 "Error al iniciar el proceso. Puede intentar mover el\n"
 											 "ejecutable o el proyecto a una ruta sin espacios."))
@@ -145,7 +145,7 @@ bool DebugManager::Start(wxString workdir, wxString exe, wxString args, bool sho
 	ResetDebuggingStuff(); 
 	debug_patcher->Init(exe);
 #ifndef __WIN32__
-	wxString tty_cmd, tty_file(DIR_PLUS_FILE(config->temp_dir,_T("tty.id")));
+	wxString tty_cmd, tty_file(mxFN::Join(config->temp_dir,_T("tty.id")));
 	if (show_console) {
 		if (wxFileName::FileExists(tty_file))
 			wxRemoveFile(tty_file);
@@ -205,7 +205,7 @@ bool DebugManager::Start(wxString workdir, wxString exe, wxString args, bool sho
 #ifndef __WIN32__
 	if (project && project->active_configuration->exec_method==EMETHOD_INIT) {
 		command=wxString()<<"/bin/sh -c "<<mxUT::SingleQuotes(wxString()
-			<<". "<<DIR_PLUS_FILE(project->path,project->active_configuration->exec_script)<<" &>/dev/null; "<<command);
+			<<". "<<mxFN::Join(project->path,project->active_configuration->exec_script)<<" &>/dev/null; "<<command);
 	}
 #endif
 	if (status!=DBGST_STARTING) return false; // si el proceso de la terminal finalizo rapidamente
@@ -284,7 +284,7 @@ bool DebugManager::SpecialStart(mxSource *source, const wxString &gdb_command, c
 	_DBG_LOG_CALL(Open());
 	mxOSDGuard osd(main_window,LANG(OSD_STARTING_DEBUGGER,"Iniciando depuracion..."));
 	ResetDebuggingStuff();
-	wxString exe = source?source->GetBinaryFileName().GetFullPath():DIR_PLUS_FILE(project->path,project->active_configuration->output_file);
+	wxString exe = source?source->GetBinaryFileName().GetFullPath():mxFN::Join(project->path,project->active_configuration->output_file);
 	wxString command(config->Files.debugger_command);
 	command<<_T(" -quiet -nx -interpreter=mi");
 	if (config->Debug.readnow)
@@ -360,7 +360,7 @@ bool DebugManager::LoadCoreDump(wxString core_file, mxSource *source) {
 	mxOSDGuard osd(main_window,project?LANG(OSD_LOADING_CORE_DUMP,"Cargando volcado de memoria..."):"");
 	
 	ResetDebuggingStuff();
-	wxString exe = source?source->GetBinaryFileName().GetFullPath():DIR_PLUS_FILE(project->path,project->active_configuration->output_file);
+	wxString exe = source?source->GetBinaryFileName().GetFullPath():mxFN::Join(project->path,project->active_configuration->output_file);
 	wxString command(config->Files.debugger_command);
 	command<<_T(" -quiet -nx -interpreter=mi");
 	if (config->Debug.readnow)
@@ -1927,8 +1927,8 @@ bool DebugManager::Start_ConfigureGdb (bool check_for_symbols) {
 	else if (wxFileName(config->GetZinjaiSamplesPath(config->Debug.macros_file)).FileExists())
 		SendCommand("source ",mxUT::Quotize(config->GetZinjaiSamplesPath(config->Debug.macros_file)));
 	// macros para gdb del proyecto
-	if (project && project->macros_file.Len() && wxFileName(DIR_PLUS_FILE(project->path,project->macros_file)).FileExists())
-		SendCommand("source ",mxUT::Quotize(DIR_PLUS_FILE(project->path,project->macros_file)));
+	if (project && project->macros_file.Len() && wxFileName(mxFN::Join(project->path,project->macros_file)).FileExists())
+		SendCommand("source ",mxUT::Quotize(mxFN::Join(project->path,project->macros_file)));
 	
 	// reiniciar sistema de inspecciones
 	DebuggerInspection::OnDebugStart();

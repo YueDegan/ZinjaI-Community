@@ -402,10 +402,10 @@ bool ConfigManager::Load() {
 		if (not Running.cpp_compiler_options.Contains("-Werror=return-type"))
 			Running.cpp_compiler_options += " -Werror=return-type";
 	}
-	if (Init.version<20180614 && Debug.macros_file=="debug_macros.gdb") Debug.macros_file = DIR_PLUS_FILE("samples","debug_macros.gdb");
+	if (Init.version<20180614 && Debug.macros_file=="debug_macros.gdb") Debug.macros_file = mxFN::Join("samples","debug_macros.gdb");
 #ifdef __APPLE__
 	if (Init.version<20170926 && Files.debugger_command=="gdb") Files.debugger_command = "~/.zinjai/gdb.bin";
-	if (Init.version<20170605) Files.terminal_command = DIR_PLUS_FILE("bin","mac-terminal-wrapper.bin"); // some installations still have an invalid configuration
+	if (Init.version<20170605) Files.terminal_command = mxFN::Join("bin","mac-terminal-wrapper.bin"); // some installations still have an invalid configuration
 #endif
 	if (Init.version<20100806) Files.terminal_command.Replace("ZinjaI - Consola de Ejecucion","${TITLE}"); // NO USAR ACENTOS, PUEDE ROMER EL X!!!! (me daba un segfault en la libICE al poner el ó en EjeuciÓn)
 	if (Init.version<20101112 && Help.autocomp_indexes.Len()) Help.autocomp_indexes<<",STL_Iteradores";
@@ -710,8 +710,8 @@ bool ConfigManager::Save(){
 	custom_tools.WriteConfig(fil);
 	fil.AddLine("");
 	
-//	menu_data->SaveShortcutsSettings(DIR_PLUS_FILE(home_dir,"shortcuts.zsc")); // se hace en e Ok del mxShortcutsDialog
-	menu_data->SaveToolbarsSettings(DIR_PLUS_FILE(config_dir,"toolbar.ztb"));
+//	menu_data->SaveShortcutsSettings(mxFN::Join(home_dir,"shortcuts.zsc")); // se hace en e Ok del mxShortcutsDialog
+	menu_data->SaveToolbarsSettings(mxFN::Join(config_dir,"toolbar.ztb"));
 	
 	fil.Write();
 	fil.Close();
@@ -728,9 +728,9 @@ void ConfigManager::LoadDefaults(){
 	// crear el directorio para zinjai si no existe
 	config_dir = "config.here";
 	if (!wxFileName::DirExists(config_dir))
-		config_dir = DIR_PLUS_FILE(wxFileName::GetHomeDir(),_if_win32("zinjai",".zinjai"));
+		config_dir = mxFN::Join(wxFileName::GetHomeDir(),_if_win32("zinjai",".zinjai"));
 	EnsurePathExists(config_dir);
-	m_filename = DIR_PLUS_FILE(config_dir,"config");
+	m_filename = mxFN::Join(config_dir,"config");
 	
 	// establecer valores predeterminados para todas las estructuras
 	
@@ -739,12 +739,12 @@ void ConfigManager::LoadDefaults(){
 	Files.extra_file_extensions = "vert frag glsl";
 	Files.extern_file_extensions = "exe png jpg";
 	
-	Files.temp_dir=DIR_PLUS_FILE(config_dir,"tmp");
+	Files.temp_dir=mxFN::Join(config_dir,"tmp");
 	Files.skin_dir="imgs";
 #ifdef __WIN32__
 	Files.toolchain=CURRENT_MINGW;
 	Files.debugger_command="gdb";
-	Files.runner_command=DIR_PLUS_FILE("bin","runner.exe");
+	Files.runner_command=mxFN::Join("bin","runner.exe");
 	Files.terminal_command="";
 	Files.explorer_command="explorer";
 	Files.img_viewer="";
@@ -755,7 +755,7 @@ void ConfigManager::LoadDefaults(){
 	Files.toolchain="gcc";
 	Files.debugger_command="~/.zinjai/gdb.bin";
 	Files.runner_command=GetZinjaiBinPath("runner.bin");
-	Files.terminal_command=DIR_PLUS_FILE("bin","mac-terminal-wrapper.bin");
+	Files.terminal_command=mxFN::Join("bin","mac-terminal-wrapper.bin");
 	Files.explorer_command="open";
 	Files.img_viewer="open";
 	Files.doxygen_command="/Applications/Doxygen.app/Contents/Resources/doxygen";
@@ -774,11 +774,11 @@ void ConfigManager::LoadDefaults(){
 	Files.doxygen_command="doxygen";
 	Files.browser_command="firefox";
 #endif
-	Files.project_folder = (config_dir=="config.here")? "projects" : DIR_PLUS_FILE(wxFileName::GetHomeDir(),"projects");
+	Files.project_folder = (config_dir=="config.here")? "projects" : mxFN::Join(wxFileName::GetHomeDir(),"projects");
 	Files.cpp_template = Files.default_template="default_14.tpl";
 	Files.c_template = "default_c.tpl";
 	Files.default_project="<main>";
-	Files.autocodes_file=DIR_PLUS_FILE(config_dir,"autocodes");
+	Files.autocodes_file=mxFN::Join(config_dir,"autocodes");
 	for (int i=0;i<CM_HISTORY_MAX_LEN;i++)
 		Files.last_source[i]="";
 	for (int i=0;i<CM_HISTORY_MAX_LEN;i++)
@@ -899,7 +899,7 @@ void ConfigManager::LoadDefaults(){
 	Debug.raise_main_window = true;
 	Debug.compile_again = true;
 	Debug.format = "";
-	Debug.macros_file = DIR_PLUS_FILE("samples","debug_macros.gdb");
+	Debug.macros_file = mxFN::Join("samples","debug_macros.gdb");
 	Debug.inspections_on_right = false;
 	Debug.inspect_on_mouse_over = true;
 	Debug.show_thread_panel = false;
@@ -1068,7 +1068,7 @@ bool ConfigManager::CheckCppCheckPresent() {
 
 void ConfigManager::RecalcStuff ( ) {
 	// setup some required paths
-	temp_dir = DIR_PLUS_FILE(zinjai_dir,Files.temp_dir);
+	temp_dir = mxFN::Join(zinjai_dir,Files.temp_dir);
 	EnsurePathExists(temp_dir);
 	if (zinjai_dir.EndsWith("\\")||zinjai_dir.EndsWith("/")) zinjai_dir.RemoveLast();
 	if (temp_dir.EndsWith("\\")||temp_dir.EndsWith("/")) temp_dir.RemoveLast();
@@ -1097,7 +1097,7 @@ void ConfigManager::FinishLoading ( ) {
 	// load syntax highlighting colors' scheme
 	ZLINF("ConfigManager","Loading colours...");
 	color_theme::Initialize();
-	if (Init.colour_theme.IsEmpty()) g_ctheme->Load(DIR_PLUS_FILE(config_dir,"colours.zcs"));
+	if (Init.colour_theme.IsEmpty()) g_ctheme->Load(mxFN::Join(config_dir,"colours.zcs"));
 	else g_ctheme->Load(mxUT::WichOne(Init.colour_theme,"colours",true));
 	
 	// apply complement's patches to current config
@@ -1118,8 +1118,8 @@ void ConfigManager::FinishLoading ( ) {
 			menu_data->ParseToolbarConfigLine(s_delayed_config_lines->toolbars_keys[i],s_delayed_config_lines->toolbars_values[i]); 
 		delete s_delayed_config_lines; s_delayed_config_lines=nullptr;
 	} else { // new way
-		menu_data->LoadShortcutsSettings(DIR_PLUS_FILE(config_dir,"shortcuts.zsc"));
-		menu_data->LoadToolbarsSettings(DIR_PLUS_FILE(config_dir,"toolbar.ztb"));
+		menu_data->LoadShortcutsSettings(mxFN::Join(config_dir,"shortcuts.zsc"));
+		menu_data->LoadToolbarsSettings(mxFN::Join(config_dir,"toolbar.ztb"));
 	}
 	if (Init.version<20171110) { 
 		menu_data->SetToolbarIconSize();
@@ -1365,7 +1365,7 @@ void ConfigManager::ApplyPatchsFromComplements ( ) {
 	wxArrayString files;
 	if (!mxUT::GetFilesFromDir(files,dir,true)) return;
 	for(unsigned int i=0;i<files.Count();i++) { 
-		wxString fullname = DIR_PLUS_FILE(dir,files[i]);
+		wxString fullname = mxFN::Join(dir,files[i]);
 		if (stDateTime2String(wxFileName(fullname).GetModificationTime())>Init.complements_timestamp)
 			ApplyPatchsFromComplements(fullname);
 	}
@@ -1384,11 +1384,11 @@ bool ConfigManager::ExtInList (const wxString & list, const wxString & ext) cons
 }
 
 wxString ConfigManager::GetHelpFileEx (const wxString & path, const wxString & name, const wxString & ext, const wxString & args) {
-	wxString aux = DIR_PLUS_FILE(path,name+"_"+Init.language_file+ext);
+	wxString aux = mxFN::Join(path,name+"_"+Init.language_file+ext);
 	if (wxFileExists(aux)) return aux+args;
-	aux = DIR_PLUS_FILE(path,name+ext);
+	aux = mxFN::Join(path,name+ext);
 	if (wxFileExists(aux)) return aux+args;
-	aux = DIR_PLUS_FILE(path,name+"_spanish"+ext);
+	aux = mxFN::Join(path,name+"_spanish"+ext);
 	if (wxFileExists(aux)) return aux+args;
 	return "";
 }

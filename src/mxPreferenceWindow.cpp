@@ -231,7 +231,7 @@ wxPanel *mxPreferenceWindow::CreateGeneralPanel (mxBookCtrl *notebook) {
 	
 #ifdef __linux__
 	sizer.BeginCheck( LANG(PREFERENCES_GENERAL_DISABLE_UBUNTU_TWEAKS,"Deshabilitar la interfaz de menúes y scrollbars especial de Unity (*)") )
-		.Value(!wxFileExists(DIR_PLUS_FILE(config->config_dir,"ubuntu"))).EndCheck(init_disable_ubuntu_tweaks);
+		.Value(!wxFileExists(mxFN::Join(config->config_dir,"ubuntu"))).EndCheck(init_disable_ubuntu_tweaks);
 #endif
 	
 #if defined(__APPLE__) && defined(__STC_ZASKAR)
@@ -255,7 +255,7 @@ wxPanel *mxPreferenceWindow::CreateQuickHelpPanel(mxBookCtrl *notebook) {
 	wxPanel *panel = new wxPanel(notebook, wxID_ANY );
 	wxHtmlWindow *html = new wxHtmlWindow(panel,wxID_ANY);
 	sizer->Add(html,sizers->Exp1);
-	html->LoadFile(DIR_PLUS_FILE(config->Help.guihelp_dir,wxString(_T("prefs_help_"))<<config->Init.language_file<<_T(".html")));
+	html->LoadFile(mxFN::Join(config->Help.guihelp_dir,wxString(_T("prefs_help_"))<<config->Init.language_file<<_T(".html")));
 	panel->SetSizerAndFit(sizer);
 	return panel;	
 }
@@ -419,10 +419,10 @@ wxPanel *mxPreferenceWindow::CreateToolbarsPanel (mxBookCtrl *notebook) {
 	
 	sizer.BeginCombo( LANG(PREFERENCES_TOOLBAR_ICON_SIZE,"Tamaño de icono") )
 		.Add("16x16")
-		.AddIf(wxFileName::DirExists(DIR_PLUS_FILE(config->Files.skin_dir,"24")),"24x24")
-		.AddIf(wxFileName::DirExists(DIR_PLUS_FILE(config->Files.skin_dir,"32")),"32x32")
-		.AddIf(wxFileName::DirExists(DIR_PLUS_FILE(config->Files.skin_dir,"48")),"48x48")
-		.AddIf(wxFileName::DirExists(DIR_PLUS_FILE(config->Files.skin_dir,"64")),"64x64")
+		.AddIf(wxFileName::DirExists(mxFN::Join(config->Files.skin_dir,"24")),"24x24")
+		.AddIf(wxFileName::DirExists(mxFN::Join(config->Files.skin_dir,"32")),"32x32")
+		.AddIf(wxFileName::DirExists(mxFN::Join(config->Files.skin_dir,"48")),"48x48")
+		.AddIf(wxFileName::DirExists(mxFN::Join(config->Files.skin_dir,"64")),"64x64")
 		.Add(icon_sizes).Select(icsz,0).RegisterIn(wx_toolbars_widgets).EndCombo(toolbar_icon_size);
 	
 	wx_toolbars_widgets.Add(toolbars_wich_find);
@@ -706,9 +706,9 @@ wxPanel *mxPreferenceWindow::CreateSkinPanel (mxBookCtrl *notebook) {
 		skin_paths.Add(_T("imgs"));
 		skin_list->Select(0);
 		while ( cont ) {
-			if (wxFileName::FileExists(DIR_PLUS_FILE_2("skins",filename,"descripcion.txt"))) {
+			if (wxFileName::FileExists(mxFN::Join("skins",filename,"descripcion.txt"))) {
 				skin_list->Append(filename);
-				filename = DIR_PLUS_FILE("skins",filename);
+				filename = mxFN::Join("skins",filename);
 				skin_paths.Add(filename);
 				if (filename==config->Files.skin_dir)
 					skin_list->SetSelection(skin_list->GetCount()-1);
@@ -869,9 +869,9 @@ void mxPreferenceWindow::OnOkButton(wxCommandEvent &event) {
 			project->GetWxfbConfiguration()->temp_disabled = false;
 	
 #ifdef __linux__
-	if ( init_disable_ubuntu_tweaks->GetValue() == wxFileExists(DIR_PLUS_FILE(config->config_dir,"ubuntu")) ) {
-		if (init_disable_ubuntu_tweaks->GetValue()) wxRemoveFile( DIR_PLUS_FILE(config->config_dir,"ubuntu") );
-		else { wxTextFile fil( DIR_PLUS_FILE(config->config_dir,"ubuntu") ); fil.Create(); fil.Write(); }
+	if ( init_disable_ubuntu_tweaks->GetValue() == wxFileExists(mxFN::Join(config->config_dir,"ubuntu")) ) {
+		if (init_disable_ubuntu_tweaks->GetValue()) wxRemoveFile( mxFN::Join(config->config_dir,"ubuntu") );
+		else { wxTextFile fil( mxFN::Join(config->config_dir,"ubuntu") ); fil.Create(); fil.Write(); }
 	}
 #endif
 #if defined(__APPLE__) && defined(__STC_ZASKAR)
@@ -1155,7 +1155,7 @@ void mxPreferenceWindow::OnAutocodesButton(wxCommandEvent &event) {
 }
 void mxPreferenceWindow::OnAutocodesOpen(wxCommandEvent &event) {
 	wxFileDialog dlg(this,LANG(PREFERENCES_WRITTING_AUTOCODES_FILE,"Archivo de definiciones de plantillas de auto-código"),
-					 "",DIR_PLUS_FILE(config->zinjai_dir,files_autocode->GetValue()));
+					 "",mxFN::Join(config->zinjai_dir,files_autocode->GetValue()));
 	if (wxID_OK==dlg.ShowModal()) {
 		wxFileName fn(dlg.GetPath());
 		fn.MakeRelativeTo(config->zinjai_dir);
@@ -1190,7 +1190,7 @@ void mxPreferenceWindow::OnDebugMacrosButton(wxCommandEvent &event) {
 }
 
 void mxPreferenceWindow::OnDebugMacrosOpen(wxCommandEvent &event) {
-	wxFileDialog dlg(this,LANG(PREFERENCES_DEBUG_GDB_MACROS_FILE,"Archivo de macros para gdb"),"",DIR_PLUS_FILE(config->zinjai_dir,debug_macros_file->GetValue()));
+	wxFileDialog dlg(this,LANG(PREFERENCES_DEBUG_GDB_MACROS_FILE,"Archivo de macros para gdb"),"",mxFN::Join(config->zinjai_dir,debug_macros_file->GetValue()));
 	if (wxID_OK==dlg.ShowModal()) {
 		wxFileName fn(dlg.GetPath());
 		fn.MakeRelativeTo(config->zinjai_dir);
@@ -1310,7 +1310,7 @@ void mxPreferenceWindow::ResetChanges() {
 	
 	// general
 #ifdef __linux__
-	init_disable_ubuntu_tweaks->SetValue(!wxFileExists(DIR_PLUS_FILE(config->config_dir,"ubuntu")));
+	init_disable_ubuntu_tweaks->SetValue(!wxFileExists(mxFN::Join(config->config_dir,"ubuntu")));
 #endif
 #if defined(__APPLE__) && defined(__STC_ZASKAR)
 	init_mac_zaskars_flags->SetValue(config->Init.mac_stc_zflags==ZF_FIXDEADKEYS_ESISO);
@@ -1327,10 +1327,10 @@ void mxPreferenceWindow::ResetChanges() {
 	toolbars_wich_view->SetValue(_toolbar_visible(tbVIEW));
 	wxArrayString icon_sizes;
 	icon_sizes.Add("16x16");
-	if (wxFileName::DirExists(DIR_PLUS_FILE(config->Files.skin_dir,"24"))) icon_sizes.Add("24x24");
-	if (wxFileName::DirExists(DIR_PLUS_FILE(config->Files.skin_dir,"32"))) icon_sizes.Add("32x32");
-	if (wxFileName::DirExists(DIR_PLUS_FILE(config->Files.skin_dir,"48"))) icon_sizes.Add("48x48");
-	if (wxFileName::DirExists(DIR_PLUS_FILE(config->Files.skin_dir,"64"))) icon_sizes.Add("64x64");
+	if (wxFileName::DirExists(mxFN::Join(config->Files.skin_dir,"24"))) icon_sizes.Add("24x24");
+	if (wxFileName::DirExists(mxFN::Join(config->Files.skin_dir,"32"))) icon_sizes.Add("32x32");
+	if (wxFileName::DirExists(mxFN::Join(config->Files.skin_dir,"48"))) icon_sizes.Add("48x48");
+	if (wxFileName::DirExists(mxFN::Join(config->Files.skin_dir,"64"))) icon_sizes.Add("64x64");
 	wxString icsz = wxString()<<menu_data->icon_size<<"x"<<menu_data->icon_size;
 	unsigned int idx_icsz = icon_sizes.Index(icsz);
 	if (idx_icsz>=icon_sizes.GetCount()) idx_icsz=0;
@@ -1347,9 +1347,9 @@ void mxPreferenceWindow::OnSkinList(wxCommandEvent &event) {
 	int selection = skin_list->GetSelection();
 	if (selection==last_selection || selection<0) return;
 	last_selection=selection;
-	skin_text->LoadFile(DIR_PLUS_FILE(skin_paths[selection],_T("descripcion.txt")));
-	if (wxFileName::FileExists(DIR_PLUS_FILE(skin_paths[selection],_T("skin_preview.png"))))
-		skin_image->SetBitmap(wxBitmap(DIR_PLUS_FILE(skin_paths[selection],_T("skin_preview.png")),wxBITMAP_TYPE_PNG));
+	skin_text->LoadFile(mxFN::Join(skin_paths[selection],_T("descripcion.txt")));
+	if (wxFileName::FileExists(mxFN::Join(skin_paths[selection],_T("skin_preview.png"))))
+		skin_image->SetBitmap(wxBitmap(mxFN::Join(skin_paths[selection],_T("skin_preview.png")),wxBITMAP_TYPE_PNG));
 	else
 		skin_image->SetBitmap(bitmaps->GetBitmap("skin_no_preview.png"));
 }
