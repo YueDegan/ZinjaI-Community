@@ -9,8 +9,7 @@ static char path_sep = wxFileName::GetPathSeparator();
 * barra si es necesario. Si el "archivo" era una ruta absoluta, la devuelve sin cambios.
 * Esta función se creó para encapsular las diferencias entre Windows y GNU/Linux,
 * particularmente, el caracter de separación, y la presencia/ausencia de la unidad.
-* La macro DIR_PLUS_FILE encapsula esta llamada utilizando el objeto utils.
-* @param dir El directorio base
+* @param dir El directorio base (puede ser absoluto o relativo, si es relativo se mantendrá así)
 * @param fil El archivo. Puede ser solo un nombre, la parte final de una ruta, o una ruta completa
 * @return Un wxString con la ruta resultante completa
 **/

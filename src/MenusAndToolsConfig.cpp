@@ -984,6 +984,7 @@ void MenusAndToolsConfig::PopulateToolbar(int tb_id) {
 }
 
 void MenusAndToolsConfig::AdjustToolbarSize(int tb_id) {
+	if (tb_id==tbSTATUS) return;
 	wxToolBar *wx_toolbar = toolbars[tb_id].wx_toolbar;
 	if (wx_toolbar) { wx_toolbar->Realize(); main_window->m_aui->GetPane(wx_toolbar).BestSize(wx_toolbar->GetBestSize()); }
 }
