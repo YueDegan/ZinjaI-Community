@@ -63,7 +63,7 @@ void mxMiniSource::SetStyle (int lexer) {
 	wxFont font(wxFontInfo(1).Family(wxFONTFAMILY_MODERN).Style(wxFONTSTYLE_NORMAL).Weight(wxFONTWEIGHT_NORMAL));
 	
 	SetPhasesDraw(wxSTC_PHASES_ONE);
-	for(int i=wxSTC_STYLE_DEFAULT;i<wxSTC_STYLE_MAX;i++) StyleSetFont (32, font);
+	for(int i=0;i<wxSTC_STYLE_MAX;i++) StyleSetFont (i, font);
 }
 
 void mxMiniSource::OnClick (wxMouseEvent & evt) {

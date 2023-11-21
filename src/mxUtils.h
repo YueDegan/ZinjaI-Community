@@ -262,6 +262,7 @@ public:
 	static wxColour mix_colors(wxColour cback, wxColour cfore, float u);
 	static wxColour mix_colors(wxColour cback, wxColour cfore, float max_r, float max_g, float max_b);
 	
+	static wxString BytesToHuman(double bytes); // double porque usualmente vienen de wxULL que no tiene metodo para convertir a long long, prefiero double para que no se desborde
 };
 
 #endif

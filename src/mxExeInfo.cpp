@@ -23,7 +23,7 @@ BEGIN_EVENT_TABLE(mxExeInfo, wxDialog)
 END_EVENT_TABLE()
 	
 mxExeInfo::mxExeInfo(wxWindow *parent, ei_mode mode, wxFileName fname, mxSource *src) 
-	: mxDialog(parent, mode==mxEI_SOURCE ? LANG(EXEINFO_CAPTION_SOURCE,"Propiedades del Ejecutable") : LANG(EXEINFO_CAPTION_PROJECT,"Propiedades del Ejecutable")), 
+	: mxDialog(parent, mode==mxEI_SOURCE ? LANG(EXEINFO_CAPTION_SOURCE,"Propiedades del Archivo") : LANG(EXEINFO_CAPTION_PROJECT,"Propiedades del Ejecutable")), 
 	  m_mode(mode), m_source(src), m_fname(fname), m_wait_for_parser(GetEventHandler(),wxID_ANY)
 {
 	if (mode==mxEI_PROJECT||mode==mxEI_SIMPLE) {
@@ -66,18 +66,8 @@ wxPanel *mxExeInfo::CreateGeneralPanel (wxNotebook *notebook) {
 	
 	sizer.BeginText( LANG(EXEINFO_LOCATION,"Ubicacion") )
 		.Value(m_fname.GetFullPath()).ReadOnly().EndText();
-
-	double fsize = m_fname.GetSize().ToDouble();
-	wxString tsize;
-	if (fsize>1024) {
-		if (fsize>1024*1024) {
-			tsize<<int((fsize/1024/1024))<<"."<<int(fsize/1024/1.024)%1000<<" MB = ";
-		} else
-			tsize<<int(fsize/1024)<<"."<<int(fsize/1.024)%1000<<" KB = ";
-	}
-	tsize<<m_fname.GetSize()<<" B";
 	
-	sizer.BeginText( LANG(EXEINFO_SIZE,"Tamaño") ).Value(tsize).Short().ReadOnly().EndText(text_size);
+	sizer.BeginText( LANG(EXEINFO_SIZE,"Tamaño") ).Value(mxUT::BytesToHuman(m_fname.GetSize().ToDouble())).ReadOnly().EndText(text_size);
 	sizer.BeginText( LANG(EXEINFO_LAST_MOD_DATE,"Fecha última modifiación") ).Short()
 		.Value(m_fname.GetModificationTime().Format("%H:%M:%S - %d/%B/%Y")).ReadOnly().EndText(text_time);
 
@@ -136,7 +126,7 @@ wxPanel *mxExeInfo::CreateGeneralPanel (wxNotebook *notebook) {
 	
 	sizer.BeginText( LANG(EXEINFO_FILE_TYPE,"Tipo de Archivo") ).Value(file_type).MultiLine().ReadOnly().EndText(text_type);
 	
-	sizer.Set();
+	sizer.SetAndFit();
 	return sizer.GetPanel();
 }
 

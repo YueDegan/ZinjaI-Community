@@ -1214,3 +1214,15 @@ wxColour mxUT::mix_colors(wxColour cback, wxColour cfore, float u) {
 					  (unsigned char)((1-u)*cback.Blue() + u*cfore.Blue() ) );
 }
 
+wxString mxUT::BytesToHuman (double bytes) {
+	wxString str;
+	if (bytes>1024) {
+		if (bytes>1024*1024) {
+			str<<int((bytes/1024/1024))<<"."<<int(bytes/1024/1.024)%1000<<" MB = ";
+		} else
+			str<<int(bytes/1024)<<"."<<int(bytes/1.024)%1000<<" KB = ";
+	}
+	str<<bytes<<" B";
+	return str;
+}
+

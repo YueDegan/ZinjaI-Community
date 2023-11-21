@@ -213,7 +213,10 @@ void mxDialog::BaseSizer::SetAndFit() {
 }
 
 void mxDialog::BaseSizer::Set() { 
-	m_parent->SetSizer(m_sizer); 
+	m_parent->SetSizer(m_sizer);
+	m_sizer->Layout(); // sin esto algunos dialogs no se ven bien
+	                   // ej: el notebook de mxExeInfo no oculta lo que no
+	                   // se llega a ver
 }
 
 mxDialog::MainSizer &mxDialog::MainSizer::InnerSizer::EndLine() {
