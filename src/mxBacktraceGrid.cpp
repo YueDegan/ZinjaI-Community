@@ -59,9 +59,13 @@ void mxBacktraceGrid::SelectRow(int to_select) {
 }
 
 void mxBacktraceGrid::SelectFrame(int r) {
-	if (debug->IsDebugging() && !debug->CanTalkToGDB()) return;
-	long line; entries[r].line.ToLong(&line);
+	long line = -1; entries[r].line.ToLong(&line);
 	wxString file = entries[r].fname;
+	if (debug->IsDebugging() && !debug->CanTalkToGDB()) {
+		mxSource *src = main_window->OpenFile(file);
+		if (src and line!=-1) src->GotoLine(line);
+		return;
+	}
 	if (file.Len()) {
 		if (!debug->MarkCurrentPoint(file,line,r?mxSTC_MARK_FUNCCALL:mxSTC_MARK_EXECPOINT)) {
 			mxMessageDialog(main_window,wxString()<<LANG(MAINW_FILE_NOT_FOUND,"No se encontro el archivo:")<<"\n"<<file)
