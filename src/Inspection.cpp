@@ -400,7 +400,3 @@ wxString DebuggerInspection::RewriteExpressionForBreaking(wxString main_expr) {
 	return main_expr;
 }
 
-wxString DebuggerInspection::GetValue ( ) const {
-	return /*RemoveEscapeChar(*/gdb_value/*)*/;
-}
-

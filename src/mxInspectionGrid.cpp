@@ -806,7 +806,10 @@ void mxInspectionGrid::DeleteInspection (int r, bool for_reuse) {
 
 void mxInspectionGrid::UpdateValueColumn (int r) {
 	DebuggerInspection *di = inspections[r].di;
-	mxGrid::SetCellValue(r,IG_COL_VALUE,di?di->GetValue():"");
+	if (!di) { mxGrid::SetCellValue(r,IG_COL_VALUE,""); return; }
+	const wxString &value = di->GetValue();
+	if (value.Len()>1000) { mxGrid::SetCellValue(r,IG_COL_VALUE,value.SubString(0,1000)+"..."); return; } // en casos como arreglos con miles de elementos, la gui se congela al punto de tener que reiniciar antes de terminar de renderizar la grilla
+	mxGrid::SetCellValue(r,IG_COL_VALUE,value);
 }
 
 void mxInspectionGrid::UpdateTypeColumn (int r) {

@@ -603,7 +603,7 @@ public:
 	
 	DEBUG_INSPECTION_EXPRESSION_TYPE GetDbiType() { return dit_type; }
 	const wxString &GetExpression() const { return expression; }
-	wxString GetValue() const;
+	const wxString &GetValue() const { return gdb_value; }
 	const wxString &GetValueType() const { return value_type; }
 	bool IsFrameless() { return flags.Get(DIF_FRAMELESS); }
 	bool IsInScope() { return flags.Get(DIF_IN_SCOPE); }
