@@ -177,7 +177,7 @@ static inline bool ErrorLineIsChild(const wxString &error_line) {
 		AuxSkip(error_line,p,l,ns);
 	
 	if (ns>=3) return true; // puede venir directo el mensaje.. si empieza "indentado" con 3 espacios, es child
-	if (AuxCompare(error_line,p,"note:")) return true; // o la palabra note
+	if (AuxCompare(error_line,p,"note:") or AuxCompare(error_line,p,"NOTE:")) return true; // o la palabra note (99% de las veces está en minúsculas, pero ld en algunos mensajes lo pone en mayúsculas)
 	AuxSkip(error_line,p,l,ns); // palabra "error:" o "warning:"
 	if (ns>=3) return true; // puede venir directo el mensaje.. si empieza "indentado" con 3 espacios, es child
 	return false;
