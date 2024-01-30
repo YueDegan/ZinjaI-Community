@@ -6,7 +6,7 @@
 #include <vector>
 using namespace std;
 
-class mxReferenceWindow:public mxGenericHelpWindow {
+class mxReferenceWindow : public mxGenericHelpWindow {
 	
 	vector< pair<wxString,wxString> > search_index;
 	bool LoadSearchIndex();
@@ -32,6 +32,7 @@ class mxReferenceWindow:public mxGenericHelpWindow {
 public:
 	static void ShowPage(wxString page="");
 	static void ShowAndSearch(const wxString &keyword);
+	void ScrollToAnchor(wxString anchor);
 	wxString ProcessHTML(wxString fname, mxReferenceWindow *w=nullptr);
 	
 	void LoadHelp(wxString file, bool update_history=true);
@@ -43,6 +44,7 @@ public:
 	void OnSearch(wxString value) override;
 	void OnSearch(wxString value, bool update_history);
 	bool OnLink(wxString href) override;
+	
 	
 	~mxReferenceWindow();
 };

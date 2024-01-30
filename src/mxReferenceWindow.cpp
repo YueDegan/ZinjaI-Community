@@ -31,6 +31,25 @@ mxReferenceWindow::~mxReferenceWindow() {
 	instance=nullptr;
 }	
 
+static wxString stripTags(const wxString str) {
+	wxString ret;
+	bool in = false;
+	for(auto c : str) {
+		if (c=='<') in = false;
+		else if (c=='>') in = true;
+		else if (in) ret << c;
+	}
+	return ret;
+}
+
+void mxReferenceWindow::ScrollToAnchor(wxString anchor) {
+	html->ScrollToAnchor(anchor);
+	// this scrolls to the bottom of the title line, so title
+	// gets cut.... scroll a bit up to ensure its fully visible
+	int x=0, y=0; html->GetViewStart(&x,&y);
+	html->Scroll(x,std::max(0,y-2));
+}
+
 void mxReferenceWindow::ShowPage(wxString page) {
 	if (page=="") page=_index;
 	page=mxFN::Join(config->Help.cppreference_dir,page);
@@ -63,6 +82,7 @@ void mxReferenceWindow::LoadHelp (wxString fname, bool update_history) {
 	wxString old_path=wxGetCwd(); 
 	RaiiWorkDirChanger cwd_guard(fn.GetPath());
 	html->SetPage(ProcessHTML(fn.GetFullName(),this));
+	html->Scroll(0,0);
 }
 
 void mxReferenceWindow::ShowIndex ( ) {
@@ -126,10 +146,10 @@ bool mxReferenceWindow::OnLink (wxString href) {
 		wxString fname = fix_filename(href.Mid(5));
 		mxUT::OpenInBrowser(mxFN::Join(current_path,fname));
 	} else if (href[0]=='#') {
-		html->ScrollToAnchor(href.AfterFirst('#'));
+		ScrollToAnchor(href.AfterFirst('#'));
 	} else if (href.Contains("#")) {
 		LoadHelp(mxFN::Join(current_path,href.BeforeFirst('#')));
-		html->ScrollToAnchor(href.AfterFirst('#'));
+		ScrollToAnchor(href.AfterFirst('#'));
 	} else {
 		LoadHelp(mxFN::Join(current_path,fix_filename(href)));
 	}
@@ -158,7 +178,8 @@ wxString mxReferenceWindow::ProcessHTML (wxString fname, mxReferenceWindow *w) {
 	wxTextFile fil(fname);
 	if (!fil.Exists()) return ERROR_PAGE(fname);
 	fil.Open();
-	bool ignoring=false; bool on_toc=false; int div_deep=0; wxString result;
+	bool ignoring = false, /*on_toc = false,*/ first_top= true, in_index = fname=="index.html";
+	int div_deep=0, insert_hr = 0; wxString result;
 	for ( wxString str = fil.GetFirstLine(); !fil.Eof(); str = fil.GetNextLine() ) {
 		if (!ignoring) {
 			int p=str.Find("<title");
@@ -187,30 +208,31 @@ wxString mxReferenceWindow::ProcessHTML (wxString fname, mxReferenceWindow *w) {
 				} else break;
 			} while (true);
 		}
-		if (!ignoring && str.Find("<table id=\"toc\"")!=wxNOT_FOUND) on_toc=true;
-		else if (on_toc && str.Find("</table>")!=wxNOT_FOUND) on_toc=false;
-		else if (on_toc && w) {
-			static int lev=0;
-			int p=str.Find("class=\"toclevel-"); 
-			if (p!=wxNOT_FOUND) lev=str[p+16]-'0';
-			p=str.Find("href=\"#");
-			if (p!=wxNOT_FOUND) {
-				wxString anchor=str.Mid(p).AfterFirst('#').BeforeFirst('\"');
-				p=str.Find("class=\"toctext\""); 
-				wxString lab=str.Mid(p).AfterFirst('>');
-				if (lab.StartsWith("<span>")) lab=lab.AfterFirst('>');
-				lab=lab.BeforeFirst('<');
-				tids[lev]=w->tree->AppendItem(tids[lev-1],lab);
-				w->items_page.push_back(make_pair(tids[lev],anchor));
-			}
-		}
-		if (!ignoring && !on_toc) {
+//		if (!ignoring && str.Find("<table id=\"toc\"")!=wxNOT_FOUND) on_toc=true;
+//		else if (on_toc && str.Find("</table>")!=wxNOT_FOUND) on_toc=false;
+//		else if (on_toc && w) {
+//			static int lev=0;
+//			int p=str.Find("class=\"toclevel-"); 
+//			if (p!=wxNOT_FOUND) lev=str[p+16]-'0';
+//			p=str.Find("href=\"#");
+//			if (p!=wxNOT_FOUND) {
+//				wxString anchor=str.Mid(p).AfterFirst('#').BeforeFirst('\"');
+//				p=str.Find("class=\"toctext\""); 
+//				wxString lab=str.Mid(p).AfterFirst('>');
+//				if (lab.StartsWith("<span>")) lab=lab.AfterFirst('>');
+//				lab=lab.BeforeFirst('<');
+//				tids[lev]=w->tree->AppendItem(tids[lev-1],lab);
+//				w->items_page.push_back(make_pair(tids[lev],anchor));
+//			}
+//		}
+		if (!ignoring /*&& !on_toc*/) {
 			if (wxNOT_FOUND!=str.Find("<span class=\"editsection\"")) {
 				str=str.Mid(str.Find("</span"));
 			}
 			str.Replace("</span>","</span> ",true);
 			
-			if (str.Contains("<div id=\"siteSub\">")) str="";
+			if (in_index and str.Contains("<h1")) str=""; // there's a hidden title "C and C++ reference"
+			else if (str.Contains("<div id=\"siteSub\">")) str="";
 			else if (str.Contains("<div id=\"contentSub\">")) str="";
 			else if (str.Contains("<div class=\"printfooter\">")) {
 				str="<BR><BR><BR><I>This help page was generated from content archive ";
@@ -223,16 +245,51 @@ wxString mxReferenceWindow::ProcessHTML (wxString fname, mxReferenceWindow *w) {
 			str.Replace("<span class=\"mw-headline\" id=","<a name=",false);
 			str.Replace(".svg\"",".png\"",true);
 			
-			// arreglar caracteres unicode para compilaciones de wx ansi
-			for(unsigned int i=0;i<str.size();i++) { 
-				if (str[i]=='Â') 
-					str.replace(i,2,"&nbsp;");
-				if (str[i]=='â') 
-					str.replace(i,3,"-");
-			}
-			str.Replace("charset=UTF-8","",false);
+			// wxHtmlWindows ignore allmost all styles and have no support for css classes...
+			// the next code is an attempt to recover a little style in order to make this content a bit more readable
 			
-			result<<str<<"\n";
+			// for index
+			str.Replace("font-size: 2em","font-size: 20pt; font-weight: bold"); // in index "C++ reference" and "C reference" titles
+			if (str.Contains("<tr class=\"row")) {
+				if (str.Contains("rowtop")) {
+					str.Replace("<tr ","<tr border=1 style=\"background:#e0e0e0;\" ");
+				} else {
+					str.Replace("<tr ","<tr style=\"background:#f0f0f0;\" ");
+				}
+				if (first_top) first_top = false;
+				else {
+					if (str.Contains("rowtop"))
+						str.Replace("<tr ","<tr><td><br></td></tr><tr ");
+					else
+						str.Replace("<tr ","<tr style=\"background:#f0f0f0;\"><td colspan=\"3\"><hr></td></tr><tr ");
+				}
+			}
+			
+			// for other pages
+			if (str.Contains("<h2") or str.Contains("<h3")) {
+				str.Replace("<h","<br><hr><h");
+				if (w) {
+					auto pid = str.Find("name=\"");
+					if (pid!=wxNOT_FOUND) {
+						auto item = w->tree->AppendItem(w->page_tree_item,stripTags(str));
+						wxString id = str.Mid(pid+6).BeforeFirst('\"');
+						w->items_page.push_back(make_pair(item,id));
+					}
+				}
+			}
+			if (str.Contains("t-example-live-lin")) str="";
+			str.Replace("<pre","<table><tr><td style=\"background:#e0e0e0;\"><pre");
+			str.Replace("</pre","\n</td></tr></table></pre");
+			
+			// protoypes table at the beginning of each help page
+			str.Replace("<tbody>","<tr><td colspan=\"3\"><hr></td></tr>");			
+			str.Replace("<tr class=\"t-dcl-sep","<tr><td colspan=\"3\"><hr></td></tr><tr");
+			auto p = str.Find("<tbody");
+			if (p!=wxNOT_FOUND) str = str.Mid(0,p) + str.Mid(p).AfterFirst('>');
+			str.Replace("</tbody>","");
+			str.Replace("rowspan=\"142\"",""); // numbers next to functions protypes when listing overloads (why 142?)
+			
+			result<<str<<'\n';
 		}
 	}
 	fil.Close();
