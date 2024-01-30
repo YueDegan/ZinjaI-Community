@@ -506,7 +506,7 @@ ProjectManager::ProjectManager(wxFileName name):custom_tools(MAX_PROJECT_CUSTOM_
 			active_configuration = configurations[0];
 		
 		for (int i=0;i<configurations_count;i++) {
-			configurations[i]->old_macros=configurations[i]->macros;
+			configurations[i]->old_macros = configurations[i]->macros;
 //			fix_path_char(configurations[i]->output_file);
 //			fix_path_char(configurations[i]->temp_folder);
 //			fix_path_char(configurations[i]->working_folder);
@@ -635,6 +635,11 @@ ProjectManager::ProjectManager(wxFileName name):custom_tools(MAX_PROJECT_CUSTOM_
 			.Title(LANG(GENERAL_WARNING,"Advertencia")).IconWarning().Run();
 	}
 	
+	if (version_saved<20240130) { // en versiones anteriores, en algunos casos se agregaban comillas a la ruta del archivo de salida
+		for (int i=0;i<configurations_count;i++)
+			if (configurations[i]->output_file.StartsWith("\"") and configurations[i]->output_file.EndsWith("\""))
+				configurations[i]->output_file = configurations[i]->output_file.Mid(1,configurations[i]->output_file.Len()-2);
+	}
 	
 	if (files_to_open>0) main_window->SetStatusProgress(-1);
 	
@@ -2942,9 +2947,9 @@ bool ProjectManager::ShouldDoExtraStep(compile_extra_step *step) {
 void ProjectManager::FixTemplateData(wxString name) {
 	project_name=name;
 	for (int i=0;i<configurations_count;i++) {
-		mxUT::ParameterReplace(configurations[i]->output_file,"${FILENAME}",name);
+		mxUT::ParameterReplace(configurations[i]->output_file,"${FILENAME}",name,false);
 		for(JavaVectorIterator<project_library> lib(configurations[i]->libs_to_build);lib.IsValid();lib.Next()) { 
-			mxUT::ParameterReplace(lib->libname,"${FILENAME}",name);
+			mxUT::ParameterReplace(lib->libname,"${FILENAME}",name,false);
 		}
 	}
 	main_window->SetOpenedFileName(project_name=name);
