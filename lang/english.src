@@ -644,6 +644,18 @@ MENUITEM_TOOLS_GCOV_RESET
 Delete results
 MENUITEM_TOOLS_GCOV_RUN_LCOV
 Process results with lcov...
+MENUITEM_TOOLS_SANITIZERS
+&Sanitizers (llvm-clang/gcc)
+MENUITEM_TOOLS_SANITIZERS_ADDRESS
+&Address Sanitizer...
+MENUITEM_TOOLS_SANITIZERS_LEAK
+&Leak Sanitizer...
+MENUITEM_TOOLS_SANITIZERS_MEMORY
+&Memory Sanitizer...
+MENUITEM_TOOLS_SANITIZERS_THREAD
+&Thread Sanitizer...
+MENUITEM_TOOLS_SANITIZERS_UNDEFINED
+&Undefined Behavior Sanitizer...
 MENUITEM_TOOLS_VALGRIND
 Dynamic Analysis (valgrind)
 MENUITEM_TOOLS_VALGRIND_RUN
@@ -1214,6 +1226,8 @@ COMPILECONF_POPUP_DEFAULT
 default value
 COMPILECONF_POPUP_COPY_FROM_TEMPLATE
 copy from template...
+COMP_ARG_EXTERN
+ZinjaI can only adjust compiler parameters automatically when a\nregular toolchain is use (one directly based on LLV-CLANG or GCC).\nYour project uses an external toolchain (<{1}>).\nYou have to manually add this arguments in the external tool's\nconfiguration file.\n\nAdditional arguments for compilation steps:\n<{2}>\n\nAdditional arguments for linkage step:\n<{3}>\n
 COMP_ARG_ADD_ARGS
 Include arguments
 COMP_ARG_ALSO_LIBS

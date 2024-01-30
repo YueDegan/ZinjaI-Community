@@ -630,6 +630,40 @@ static bool auxOnToolsGprofGcovSet(wxString tool, wxString arg) {
 	return dlg.ShowModal() && dlg.GetUserSelection();
 }
 
+static bool auxOnToolsSanitizer(wxString tool, wxString arg) {
+	if (!project && main_window->notebook_sources->GetPageCount()==0) return false;
+	mxCompilerArgEnabler dlg(main_window,tool,
+							 LANG1(COMP_ARG_GENERIC_INFO,""
+								   "Para poder activar/desactivar esta herramienta (tool),\n"
+								   "se deben utilizar argumentos específicos al compilar,\n"
+								   "y luego recompilar todo el proyecto/programa para que\n"
+								   "estos cambios tengan efecto (si no lo hace ahora,\n"
+								   "deberá luego utilizar el comando \"Limpiar\" del menú \n"
+								   "\"Ejecución\").",tool),
+							 arg,arg);
+	return dlg.ShowModal() && dlg.GetUserSelection();
+}
+
+void mxMainWindow::OnToolsSanitizersAddress (wxCommandEvent &event) {
+	auxOnToolsGprofGcovSet("Address Sanitizer","-fsanitize=address");
+}
+void mxMainWindow::OnToolsSanitizersThread (wxCommandEvent &event) {
+	auxOnToolsGprofGcovSet("Thread Sanitizer","-fsanitize=thread");
+	
+}
+void mxMainWindow::OnToolsSanitizersMemory (wxCommandEvent &event) {
+	auxOnToolsGprofGcovSet("Memory Sanitizer","-fsanitize=memory");
+	
+}
+void mxMainWindow::OnToolsSanitizersLeak (wxCommandEvent &event) {
+	auxOnToolsGprofGcovSet("Leak Sanitizer","-fsanitize=leak");
+	
+}
+void mxMainWindow::OnToolsSanitizersUndefined (wxCommandEvent &event) {
+	auxOnToolsGprofGcovSet("Undefined Behavior Sanitizer","-fsanitize=undefined");
+	
+}
+
 void mxMainWindow::OnToolsGprofSet (wxCommandEvent &event) {
 	auxOnToolsGprofGcovSet("GProf","-pg");
 }

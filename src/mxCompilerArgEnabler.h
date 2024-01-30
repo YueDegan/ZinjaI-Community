@@ -9,7 +9,6 @@ class mxCompilerArgEnabler : public mxDialog {
 	wxString m_comp_arg, m_link_arg;
 public:
 	mxCompilerArgEnabler(wxWindow *parent, wxString title, wxString help_text, wxString comp_arg, wxString link_arg);
-
 	void OnArgCheck(wxCommandEvent &evt);
 	void OnButtonOk(wxCommandEvent &evt);
 	void OnButtonCancel(wxCommandEvent &evt);

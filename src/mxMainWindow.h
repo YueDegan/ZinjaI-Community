@@ -318,6 +318,11 @@ public:
 	void OnToolsGprofFdp(wxCommandEvent &event);
 	void OnToolsLizardRun(wxCommandEvent &event);
 	void OnToolsLizardHelp(wxCommandEvent &event);
+	void OnToolsSanitizersAddress(wxCommandEvent &event);
+	void OnToolsSanitizersLeak(wxCommandEvent &event);
+	void OnToolsSanitizersMemory(wxCommandEvent &event);
+	void OnToolsSanitizersThread(wxCommandEvent &event);
+	void OnToolsSanitizersUndefined(wxCommandEvent &event);
 	void OnToolsGcovSet(wxCommandEvent &event);
 	void OnToolsGcovShow(wxCommandEvent &event);
 	void OnToolsGcovReset(wxCommandEvent &event);

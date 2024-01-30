@@ -15,28 +15,42 @@ mxCompilerArgEnabler::mxCompilerArgEnabler(wxWindow *parent, wxString title,
 	: mxDialog(parent, title), m_comp_arg(comp_arg), m_link_arg(link_arg)
 {
 	CreateSizer sizer(this);
-	sizer.BeginLabel(help_text).EndLabel();
-	sizer.BeginCheck(LANG(COMP_ARG_ADD_ARGS,"Incluir argumentos")).Id(wxID_FIND).EndCheck(m_enable_arg);
-	sizer.BeginLine().Space(15)
-		.BeginCheck(LANG(COMP_ARG_ALSO_LIBS,"Tambien en bibliotecas")).Id(wxID_FIND).EndCheck(m_also_libs)
-		.EndLine();
-	if (!project or !project->active_configuration->libs_to_build.GetSize() or m_link_arg.IsEmpty()) m_also_libs->Hide(); 
-	if (project) sizer.BeginCheck(LANG(COMP_ARG_RECOMPILE,"Recompilar todo")).EndCheck(m_recompile);
-	else m_recompile = nullptr;
-	sizer.BeginBottom().Ok().Cancel().EndBottom(this);
-	sizer.SetAndFit();
-	
-	bool b1, b2;
-	if (project) {
-		b1 = mxUT::IsArgumentPresent(project->active_configuration->compiling_extra, comp_arg);
-		b2 = mxUT::IsArgumentPresent(project->active_configuration->linking_extra, link_arg); 
+	if (project && current_toolchain.IsExtern()) {
+		wxString alt_text = LANG3(COMP_ARG_EXTERN,"ZinjaI solo puede ajustar automáticamente los argumentos\n"
+								                  "de compilación cuando se utiliza un toolchain basado\n"
+								                  "directamente enn LLV-CLANG o GCC. Su proyecto utiliza un\n"
+									 			  "toolchain externo (<{1}>), por lo que deberá\n"
+								                  "modificar los argumentos de compilación en el archivo de\n"
+												  "configuración que corresponda a dicho toolchain.\n\n"
+								                  "Argumentos adicionales para los pasos de compilación son:\n"
+								                  "<{2}>\n\n"
+								                  "Argumentos adicionales para los pasos de enlazado son:\n"
+								                  "<{3}>\n",current_toolchain.file,comp_arg,m_link_arg);
+		sizer.BeginLabel(alt_text).EndLabel();
+		sizer.BeginBottom().Cancel().EndBottom(this);
 	} else {
-		mxSource *src = main_window->GetCurrentSource();
-		wxString src_comp_opts = src->GetCompilerOptions(false);
-		b1 = mxUT::IsArgumentPresent(src_comp_opts,comp_arg);
-		b2 = mxUT::IsArgumentPresent(src_comp_opts,link_arg);
+		sizer.BeginCheck(LANG(COMP_ARG_ADD_ARGS,"Incluir argumentos")).Id(wxID_FIND).EndCheck(m_enable_arg);
+		sizer.BeginLine().Space(15)
+			.BeginCheck(LANG(COMP_ARG_ALSO_LIBS,"Tambien en bibliotecas")).Id(wxID_FIND).EndCheck(m_also_libs)
+			.EndLine();
+		if (!project or !project->active_configuration->libs_to_build.GetSize() or m_link_arg.IsEmpty()) m_also_libs->Hide();
+		if (project) sizer.BeginCheck(LANG(COMP_ARG_RECOMPILE,"Recompilar todo")).EndCheck(m_recompile);
+		else m_recompile = nullptr;
+		sizer.BeginBottom().Ok().Cancel().EndBottom(this);
+		sizer.SetAndFit();
+		
+		bool b1, b2;
+		if (project) {
+			b1 = mxUT::IsArgumentPresent(project->active_configuration->compiling_extra, comp_arg);
+			b2 = mxUT::IsArgumentPresent(project->active_configuration->linking_extra, link_arg);
+		} else {
+			mxSource *src = main_window->GetCurrentSource();
+			wxString src_comp_opts = src->GetCompilerOptions(false);
+			b1 = mxUT::IsArgumentPresent(src_comp_opts,comp_arg);
+			b2 = mxUT::IsArgumentPresent(src_comp_opts,link_arg);
+		}
+		m_enable_arg->SetValue( b1 && b2 );
 	}
-	m_enable_arg->SetValue( b1 && b2 );
 }
 
 void mxCompilerArgEnabler::OnButtonOk (wxCommandEvent & evt) {

@@ -229,12 +229,12 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 		AddSeparator(mnTOOLS);
 		
 		AddMenuItem(mnTOOLS, myMenuItem("generate_makefile", mxID_TOOLS_MAKEFILE, LANG(MENUITEM_TOOLS_GENERATE_MAKEFILE,"&Generar Makefile...")).Description("Genera el Makefile a partir de los fuentes y la configuración seleccionada").EnableIf(ecPROJECT));
-		AddMenuItem(mnTOOLS, myMenuItem("open_terminal", mxID_TOOLS_CONSOLE, LANG(MENUITEM_TOOLS_OPEN_TERMINAL,"Abrir Co&nsola...")).Description("Inicia una terminal para interactuar con el interprete de comandos del sistema operativo"));
+		AddMenuItem(mnTOOLS, myMenuItem("open_terminal", mxID_TOOLS_CONSOLE, LANG(MENUITEM_TOOLS_OPEN_TERMINAL,"Abrir Co&nsola...")).Description("Inicia una terminal para interactuar con el intérprete de comandos del sistema operativo"));
 		AddMenuItem(mnTOOLS, myMenuItem("exe_info", mxID_TOOLS_EXE_PROPS, LANG(MENUITEM_TOOLS_EXE_INFO,"&Propiedades del Ejecutable...")).Description("Muestra información sobre el archivo compilado").EnableIf(ecPROJECT_OR_SOURCE));
-		AddMenuItem(mnTOOLS, myMenuItem("proy_stats", mxID_TOOLS_PROJECT_STATISTICS, LANG(MENUITEM_TOOLS_PROJECT_STATISTICS,"E&stadisticas del Proyecto...")).Description("Muestra información estadistica sobre los fuentes y demas archivos del proyecto").EnableIf(ecPROJECT));
+		AddMenuItem(mnTOOLS, myMenuItem("proy_stats", mxID_TOOLS_PROJECT_STATISTICS, LANG(MENUITEM_TOOLS_PROJECT_STATISTICS,"Estadísticas del Proyecto...")).Description("Muestra información estadistica sobre los fuentes y demas archivos del proyecto").EnableIf(ecPROJECT));
 		AddMenuItem(mnTOOLS, myMenuItem("draw_project", mxID_TOOLS_DRAW_PROJECT, LANG(MENUITEM_TOOLS_DRAW_PROJECT,"Grafo del Proyecto...")).EnableIf(ecPROJECT));
 		
-		BeginSubMenu(mnTOOLS,LANG(MENUITEM_TOOLS_SHARE,"Compartir Archivos en la &Red Local"),"Permite enviar o recibir codigos fuentes a traves de una red LAN","share.png");
+		BeginSubMenu(mnTOOLS,LANG(MENUITEM_TOOLS_SHARE,"Compartir Archivos en la &Red Local"),"Permite enviar o recibir códigos fuentes a traves de una red LAN","share.png");
 			AddMenuItem(mnTOOLS, myMenuItem("open_shared",mxID_TOOLS_SHARE_OPEN, LANG(MENUITEM_TOOLS_SHARE_OPEN,"&Abrir compartido...")).Description("Abre un archivo compartido por otra PC en la red local."));
 			AddMenuItem(mnTOOLS, myMenuItem("share_source",mxID_TOOLS_SHARE_SHARE, LANG(MENUITEM_TOOLS_SHARE_SHARE,"&Compartir actual...")).Description("Comparte el archivo en la red local.").EnableIf(ecSOURCE));
 			AddMenuItem(mnTOOLS, myMenuItem("share_list",mxID_TOOLS_SHARE_LIST, LANG(MENUITEM_TOOLS_SHARE_LIST,"&Ver lista de compartidos propios...")).Description("Comparte el archivo en la red local."));
@@ -316,6 +316,15 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_GCOV_HELP,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra ayuda acerca de como generar e interpretar la información del test de cobertura").Icon("help.png"));
 		EndSubMenu(mnTOOLS);
 		
+		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_SANITIZERS,"&Sanitizers (llvm-clang/gcc)")).Description("Instrumentar el ejecutable generado para detectar cierto tipo de errores en tiempo de ejecución.").Icon("gcov.png").EnableIf(ecPROJECT_OR_SOURCE));
+			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_address",  mxID_TOOLS_SANITIZERS_ADDRESS,   LANG(MENUITEM_TOOLS_SANITIZERS_ADDRESS,  "Address Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilación asociados a este sanitizer."));
+			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_leak",     mxID_TOOLS_SANITIZERS_LEAK,      LANG(MENUITEM_TOOLS_SANITIZERS_LEAK,     "Leak Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilación asociados a este sanitizer."));
+			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_memory",   mxID_TOOLS_SANITIZERS_MEMORY,    LANG(MENUITEM_TOOLS_SANITIZERS_MEMORY,   "Memory Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilación asociados a este sanitizer."));
+			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_thread",   mxID_TOOLS_SANITIZERS_THREAD,    LANG(MENUITEM_TOOLS_SANITIZERS_THREAD,   "Thread Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilación asociados a este sanitizer."));
+			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_undefined",mxID_TOOLS_SANITIZERS_UNDEFINED, LANG(MENUITEM_TOOLS_SANITIZERS_UNDEFINED,"Undefined Behavior Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilación asociados a este sanitizer."));
+//			AddSeparator(mnTOOLS);
+//			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_SANITIZERS,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra ayuda acerca de como generar e interpretar la información del test de cobertura").Icon("help.png"));
+		EndSubMenu(mnTOOLS);
 	#ifndef __WIN32__
 		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_VALGRIND,"Análisis Dinámico (valgrind)")).Description("Valgrind permite analizar el uso de memoria dinamica para detectar perdidas y otros errores").Icon("valgrind.png").EnableIf(ecPROJECT_OR_SOURCE));
 			AddMenuItem(mnTOOLS, myMenuItem("valgrind_run",mxID_TOOLS_VALGRIND_RUN, LANG(MENUITEM_TOOLS_VALGRIND_RUN,"Ejecutar...")));

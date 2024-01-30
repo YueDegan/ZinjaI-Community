@@ -644,6 +644,18 @@ MENUITEM_TOOLS_GCOV_RESET
 Eliminar resultados
 MENUITEM_TOOLS_GCOV_RUN_LCOV
 Procesar resultados con lcov...
+MENUITEM_TOOLS_SANITIZERS
+&Sanitizers
+MENUITEM_TOOLS_SANITIZERS_ADDRESS
+ 
+MENUITEM_TOOLS_SANITIZERS_LEAK
+    
+MENUITEM_TOOLS_SANITIZERS_MEMORY
+  
+MENUITEM_TOOLS_SANITIZERS_THREAD
+  
+MENUITEM_TOOLS_SANITIZERS_UNDEFINED
+Address Sanitizer...
 MENUITEM_TOOLS_VALGRIND
 Análisis Dinámico (valgrind)
 MENUITEM_TOOLS_VALGRIND_RUN
@@ -1214,6 +1226,8 @@ COMPILECONF_POPUP_DEFAULT
 valores por defecto
 COMPILECONF_POPUP_COPY_FROM_TEMPLATE
 copiar de plantilla...
+COMP_ARG_EXTERN
+ZinjaI solo puede ajustar automáticamente los argumentos\nde compilación cuando se utiliza un toolchain basado\ndirectamente enn LLV-CLANG o GCC. Su proyecto utiliza un\ntoolchain externo (<{1}>), por lo que deberá\nmodificar los argumentos de compilación en el archivo de\nconfiguración que corresponda a dicho toolchain.\n\nArgumentos adicionales para los pasos de compilación son:\n<{2}>\n\nArgumentos adicionales para los pasos de enlazado son:\n<{3}>\n
 COMP_ARG_ADD_ARGS
 Incluir argumentos
 COMP_ARG_ALSO_LIBS
@@ -1519,7 +1533,7 @@ ZinjaI no se cerro correctamente durante su ultima ejecucion.\nEl proyecto en el
 ERRORRECOVERY_PROJECT_PROBLEM
 Ha ocurrido un error al intentar recuperar el proyecto.
 EXEINFO_CAPTION_SOURCE
-Propiedades del Ejecutable
+Propiedades del Archivo
 EXEINFO_CAPTION_PROJECT
 Propiedades del Ejecutable
 EXEINFO_NOT_FOUND

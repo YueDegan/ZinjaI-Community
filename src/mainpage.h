@@ -70,7 +70,7 @@
 * 
 * @subsection guidelines Miscelaneous guidelines
 * 
-*   - Use struct for stuff without behaviour/invariants (registers) 
+*   - Use struct for stuff without behavior/invariants (registers) 
 *     and class for everything else.
 * 
 *   - Do not use "using namespace bla".... 
