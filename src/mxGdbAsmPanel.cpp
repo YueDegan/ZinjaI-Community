@@ -42,16 +42,16 @@ void mxGdbAsmPanel::Update ( ) {
 			m_code->MarkerDeleteHandle(m_marker_handle);
 		m_marker_handle = -1;
 	} else {
-		map<AddressRange,wxString>::iterator it = m_cache.find(AddressRange(addr));
+		auto it = m_cache.find(AddressRange(addr));
 		if (it==m_cache.end()) { // si es la primera vez que se analiza esa función
 			wxString ans = debug->SendCommand("disassemble /m").stream;
 			AddressRange range = ParseCode(ans);
-			it = m_cache.insert(pair<AddressRange,wxString>(range,ans)).first;
+			it = m_cache.insert(std::pair<AddressRange,wxString>(range,ans)).first;
 		} else { // si ya estaba desensamblada
 			ParseCode(it->second);
 		}
 	}
-	map<AddressRange::addr_t,int>::iterator it = m_addr_to_line.find(addr);
+	auto it = m_addr_to_line.find(addr);
 	if (it!=m_addr_to_line.end()) {
 		m_marker_handle = m_code->MarkerAdd(it->second,m_code->next_available_marker);
 		m_code->EnsureVisibleEnforcePolicy(it->second);

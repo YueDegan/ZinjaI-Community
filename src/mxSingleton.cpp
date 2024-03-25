@@ -1,5 +1,4 @@
 #include <iostream>
-using namespace std;
 #include "mxSingleton.h"
 #include "ConfigManager.h"
 #include "mxMainWindow.h"

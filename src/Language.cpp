@@ -13,7 +13,6 @@ wxCSConv cscMAC(_T("MAC"));
 #include "mxMainWindow.h"
 #include "mxMessageDialog.h"
 #include "StringConv.h"
-using namespace std;
 
 char *g_language_buffer = nullptr;
 int *g_language_index = nullptr;
@@ -30,7 +29,7 @@ int *g_language_index = nullptr;
 *                    otro caso
 **/
 
-LANGUAGE_ERROR load_language(string lang_in, string lang_cache) {
+LANGUAGE_ERROR load_language(std::string lang_in, std::string lang_cache) {
 	
 	if (g_language_buffer) delete [] g_language_buffer;
 	if (g_language_index) delete [] g_language_index;
@@ -44,9 +43,9 @@ LANGUAGE_ERROR load_language(string lang_in, string lang_cache) {
 	} else if (le==LANGERR_SIGN_NOT_FOUND) return le;
 	
 	// cargar el buffer con las cadenas en binario y pegadas
-	ifstream fin((lang_cache+".buf").c_str(),ios::binary|ios::ate);
+	std::ifstream fin((lang_cache+".buf").c_str(),std::ios::binary|std::ios::ate);
 	int sz=fin.tellg();
-	fin.seekg(0,ios::beg);
+	fin.seekg(0,std::ios::beg);
 	g_language_buffer = new char[sz];
 	if (!fin.read(g_language_buffer,sz)) {
 		fin.close();
@@ -55,9 +54,9 @@ LANGUAGE_ERROR load_language(string lang_in, string lang_cache) {
 	fin.close();
 	
 	// cargar el buffer con los offsets para armar los punteros
-	ifstream fin2((lang_cache+".idx").c_str(),ios::binary|ios::ate);
+	std::ifstream fin2((lang_cache+".idx").c_str(),std::ios::binary|std::ios::ate);
 	sz=fin2.tellg()/sizeof(int);
-	fin2.seekg(0,ios::beg);
+	fin2.seekg(0,std::ios::beg);
 	g_language_index = new int[sz];
 	if (!fin2.read((char*)g_language_index,(sz)*sizeof(int)) || sz!=int(LANGUAGE_MAX)) {
 		fin2.close();
@@ -69,14 +68,14 @@ LANGUAGE_ERROR load_language(string lang_in, string lang_cache) {
 	
 }
 
-LANGUAGE_ERROR is_language_compiled(string lang_in, string lang_cache) {
+LANGUAGE_ERROR is_language_compiled(std::string lang_in, std::string lang_cache) {
 	if (!lang_cache.size()) return LANGERR_NO_CACHE_NAME;
-	ifstream fc((lang_cache+".sgn").c_str());
+	std::ifstream fc((lang_cache+".sgn").c_str());
 	if (!fc.is_open()) return LANGERR_CACHE_NOT_FOUND;
-	string sc; getline(fc,sc); fc.close();
-	ifstream fi((lang_in+".sgn").c_str());
+	std::string sc; std::getline(fc,sc); fc.close();
+	std::ifstream fi((lang_in+".sgn").c_str());
 	if (!fi.is_open()) return LANGERR_SIGN_NOT_FOUND;
-	string si; getline(fi,si); fi.close();
+	std::string si; std::getline(fi,si); fi.close();
 	if (sc!=si) return LANGERR_SIGN_DIFFER;
 	return LANGERR_OK;
 }
@@ -85,19 +84,19 @@ static void remove_slash_r(std::string &s) {
 	if (!s.empty() && s[s.size()-1]=='\r') s.erase(s.size()-1,1);
 }
 
-LANGUAGE_ERROR compile_language(string lang_in, string lang_cache) {
+LANGUAGE_ERROR compile_language(std::string lang_in, std::string lang_cache) {
 
 	// leer las cadenas
 	int scount=0, buflen=0;
-	ifstream fin((lang_in+".pre").c_str());
+	std::ifstream fin((lang_in+".pre").c_str());
 	if (!fin.is_open()) return LANGERR_PRE_NOT_FOUND;
 	int texts_len = int(LANGUAGE_MAX)+1;
-	string *texts = new string[texts_len];
-	string tmp;
-	getline(fin,tmp); remove_slash_r(tmp);
+	std::string *texts = new std::string[texts_len];
+	std::string tmp;
+	std::getline(fin,tmp); remove_slash_r(tmp);
 	while (tmp!="END" && scount<LANGUAGE_MAX) {
-		string &tx=texts[scount];
-		getline(fin,tx); remove_slash_r(tx);
+		std::string &tx=texts[scount];
+		std::getline(fin,tx); remove_slash_r(tx);
 		for (unsigned int j=0;j<tx.size();j++) {
 			if (tx[j]=='\\' && j+1<tx.size()) {
 				if (tx[j+1]=='n') tx.replace(j,2,"\n");
@@ -126,18 +125,18 @@ LANGUAGE_ERROR compile_language(string lang_in, string lang_cache) {
 	delete [] texts;
 	
 	// guardar el buffer
-	ofstream fout((lang_cache+".buf").c_str(),ios::binary|ios::trunc);
+	std::ofstream fout((lang_cache+".buf").c_str(),std::ios::binary|std::ios::trunc);
 	fout.write(g_language_buffer,buflen);
 	fout.close();
 	// guardar el indice
-	ofstream fout2((lang_cache+".idx").c_str(),ios::binary|ios::trunc);
+	std::ofstream fout2((lang_cache+".idx").c_str(),std::ios::binary|std::ios::trunc);
 	fout2.write((char*)g_language_index,(LANGUAGE_MAX)*sizeof(int));
 	fout2.close();
 	// guardar firma
-	ifstream fi((lang_in+".sgn").c_str());
-	string si; getline(fi,si); remove_slash_r(si); fi.close();
-	ofstream fc((lang_cache+".sgn").c_str(),ios::trunc);
-	fc<<si<<endl; fc.close();
+	std::ifstream fi((lang_in+".sgn").c_str());
+	std::string si; getline(fi,si); remove_slash_r(si); fi.close();
+	std::ofstream fc((lang_cache+".sgn").c_str(),std::ios::trunc);
+	fc<<si<<std::endl; fc.close();
 	
 	return LANGERR_RECOMPILED;
 }

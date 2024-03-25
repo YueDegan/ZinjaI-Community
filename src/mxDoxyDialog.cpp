@@ -9,8 +9,6 @@
 #include "Language.h"
 #include "mxThreeDotsUtils.h"
 
-using namespace std;
-
 BEGIN_EVENT_TABLE(mxDoxyDialog, wxDialog)
 	EVT_BUTTON(wxID_OK,mxDoxyDialog::OnOkButton)
 	EVT_BUTTON(mxID_DOXYDIALOG_BASE,mxDoxyDialog::OnBaseDirButton)

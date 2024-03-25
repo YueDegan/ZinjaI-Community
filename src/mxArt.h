@@ -4,7 +4,6 @@
 #include <map>
 #include <wx/filename.h>
 #include "enums.h"
-using namespace std;
 
 class wxBitmap;
 
@@ -85,10 +84,10 @@ public:
 private:
 	struct BitmapPack {
 		bool pack_exists;
-		map<wxString,wxBitmap*> bitmaps;
+		std::map<wxString,wxBitmap*> bitmaps;
 		BitmapPack() : pack_exists(false) {}
 	};
-	map<wxString,BitmapPack*> packs; ///< says if a path has the pack file (use BoolFlag to ensure its false initialization)
+	std::map<wxString,BitmapPack*> packs; ///< says if a path has the pack file (use BoolFlag to ensure its false initialization)
 	const wxBitmap *last_bmp; ///< after calling HasBitmap the result is cached here to avoid searching again if then we call GetBitmap
 	BitmapPack *LoadPack(const wxString &path);
 	const wxBitmap *auxHasBitmap(const wxFileName &fullpath);

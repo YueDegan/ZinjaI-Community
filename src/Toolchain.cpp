@@ -7,7 +7,6 @@
 #include "Toolchain.h"
 #include "mxUtils.h"
 #include "ZLog.h"
-using namespace std;
 
 Toolchain *Toolchain::toolchains=nullptr;
 int Toolchain::toolchains_count=0;

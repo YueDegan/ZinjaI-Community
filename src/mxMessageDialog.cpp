@@ -8,7 +8,6 @@
 #include "Language.h"
 #include "mxBitmapButton.h"
 #include "mxMainWindow.h"
-using namespace std;
 
 BEGIN_EVENT_TABLE(mxMessageDialog, wxDialog)
 	EVT_BUTTON(wxID_OK,mxMessageDialog::OnOkButton)

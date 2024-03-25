@@ -41,7 +41,6 @@
 #include "IniFile.h"
 #include "EnvVars.h"
 #include "ZLog.h"
-using namespace std;
 
 #ifdef __WIN32__
 	// maldito seas "winbase.h" (ahi se hacen defines como los que estan aca abajo, entonces cualquiera que los incluya esta cambiando los nombres)
@@ -3226,7 +3225,7 @@ void ProjectManager::DrawGraph() {
 		}
 	}
 	
-	sort(dgi,dgi+c);
+	std::sort(dgi,dgi+c);
 	mm=dgi[c/2].lc;
 	if (Ml==mm || mm==ml) mm=(ml+Ml)/2;
 	

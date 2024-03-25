@@ -8,7 +8,6 @@
 #include "mxUtils.h"
 #include "mxCommonConfigControls.h"
 
-using namespace std;
 
 widgetDisabler::widgetDisabler() {
 	m_first = nullptr;
@@ -58,27 +57,27 @@ void widgetBinder::FromWidgets ( ) { Transfer(false); }
 
 void widgetBinder::Transfer (bool to_widget) {
 	{
-		vector< BinderAux<wxTextCtrl,wxString> >::iterator it = m_text_string.begin(), end = m_text_string.end();
+		auto it = m_text_string.begin(), end = m_text_string.end();
 		if (to_widget) for(;it!=end;++it) { it->control->SetValue(*(it->value)); }
 		else           for(;it!=end;++it) { *(it->value) = it->control->GetValue(); }
 	}
 	{
-		vector< BinderAux<wxTextCtrl,int> >::iterator it = m_text_int.begin(), end = m_text_int.end();
+		auto it = m_text_int.begin(), end = m_text_int.end();
 		if (to_widget) for(;it!=end;++it) { it->control->SetValue(wxString()<<(*(it->value))); }
 		else           for(;it!=end;++it) { long l; if (it->control->GetValue().ToLong(&l)) *(it->value) = l; }
 	}
 	{
-		vector< BinderAux<wxComboBox,wxString> >::iterator it = m_combo_string.begin(), end = m_combo_string.end();
+		auto it = m_combo_string.begin(), end = m_combo_string.end();
 		if (to_widget) for(;it!=end;++it) { it->control->SetValue(*(it->value)); }
 		else           for(;it!=end;++it) { *(it->value) = it->control->GetValue(); }
 	}
 	{
-		vector< BinderAux<wxComboBox,int> >::iterator it = m_combo_int.begin(), end = m_combo_int.end();
+		auto it = m_combo_int.begin(), end = m_combo_int.end();
 		if (to_widget) for(;it!=end;++it) { it->control->SetSelection(*(it->value)); }
 		else           for(;it!=end;++it) { *(it->value) = it->control->GetSelection(); }
 	}
 	{
-		vector< BinderAux<wxCheckBox,bool> >::iterator it = m_check_bool.begin(), end = m_check_bool.end();
+		auto it = m_check_bool.begin(), end = m_check_bool.end();
 		if (to_widget) for(;it!=end;++it) { it->control->SetValue(*(it->value)); }
 		else           for(;it!=end;++it) { *(it->value) = it->control->GetValue(); }
 	}

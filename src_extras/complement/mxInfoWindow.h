@@ -6,6 +6,7 @@
 #include "ComplementArchive.h"
 #include <wx/gauge.h>
 #include <wx/checkbox.h>
+#include <wx/textfile.h>
 
 class mxInfoWindow : public wxFrame {
 private:
@@ -16,6 +17,7 @@ private:
 	wxButton *but_ok;
 	wxButton *but_cancel;
 	wxGauge *gauge;
+	wxTextFile *log_file = nullptr;
 protected:
 public:
 	mxInfoWindow(wxString _dest, wxString _file);
@@ -26,6 +28,7 @@ public:
 	void Progress(int progress);
 	bool ShouldStop() { return should_stop; }
 	void DontStop() { should_stop=false; }
+	bool CheckRequirements();
 	void Finish();
 	DECLARE_EVENT_TABLE();
 };

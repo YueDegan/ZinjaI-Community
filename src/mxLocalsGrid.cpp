@@ -84,9 +84,9 @@ void mxLocalsGrid::Update () {
 
 void mxLocalsGrid::OnCellPopupMenu (int row, int col) {
 	
-	vector<int> sel; mxGrid::GetSelectedRows(sel);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel);
 	// ensure clicked row is selected... if it is, use current selection, if not make it current selection
-	if (find(sel.begin(),sel.end(),row)==sel.end()) { sel.clear(); mxGrid::Select(row); sel.push_back(row); }
+	if (std::find(sel.begin(),sel.end(),row)==sel.end()) { sel.clear(); mxGrid::Select(row); sel.push_back(row); }
 	
 	wxMenu menu; 
 	
@@ -112,7 +112,7 @@ void mxLocalsGrid::OnCellPopupMenu (int row, int col) {
 
 
 void mxLocalsGrid::OnAddToInspectionsGrid (wxCommandEvent & evt) {
-	vector<int> sel; mxGrid::GetSelectedRows(sel,true);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,true);
 	mxInspectionGrid *grid = main_window->inspection_ctrl->GetInspectionGrid(evt.GetId()-mxID_LAST_ID);
 	for(unsigned int i=0;i<sel.size();i++) {
 		grid->ModifyExpression(-1,mxGrid::GetCellValue(sel[i],LG_COL_NAME),false);
@@ -121,19 +121,19 @@ void mxLocalsGrid::OnAddToInspectionsGrid (wxCommandEvent & evt) {
 }
 
 void mxLocalsGrid::OnShowInTable(wxCommandEvent &evt) {
-	vector<int> sel; mxGrid::GetSelectedRows(sel,true);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,true);
 	for(unsigned int i=0;i<sel.size();i++)
 		new mxInspectionMatrix(mxGrid::GetCellValue(sel[i],LG_COL_NAME),false);
 }
 
 void mxLocalsGrid::OnShowInText(wxCommandEvent &evt) {
-	vector<int> sel; mxGrid::GetSelectedRows(sel,true);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,true);
 	for(unsigned int i=0;i<sel.size();i++)
 		new mxInspectionPrint(mxGrid::GetCellValue(sel[i],LG_COL_NAME),false);
 }
 
 void mxLocalsGrid::OnExploreExpression (wxCommandEvent & evt) {
-	vector<int> sel; mxGrid::GetSelectedRows(sel,true);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,true);
 	if (sel.size()==1) {
 		new mxInspectionExplorerDialog(mxGrid::GetCellValue(sel[0],LG_COL_NAME),false);
 	} else {
@@ -160,7 +160,7 @@ void mxLocalsGrid::OnCopyAll (wxCommandEvent & evt) {
 }
 
 void mxLocalsGrid::OnShowInHistory (wxCommandEvent & evt) {
-	vector<int> sel; mxGrid::GetSelectedRows(sel,true);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,true);
 	for(unsigned int i=0;i<sel.size();i++)
 		new mxInspectionHistory(mxGrid::GetCellValue(sel[i],LG_COL_NAME),false);
 }

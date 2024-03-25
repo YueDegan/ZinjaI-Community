@@ -674,7 +674,7 @@ void MenusAndToolsConfig::LoadToolbarsData ( ) {
 
 	
 void MenusAndToolsConfig::PopulateMenu(int menu_id) {
-	vector<wxMenu*> menu_stack;
+	std::vector<wxMenu*> menu_stack;
 	wxMenu *current_menu = menues[menu_id].wx_menu = new wxMenu;
 	wx_menu_bar->Append(current_menu,menues[menu_id].label);
 	unsigned int items_size = menues[menu_id].items.size();
@@ -957,7 +957,7 @@ void MenusAndToolsConfig::PopulateToolbar(int tb_id) {
 	wxString ipre=mxFN::Join(wxString()<<icon_size,"");
 	
 	if (tb_id!=tbPROJECT) { // items de la base de items
-		vector<myToolbarItem> &items = toolbars[tb_id].items;
+		std::vector<myToolbarItem> &items = toolbars[tb_id].items;
 		for(unsigned int i=0;i<items.size();i++)
 			if (items[i].visible) 
 				mxUT::AddTool(wx_toolbar,items[i].wx_id,items[i].label,ipre+items[i].icon,items[i].description,items[i].checkeable?wxITEM_CHECK:wxITEM_NORMAL);
@@ -1009,8 +1009,8 @@ void MenusAndToolsConfig::SetProjectMode (bool mode) {
 }
 
 int MenusAndToolsConfig::ToolbarFromTool(int tool_id) {
-	for(int tb_id=0;tb_id<tbCOUNT_FULL;tb_id++) { 
-		vector<myToolbarItem> &items = toolbars[tb_id].items;
+	for(int tb_id=0;tb_id<tbCOUNT_FULL;tb_id++) {
+		std::vector<myToolbarItem> &items = toolbars[tb_id].items;
 		for(unsigned int i=0;i<items.size();i++) {
 			if (items[i].wx_id==tool_id) return tb_id;
 		}
@@ -1027,7 +1027,7 @@ void MenusAndToolsConfig::CreateMenuesAndToolbars (mxMainWindow * _main_window) 
 }
 
 MenusAndToolsConfig::myMenuItem *MenusAndToolsConfig::GetMyMenuItem (int menu_id, int item_id) {
-	vector<myMenuItem> &v = menues[menu_id].items;
+	std::vector<myMenuItem> &v = menues[menu_id].items;
 	for(unsigned int i=0;i<v.size();i++) { 
 		if (v[i].wx_id==item_id) return &(v[i]);
 	}
@@ -1035,7 +1035,7 @@ MenusAndToolsConfig::myMenuItem *MenusAndToolsConfig::GetMyMenuItem (int menu_id
 }
 
 MenusAndToolsConfig::myToolbarItem *MenusAndToolsConfig::GetMyToolbarItem (int toolbar_id, int item_id) {
-	vector<myToolbarItem> &v = toolbars[toolbar_id].items;
+	std::vector<myToolbarItem> &v = toolbars[toolbar_id].items;
 	for(unsigned int i=0;i<v.size();i++) { 
 		if (v[i].wx_id==item_id) return &(v[i]);
 	}
@@ -1080,7 +1080,7 @@ bool MenusAndToolsConfig::ParseToolbarConfigLine (const wxString & key, const wx
 		for(int tb_id=0;tb_id<tbCOUNT_FULL;tb_id++) { 
 			if (toolbars[tb_id].key==tb_name) {
 				wxString name = key.AfterFirst('.');
-				vector<myToolbarItem> &items = toolbars[tb_id].items;
+				std::vector<myToolbarItem> &items = toolbars[tb_id].items;
 				for(unsigned int i=0;i<items.size();i++) { 
 					if (items[i].key==name) {
 						items[i].visible = mxUT::IsTrue(value);
@@ -1121,7 +1121,7 @@ bool MenusAndToolsConfig::SaveToolbarsSettings (const wxString & full_path) {
 	for(int tb_id=0;tb_id<tbCOUNT_FULL;tb_id++) {
 		file.AddLine(wxString("positions.")+toolbars[tb_id].key+"="+(wxString)toolbars[tb_id].position);
 		wxString toolbar_key = toolbars[tb_id].key+".";
-		vector<myToolbarItem> &items = toolbars[tb_id].items;
+		std::vector<myToolbarItem> &items = toolbars[tb_id].items;
 		for(unsigned int i=0;i<items.size();i++) {
 			if (items[i].key.IsEmpty()) continue;
 			file.AddLine(toolbar_key+items[i].key+(items[i].visible?"=1":"=0"));
@@ -1139,7 +1139,7 @@ bool MenusAndToolsConfig::ParseMenuConfigLine (const wxString & key, const wxStr
 	for(int mn_id=0;mn_id<mnCOUNT;mn_id++) { 
 		if (menues[mn_id].key==mn_name) {
 			wxString name = key.AfterFirst('.');
-			vector<myMenuItem> &items = menues[mn_id].items;
+			std::vector<myMenuItem> &items = menues[mn_id].items;
 			for(unsigned int i=0;i<items.size();i++) { 
 				if (items[i].key==name) {
 					items[i].RedefineShortcut(value);

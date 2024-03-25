@@ -10,7 +10,6 @@
 #include "raii.h"
 #include "mxMainWindow.h"
 #include "fix_filename.h"
-using namespace std;
 
 #define _index "index.html"
 #define ERROR_PAGE(page) wxString(_T("<I>ERROR</I>: La pagina \""))<<page<<_T("\" no se encuentra.")
@@ -133,7 +132,7 @@ bool mxReferenceWindow::OnLink (wxString href) {
 		wxString pre = href.BeforeFirst('%');
 		wxString pos = href.AfterFirst('%');
 		if (pos.Len()<2) break;
-		map<char,int> h2d;
+		std::map<char,int> h2d;
 		for(int i=0;i<10;i++) h2d['0'+i]=i;
 		for(int i=0;i<6;i++) h2d['a'+i]=10+i;
 		int c = h2d[tolower(pos[0])]*16 + h2d[tolower(pos[1])];
@@ -173,7 +172,7 @@ void mxReferenceWindow::OnNext ( ) {
 }
 
 wxString mxReferenceWindow::ProcessHTML (wxString fname, mxReferenceWindow *w) {
-	vector<wxTreeItemId> tids(10);
+	std::vector<wxTreeItemId> tids(10);
 	if (w) { w->tree->DeleteChildren(w->page_tree_item); w->items_page.clear(); tids[0]=w->page_tree_item; }
 	wxTextFile fil(fname);
 	if (!fil.Exists()) return ERROR_PAGE(fname);
@@ -273,7 +272,7 @@ wxString mxReferenceWindow::ProcessHTML (wxString fname, mxReferenceWindow *w) {
 					if (pid!=wxNOT_FOUND) {
 						auto item = w->tree->AppendItem(w->page_tree_item,stripTags(str));
 						wxString id = str.Mid(pid+6).BeforeFirst('\"');
-						w->items_page.push_back(make_pair(item,id));
+						w->items_page.push_back(std::make_pair(item,id));
 					}
 				}
 			}
@@ -324,7 +323,7 @@ bool mxReferenceWindow::LoadSearchIndex ( ) {
 	for ( wxString str = findex.GetFirstLine(); !findex.Eof(); str = findex.GetNextLine() ) {
 		wxString file=str.BeforeFirst(':'), title=str.AfterFirst(':');
 		if (file.StartsWith("./")) file=file.Mid(2);
-		if (file.Len()&&title.Len()) search_index.push_back(make_pair(file,title));
+		if (file.Len()&&title.Len()) search_index.push_back(std::make_pair(file,title));
 	}
 	findex.Close();
 	
@@ -362,9 +361,9 @@ bool mxReferenceWindow::PopulateInitialTree ( ) {
 	wxTreeItemId item_c= tree->AppendItem(index,"C reference");
 	page_tree_item = tree->AppendItem(root,"In This Page");
 	wxTreeItemId last_parent=index;
-	items_general.push_back(make_pair(index,_index));
-	items_general.push_back(make_pair(item_c,wxString("c.html")));
-	items_general.push_back(make_pair(item_cpp,wxString("cpp.html")));
+	items_general.push_back(std::make_pair(index,_index));
+	items_general.push_back(std::make_pair(item_c,wxString("c.html")));
+	items_general.push_back(std::make_pair(item_cpp,wxString("cpp.html")));
 	fil.Open(); bool on_child=false;
 	for ( wxString str = fil.GetFirstLine(); !fil.Eof(); str = fil.GetNextLine() ) {
 		if (str.Contains("<div class=\"mainpagediv\">")) on_child=true;
@@ -379,12 +378,12 @@ bool mxReferenceWindow::PopulateInitialTree ( ) {
 				wxTreeItemId new_item;
 				if (on_child) new_item=tree->AppendItem(last_parent,name);
 				else new_item=last_parent=tree->AppendItem(item_c,name);
-				items_general.push_back(make_pair(new_item,location));
+				items_general.push_back(std::make_pair(new_item,location));
 			} else if (location.StartsWith("cpp/")) {
 				wxTreeItemId new_item;
 				if (on_child) new_item=tree->AppendItem(last_parent,name);
 				else new_item=last_parent=tree->AppendItem(item_cpp,name);
-				items_general.push_back(make_pair(new_item,location));
+				items_general.push_back(std::make_pair(new_item,location));
 			}
 		}
 	}

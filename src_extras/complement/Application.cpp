@@ -1,13 +1,23 @@
+#include <iostream>
+#include <wx/msgdlg.h>
 #include "Application.h"
 #include "mxInfoWindow.h"
 #include "ComplementArchive.h"
 #include "mxCreateComplementWindow.h"
-#include <iostream>
-#include <wx/msgdlg.h>
 #include "mac-stuff.h"
-using namespace std;
 
 bool spanish=false;
+
+// sample running args for debugging:
+
+// create:
+//   workdir: /mnt/ex/complements/mingw64-gcc12/dist/
+//   args: --build sfml2 /mnt/rm/borrar.zcp
+
+// install:
+//   workdir: /mnt/ex/zinjai
+//   args: --lang=spanish /mnt/ex/zinjai/bin/.. /mnt/ex/complements/mingw64-gcc12/packs/zinjai-add-sfml2-w64-20240131.zcp
+
 
 bool mxApplication::OnInit() {
 	wxString zpath,fname;
@@ -26,7 +36,7 @@ bool mxApplication::OnInit() {
 	fix_mac_focus_problem();
 	
 #ifndef __WIN32__
-	cerr<<(spanish?"\nNo cierre esta ventana.\n":"\nDo not close this window.\n");
+	std::cerr<<(spanish?"\nNo cierre esta ventana.\n":"\nDo not close this window.\n");
 #endif
 	if (fname.Len() && !for_autobuilding )
 		new mxInfoWindow(zpath,fname);

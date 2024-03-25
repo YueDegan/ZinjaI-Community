@@ -4,7 +4,6 @@
 #include <wx/grid.h>
 #include <vector>
 #include <algorithm>
-using namespace std;
 
 class wxTextCtrl;
 class mxPlainResultsTable;
@@ -30,7 +29,7 @@ public:
 template<typename Row>
 class mxPRTGenericTable : public mxPRTData {
 	wxArrayString titles;
-	vector<Row> rows;
+	std::vector<Row> rows;
 public:
 	mxPRTGenericTable(wxArrayString &ttitles) :titles(ttitles) {}
 	void AddRow(const Row &r) { rows.push_back(r); }
@@ -56,10 +55,10 @@ public:
 
 template<int FilterRow>
 struct mxPRTGenericRow {
-	vector<wxString> vals_str;
-	vector<int> vals_int;
+	std::vector<wxString> vals_str;
+	std::vector<int> vals_int;
 	struct Aux{bool es_str; int pos;};
-	vector<Aux> map;
+	std::vector<Aux> map;
 	wxString operator[](int i) {
 		if (map[i].es_str) return vals_str[map[i].pos];
 		else return wxString()<<vals_int[map[i].pos];
@@ -71,7 +70,7 @@ struct mxPRTGenericRow {
 		{ return r1.vals_str[sort_aux]<r2.vals_str[sort_aux]; }
 	static bool sort_by_int(const mxPRTGenericRow &r1, const mxPRTGenericRow &r2) 
 		{ return r1.vals_int[sort_aux]<r2.vals_int[sort_aux]; }
-	static void Sort(vector<mxPRTGenericRow> &v, int col, bool asc) {
+	static void Sort(std::vector<mxPRTGenericRow> &v, int col, bool asc) {
 		if (v.empty()) return;
 		sort_aux = v[0].map[col].pos;
 		sort(v.begin(),v.end(), v[0].map[col].es_str?sort_by_str:sort_by_int);

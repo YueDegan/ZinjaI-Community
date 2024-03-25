@@ -30,13 +30,11 @@
 #include "mxErrorRecovering.h"
 #include "mxSplashScreen.h"
 #include "error_recovery.h"
-//#include "linStuff.h"
 #include "mxAUI.h"
 #include "mxNewWizard.h"
 #include "EnvVars.h"
 #include "ZLogOstream.h"
 #include "osdep.h"
-using namespace std;
 
 IMPLEMENT_APP(mxApplication)
 	
@@ -45,22 +43,22 @@ mxApplication *g_application = nullptr;
 bool mxApplication::OnInit() {
 	
 	if (argc==2 && wxString(argv[1])=="--version") {
-		cout<<"ZinjaI "<<VERSION<<endl;
+		std::cout << "ZinjaI " << VERSION << std::endl;
 		return false;
 	}
 	
 	if (argc==2 && wxString(argv[1])=="--help") {
-		cout << "ZinjaI's command line special arguments:" << endl;
-		cout << "   --help          prints this help text and exit" << endl;
-		cout << "   --version       display installed version and exit" << endl;
-		cout << "   --new-source    shows the wizard for creating a new simple program" << endl;
-		cout << "   --new-project   shows the wizard for creating a new project" << endl;
-		cout << "   --last-source   opens the first file from Recent Files' list" << endl;
-		cout << "   --last-project  opens the first file from Recent Projects' list" << endl;
-		cout << "   --cerr          use std::cerr as internal logging output" << endl;
-		cout << "   --no-splash     do not show splash window" << endl;
-		cout << "   --no-singleton  disable singleton mode for that instance" << endl;
-		cout << "   --log <fname>   write internal logging output to file <fname>" << endl;
+		std::cout << "ZinjaI's command line special arguments:" << std::endl;
+		std::cout << "   --help          prints this help text and exit" << std::endl;
+		std::cout << "   --version       display installed version and exit" << std::endl;
+		std::cout << "   --new-source    shows the wizard for creating a new simple program" << std::endl;
+		std::cout << "   --new-project   shows the wizard for creating a new project" << std::endl;
+		std::cout << "   --last-source   opens the first file from Recent Files' list" << std::endl;
+		std::cout << "   --last-project  opens the first file from Recent Projects' list" << std::endl;
+		std::cout << "   --cerr          use std::cerr as internal logging output" << std::endl;
+		std::cout << "   --no-splash     do not show splash window" << std::endl;
+		std::cout << "   --no-singleton  disable singleton mode for that instance" << std::endl;
+		std::cout << "   --log <fname>   write internal logging output to file <fname>" << std::endl;
 		return false;
 	}
 	

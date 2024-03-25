@@ -5,7 +5,6 @@
 #include <map>
 #include <vector>
 #include "SingleList.h"
-using namespace std;
 
 class CompilerTreeStruct;
 class mxSource;
@@ -66,7 +65,7 @@ public:
 			wxString message;
 			CEMLine(const wxString &str, int f = 0) : flags(f), message(str) {}
 		};
-		vector<CEMLine>notes;
+		std::vector<CEMLine>notes;
 		void SetError(bool error, const wxString &message) {
 			is_error = error; full_error = message;
 		}
@@ -79,7 +78,7 @@ public:
 	};
 	
 private:
-	map<wxString,vector<CEMError> > m_errors_set;
+	std::map<wxString,std::vector<CEMError> > m_errors_set;
 	
 	unsigned int m_timestamp;
 	friend class CEMReference;
@@ -132,7 +131,7 @@ public:
 extern CompilerErrorsManager *errors_manager;
 
 class CEMReference {
-	vector<CompilerErrorsManager::CEMError> *m_errors;
+	std::vector<CompilerErrorsManager::CEMError> *m_errors;
 	unsigned int m_timestamp;
 	wxString m_fname, m_aux_error_msg;
 	struct MarkerInfo { 
@@ -147,20 +146,19 @@ public:
 	bool Update() {
 		m_markers.Clear();
 		m_timestamp = errors_manager->m_timestamp;
-		map<wxString,vector<CompilerErrorsManager::CEMError> >::iterator it 
-			= errors_manager->m_errors_set.find(m_fname);
+		auto it = errors_manager->m_errors_set.find(m_fname);
 		m_errors = it==errors_manager->m_errors_set.end() ? nullptr : &(it->second);
 		return m_errors!=nullptr;
 	}
 	bool IsOk() const { return m_errors && errors_manager->m_timestamp==m_timestamp; }
-	vector<CompilerErrorsManager::CEMError> &GetErrors() const { return *m_errors; }
+	std::vector<CompilerErrorsManager::CEMError> &GetErrors() const { return *m_errors; }
 	/** @param src_line    base 0 line number (as internally handled by mxSource)**/
 	wxString GetMessageForLine(mxSource *src, int src_line);
 	/** @param original_error_line    base 1 line number (as in the original error message)**/
 	wxString GetMessageForLine(int original_error_line, bool append=false) {
 		if (!append) m_aux_error_msg.Clear();
 		if (IsOk()) {
-			const vector<CompilerErrorsManager::CEMError> &v = GetErrors();
+			const std::vector<CompilerErrorsManager::CEMError> &v = GetErrors();
 			for(size_t i=0;i<v.size();i++) { 
 				if (original_error_line == v[i].line) {
 					if (m_aux_error_msg.IsEmpty()) m_aux_error_msg << v[i].message;

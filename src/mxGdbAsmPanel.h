@@ -31,8 +31,8 @@ class mxGdbAsmPanel : public wxPanel, public myDIGlobalEventHandler {
 	mxStyledOutput *m_code;
 	wxCheckBox *m_asm_step_mode;
 	AddressRange m_current_range;
-	map<AddressRange,wxString> m_cache;
-	map<AddressRange::addr_t,int> m_addr_to_line;
+	std::map<AddressRange,wxString> m_cache;
+	std::map<AddressRange::addr_t,int> m_addr_to_line;
 	AddressRange ParseCode(wxString ans); 
 public:
 	mxGdbAsmPanel(wxWindow *parent);

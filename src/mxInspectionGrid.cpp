@@ -13,7 +13,6 @@
 #include "mxRealTimeInspectionEditor.h"
 #include "mxMessageDialog.h"
 #include "ProjectManager.h"
-using namespace std;
 
 BEGIN_EVENT_TABLE(mxInspectionGrid, wxGrid)
 	EVT_GRID_CELL_CHANGED(mxInspectionGrid::OnCellChange)
@@ -118,7 +117,7 @@ mxInspectionGrid::mxInspectionGrid(wxWindow *parent) : mxGrid(parent,IG_COLS_COU
 
 bool mxInspectionGrid::OnKey(int row, int col, int key, int modifiers) {
 	if (key==WXK_DELETE) {
-		vector<int> sel; int min=-1;
+		std::vector<int> sel; int min=-1;
 		if (mxGrid::GetSelectedRows(sel,true)==0) sel.push_back(GetGridCursorRow());
 		for(unsigned int i=0;i<sel.size();i++) {
 			if (sel[i]<0||sel[i]+1>=inspections.GetSize()) continue;
@@ -178,7 +177,7 @@ bool AuxShouldExpand(const wxString &expr, wxArrayString *arr=nullptr) {
 				long to; expr.Mid(i3,i4-i3+1).ToLong(&to);
 				if (to==from) return false;
 				if (arr) {
-					if (to<from) swap(to,from);
+					if (to<from) std::swap(to,from);
 					for(int j=from;j<=to;j++) {
 						wxString new_expr = expr.Mid(0,i1)<<j<<expr.Mid(i4);
 						if (!AuxShouldExpand(new_expr,arr)) arr->Add(new_expr);
@@ -252,9 +251,9 @@ static wxString Shorten(wxString str) {
 void mxInspectionGrid::ShowPopupMenu(int row, int col, bool at_mouse_pos) {
 	// ensure that clicked cell is selected, so generated events will use that one
 	// selection policy is: if theres a multiple selection, keep, else select only clicked cell
-	vector<int> sel; mxGrid::GetSelectedRows(sel);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel);
 	// ensure clicked row is selected... if it is, use current selection, if not make it current selection
-	if (find(sel.begin(),sel.end(),row)==sel.end()) { sel.clear(); mxGrid::Select(row); sel.push_back(row); }
+	if (std::find(sel.begin(),sel.end(),row)==sel.end()) { sel.clear(); mxGrid::Select(row); sel.push_back(row); }
 	
 	bool there_are_inspections = inspections.GetSize()>1;
 	bool sel_is_single = sel.size()==1; // hay una sola inspeccion seleccionada
@@ -399,7 +398,7 @@ void mxInspectionGrid::OnClearAll(wxCommandEvent &evt) {
 
 
 void mxInspectionGrid::OnClearOne(wxCommandEvent &evt) {
-	vector<int> sel; mxGrid::GetSelectedRows(sel,true);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,true);
 	if (sel.empty()) return; 
 	int min=sel.back();
 	for(unsigned int i=0;i<sel.size();i++) DeleteInspection(sel[i],false);
@@ -424,7 +423,7 @@ void mxInspectionGrid::OnExploreAll(wxCommandEvent &event) {
 
 void mxInspectionGrid::OnExploreExpression(wxCommandEvent &evt) {
 	DebugManager::TemporaryScopeChange scope;
-	vector<int> sel; mxGrid::GetSelectedRows(sel,true);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,true);
 	if (sel.size()==1) {
 		auxOnExplore(scope,inspections[sel[0]]);
 	} else {
@@ -435,7 +434,7 @@ void mxInspectionGrid::OnExploreExpression(wxCommandEvent &evt) {
 }
 
 void mxInspectionGrid::SetFormat(int format) {
-	vector<int> sel; mxGrid::GetSelectedRows(sel,false);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,false);
 	for(unsigned int i=0;i<sel.size();i++) 
 		if (inspections[i]->IsSimpleType()) {
 			inspections[i]->SetFormat((GDB_VO_FORMAT)format);
@@ -462,7 +461,7 @@ void mxInspectionGrid::OnFormatBinary(wxCommandEvent &evt) {
 
 void mxInspectionGrid::OnShowInTable(wxCommandEvent &evt) {
 	DebugManager::TemporaryScopeChange scope;
-	vector<int> sel; mxGrid::GetSelectedRows(sel,true);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,true);
 	for(unsigned int i=0;i<sel.size();i++) {
 		if (inspections[sel[i]].IsNull()) continue;
 		DebuggerInspection *di = inspections[sel[i]].di;
@@ -473,7 +472,7 @@ void mxInspectionGrid::OnShowInTable(wxCommandEvent &evt) {
 
 void mxInspectionGrid::OnShowInText(wxCommandEvent &evt) {
 	DebugManager::TemporaryScopeChange scope;
-	vector<int> sel; mxGrid::GetSelectedRows(sel,true);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,true);
 	for(unsigned int i=0;i<sel.size();i++) {
 		if (inspections[sel[i]].IsNull()) continue;
 		DebuggerInspection *di = inspections[sel[i]].di;
@@ -487,7 +486,7 @@ void mxInspectionGrid::OnShowInText(wxCommandEvent &evt) {
 **/
 void mxInspectionGrid::OnDuplicate(wxCommandEvent &evt) {
 	DebugManager::TemporaryScopeChange scope;
-	vector<int> sel; mxGrid::GetSelectedRows(sel,true);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,true);
 	for(unsigned int i=0;i<sel.size();i++) {
 		if (inspections[sel[i]].IsNull()) continue;
 		DebuggerInspection *di = inspections[sel[i]].di;
@@ -499,12 +498,12 @@ void mxInspectionGrid::OnDuplicate(wxCommandEvent &evt) {
 }
 
 void mxInspectionGrid::OnFreeze(wxCommandEvent &evt) {
-	vector<int> sel; mxGrid::GetSelectedRows(sel);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel);
 	for(unsigned int i=0;i<sel.size();i++) SetFreezed(sel[i],true);
 }
 
 void mxInspectionGrid::OnUnFreeze(wxCommandEvent &evt) {
-	vector<int> sel; mxGrid::GetSelectedRows(sel);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel);
 	for(unsigned int i=0;i<sel.size();i++) SetFreezed(sel[i],false);
 }
 
@@ -613,7 +612,7 @@ void mxInspectionGrid::OnRedirectedEditEvent (wxCommandEvent & event) {
 	case mxID_EDIT_MARK_LINES:
 	case mxID_EDIT_INDENT:
 		if (debug->CanTalkToGDB()) {
-			vector<int> sels;
+			std::vector<int> sels;
 			if (!mxGrid::GetSelectedRows(sels,false)) return;
 			if (inspections[sels[0]]->IsFrameless()) OnReScope(event); else OnSetFrameless(event);
 		}
@@ -623,7 +622,7 @@ void mxInspectionGrid::OnRedirectedEditEvent (wxCommandEvent & event) {
 		break;
 	case mxID_EDIT_TOGGLE_LINES_UP: 
 		{
-			vector<int> sels;
+			std::vector<int> sels;
 			if (!mxGrid::GetSelectedRows(sels,false) || sels[0]==0) return;
 			mxGrid::Select(sels.front()-1);
 			for(unsigned int i=0;i<sels.size();i++) { SwapInspections(sels[i],sels[i]-1); wxGrid::SelectRow(sels[i]-1,true); }
@@ -631,7 +630,7 @@ void mxInspectionGrid::OnRedirectedEditEvent (wxCommandEvent & event) {
 		break;
 	case mxID_EDIT_TOGGLE_LINES_DOWN:
 		{
-			vector<int> sels;
+			std::vector<int> sels;
 			if (!mxGrid::GetSelectedRows(sels,true) || sels[0]+1==inspections.GetSize()) return;
 			mxGrid::Select(sels.back()+1);
 			for(unsigned int i=0;i<sels.size();i++) { SwapInspections(sels[i],sels[i]+1); wxGrid::SelectRow(sels[i]+1,true); }
@@ -853,14 +852,14 @@ void mxInspectionGrid::BreakCompoundInspection (int r) {
 
 void mxInspectionGrid::OnReScope(wxCommandEvent &event) {
 	mxIG_SideEffectUpdate sda(this); // la expresion podría haber modificado algo, esto actualiza toda la tabla
-	vector<int> sel; mxGrid::GetSelectedRows(sel);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel);
 	for(unsigned int i=0;i<sel.size();i++) 
 		ChangeFrameless(sel[i],false,false);
 }
 
 void mxInspectionGrid::OnSetFrameless (wxCommandEvent & evt) {
 	mxIG_SideEffectUpdate sda(this); // la expresion podría haber modificado algo, esto actualiza toda la tabla
-	vector<int> sel; mxGrid::GetSelectedRows(sel);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel);
 	for(unsigned int i=0;i<sel.size();i++) 
 		ChangeFrameless(sel[i],true,false);
 }
@@ -934,7 +933,7 @@ mxInspectionGrid::~mxInspectionGrid ( ) {
 
 
 void mxInspectionGrid::OnDiscardImprovedExpression (wxCommandEvent & event) {
-	vector<int> sel; mxGrid::GetSelectedRows(sel);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel);
 	for(unsigned int i=0;i<sel.size();i++) 
 		DiscardImprovedExpression(sel[i]);
 }
@@ -948,7 +947,7 @@ void mxInspectionGrid::DiscardImprovedExpression (int r) {
 
 void mxInspectionGrid::OnExposeImprovedExpression (wxCommandEvent & event) {
 	mxIG_SideEffectUpdate sda(this); // la expresion podría haber modificado algo, esto actualiza toda la tabla
-	vector<int> sel; mxGrid::GetSelectedRows(sel);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel);
 	for(unsigned int i=0;i<sel.size();i++) 
 		ExposeImprovedExpression(sel[i]);
 }
@@ -983,7 +982,7 @@ void mxInspectionGrid::OnRegisterNewImprovedExpressionGeneral (wxCommandEvent & 
 }
 
 void mxInspectionGrid::OnRegisterNewImprovedExpression (bool for_project) {
-	vector<int> sel; mxGrid::GetSelectedRows(sel); 
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel); 
 	if (sel.size()!=1) return;
 	if (inspections[sel[0]].IsNull()) return;
 	if (inspections[sel[0]]->GetDbiType()==DIT_GDB_COMMAND) return;
@@ -1022,7 +1021,7 @@ void mxInspectionGrid::ClearAll ( ) {
 
 void mxInspectionGrid::OnShowInHistory (wxCommandEvent & evt) {
 	DebugManager::TemporaryScopeChange scope;
-	vector<int> sel; mxGrid::GetSelectedRows(sel,true);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,true);
 	for(unsigned int i=0;i<sel.size();i++) {
 		if (inspections[sel[i]].IsNull()) continue;
 		DebuggerInspection *di = inspections[sel[i]].di;
@@ -1033,7 +1032,7 @@ void mxInspectionGrid::OnShowInHistory (wxCommandEvent & evt) {
 
 void mxInspectionGrid::OnShowInRTEditor (wxCommandEvent & evt) {
 	DebugManager::TemporaryScopeChange scope;
-	vector<int> sel; mxGrid::GetSelectedRows(sel,true);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,true);
 	for(unsigned int i=0;i<sel.size();i++) {
 		if (inspections[sel[i]].IsNull()) continue;
 		if (inspections[sel[i]]->GetDbiType()==DIT_GDB_COMMAND) continue;
@@ -1047,7 +1046,7 @@ void mxInspectionGrid::OnSetWatch (wxCommandEvent & evt) {
 	bool read = evt.GetId()!=mxID_INSPECTION_WATCH_WRITE;
 	bool write = evt.GetId()!=mxID_INSPECTION_WATCH_READ;
 	DebugManager::TemporaryScopeChange scope;
-	vector<int> sel; mxGrid::GetSelectedRows(sel,true);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,true);
 	for(unsigned int i=0;i<sel.size();i++) {
 		if (inspections[sel[i]].IsNull()) continue;
 		if (inspections[sel[i]]->GetDbiType()==DIT_GDB_COMMAND) continue;
@@ -1065,7 +1064,7 @@ void mxInspectionGrid::OnSetWatch (wxCommandEvent & evt) {
 
 void mxInspectionGrid::OnDerefPtr (wxCommandEvent & evt) {
 	DebugManager::TemporaryScopeChange scope;
-	vector<int> sel; mxGrid::GetSelectedRows(sel,true);
+	std::vector<int> sel; mxGrid::GetSelectedRows(sel,true);
 	for(unsigned int i=0;i<sel.size();i++) {
 		if (inspections[sel[i]].IsNull()) continue;
 		DebuggerInspection *di = inspections[sel[i]].di;

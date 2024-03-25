@@ -8,7 +8,6 @@
 #include <map>
 #include "SingleList.h"
 #include "GDBAnsBuffer.h"
-using namespace std;
 
 #define BACKTRACE_SIZE 100
 class BreakPointInfo;
@@ -96,7 +95,7 @@ class DebugManager {
 #endif
 private:
 	friend class DebugEventListener;
-	vector<SignalHandlingInfo> *signal_handlers_state; ///< signals states to be setted before running, first one has defaults, second one desired settings (if nullptr no setting is required, will be created and modified my mxSignalsSettings)
+	std::vector<SignalHandlingInfo> *signal_handlers_state; ///< signals states to be setted before running, first one has defaults, second one desired settings (if nullptr no setting is required, will be created and modified my mxSignalsSettings)
 	DebugPatcher *debug_patcher;
 public:
 	void Patch();
@@ -257,7 +256,7 @@ public:
 	void PopulateBreakpointsList(mxBreakList *break_list, bool also_watchpoints);
 
 private:
-	map<wxString,wxString> watchpoints;
+	std::map<wxString,wxString> watchpoints;
 public:
 	wxString AddWatchPoint(const wxString &expression, bool read, bool write); 
 	bool DeleteWatchPoint(const wxString &num);
@@ -294,7 +293,7 @@ public:
 	bool SelectThread(long thread_id);
 	
 	void SendSignal(const wxString &signame);
-	bool GetSignals(vector<SignalHandlingInfo> &v);
+	bool GetSignals(std::vector<SignalHandlingInfo> &v);
 	bool SetSignalHandling(SignalHandlingInfo &si, int i=-1);
 	
 	bool InterruptOperation();

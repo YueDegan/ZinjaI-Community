@@ -2,6 +2,7 @@
 #define ZLOGOSTREAM_H
 #include "ZLog.h"
 #include <iostream>
+#include "StringConv.h"
 
 class ZLogOstream : public ZLog {
 protected:
@@ -10,7 +11,7 @@ public:
 	ZLogOstream(const char *name) : ZLog(name), m_ost(nullptr) { }
 	void DoLog(Level lvl, const char *grp, const wxString &str) {
 		wxString msg = ZLog::GetString(lvl,grp,str);
-		if (!msg.IsEmpty()) (*m_ost) << msg << endl;
+		if (!msg.IsEmpty()) (*m_ost) << msg << std::endl;
 	}
 };
 
@@ -19,7 +20,7 @@ class ZLogFile : public ZLogOstream {
 public:
 	ZLogFile(wxString &fname) : ZLogOstream("ZLogFile") { 
 		m_ost = &m_file;
-		m_file.open(fname.c_str());
+		m_file.open(ToCStyleString(fname));
 		if (!m_file.is_open()) 
 			ZLWAR2("ZLogFile","No se pudo abrir: "<<fname);
 	}

@@ -8,7 +8,6 @@
 #include "Flag.h"
 #include <wx/msgdlg.h>
 #include "ZLog.h"
-using namespace std;
 
 ////! Información acerca de una inspección en el depurador
 
@@ -136,13 +135,14 @@ struct DebuggerInspection {
 	static SingleList<DebuggerInspection*> all_inspections;
 	
 	/// asocia los variable_objects (por nombre, como lo da gdb) a las instancias de esta clase que los representan internamente en ZinjaI
-	typedef map<wxString,DebuggerInspection*> vo2di_type;
+	typedef std::map<wxString,DebuggerInspection*> vo2di_type;
 	static vo2di_type vo2di_map;
 	
 	/// busca una instancia de esta clase DebuggerInspection a partir del nombre de su variable-object en gdb
 	static DebuggerInspection *GetFromVO(const wxString &variable_object) {
-		map<wxString,DebuggerInspection*>::iterator it=vo2di_map.find(variable_object);
-		if (it!=vo2di_map.end()) return it->second; else return nullptr;
+		auto it = vo2di_map.find(variable_object);
+		if (it!=vo2di_map.end()) return it->second;
+		else                     return nullptr;
 	}
 	
 	
@@ -551,7 +551,7 @@ public:
 			}
 			// eliminarla del mapa para que ya no reciba actualizaciones (si no estaba ya eliminada)
 			if (dit_type!=DIT_GHOST) {
-				map<wxString,DebuggerInspection*>::iterator it=vo2di_map.find(variable_object);
+				auto it = vo2di_map.find(variable_object);
 				if (it!=vo2di_map.end()) vo2di_map.erase(it); // el if siempre debería dar true
 				else { ZLERR2("Inspection","Destroy: it==vo2di_map.end(): "<<variable_object); }
 			}

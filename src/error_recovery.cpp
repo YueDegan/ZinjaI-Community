@@ -10,13 +10,12 @@
 #include "mxMessageDialog.h"
 #include "Language.h"
 #include "mxCompiler.h"
-using namespace std;
 
-string g_er_dir;
+std::string g_er_dir;
 er_source_register *g_er_first_source = nullptr;
 
-#define ERR_REC_LOG_BOOL(what) fil1<<#what<<": "<<((what)?"true":"false")<<endl
-#define ERR_REC_LOG_NORM(what) fil1<<#what<<": "<<what<<endl
+#define ERR_REC_LOG_BOOL(what) fil1<<#what<<": "<<((what)?"true":"false")<<std::endl
+#define ERR_REC_LOG_NORM(what) fil1<<#what<<": "<<what<<std::endl
 
 #ifndef SIGPIPE
 #	define SIGPIPE 13
@@ -47,12 +46,12 @@ void er_sigsev(int sig) {
 	
 //cerr<<"ERROR RECOVERY 1"<<endl;
 	
-	ofstream fil1((g_er_dir+"error_log").c_str(),ios::ate|ios::app);
+	std::ofstream fil1((g_er_dir+"error_log").c_str(),std::ios::ate|std::ios::app);
 
-	fil1<<endl;
+	fil1<<std::endl;
 
-	fil1<<"Error date: "<<wxNow()<<endl;
-	fil1<<"signal: "<<sig<<endl;
+	fil1<<"Error date: "<<wxNow()<<std::endl;
+	fil1<<"signal: "<<sig<<std::endl;
 	
 //cerr<<"ERROR RECOVERY 2"<<endl;
 	
@@ -65,27 +64,27 @@ void er_sigsev(int sig) {
 		ERR_REC_LOG_BOOL(debug->running);
 		ERR_REC_LOG_NORM(debug->gdb_version);
 	} else
-		fil1<<"debug: NULL"<<endl;
+		fil1<<"debug: NULL"<<std::endl;
 	if (parser) {
 		ERR_REC_LOG_BOOL(parser->working);
 	} else
-		fil1<<"parser: NULL"<<endl;
+		fil1<<"parser: NULL"<<std::endl;
 	if (project) 
 		ERR_REC_LOG_NORM(project->filename);
 	else
-		fil1<<"project: NULL"<<endl;
+		fil1<<"project: NULL"<<std::endl;
 	if (main_window) {
 		ERR_REC_LOG_BOOL(compiler->IsCompiling());
 	} else 
-		fil1<<"main_window: NULL"<<endl;
-	fil1<<endl;
+		fil1<<"main_window: NULL"<<std::endl;
+	fil1<<std::endl;
 	
 	fil1.close();
 	
 //cerr<<"ERROR RECOVERY 3"<<endl;
 	
-	ofstream fil2((g_er_dir+"recovery_log").c_str(),ios::trunc);
-	fil2<<"Error date: "<<wxNow()<<endl;
+	std::ofstream fil2((g_er_dir+"recovery_log").c_str(),std::ios::trunc);
+	fil2<<"Error date: "<<wxNow()<<std::endl;
 	
 	er_source_register *sr = g_er_first_source->next;
 	char kname[]="kabom-aaa.cpp";
@@ -100,9 +99,9 @@ void er_sigsev(int sig) {
 			
 		} else
 			kname[6]++;
-		fil2<<sr->src->page_text<<endl;
-		fil2<<sr->src->source_filename.GetFullPath()<<endl;
-		fil2<<(g_er_dir+kname).c_str()<<endl;
+		fil2<<sr->src->page_text<<std::endl;
+		fil2<<sr->src->source_filename.GetFullPath()<<std::endl;
+		fil2<<(g_er_dir+kname).c_str()<<std::endl;
 		sr->src->wxStyledTextCtrl::SaveFile(wxString((g_er_dir+kname).c_str(),wxConvLibc));
 		sr = sr->next;
 	}
@@ -114,9 +113,9 @@ void er_sigsev(int sig) {
 		wxString pfile=project->filename;
 		project->filename<<_T(".kaboom");
 		project->Save();
-		ofstream zpr((g_er_dir+"kboom.zpr").c_str());
-		zpr<<mxFN::Join(project->path,pfile)<<endl;
-		zpr<<pfile<<endl;
+		std::ofstream zpr((g_er_dir+"kboom.zpr").c_str());
+		zpr<<mxFN::Join(project->path,pfile)<<std::endl;
+		zpr<<pfile<<std::endl;
 		zpr.close();
 	}
 	

@@ -114,8 +114,8 @@ private:
 	
 public:
 	struct MacroAction { 
-		int msg; unsigned long wp; long lp; char data[2]; bool for_sci; char *extra;
-		MacroAction(int _msg, unsigned long _wp, long _lp):msg(_msg),wp(_wp),lp(_lp),for_sci(true),extra(nullptr) { 
+		int msg; unsigned long wp; long long lp; char data[2]; bool for_sci; char *extra;
+		MacroAction(int _msg, unsigned long _wp, long long _lp):msg(_msg),wp(_wp),lp(_lp),for_sci(true),extra(nullptr) { 
 			/// 2170 = replace selection, with a 16-bits keycode stored in the address pointed by lp
 			/// 2001/2003 = add/insert text, wp has lenght/position, lp points to a null-terminated string
 			/// 2002 = add styled text, wp has lenght, lp points to a some data buffer
@@ -128,7 +128,7 @@ public:
 			}
 		}
 		MacroAction(int id=0):msg(id),wp(0),lp(0),for_sci(false),extra(nullptr) { }
-		MacroAction &Get() { if (msg==2170) lp=(long)data; else if (msg>=2001&&msg<=2003) lp=(long)extra; return *this; }
+		MacroAction &Get() { if (msg==2170) lp=(long long)data; else if (msg>=2001&&msg<=2003) lp=(long long)extra; return *this; }
 		~MacroAction() { delete [] extra; }
 	};
 	void OnMacroAction(wxStyledTextEvent &evt);
@@ -437,7 +437,7 @@ private:
 	class MultiSelController {
 	
 		struct EditPos { int line, offset; };
-		vector<EditPos> m_positions;
+		std::vector<EditPos> m_positions;
 		
 		bool m_is_on; ///< si estamos o no editando "rectangularmente"
 		bool m_ends_on_enter; ///< si el enter se procesa normalmente, o es para finalizar el multisel

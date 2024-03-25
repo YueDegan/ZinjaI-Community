@@ -7,7 +7,6 @@
 #include "ConfigManager.h"
 #include <fstream>
 #include "StringConv.h"
-using namespace std;
 
 #define DP_ERROR_DUMP 1
 #define DP_ERROR_OPEN 2
@@ -133,19 +132,19 @@ int DebugPatcher::Patch (mem_seg & ms) {
 //	
 	
 	// abrir los binarios y obtener las diferencias
-	ifstream f1(temp_file.c_str(),ios::binary|ios::ate), f2(patched_file.c_str(),ios::binary|ios::ate);
+	std::ifstream f1(ToCStyleString(temp_file),std::ios::binary|std::ios::ate), f2(ToCStyleString(patched_file),std::ios::binary|std::ios::ate);
 	if (!f1.is_open()||!f2.is_open()) return DP_ERROR_OPEN;
-	f1.seekg(0,ios::beg); f2.seekg(ms.fini,ios::beg);
+	f1.seekg(0,std::ios::beg); f2.seekg(ms.fini,std::ios::beg);
 
 	// comparar y obtener los cambios
-	vector<pair<int,char> > v; char c1,c2;
+	std::vector<std::pair<int,char> > v; char c1,c2;
 	for(int i=0;i<ms.size;i++) { 
 		if (!f1.read(&c1,1)) 
 			return DP_ERROR_READ;
 		if (!f2.read(&c2,1)) 
 			return DP_ERROR_READ;
 		if (c1!=c2) {
-			v.push_back(make_pair(i,c2));
+			v.push_back(std::make_pair(i,c2));
 			if (v.size()>max_cambios) 
 				return DP_ERROR_CANT;
 		}

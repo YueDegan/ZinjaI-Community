@@ -3,7 +3,6 @@
 #include <wx/app.h>
 #include "ConfigManager.h"
 #include "ZLog.h"
-using namespace std;
 
 static bool s_someone_is_running = false;
 

@@ -5,7 +5,6 @@
 #include "SingleList.h"
 #include <wx/dc.h>
 #include <wx/timer.h>
-using namespace std;
 
 class mxGridCellRenderer : public wxGridCellStringRenderer {
 	bool show_icon;
@@ -80,7 +79,7 @@ public:
 	bool IsColumnVisible(int c);
 	
 	void Select(int row, int col=-1);
-	int GetSelectedRows(vector<int> &rows, bool inverted=false);
+	int GetSelectedRows(std::vector<int> &rows, bool inverted=false);
 	
 		
 	/// @brief callback that will be called when user unhides a column so child class can update its content

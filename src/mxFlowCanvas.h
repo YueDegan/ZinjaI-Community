@@ -4,7 +4,6 @@
 #include <wx/scrolwin.h>
 #include <wx/dcclient.h>
 #include <list>
-using namespace std;
 
 
 #define FC_FRONT(a) while(p<=pe && (a)) p++;
@@ -50,10 +49,10 @@ private:
 	};
 	struct draw_data {
 		int x,y, izquierda, derecha, alto;
-		list <fc_line> lines;
-		list <fc_text> texts;
-		list <fc_arc> arcs;
-		list <draw_data> draws;
+		std::list <fc_line> lines;
+		std::list <fc_text> texts;
+		std::list <fc_arc> arcs;
+		std::list <draw_data> draws;
 		draw_data(int ax=0, int ay=0) {
 			x=ax; y=ay;
 			alto=0; 
@@ -64,7 +63,7 @@ private:
 		int x1,y1,x2,y2;
 		int p1,p2;
 	};
-	list<fc_object> objects;
+	std::list<fc_object> objects;
 	mxSource *source;
 	wxColour *colour_black;
 	wxColour *colour_blue;

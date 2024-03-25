@@ -6,11 +6,10 @@
 #include <fstream>
 #include <cstdlib>
 #include <algorithm>
-using namespace std;
 
 struct GprofData {
 	int cmp_id;
-	void cut(const string &s, string *v, int cant) {
+	void cut(const std::string &s, std::string *v, int cant) {
 		int p=0,l=s.size(),i=0;
 		while (true) {
 			while(p<l && (s[p]==' '||s[p]=='\t')) p++;
@@ -21,7 +20,7 @@ struct GprofData {
 			i++;
 		}
 	}
-	void fix(string *v, int m=4) {
+	void fix(std::string *v, int m=4) {
 		for(int i=0;i<m-1;i++) { 
 			bool is_ok = true;
 			for(size_t j=0;j<v[i].size();j++) { 
@@ -41,43 +40,43 @@ struct GprofData {
 	struct tm_item {
 		float percent_time,cumulative_seconds,self_seconds,self_s_calls,total_s_calls;
 		int calls;
-		string name;
+		std::string name;
 		bool match(const char *s) {
 			size_t i=name.find(s,0);
-			if (i==string::npos) return false;
+			if (i==std::string::npos) return false;
 			size_t j=name.find('(',0);
-			return (j==string::npos || i<j);
+			return (j==std::string::npos || i<j);
 		}
 	};
 	struct call_item {
-		string name;
+		std::string name;
 		float percent_time,self,children;
-		string called;
+		std::string called;
 	};
 	struct graph_node {
-		string name;
-		vector<call_item> calls_to, called_by;
+		std::string name;
+		std::vector<call_item> calls_to, called_by;
 	};
-	vector<tm_item> table;
-	vector<graph_node> graph;
+	std::vector<tm_item> table;
+	std::vector<graph_node> graph;
 	GprofData(const char *fname) {
-		ifstream fin(fname);
-		string s;
+		std::ifstream fin(fname);
+		std::string s;
 		int status=0; // 1=1er tabla, 2=calls_pre, 3=calls_post
 		size_t name_col;
 		graph_node node;
-		while (getline(fin,s)) {
+		while (std::getline(fin,s)) {
 			if (status==0) {
 				// cabecera de la primer tabla
 				name_col=s.find("name");
-				if (s.find("s/call")!=string::npos && name_col!=string::npos) status=1;
+				if (s.find("s/call")!=std::string::npos && name_col!=std::string::npos) status=1;
 			} else if (status==1) {
 				// gran tabla por funciones
 				if (s.size()>name_col) {
 					tm_item t; t.name=s.substr(name_col);
 					while (t.name.size()&&t.name[0]==' ') t.name=t.name.substr(1); // a veces una columna tiene un numero (contador de llamadas) muy grande y creo que por eso esta queda desfazada
 					s.erase(name_col);
-					string vals[6]; 
+					std::string vals[6]; 
 					cut(s,vals,6);
 					t.percent_time=atof(vals[0].c_str());
 					t.cumulative_seconds=atof(vals[1].c_str());
@@ -89,7 +88,7 @@ struct GprofData {
 				} else status=2;
 			} else if (status==2) {
 				// cabecera del grafo de llamadas
-				if (s.find("% time")!=string::npos) status=3;
+				if (s.find("% time")!=std::string::npos) status=3;
 			} else if (status==3) {
 				// se termina el grafo
 				if (s.size()<5) {
@@ -98,9 +97,9 @@ struct GprofData {
 				}
 				if (s[0]=='[') {
 					// la linea de la propia función del nodo
-					string vals[5];
+					std::string vals[5];
 					cut(s,vals,5);
-					string who=vals[4];
+					std::string who=vals[4];
 					if (who.size() && (who[0]>='0'&&who[1]<='9')) {
 						cut(who,vals,2);
 						who=vals[1];
@@ -109,7 +108,7 @@ struct GprofData {
 					status=4;
 				} else {
 					// alguien llama al nodo actual
-					string vals[4];
+					std::string vals[4];
 					cut(s,vals,4);
 					fix(vals); // corrige cuando hay campos en blanco (llamadas espontanes, sin info, recursivas, etc)
 					if (vals[3].size()) {
@@ -128,7 +127,7 @@ struct GprofData {
 					node.name=""; node.calls_to.clear(); node.called_by.clear(); status=3;
 				} else {
 					// el nodo actual llama a alguien
-					string vals[4];
+					std::string vals[4];
 					cut(s,vals,4);
 					fix(vals); // corrige cuando hay campos en blanco (llamadas espontanes, sin info, recursivas, etc)
 					if (vals[3].size()) {

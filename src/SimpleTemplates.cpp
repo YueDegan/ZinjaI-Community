@@ -76,7 +76,7 @@ wxString SimpleTemplates::GetParsedCompilerArgs (bool for_cpp) {
 	return GetParsedCompilerArgs(for_cpp?config->Files.cpp_template:config->Files.c_template);
 }
 
-int SimpleTemplates::GetOptions (map<wxString,wxString> &opts, wxString full_path, bool replace_default) {
+int SimpleTemplates::GetOptions (std::map<wxString,wxString> &opts, wxString full_path, bool replace_default) {
 	int headers_lines_count = 0;
 	opts["Options"]="${DEFAULT}"; // ensure compiler args are never empty
 	wxTextFile file(full_path);

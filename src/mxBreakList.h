@@ -3,7 +3,6 @@
 #include <wx/dialog.h>
 #include <wx/grid.h>
 #include <vector>
-using namespace std;
 
 class wxGrid;
 
@@ -14,7 +13,7 @@ private:
 	wxGrid *grid;
 	int old_size;
 	float cols_sizes[BL_COLS_COUNT];
-	vector<int> ids; ///< zinjai id for every breakpoint in the table, or -1 for watchpoints
+	std::vector<int> ids; ///< zinjai id for every breakpoint in the table, or -1 for watchpoints
 	friend class DebugManager;
 public:
 	mxBreakList();

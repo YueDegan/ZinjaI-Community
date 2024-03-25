@@ -12,7 +12,6 @@
 #include "mxMainWindow.h"
 #include "Language.h"
 #include "MenusAndToolsConfig.h"
-using namespace std;
 
 BEGIN_EVENT_TABLE(mxToolbarEditor, wxDialog)
 	EVT_BUTTON(wxID_OK,mxToolbarEditor::OnButtonOk)

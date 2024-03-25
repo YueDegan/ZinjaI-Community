@@ -89,7 +89,7 @@ public:
 		} else {
 			bool called_by = row<pos_calls_to;
 			row -= 1+(called_by?0:pos_calls_to);
-			vector<GprofData::call_item> &v = called_by?data->graph[i].called_by:data->graph[i].calls_to;
+			auto &v = called_by?data->graph[i].called_by:data->graph[i].calls_to;
 			switch(column) {
 			case 0: return to_str(v[row].percent_time);
 			case 1: return to_str(v[row].self);

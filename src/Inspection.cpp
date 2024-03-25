@@ -73,7 +73,7 @@ void DebuggerInspection::UpdateAllVO(const wxString &voname) {
 //					while (++i<l && s[i]==' '); // pareciera no ser necesario
 			}
 			// busca el DebuggerInspection para el vo (por su nombre gdb)
-			map<wxString,DebuggerInspection*>::iterator it=vo2di_map.find(u.name);
+			auto it=vo2di_map.find(u.name);
 			if (it==vo2di_map.end()) {
 				ZLERR("Inspection","UpdateAllVO: it==vo2di_map.end()");
 				continue;
@@ -266,7 +266,7 @@ bool DebuggerInspection::TryToImproveExpression (const wxString &pattern, wxStri
 			return true;
 		}
 	} else {
-		map<wxString,wxString> the_map;
+		std::map<wxString,wxString> the_map;
 		int lp=pattern.Len(), ip=0;
 		int lt=type.Len(), it=0;
 		while (ip<lp && it<lt) {
@@ -295,7 +295,7 @@ bool DebuggerInspection::TryToImproveExpression (const wxString &pattern, wxStri
 				if (pattern[ip++]!=type[it++]) return false;
 		}
 		if (ip==lp&&it==lt) {
-			map<wxString,wxString>::iterator it1=the_map.begin(), it2=the_map.end();
+			auto it1=the_map.begin(), it2=the_map.end();
 			while(it1!=it2) {
 				new_expr.Replace(it1->first,it1->second,true);
 				++it1;

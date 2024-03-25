@@ -24,7 +24,6 @@
 #ifdef _ZINJAI_DEBUG
 #include<iostream>
 #include <cstdlib>
-using namespace std;
 #endif
 
 wxMutex mxMutexCompiler;
@@ -43,7 +42,7 @@ compile_and_run_struct_single::compile_and_run_struct_single(const compile_and_r
 	*this=*o; 
 	on_end=nullptr; // para evitar doble-delete, igual nunca deberia tener un on_end porque esto solo se usa para fuentes de un proyecto
 #ifdef _ZINJAI_DEBUG
-	cerr<<"compile_and_run: *"<<mname<<endl;
+	std::cerr<<"compile_and_run: *"<<mname<<std::endl;
 	count++;
 #endif
 	mxMutexCompiler.Lock();
@@ -58,7 +57,7 @@ compile_and_run_struct_single::compile_and_run_struct_single(const char *name) {
 	error_line_flag=CAR_LL_NULL;
 #ifdef _ZINJAI_DEBUG
 	mname=name;
-	cerr<<"compile_and_run: +"<<name<<endl;
+	std::cerr<<"compile_and_run: +"<<name<<std::endl;
 	count++;
 #endif
 	on_end=nullptr;
@@ -84,7 +83,7 @@ compile_and_run_struct_single::~compile_and_run_struct_single() {
 		compiler->compile_and_run_single=next;
 	
 #ifdef _ZINJAI_DEBUG
-	cerr<<"compile_and_run: -"<<mname<<endl;
+	std::cerr<<"compile_and_run: -"<<mname<<std::endl;
 	count--;
 #endif
 	mxMutexCompiler.Unlock();

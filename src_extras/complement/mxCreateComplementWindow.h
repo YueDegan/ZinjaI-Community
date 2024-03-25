@@ -10,12 +10,14 @@ class mxCreateComplementWindow : public wxFrame {
 private:
 	bool autoclose, details, write_desc_ini;
 	int step;
+	wxTextCtrl *short_name;
+	wxTextCtrl *comp_version;
 	wxTextCtrl *dest;
 	wxTextCtrl *folder;
 	wxTextCtrl *text_es;
 	wxTextCtrl *text_en;
 	wxTextCtrl *text;
-	wxTextCtrl *version;
+	wxTextCtrl *req_version;
 	wxCheckBox *close;
 	wxCheckBox *reset;
 	wxCheckBox *check_details;

@@ -55,7 +55,7 @@ bool GetFilesAndDesc(bool (*callback)(wxString message, int progress), const wxS
 			if (!callback("",0)) return true;
 			if (name==_DESC_FILE) {
 				if (!zip.CanRead()) return false;
-				wxStringOutputStream os(&desc);
+				wxStringOutputStream os(&desc,w2s_cs);
 				zip.Read(os);
 			} else fcount++;
 		} else dcount++;
@@ -75,7 +75,8 @@ static bool legal_name(wxString name) { // por seguridad, para que no escriba na
 		);
 }
 
-bool CreateDirectories(bool (*callback)(wxString message, int progress), const wxString aZipFile, const wxString aTargetDir="") {
+bool CreateDirectories(bool (*callback)(wxString message, int progress), const wxString aZipFile, const wxString aTargetDir, wxTextFile *log_file) {
+	if (log_file) log_file->AddLine("step directories");
 	wxZipEntry *entry = new wxZipEntry;
 	wxFileInputStream in(aZipFile);
 	if (!in) return false;
@@ -87,18 +88,23 @@ bool CreateDirectories(bool (*callback)(wxString message, int progress), const w
 				name = aTargetDir + name;
 				if (!wxFileName::DirExists(name)) {
 					if (!callback(SP("Creando directorio ","Creating directory ")<<name,1)) return true;
+					if (log_file) log_file->AddLine("mkdir "+name);
 					wxFileName::Mkdir(name, 0777, wxPATH_MKDIR_FULL);
 				} else {
+					if (log_file) log_file->AddLine("direxists "+name);
 					if (!callback(SP("Ya existe el directorio ","Directory exists ")<<name,1)) return true;
 				}
-			} else
+			} else {
+				if (log_file) log_file->AddLine("errordir "+name);
 				if (!callback(SP("Nombre de directorio incorrecto: ","Wrong directory name: ")<<name,1)) return true;
+			}
 		}
 	}
 	return true;
 }
 
-bool ExtractFiles(bool (*callback)(wxString message, int progress), const wxString aZipFile, const wxString aTargetDir) {
+bool ExtractFiles(bool (*callback)(wxString message, int progress), const wxString aZipFile, const wxString aTargetDir, wxTextFile *log_file) {
+	if (log_file) log_file->AddLine("step files");
 	wxZipEntry *entry = new wxZipEntry;
 	wxFileInputStream in(aZipFile);
 	if (!in) return false;
@@ -112,11 +118,14 @@ bool ExtractFiles(bool (*callback)(wxString message, int progress), const wxStri
 				zip.OpenEntry(*entry);
 				if (!zip.CanRead()) return false;
 				if (!callback(SP("Descomprimiendo archivo ","Uncompressing file ")<<name,2)) return true;
+				if (log_file) log_file->AddLine("file "+name);
 				wxFFileOutputStream file(name);
 				if (!file) return false;
 				zip.Read(file);
-			} else
+			} else {
+				if (log_file) log_file->AddLine("errorfile "+name);
 				if (!callback(SP("Nombre de archivo incorrecto: ","Wrong file name: ")<<name,2)) return true;
+			}
 		}
 	}
 	return true;
@@ -153,9 +162,12 @@ bool CreateZip(bool (*callback)(wxString message, int progress), const wxString 
 
 static const char *ToCStyleString(const wxString &wx_str) { return static_cast<const char*>(wx_str.To8BitData()); }
 
-bool SetBins(const wxArrayString & files, const wxString aTargetDir) {
-	for(unsigned int i=0;i<files.GetCount();i++)
+bool SetBins(const wxArrayString & files, const wxString aTargetDir, wxTextFile *log_file) {
+	if (log_file) log_file->AddLine("step permissions");
+	for(unsigned int i=0;i<files.GetCount();i++) {
+		if (log_file) log_file->AddLine("chmod "+aTargetDir+files[i]);
 		system(ToCStyleString(wxString("chmod a+x ")+aTargetDir+files[i]));
+	}
 	return true;
 }
 
@@ -172,18 +184,22 @@ bool desc_split(const wxString &atext, complement_info & info) {
 		else if (line.Len() && line[0]!='#') {
 			key=line.BeforeFirst('=');
 			value=line.AfterFirst('=');
-			if (key=="desc_english") { if (info.desc_english.Len()) info.desc_english+="\n"; info.desc_english+=value; }
+			if      (key=="short_name")   { info.short_name = value; }
+			else if (key=="version")      { value.ToLong(&info.version); }
+			else if (key=="desc_english") { if (info.desc_english.Len()) info.desc_english+="\n"; info.desc_english+=value; }
 			else if (key=="desc_spanish") { if (info.desc_spanish.Len()) info.desc_spanish+="\n"; info.desc_spanish+=value; }
-			else if (key=="bin") info.bins.Add(value);
-			else if (key=="reset") { info.resetreq = (value=="1" || value.Upper().StartsWith("T")); }
-			else if (key=="close") { info.closereq = (value=="1" || value.Upper().StartsWith("T")); }
-			else if (key=="reqver") { return value.ToLong(&info.reqver); }
+			else if (key=="bin")          { info.bins.Add(value); }
+			else if (key=="reset")        { info.resetreq = (value=="1" || value.Upper().StartsWith("T")); }
+			else if (key=="close")        { info.closereq = (value=="1" || value.Upper().StartsWith("T")); }
+			else if (key=="toolchain")    { info.toolchain = value; }
+			else if (key=="reqver")       { /*return*/ value.ToLong(&info.reqver); }
+			/* else ignore... for forward compatibility? */
 		}
 	}
 	return false; // si estaba bien sale cuando encuentra "end"
 }
 
-wxString Multilineze(wxString prefix,wxString text) {
+wxString Multilinize(wxString prefix,wxString text) {
 	wxString ret;
 	ret<<prefix<<"="<<text;
 	ret.Replace("\r",""); 
@@ -193,12 +209,15 @@ wxString Multilineze(wxString prefix,wxString text) {
 
 bool desc_merge(const complement_info & info, wxString & text) {
 	text.Clear();
-	text<<Multilineze("desc_english",info.desc_english)<<"\n";
-	text<<Multilineze("desc_spanish",info.desc_spanish)<<"\n";
+	if (not info.short_name.IsEmpty()) text<<"short_name"<<info.short_name<<"\n";
+	if (info.version!=0) text<<"version"<<info.version<<"\n";
+	text<<Multilinize("desc_english",info.desc_english)<<"\n";
+	text<<Multilinize("desc_spanish",info.desc_spanish)<<"\n";
 	for (unsigned int i=0;i<info.bins.GetCount();i++)
 		text<<"bin="<<info.bins[i]<<"\n";
 	text<<"reset="<<(info.resetreq?"1":"0")<<"\n";
 	text<<"close="<<(info.closereq?"1":"0")<<"\n";
+	if (not info.toolchain.IsEmpty()) text<<"toolchain="<<info.toolchain<<"\n";
 	text<<"reqver="<<info.reqver<<"\n";
 	text<<"end\n";
 	return true;

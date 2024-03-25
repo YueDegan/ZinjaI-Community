@@ -13,7 +13,6 @@
 #include "mxMessageDialog.h"
 #include "mxCalltip.h"
 #include "StringConv.h"
-using namespace std;
 
 MyAutocompList g_autocomp_list;
 
@@ -1270,7 +1269,7 @@ void CodeHelper::TryToSuggestTemplateSolutionForLinkingErrors (const wxArrayStri
 	if (!source) return;
 	
 	static bool template_map_filled=false;
-	static map<wxString,int> the_map; // asocia include con elementos de temp_names y temp_args;
+	static std::map<wxString,int> the_map; // asocia include con elementos de temp_names y temp_args;
 	static wxArrayString temp_names; // nombres de las plantillas
 	static wxArrayString temp_args; // argumentos de las plantillas
 	
@@ -1314,7 +1313,7 @@ void CodeHelper::TryToSuggestTemplateSolutionForLinkingErrors (const wxArrayStri
 
 	if (the_map.empty()) return;
 		
-	map<wxString,wxString> candidatos; // opciones
+	std::map<wxString,wxString> candidatos; // opciones
 	
 	for(unsigned int i=0;i<full_output.GetCount();i++) { 
 		
@@ -1352,7 +1351,7 @@ void CodeHelper::TryToSuggestTemplateSolutionForLinkingErrors (const wxArrayStri
 				if (!keyword.Len()) continue;
 		}
 		// buscar en las plantillas
-		map<wxString,int>::iterator it=the_map.find(keyword);
+		auto it = the_map.find(keyword);
 		if (it==the_map.end()) continue;
 		while (it!=the_map.end()) {
 			candidatos[temp_names[it->second]]=temp_args[it->second];
@@ -1363,7 +1362,7 @@ void CodeHelper::TryToSuggestTemplateSolutionForLinkingErrors (const wxArrayStri
 	
 	if (candidatos.empty()) return;
 	wxArrayString vals;
-	map<wxString,wxString>::iterator it=candidatos.begin(), it2=candidatos.end();
+	auto it = candidatos.begin(), it2 = candidatos.end();
 	while (it!=it2) {
 		it->second.Replace("${DEFAULT}",config->GetDefaultCompilerOptions(source->IsCppOrJustC()),true);
 		if (it->second==source->GetCompilerOptions(false)) return; // si ya se habia aplicado una, no volver a preguntar, probablemente sea otro el problema
@@ -1445,7 +1444,7 @@ wxString MyAutocompList::GetFiltered (wxString typed) {
 	int len=typed.Len(), n=keywords.GetCount(), i=0; max_len=0; typed.MakeLower();
 	while(i<n) { 
 		if (!ShouldAddToAutocomp(typed,len,keywords[i])) {
-			swap(keywords[i],keywords[--n]);
+			std::swap(keywords[i],keywords[--n]);
 		} else {
 			if (keywords[i].Len()>max_len) max_len=keywords[i].Len();
 			i++;

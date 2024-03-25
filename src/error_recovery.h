@@ -1,7 +1,6 @@
 #ifndef ERROR_RECOVERY_H
 #define ERROR_RECOVERY_H
 #include <fstream>
-using namespace std;
 
 class mxSource;
 
@@ -14,7 +13,7 @@ struct er_source_register {
 
 extern er_source_register *g_er_first_source;
 
-extern string g_er_dir;
+extern std::string g_er_dir;
 
 void er_register_source(mxSource *src);
 void er_unregister_source(mxSource *src);

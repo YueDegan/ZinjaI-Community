@@ -88,7 +88,6 @@
 #include "osdep.h"
 #include "mxTemplateCombination.h"
 #include "mxSourceUndoHistory.h"
-using namespace std;
 
 #define SIN_TITULO (wxString("<")<<LANG(UNTITLED,"sin_titulo_")<<(++untitled_count)<<">")
 #define LAST_TITULO (wxString("<")<<LANG(UNTITLED,"sin_titulo_")<<(untitled_count)<<">")
@@ -552,7 +551,7 @@ mxMainWindow::mxMainWindow(wxWindow* parent, wxWindowID id, const wxString& titl
 	
 	ZLINF("MainWindow","Initializing aui_manager, menues and toolbars...");	
 	
- 	m_aui = make_unique<mxAUI>(this);
+ 	m_aui = std::make_unique<mxAUI>(this);
 	mxAUIFreezeGuard aui_guard(*m_aui);
 	
 	menu_data->CreateMenuesAndToolbars(this); 
@@ -2733,7 +2732,7 @@ mxSource *mxMainWindow::NewFileFromTemplate(wxString filename, bool is_full_path
 	
 	// parse template options
 	SimpleTemplates::Initialize(); // ensures g_templates!=nullptr
-	map<wxString,wxString> temp_opts;
+	std::map<wxString,wxString> temp_opts;
 	int header_lines = g_templates->GetOptions(temp_opts,full_path);
 	
 	// copy the file's content (without header) to source
@@ -3403,9 +3402,9 @@ void mxMainWindow::OnDebugDoThat ( wxCommandEvent &event ) {
 		wxLog::SetActiveTarget(new wxLogStderr());
 		SetStatusText("DoThat: usando wxLogStrerr");
 	} else if (res=="kboom") {
-		int *p=nullptr;
+		int *p = nullptr;
 		// cppcheck-suppress nullPointer
-		cout<<*p;
+		std::cout << *p;
 	} else {
 		SetStatusText("Unknown command");
 	}
@@ -4757,7 +4756,7 @@ void mxMainWindow::UpdateStylesInSources ( ) {
 void mxMainWindow::OnDebugSendSignal (wxCommandEvent & event) {
 	static wxString prev;
 	wxArrayString signames; signames.Add(LANG(DEBUG_SIGNAL_NONE,"<none>: continuar sin enviar ninguna señal"));
-	vector<SignalHandlingInfo> vsig;
+	std::vector<SignalHandlingInfo> vsig;
 	debug->GetSignals(vsig); if(vsig.empty()) return;
 	for(unsigned int i=0;i<vsig.size();i++) signames.Add(vsig[i].name+": "+vsig[i].description);
 	wxSingleChoiceDialog dlg(this,"Signal:","Send signal to running process",signames);

@@ -4,17 +4,16 @@
 #include <stack>
 #include <map>
 #include <vector>
-using namespace std;
 
 class mxReferenceWindow : public mxGenericHelpWindow {
 	
-	vector< pair<wxString,wxString> > search_index;
+	std::vector< std::pair<wxString,wxString> > search_index;
 	bool LoadSearchIndex();
 	
 	wxTreeItemId page_tree_item;
 	bool PopulateInitialTree();
 	
-	vector<pair<wxTreeItemId,wxString> > items_general,items_page;
+	std::vector< std::pair<wxTreeItemId,wxString> > items_general,items_page;
 	
 	static mxReferenceWindow *instance;
 	mxReferenceWindow(wxString file="");
@@ -23,8 +22,8 @@ class mxReferenceWindow : public mxGenericHelpWindow {
 	
 	wxString m_doc_version; ///< version of the cppreference content archive
 	
-	stack<wxString> history_prev;
-	stack<wxString> history_next;
+	std::stack<wxString> history_prev;
+	std::stack<wxString> history_next;
 //	bool CurrentPageIsHome() override;
 	bool CanPrev() override;
 	bool CanNext() override;

@@ -635,7 +635,7 @@ void Parser::ParseSomething(bool first, bool arg_show_progress) {
 		progress_now=0;
 		show_progress=arg_show_progress;
 		if (show_progress) {
-			list<parserAction>::iterator it=actions.begin();
+			auto it = actions.begin();
 			while (it!=actions.end()) { ++progress_total; ++it; }
 			if (progress_total>0) main_window->SetStatusProgress(0);
 		}
@@ -645,8 +645,8 @@ void Parser::ParseSomething(bool first, bool arg_show_progress) {
 		bool async=false; // si un paso lanza un proceso asincrono, esta bandera lo indica, para cortar el loop y esperar el evento terminate de ese proceso
 		do {
 			data_age++;
-			list<parserAction>::iterator it=actions.begin();
-			parserAction pa=*it; actions.erase(it);
+			auto it = actions.begin();
+			parserAction pa = *it; actions.erase(it);
 			if (debug->IsDebugging() || should_stop) {
 				working=false;
 	//			symbol_tree->Thaw();
@@ -745,7 +745,7 @@ void Parser::OnEnd(OnEndAction *what, bool run_now_if_not_working) {
 }
 
 void Parser::UnregisterSource(mxSource *src) {
-	list<parserAction>::iterator it=actions.begin();
+	auto it = actions.begin();
 	while (it!=actions.end()) {
 		if (it->action_type==PA_PARSE_OPENED_SOURCE && !(it==actions.begin() && parser->working)) {
 			if (src->sin_titulo)

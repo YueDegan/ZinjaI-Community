@@ -29,7 +29,6 @@
 #include "ZLog.h"
 #include "asserts.h"
 #include "StringConv.h"
-using namespace std;
 
 //#define BACKTRACE_MACRO "define zframeaddress\nset $fi=0\nwhile $fi<$arg0\nprintf \"*zframe-%u={\",$fi\ninfo frame $fi\nprintf \"}\\n\"\nset $fi=$fi+1\nend\nend"
 
@@ -1779,7 +1778,7 @@ void DebugManager::SendSignal (const wxString & signame) {
 	}
 }
 
-bool DebugManager::GetSignals(vector<SignalHandlingInfo> & v) {
+bool DebugManager::GetSignals(std::vector<SignalHandlingInfo> & v) {
 	wxString info; v.clear();
 	if (debugging) {
 		if (waiting) {
@@ -1828,7 +1827,7 @@ bool DebugManager::GetSignals(vector<SignalHandlingInfo> & v) {
 		v.push_back(si);
 	}
 	if (!signal_handlers_state) {
-		signal_handlers_state = new vector<SignalHandlingInfo>[2];
+		signal_handlers_state = new std::vector<SignalHandlingInfo>[2];
 		signal_handlers_state[0]=signal_handlers_state[1]=v;
 	}
 	return true;

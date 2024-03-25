@@ -12,7 +12,6 @@
 #include <wx/wfstream.h>
 #include <wx/image.h>
 #include "ZLog.h"
-using namespace std;
 	
 mxArt *bitmaps = nullptr;
 

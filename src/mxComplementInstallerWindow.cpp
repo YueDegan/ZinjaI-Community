@@ -14,6 +14,7 @@
 #include "ConfigManager.h"
 #include "mxMessageDialog.h"
 #include "Toolchain.h"
+#include "StringConv.h"
 
 BEGIN_EVENT_TABLE(mxComplementInstallerWindow, wxDialog)
 	EVT_BUTTON(wxID_OK,mxComplementInstallerWindow::OnOkButton)
@@ -111,8 +112,8 @@ void mxComplementInstallerWindow::Install(wxWindow *parent, wxString fname) {
 		if (wxFileName::FileExists(wtestf)) writable=false;
 	}
 	if (writable) {
-		ofstream of(wtestf.c_str(),ios::trunc);
-		of<<"temporary file for testing writability"<<endl;
+		std::ofstream of(ToCStyleString(wtestf),std::ios::trunc);
+		of<<"temporary file for testing writability"<<std::endl;
 		of.close();
 		if (!wxFileName::FileExists(wtestf)) writable=false;
 	}

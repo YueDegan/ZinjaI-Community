@@ -5,7 +5,6 @@
 #include "Language.h"
 #include "mxUtils.h"
 #include <wx/msgdlg.h>
-using namespace std;
 
 wxColour mxGrid::CLR_BLACK, mxGrid::CLR_RED, mxGrid::CLR_GRAY, mxGrid::CLR_CYAN; // pseudo-constantes que se calculan al crear la primer tabla y sirven para todas
 wxColour mxGrid::BCLR_WHITE, mxGrid::BCLR_GREEN, mxGrid::BCLR_YELLOW, mxGrid::BCLR_RED; // pseudo-constantes que se calculan al crear la primer tabla y sirven para todas
@@ -166,7 +165,7 @@ void mxGrid::Select(int row, int col) {
 	MakeCellVisible(row,col);
 }
 
-int mxGrid::GetSelectedRows (vector<int> & rows, bool inverted) {
+int mxGrid::GetSelectedRows (std::vector<int> & rows, bool inverted) {
 	wxArrayInt sr = wxGrid::GetSelectedRows();
 	for(unsigned int i=0;i<sr.GetCount();i++) rows.push_back(sr[i]);
 	wxGridCellCoordsArray c = wxGrid::GetSelectedCells();
@@ -205,7 +204,7 @@ void mxGrid::OnKeyDown (wxKeyEvent & event) {
 
 void mxGrid::CopyToClipboard (bool only_selected, int col) {
 	// determinar cules filas copiar
-	vector<int> sel; 
+	std::vector<int> sel; 
 	if (only_selected) {
 		GetSelectedRows(sel,false);
 	} else {
@@ -222,7 +221,7 @@ void mxGrid::CopyToClipboard (bool only_selected, int col) {
 	} else {
 		// calcular anchos de columna
 		int nc = wxGrid::GetNumberCols();
-		vector<int> w(nc-1); for (int i=0;i<nc-1;i++) w[i] = i;
+		std::vector<int> w(nc-1); for (int i=0;i<nc-1;i++) w[i] = i;
 		for (unsigned int i=0;i<sel.size();i++) {
 			for (int j=0;j<nc-1;j++) {
 				wxString val = wxGrid::GetCellValue(sel[i],j);

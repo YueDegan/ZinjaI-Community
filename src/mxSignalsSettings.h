@@ -3,13 +3,12 @@
 #include <wx/dialog.h>
 #include <vector>
 #include "DebugManager.h"
-using namespace std;
 
 class wxCheckBox;
 
 class mxSignalsSettings : public wxDialog {
 private:
-	vector<SignalHandlingInfo> vsig; 
+	std::vector<SignalHandlingInfo> vsig; 
 	wxCheckBox **checks_stop;
 	wxCheckBox **checks_pass;
 public:

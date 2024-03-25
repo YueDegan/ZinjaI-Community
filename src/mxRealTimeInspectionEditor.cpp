@@ -57,7 +57,7 @@ mxRealTimeInspectionEditor::mxRealTimeInspectionEditor(const wxString &expressio
 	Layout(); Resize(false);
 	
 	// usamos un accelerator para F5, que será continuar o actualizar
-	pair<int,int> shortcut = _menu_item_2(mnDEBUG,mxID_DEBUG_RUN)->GetFlagAndKeycode();
+	std::pair<int,int> shortcut = _menu_item_2(mnDEBUG,mxID_DEBUG_RUN)->GetFlagAndKeycode();
 	wxAcceleratorEntry aentry(shortcut.first,shortcut.second,mxID_DEBUG_RUN);
 	if (shortcut.second) this->SetAcceleratorTable( wxAcceleratorTable(1,&aentry) );
 	

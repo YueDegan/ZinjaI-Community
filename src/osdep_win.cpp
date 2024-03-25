@@ -69,7 +69,7 @@ static HWND find_main_window(unsigned long process_id)
 
 bool OSDep::SetFocus(unsigned long int pid) {
 	HWND win = find_main_window(pid);
-	ZLINF2("OSDep::SetFocus","pid="<<pid<<" win="<<int(win));
+	ZLINF2("OSDep::SetFocus","pid="<<pid<<" win="<<(long long)(win));
 	if (win==0) return false;
 	SetForegroundWindow(win);
 	return true;

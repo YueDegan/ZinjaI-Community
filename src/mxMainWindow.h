@@ -579,7 +579,7 @@ public:
 		wxTreeCtrl *treeCtrl;
 	} symbols_tree; 
 
-	unique_ptr<mxAUI> m_aui;
+	std::unique_ptr<mxAUI> m_aui;
 
 	wxTimer *parser_timer;
 

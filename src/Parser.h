@@ -9,7 +9,6 @@
 #include <list>
 #include <wx/process.h>
 #include <wx/timer.h>
-using namespace std;
 
 #include "paf_defs.h"
 
@@ -214,7 +213,7 @@ public:
 	
 	
 private:
-	list<parserAction> actions;
+	std::list<parserAction> actions;
 	bool ParseNextSource(mxSource *src, bool dontsave=false);
 	long ParseNextFileStart (wxFileName filename, wxString hashName, bool hide_symbols=false);
 	void ParseNextFileContinue(const wxString &s); ///< to be called when an asyn process from ParseNextFile have some output

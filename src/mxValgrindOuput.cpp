@@ -2,7 +2,6 @@
 #include <wx/txtstrm.h>
 #include <wx/textfile.h>
 #include <wx/filename.h>
-using namespace std;
 #include <set>
 #include "mxValgrindOuput.h"
 #include "ids.h"
@@ -39,7 +38,7 @@ bool mxValgrindOuput::LoadOutput() {
 
 bool mxValgrindOuput::LoadOutputCppCheck() {
 	
-	set<wxString> all;
+	std::set<wxString> all;
 		
 	DeleteAllItems();
 	root = AddRoot(_T("Salida"), -1);

@@ -151,8 +151,8 @@ void mxInspectionsImprovingEditor::OnList (wxCommandEvent & evt) {
 
 void mxInspectionsImprovingEditor::OnUp (wxCommandEvent & evt) {
 	if (selected<1) return;
-	swap(array_to[selected],array_to[selected-1]);
-	swap(array_from[selected],array_from[selected-1]);
+	std::swap(array_to[selected],array_to[selected-1]);
+	std::swap(array_from[selected],array_from[selected-1]);
 	list->SetString(selected,array_from[selected]);
 	list->SetString(selected-1,array_from[selected-1]);
 	selected--; list->Select(selected); OnList(evt);
@@ -160,8 +160,8 @@ void mxInspectionsImprovingEditor::OnUp (wxCommandEvent & evt) {
 
 void mxInspectionsImprovingEditor::OnDown (wxCommandEvent &evt) {
 	if (selected==-1 || selected>int(list->GetCount())-2) return;
-	swap(array_to[selected],array_to[selected+1]);
-	swap(array_from[selected],array_from[selected+1]);
+	std::swap(array_to[selected],array_to[selected+1]);
+	std::swap(array_from[selected],array_from[selected+1]);
 	list->SetString(selected,array_from[selected]);
 	list->SetString(selected+1,array_from[selected+1]);
 	selected++; list->Select(selected); OnList(evt);

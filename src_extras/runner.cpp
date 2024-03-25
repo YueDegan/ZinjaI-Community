@@ -1,6 +1,5 @@
 #include<cstring>
 #include<iostream>
-using namespace std;
 #ifdef __WIN32__
 	#define eternal_nothing while (true) Sleep(10000)
 	#include<io.h>
@@ -18,7 +17,7 @@ using namespace std;
 			core_limit.rlim_cur = RLIM_INFINITY;
 			core_limit.rlim_max = RLIM_INFINITY;
 			if(setrlimit(RLIMIT_CORE, &core_limit) < 0)
-				cerr << "Warning: core dumps may be truncated or non-existant (errno "<< strerror(errno) << ")" << endl;
+				std::cerr << "Warning: core dumps may be truncated or non-existant (errno "<< strerror(errno) << ")" << std::endl;
 		}
 	#endif
 	#include <termios.h>
@@ -85,7 +84,7 @@ void do_waitkey() {
 #ifdef __WIN32__
 	getch();
 #else
-	cout<<"\033[?25l"<<flush;
+	std::cout << "\033[?25l" << std::flush;
 	struct termios oldt,newt;
 	tcgetattr( STDIN_FILENO, &oldt );
 	newt = oldt;
@@ -100,9 +99,9 @@ void do_waitkey() {
 int main(int argc, char *argv[]) {
 	
 	bool tty=false;
-	string tty_fout;
+	std::string tty_fout;
 	int waitkey=0;
-	string dir;
+	std::string dir;
 	bool dir_done=false;
 	int cmd_start=1;
 	
@@ -119,15 +118,15 @@ int main(int argc, char *argv[]) {
 			enable_core_dump();
 #endif
 		} else if (strcmp(argv[i],"-debug-end")==0) {
-			cerr<<endl<<endl<<lang_debug_finished[lang_idx]<<argv[++i]<<" >>";
+			std::cerr << std::endl << std::endl << lang_debug_finished[lang_idx] << argv[++i]<<" >>";
 #ifndef __APPLE__
-			cerr<<endl<<lang_press_key_to_close[lang_idx];
+			std::cerr << std::endl << lang_press_key_to_close[lang_idx];
 			do_waitkey();
 #endif
 			return 0;
-		} else if (strcmp(argv[i],"-lang")==0) {
+		} else if (std::strcmp(argv[i],"-lang")==0) {
 			i++;
-			if (strcmp(argv[i],"english")==0)
+			if (std::strcmp(argv[i],"english")==0)
 				lang_idx=1;
 		} else if (dir_done) {
 			cmd_start=i;
@@ -140,7 +139,7 @@ int main(int argc, char *argv[]) {
 
 	if (tty) { // guarda la direccion de la terminal en un archivo y entra en loop infinito (terminal para depuracion)
 //		if (waitkey) signal(2,on_quit);
-		system((string("tty >")+tty_fout).c_str());
+		std::system( (std::string("tty >")+tty_fout).c_str() );
 		eternal_nothing;
 	}
 	
@@ -149,7 +148,7 @@ int main(int argc, char *argv[]) {
 		
 #if defined(_WIN32) || defined(__WIN32__)
 
-		string command;
+		std::string command;
 		command+="\"";
 		command+=argv[cmd_start];
 		command+="\" ";
@@ -179,8 +178,8 @@ int main(int argc, char *argv[]) {
 			&pi )             // Pointer to PROCESS_INFORMATION structure.
 			)
 		{
-			cerr<<lang_error_creating_process[lang_idx]<<command<<endl;
-			cin.get();
+			std::cerr << lang_error_creating_process[lang_idx] << command<<std::endl;
+			std::cin.get();
 			return 1;
 		}
 		
@@ -194,7 +193,7 @@ int main(int argc, char *argv[]) {
 		CloseHandle( pi.hProcess );
 		CloseHandle( pi.hThread );
 		if (waitkey==2 || (waitkey==1 && ret!=0)) {
-			cerr<<endl<<endl<<lang_program_finished[lang_idx]<<ret<<" >>"<<endl<<lang_press_key_to_close[lang_idx];
+			std::cerr << std::endl << std::endl << lang_program_finished[lang_idx] << ret << " >>" << std::endl << lang_press_key_to_close[lang_idx];
 			do_waitkey();
 		}
 #else
@@ -211,8 +210,8 @@ int main(int argc, char *argv[]) {
 		child_pid=fork();
 		if (child_pid==0) {
 			execvp(margv[0],margv);
-			cerr<<lang_error_running[lang_idx]<<margv[0]<<endl;
-			cin.get();
+			std::cerr << lang_error_running[lang_idx] << margv[0] << std::endl;
+			std::cin.get();
 			return 1;
 		}
 		
@@ -223,7 +222,7 @@ for(int i=0;i<32;i++) { signal(i,NULL); }
 		if (WIFEXITED(child_status)) {
 			ret=WEXITSTATUS(child_status);
 			if (waitkey==2 || (waitkey==1 && ret!=0)) {
-				cerr<<endl<<endl<<lang_program_finished[lang_idx]<<ret<<" >>"<<endl<<lang_press_key_to_close[lang_idx];
+				std::cerr << std::endl << std::endl << lang_program_finished[lang_idx] << ret << " >>" << std::endl << lang_press_key_to_close[lang_idx];
 				waitkey=2;
 			}
 		} else {
@@ -244,9 +243,9 @@ for(int i=0;i<32;i++) { signal(i,NULL); }
 					"SIGRTMAX-1","SIGRTMAX" }; // 63-64
 				int sig=WTERMSIG(child_status);
 				if (sig>0 && sig<=64)
-					cerr<<endl<<endl<<lang_program_finished_abnormal[lang_idx]<<signals[sig]<<"("<<sig<<") >>"<<endl<<lang_press_key_to_close[lang_idx];
+					std::cerr << std::endl << std::endl << lang_program_finished_abnormal[lang_idx] << signals[sig] << "(" << sig << ") >>" << std::endl << lang_press_key_to_close[lang_idx];
 				else
-					cerr<<endl<<endl<<lang_program_finished_abnormal[lang_idx]<<sig<<" >>"<<endl<<lang_press_key_to_close[lang_idx];
+					std::cerr << std::endl << std::endl << lang_program_finished_abnormal[lang_idx] << sig << " >>" << std::endl << lang_press_key_to_close[lang_idx];
 				waitkey=2;
 			}
 		}

@@ -33,7 +33,6 @@
 //#include "linStuff.h"
 #include "mxMiniSource.h"
 #include "mxSourceComments.h"
-using namespace std;
 
 // cannot "emulate" different dwell times anymore with wx3
 //// dwell time for margins
@@ -1843,7 +1842,7 @@ void mxSource::OnPopupMenuMargin(wxMouseEvent &evt) {
 	int x=10,p; for(int i=0;i<MARGIN_NULL;i++) { x+=GetMarginWidth(i); }
 	int l=LineFromPosition( p=PositionFromPointClose(x,evt.GetY()) );
 	int sls = LineFromPosition(GetSelectionStart()), sle = LineFromPosition(GetSelectionEnd());
-	if (sle<sls) swap(sle,sls);
+	if (sle<sls) std::swap(sle,sls);
 	if (GetCurrentLine()!=l && !(l>=sls&&l<=sle)) GotoPos(PositionFromLine(l));
 	wxMenu menu("");
 	
@@ -1962,7 +1961,7 @@ void mxSource::PopulatePopupMenuCodeTools(wxMenu &menu) {
 	// determinar si toda la seleccion corresponde a un mismo scope como para poder hacer refactory local con esas lineas como grupo
 	bool single_scope = p1==p2;
 	if (!single_scope) {
-		if (p2<p1) swap(p1,p2); 
+		if (p2<p1) std::swap(p1,p2); 
 		int a1,a2; single_scope = true;
 		for(int i=0;i<2;i++) {
 			single_scope = single_scope &&GetCurrentScopeLimits(i?p1:p2,a1,a2,true); // scope mas interno de pX
@@ -3768,7 +3767,7 @@ void mxSource::OnEditMakeUpperCase (wxCommandEvent & event) {
 void mxSource::MultiSelController::InitRectEdit (mxSource *src, bool keep_rect_select) {
 	this->Reset();
 	// get ordered selection limits
-	int beg = src->GetSelectionStart(), end = src->GetSelectionEnd(); if (beg>end) swap(beg,end);
+	int beg = src->GetSelectionStart(), end = src->GetSelectionEnd(); if (beg>end) std::swap(beg,end);
 	// get lines range
 	int line_from = src->LineFromPosition(beg), line_to = src->LineFromPosition(end);
 	// check for multiline selection
@@ -4075,7 +4074,7 @@ bool mxSource::GetCurrentCall (wxString &ftype, wxString &fname, wxArrayString &
 void mxSource::OnEditHighLightedWordEdition (wxCommandEvent & evt) {
 	int pbeg = GetSelectionStart(), pend = GetSelectionEnd();
 	if (pbeg==pend) { HighLightCurrentWord(); return; }
-	if (pbeg>pend) swap(pbeg,pend);
+	if (pbeg>pend) std::swap(pbeg,pend);
 	if (m_highlithed_word.IsEmpty() || !config_source.syntaxEnable) return;
 	multi_sel.Reset();
 	int p0, p1;
@@ -4126,7 +4125,7 @@ void mxSource::ReloadErrorsList ( ) {
 	MarkerDeleteAll(mxSTC_MARK_ERROR);
 	MarkerDeleteAll(mxSTC_MARK_WARNING);
 	if (!m_cem_ref.Update()) return;
-	const vector<CompilerErrorsManager::CEMError> &v = m_cem_ref.GetErrors();
+	const std::vector<CompilerErrorsManager::CEMError> &v = m_cem_ref.GetErrors();
 	for(size_t i=0;i<v.size();i++) { 
 		int b0_line = v[i].line-1;
 		bool is_error = v[i].is_error;
@@ -4157,7 +4156,7 @@ void mxSource::SetTreeItem (const wxTreeItemId & item) {
 }
 
 mxMiniSource *mxSource::GetMinimap(mxMiniMapPanel *panel) {
-	if (!m_minimap) m_minimap = make_unique<mxMiniSource>(panel,this);
+	if (!m_minimap) m_minimap = std::make_unique<mxMiniSource>(panel,this);
 	return m_minimap.get();
 }
 

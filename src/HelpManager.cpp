@@ -11,7 +11,6 @@
 #include "ProjectManager.h"
 #include <vector>
 #include "CodeHelper.h"
-using namespace std;
 
 HelpManager *g_help = nullptr;
 
@@ -538,7 +537,7 @@ bool HelpManager::ReloadDoxyIndex() {
 		if (!fil.Exists()) return false;
 		fil.Open();
 		wxString str,tag;
-		vector<xml_doxy_item> pila;
+		std::vector<xml_doxy_item> pila;
 		pila.push_back(xml_doxy_item('*'));
 		for ( wxString str = fil.GetFirstLine(); !fil.Eof(); str = fil.GetNextLine() ) {
 			// el nivel de anidamiento se lee por espacios aprovechando que doxygen es prolijo

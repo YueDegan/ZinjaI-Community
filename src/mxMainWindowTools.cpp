@@ -3,6 +3,7 @@
 #include <wx/textfile.h>
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
+#include <wx/choicdlg.h>
 #include <wx/menu.h>
 #include <wx/string.h>
 #include <wx/ffile.h>
@@ -51,8 +52,6 @@
 #include "mxAUI.h"
 #include "ZLog.h"
 #include "mxSourceComments.h"
-#include <wx/choicdlg.h>
-using namespace std;
 
 /// @brief Muestra el cuadro de configuración de cppcheck (mxCppCheckConfigDialog)
 void mxMainWindow::OnToolsCppCheckConfig(wxCommandEvent &event) {
@@ -938,10 +937,10 @@ void mxMainWindow::ToolsCodeCopyFromH(mxSource *source, wxString the_one) {
 
 static void GetValidLines(const char *fin, int *v, int n) {
 	memset(v,0,sizeof(int)*n);
-	ifstream f(fin);
-	string l; int ln=1;
-	getline(f,l);
-	string fname=l.substr(l.find('\"'),l.rfind('\"')-l.find('\"')+1);
+	std::ifstream f(fin);
+	std::string l; int ln=1;
+	std::getline(f,l);
+	std::string fname=l.substr(l.find('\"'),l.rfind('\"')-l.find('\"')+1);
 	bool counting=false; int old_last,last=0;
 	while (getline(f,l)) {
 		if (l.size()>2 && l[0]=='#' && l[1]==' ') {
@@ -1315,7 +1314,7 @@ void mxMainWindow::AuxToolsDisassemble2(wxString out_fname, bool full_scope) {
 	if (lfrom>lto) std::swap(lfrom,lto);
 	
 	// load and filter results to panel
-	vector<auxObjdumpLine> full_scope_dump; // para el full_scope
+	std::vector<auxObjdumpLine> full_scope_dump; // para el full_scope
 	wxFileInputStream input(out_fname);
 	wxTextInputStream text(input);
 	bool on_scope = false; wxString scope_name; // on_scope dice si actualmente estamos o no pasando por el desensamblado de alguna de las lineas que interesan
