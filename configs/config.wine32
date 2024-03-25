@@ -1,0 +1,6 @@
+ARCH=wine32
+RM=rm -f
+MKDIR=mkdir -p
+PREFIX=wine32 
+
+include common.w32

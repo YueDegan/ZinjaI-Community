@@ -1,0 +1,5 @@
+ARCH=w32
+RM=del
+MKDIR=mkdir
+
+include common.w32

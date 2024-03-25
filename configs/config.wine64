@@ -1,0 +1,6 @@
+ARCH=wine64
+RM=rm -f
+MKDIR=mkdir -p
+PREFIX=wine64 
+
+include common.w64
