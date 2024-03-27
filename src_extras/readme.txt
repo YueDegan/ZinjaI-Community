@@ -26,30 +26,22 @@ Tools/scripts required by ZinjaI
   
   
 Scripts for packing ZinjaI on different platforms
-  
+
+    pack.sh
+      script for automatically compiling and packing the diferent versions of ZinjaI for a release
+      
     zinjai-packer.sh
-      script for building ZinjaI tgz for GNU/Linux from my Ubuntu virtual machine
-
-    make_dmg
-      bash script for copying files and generating mac dmg packages from a GNU/Linux system with cross-compiling
-
-    make_wine
-      bash script for building binaries with wine, copying files from a GNU/Linux ZinjaI installation to a set of folders that zinjai.nsh will use and building the final win32 installer (you need to add mingw, wx and openl manually)
+      script for building ZinjaI tgz for GNU/Linux from my virtual machines
 
     zinjai.nsh
       nsis-installer script for building Windows installer (you need to arrange files in folders zinjai, fuentes, mingw, opengl and wx to run it, use make_wine for the first two)
 
 
-Tools and script for generating some non-executable ZinjaI files      
+Tools and script for generating some non-executable ZinjaI files
 
-    wx_autocomp
+    wx_autocomp (deprecated)
       bash scripts and cpp files used to generate wxWidgets 2.8 autocompletion index from its html reference (call do.sh with html's directory as the only argument and will generate the index file wxWidgets)
 
-    std_autocomp
+    std_autocomp (deprecated)
       bash scripts and cpp files used to generate some std autocompletio indexes from cppreference html files
 
-      
-Other files
-
-    stc-zaskar.tgz
-      files modified from wxWidgets-2.8.12's souorces; some changes made to wxStiledTextCtrl and its scintilla's version that are used by ZinjaI (included in its binary version).

@@ -1,3 +1,0 @@
-SRC=..
-VER=$(cat ../src/version.h | grep VERSION | cut -d ' ' -f 3)
-git clone $SRC zinjai-$VER && rm -rf zinjai-$VER/.git && tar -czvf zinjai-src-$VER.tgz zinjai-$VER/*

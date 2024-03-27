@@ -7,7 +7,7 @@ EXT_FLAGS=-static-libgcc -static-libstdc++
 WSOCK=-lwsock32
 else
 EXTRA_BINS=../zinjai
-WSOCK
+WSOCK=
 endif
 
 all: ../${BIN}/updatem${EXT} ../${BIN}/runner${EXT} ${EXTRA_BINS}
