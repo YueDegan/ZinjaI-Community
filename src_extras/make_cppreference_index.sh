@@ -3,8 +3,8 @@
 # Script for generating an index file for zinjai to display cpprefence's content
 
 # To update this reference, download the latest offline archive from http://en.cppreference.com/
-# in its html book version, uncompress it and move to zinjai/cpprefence (should contain two subdirs, 
-# "en" and "common") and then invoke this script 
+# in its html book version, uncompress it and move to zinjai/cppreference (should contain two subdirs, 
+# "en" and "common") and then invoke this script with bash (from that dir: zinjai/cppreference)
 
 cd en || exit 1
 
