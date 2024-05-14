@@ -649,40 +649,89 @@ bool mxFindDialog::MultifindAux(int count, const wxString &res) {
 * This function will handle the results limit, if the count exceeds 500 only the first
 * 500 will be shown (trying to show a huge html will virtually freeze the application).
 *
-* @param fname    the full path to de filename, to be included in href in the link
+* @param fname    the full path to the filename, to be included in href in the link
+* @param line     the base 0 line number for the coincidence
+* @param matches  base 0 positions for the coincidences within that line (expected to be sorted)
+* @param len      the len of the coincidence
+* @param falias   the friendly short filename to display in the text
+* @param the_line the content of the line, to display trimmed and with the coincidence in bold
+**/
+wxString mxFindDialog::GetHtmlEntry(const wxString &fname, int line, const std::vector<int> &matches, int len, const wxString &falias, const wxString &the_line) {
+	constexpr int MAX_RESULTS = 500;
+	if (num_results>=MAX_RESULTS) return "";
+	num_results += matches.size();
+	if (num_results>=MAX_RESULTS) 
+		return wxString("<TR><TD><B>...</B></TD>")<<LANG(FIND_TOO_MANY_RESULTS,"demasiados resultados, solo se muestran los primeros 500")<<"<TD></TD></TR>";
+	
+	// result is a table with two columns, first one show file name and line number and is a link, second one shows the line content
+	wxString full_line = the_line;
+	for (int i=matches.size()-1; i>=0; --i ) {
+		int pos = matches[i];
+		wxString res;
+		if (i==0) res << "<TR><TD><A href=\"gotolinepos:"<<fname<<":"<<line<<":"<<pos<<":"<<len<<"\">"<<falias<<": "<<LANG(FIND_LINE,"linea")<<" "<<line+1<<"</A></TD><TD>";
+			      
+		if (i==0) res << mxUT::ToHtml(full_line.Mid(0,pos).Trim(false));
+		else      res <<              full_line.Mid(0,pos); // else... will be converted to html in the next iterations
+		res << "<B>"+mxUT::ToHtml(full_line.Mid(pos,len))+"</B>";
+		if (i+1==matches.size()) res << mxUT::ToHtml(full_line.Mid(pos+len).Trim(true));
+		else                     res <<              full_line.Mid(pos+len); // else... its already html
+		
+		if (i==0) res << "</TD></TR>";
+		full_line = std::move(res);
+	}
+	return full_line;
+}
+
+/**
+* @brief Auxiliar function for generaten the html (result for searchs in multiple files)
+*
+* This function will handle the results limit, if the count exceeds 500 only the first
+* 500 will be shown (trying to show a huge html will virtually freeze the application).
+*
+* @param fname    the full path to the filename, to be included in href in the link
 * @param line     the base 0 line number for the coincidence
 * @param pos      the base 0 position for the coincidence within that line
 * @param len      the len of the coincidence
 * @param falias   the friendly short filename to display in the text
 * @param the_line the content of the line, to display trimmed and with the coincidence in bold
+* @param decorate see the other GetHtmlEntry overload
 **/
-wxString mxFindDialog::GetHtmlEntry(wxString fname, int line, int pos, int len, wxString falias, wxString the_line) {
-	wxString res;
-	if (++num_results==500) {
-		return wxString("<TR><TD><B>...</B></TD>")<<LANG(FIND_TOO_MANY_RESULTS,"demasiados resultados, solo se muestran los primeros 500")<<"<TD></TD></TR>";
-	} else if (num_results>500) return "";
-	res<<"<TR><TD><A href=\"gotolinepos:"<<fname<<":"<<line<<":"<<pos<<":"<<len<<"\">"<<falias<<": "<<LANG(FIND_LINE,"linea")<<" "<<line+1<<"</A></TD>";
-	res<<"<TD>"<<mxUT::ToHtml(the_line.Mid(0,pos).Trim(false))+"<B>"+mxUT::ToHtml(the_line.Mid(pos,len))+"</B>"+mxUT::ToHtml(the_line.Mid(pos+len).Trim(true))<<"</TD></TR>";
-	return res;
-}
+//wxString mxFindDialog::GetHtmlEntry(const wxString &fname, int line, int pos, int len, const wxString &falias, const wxString &the_line) {
+//	// result is a table with two columns, first one show file name and line number and is a link, second one shows the line content
+//	wxString res;
+//	if (++num_results==500) {
+//		return wxString("<TR><TD><B>...</B></TD>")<<LANG(FIND_TOO_MANY_RESULTS,"demasiados resultados, solo se muestran los primeros 500")<<"<TD></TD></TR>";
+//	} else if (num_results>500) return "";
+//	res << "<TR><TD><A href=\"gotolinepos:"<<fname<<":"<<line<<":"<<pos<<":"<<len<<"\">"<<falias<<": "<<LANG(FIND_LINE,"linea")<<" "<<line+1<<"</A></TD>";
+//	res << "<TD>" << mxUT::ToHtml(the_line.Mid(0,pos).Trim(false))<<"<B>"+mxUT::ToHtml(the_line.Mid(pos,len))+"</B>"+mxUT::ToHtml(the_line.Mid(pos+len).Trim(true))<<"</TD></TR>";
+//	return res;
+//}
 
-int mxFindDialog::FindInSource(mxSource *source,wxString &res) {
+int mxFindDialog::FindInSource(mxSource *source, wxString &res) {
 	int count=0;
 	wxString file_name = source->GetFullPath();
 	wxString page_text = mxUT::ToHtml(source->page_text);
 	source->SetSearchFlags(last_flags);
-	int l = source->GetLength();
+	int length = source->GetLength();
 	source->SetTargetStart(0);
-	source->SetTargetEnd(l);
-	int i = source->SearchInTarget(last_search);
-	while (i!=wxSTC_INVALID_POSITION) {
+	source->SetTargetEnd(length);
+	int pos = source->SearchInTarget(last_search), last_line = -1;
+	static std::vector<int> matches; matches.clear();
+	auto commit_results_line = [&](){
+		res << GetHtmlEntry(file_name,last_line,matches,last_search.Len(),page_text,source->GetLine(last_line));
+		matches.clear();
+	};
+	while (pos!=wxSTC_INVALID_POSITION) {
 		count++;
-		int line=source->LineFromPosition(i); i-=source->PositionFromLine(line);
-		res<<GetHtmlEntry(file_name,line,i,source->GetTargetEnd()-source->GetTargetStart(),page_text,source->GetLine(line));
+		int line = source->LineFromPosition(pos);
+		if (line!=last_line and (not matches.empty())) commit_results_line();
+		last_line = line;
+		matches.push_back(pos-source->PositionFromLine(line));
 		source->SetTargetStart(source->GetTargetEnd());
-		source->SetTargetEnd(l);
-		i = source->SearchInTarget(last_search);
+		source->SetTargetEnd(length);
+		pos = source->SearchInTarget(last_search);
 	}
+	if (not matches.empty()) commit_results_line();
 	return count;
 }
 
@@ -699,13 +748,16 @@ bool mxFindDialog::FindInProject(eFileType where) {
 	for (unsigned int i=0;i<array.GetCount();i++) {
 		mxSource *src=main_window->IsOpen(array[i]);
 		if (src) {
-			count+=FindInSource(src,res);
+			count += FindInSource(src,res);
 		} else {
 			wxTextFile fil(array[i]);
 			if (fil.Exists()) {
 				fil.Open();
-				int l=0;
+				int line_num = 0;
 				for ( wxString str_orig, str = fil.GetFirstLine(); !fil.Eof(); str = fil.GetNextLine() ) {
+					static std::vector<int> matches; // to avoid two results lines if the two matches are in the same line
+					matches.clear(); 
+					
 					int ac=0; str_orig=str;
 					if (!(last_flags&wxSTC_FIND_MATCHCASE)) str.MakeUpper();
 					while (wxNOT_FOUND!=(p=str.Find(what))) {
@@ -716,11 +768,15 @@ bool mxFindDialog::FindInProject(eFileType where) {
 						}
 						if (is_ok) {
 							count++;
-							res<<GetHtmlEntry(array[i],l,ac+p,what.Len(),wxFileName(array[i]).GetFullName(),str_orig);
+							matches.push_back(ac+p);
 						}
 						int todel=p+what.Len(); ac+=todel; str.Remove(0,todel);
 					}
-					l++;
+					if (not matches.empty()) {
+						res << GetHtmlEntry(array[i],line_num,matches,what.Len(),wxFileName(array[i]).GetFullName(),str_orig);
+						matches.clear();
+					}
+					++line_num;
 				}
 				fil.Close();
 			}

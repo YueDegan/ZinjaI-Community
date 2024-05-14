@@ -13,10 +13,11 @@ class wxStaticText;
 class mxFindDialog : public wxDialog {
 private:
 	DECLARE_EVENT_TABLE();
-	wxString GetHtmlEntry(wxString fname, int line, int pos, int len, wxString falias, wxString the_line);
+//	wxString GetHtmlEntry(const wxString &fname, int line, int pos, int len, const wxString &falias, const wxString &the_line);
+	wxString GetHtmlEntry(const wxString &fname, int line, const std::vector<int> &matches, int len, const wxString &falias, const wxString &the_line);
 	int num_results; ///< for getting results count in multiple files search
 public:
-  bool replace_mode; ///< para que se abrio el cuadro: buscar o reemplazar
+	bool replace_mode; ///< para que se abrio el cuadro: buscar o reemplazar
 	bool only_selection;
 	int last_flags;
 	wxString last_search;
