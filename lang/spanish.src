@@ -551,7 +551,7 @@ Abrir Co&nsola...
 MENUITEM_TOOLS_EXE_INFO
 &Propiedades del Ejecutable...
 MENUITEM_TOOLS_PROJECT_STATISTICS
-E&stadisticas del Proyecto...
+Estadísticas del Proyecto...
 MENUITEM_TOOLS_DRAW_PROJECT
 Grafo del Proyecto...
 MENUITEM_TOOLS_SHARE
@@ -645,7 +645,7 @@ Eliminar resultados
 MENUITEM_TOOLS_GCOV_RUN_LCOV
 Procesar resultados con lcov...
 MENUITEM_TOOLS_SANITIZERS
-&Sanitizers
+&Sanitizers (llvm-clang/gcc)
 MENUITEM_TOOLS_SANITIZERS_ADDRESS
  
 MENUITEM_TOOLS_SANITIZERS_LEAK
@@ -655,7 +655,7 @@ MENUITEM_TOOLS_SANITIZERS_MEMORY
 MENUITEM_TOOLS_SANITIZERS_THREAD
   
 MENUITEM_TOOLS_SANITIZERS_UNDEFINED
-Address Sanitizer...
+Undefined Behavior Sanitizer...
 MENUITEM_TOOLS_VALGRIND
 Análisis Dinámico (valgrind)
 MENUITEM_TOOLS_VALGRIND_RUN
@@ -1950,6 +1950,8 @@ MAINW_PROJECT_FILE_POPUP_ADD
 &Agregar Archivo...
 MAINW_PROJECT_FILE_POPUP_TOGGLE_FULL_PATH_ON
 Mostrar rutas relativas completas
+MAINW_COPY_ERROR_MESSAGE
+Copiar mensaje de error
 PREFERENCES_WRITING_BEAUTIFY_COMPILER_ERRORS
 Simplificar mensajes de error del compilador
 MAINW_REQUIRES_RECOMPILATION

@@ -406,6 +406,7 @@ public:
 
 	void ShowSpecilaUnnamedSource(const wxString &tab_name, const wxArrayString &lines);
 	void OnCompilerTreeShowFull(wxCommandEvent &event);
+	void OnCompilerTreeCopy(wxCommandEvent &event);
 	void OnCompilerTreeToggleUnSTD(wxCommandEvent &event);
 	void OnCompilerTreePopup(wxTreeEvent &event);
 

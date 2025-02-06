@@ -454,6 +454,7 @@ BEGIN_EVENT_TABLE(mxMainWindow, wxFrame)
 	EVT_TREE_ITEM_RIGHT_CLICK(mxID_TREE_PROJECT, mxMainWindow::OnProjectTreePopup)
 	EVT_TREE_ITEM_RIGHT_CLICK(mxID_TREE_COMPILER, mxMainWindow::OnCompilerTreePopup)
 	EVT_MENU(mxID_COMPILER_POPUP_FULL, mxMainWindow::OnCompilerTreeShowFull)
+	EVT_MENU(mxID_COMPILER_POPUP_COPY, mxMainWindow::OnCompilerTreeCopy)
 	EVT_MENU(mxID_COMPILER_POPUP_USTD, mxMainWindow::OnCompilerTreeToggleUnSTD)
 	
 	EVT_MENU(mxID_PROJECT_POPUP_OPEN_FOLDER, mxMainWindow::OnProjectTreeOpenFolder)
@@ -709,6 +710,10 @@ void mxMainWindow::OnCompilerTreePopup(wxTreeEvent &event) {
 	mxHidenPanelIgnoreGuard ignore_autohide;
 	wxMenu menu("");
 	menu.Append(mxID_COMPILER_POPUP_FULL, LANG(MAINW_OPEN_LAST_COMPILER_OUTPUT,"Abrir última salida"));
+	
+	auto *comp_data = compiler_tree.treeCtrl->GetItemData(event.GetItem());
+	if (comp_data) menu.Append(mxID_COMPILER_POPUP_COPY, LANG(MAINW_COPY_ERROR_MESSAGE,"Copiar mensaje de error"));
+	
 	menu.AppendSeparator();
 	if (!current_toolchain.IsExtern())
 		menu.AppendCheckItem(mxID_COMPILER_POPUP_USTD,LANG(PREFERENCES_WRITING_BEAUTIFY_COMPILER_ERRORS,""
@@ -720,6 +725,27 @@ void mxMainWindow::OnCompilerTreePopup(wxTreeEvent &event) {
 void mxMainWindow::OnCompilerTreeToggleUnSTD(wxCommandEvent &event) {
 	config->Init.beautify_compiler_errors = !config->Init.beautify_compiler_errors;
 	mxMessageDialog(this,LANG(MAINW_REQUIRES_RECOMPILATION,"Los cambios tendrán efecto a partir de la próxima compilación")).IconInfo().ButtonsOk().Run();
+}
+
+void mxMainWindow::OnCompilerTreeCopy(wxCommandEvent &event) {
+	auto it = compiler_tree.treeCtrl->GetSelection();
+	if (it.IsOk()) mxUT::SetClipboardText(compiler_tree.treeCtrl->GetItemText(it));
+	// copiar con hijos (mejor que use "abrir ultima salida si quieren todo el detalle"
+//	wxString msg;
+//	std::stack<wxTreeItemId> items;
+//	items.push(compiler_tree.treeCtrl->GetSelection());
+//	while (not items.empty()) {
+//		auto it = items.top(); items.pop();
+//		if (not msg.IsEmpty()) msg << '\n';
+//		msg << compiler_tree.treeCtrl->GetItemText(it);
+//		wxTreeItemIdValue cookie;
+//		auto ch = compiler_tree.treeCtrl->GetFirstChild(it,cookie);
+//		while (ch.IsOk()) {
+//			items.push(ch);
+//			ch = compiler_tree.treeCtrl->GetNextSibling(ch);
+//		}
+//	}
+//	mxUT::SetClipboardText(msg);
 }
 
 void mxMainWindow::OnCompilerTreeShowFull(wxCommandEvent &event) {
@@ -1191,7 +1217,7 @@ void mxMainWindow::OnSelectError (wxTreeEvent &event) {
 	ZLINF("MainWindow","OnSelectError wxYield:in");
 	wxYield();
 	ZLINF("MainWindow","OnSelectError wxYield:out");
-	mxCompilerItemData *comp_data = (mxCompilerItemData*)(compiler_tree.treeCtrl->GetItemData(event.GetItem()));
+	mxCompilerItemData *comp_data = reinterpret_cast<mxCompilerItemData*>(compiler_tree.treeCtrl->GetItemData(event.GetItem()));
 	wxString error_message = comp_data ? comp_data->file_info : "";
 	if (!error_message.Len()) error_message = compiler_tree.treeCtrl->GetItemText(event.GetItem());
 	wxTreeItemIdValue cookie;
