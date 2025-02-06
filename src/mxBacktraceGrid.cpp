@@ -63,7 +63,7 @@ void mxBacktraceGrid::SelectFrame(int r) {
 	wxString file = entries[r].fname;
 	if (debug->IsDebugging() && !debug->CanTalkToGDB()) {
 		mxSource *src = main_window->OpenFile(file);
-		if (src and line!=-1) src->GotoLine(line);
+		if (src and line!=-1) src->GotoLine(line-1);
 		return;
 	}
 	if (file.Len()) {
