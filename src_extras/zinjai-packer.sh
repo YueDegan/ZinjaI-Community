@@ -36,19 +36,32 @@ fi
 
 if ! [ "$2" = "fast" ]; then
 	TAR_OPTS=""
-	rm -rf zinjai
+    echo "=== removing previous version..."
+	rm -rf zinjai >/dev/null
 else
 	TAR_OPTS="--keep-new-files"
 fi
-scp $SSHSRC/zinjai-src-$1.tgz . || exit 3
-tar $TAR_OPTS -xzvf zinjai-src-$1.tgz
 
+echo "=== getting source..."
+scp $SSHSRC/zinjai-src-$1.tgz . || exit 3
+
+echo "=== uncompressing..."
+tar $TAR_OPTS -xzvf zinjai-src-$1.tgz >/dev/null
+
+echo "=== copying extra files..."
 if ! [ "$EXTRAFILES" = "" ]; then 	
 	mkdir -p zinjai/
-	cp -rf "$EXTRAFILES"/* zinjai/
+	cp -rf "$EXTRAFILES"/* zinjai/ >/dev/null
 fi
 
 cd zinjai
-src_extras/pack.sh $ARCH
-scp dist/zinjai-$ARCH-$1.tgz $SSHSRC/zinjai-$ARCH-$1.tgz
+mkdir -p bin
+mkdir -p dist
+src_extras/pack.sh $ARCH || exit 1
 
+echo "=== sending result..."
+cp dist/zinjai-$ARCH-$1.tgz ..
+cd ..
+scp zinjai-$ARCH-$1.tgz $SSHSRC/zinjai-$ARCH-$1.tgz
+
+echo "=== done!"

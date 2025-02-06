@@ -10,6 +10,7 @@ BIN=.
 else
 SARCH=`../src_extras/get-arch.sh`
 ICON=
+BIN=bin
 endif
 
 
@@ -28,7 +29,7 @@ clean-bin:
 clean: clean-bin
 	${RM} ${OBJS}
 
-../${BIN}/zinjai${EXT}: ../${BIN} ${OBJS} ${ICON}
+../${BIN}/zinjai${EXT}: ${OBJS} ${ICON}
 	${GPP} ${OBJS} ${LDFLAGS} -o $@
 	${OBJCOPY} --only-keep-debug $@ ../${BIN}/zinjai-${SARCH}.dbg
 	${STRIP} $@

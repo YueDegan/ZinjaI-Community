@@ -157,7 +157,7 @@ void mxMainWindow::OnToolsCppCheckRun(wxCommandEvent &event) {
 	}
 	if (extra_args.Len()) args<<" "<<extra_args;
 	
-	wxString command = mxUT::Quotize(config->Files.cppcheck_command)<<" "<<cppargs<<" --template \"[{file}:{line}] ({severity},{id}) {message}\" "<<args<<" "<<file_args;
+	wxString command = mxUT::Quotize(config->Files.cppcheck_command)<<" "<<cppargs<<" --template=\"[{file}:{line}] ({severity},{id}) {message}\" "<<args<<" "<<file_args;
 	ZLINF("Tools-cppcheck",command);
 	cppcheck->Launch(path,command,[output_file](mxOutputView *oview, int exit_code){
 		main_window->ShowValgrindPanel(mxVO_CPPCHECK,output_file,false);

@@ -8,6 +8,7 @@
 	<LI>New: Nueva configuración en las preferencias para definir tipos de archivos que siempre se deben abrir con la aplicación asociada del sistema y no como código/texto en ZinjaI (al abrirlos desde los árboles de proyecto o del archivos).</LI>
 	<LI>New: Desde las opciones avanzadas de depuración en las preferencias se pueden deshabilitar los pretty-printers de gdb (para acelerar el paso-a-paso).</LI>
 	<LI>New: Nuevo submenú en Herramientas, para activar/desactivar los sanitizers que proveen clang y gcc</LI>
+	<LI>Imp: Nueva opción en el menú contextual del panel de resultados de la compilación para copiar un mensaje de error al portapapeles.</LI>
 	<LI>Imp: Al buscar un texto en múltiples archivos, se genera en el panel de resultados una sola entrada por linea que contenga el texto (aunque lo contenga varias veces) y ya no una por ocurrencia.</LI>
 	<LI>Imp: Mejoras varias en la presentación de la referencia de CppReference.</LI>
 	<LI>Imp: Se agregaron los estándares nuevos de C y C++ a las opciones de compilación de proyecto, y se ahora también se permite editar el campo para ingresar uno nuevo que no esté en la lista precargada.</LI>
@@ -22,6 +23,7 @@
 	<LI>Imp: Al abrir un proyecto, si un archivo asociado no existe en disco se genera una advertencia.</LI>
 	<LI>Imp: La columna de argumentos del backtrace no muestra los valores cuando son arreglo o estructuras (para acelerar el paso a paso).</LI>
 	<LI>Imp: Al generar la constante para un include guard al crear una clase, se considera la extensión preferida por el proyecto para cabeceras.</LI>
+	<LI>Fix: Actualizados los argumentos para invocar a cppcheck (en alguna versión reciente hubo un pequeño cambio no backwards-compatible).</LI>
 	<LI>Fix: No ejecutar un proyecto si se cierra la ventana que pide argumentos y directorio de trabajo sin presionar el botón de aceptar.</LI>
 	<LI>Fix: Corregido un error por el cual a veces se ejeuctaba un proyecto luego de intentar recompilar solo uno de sus fuentes.</LI>
 	<LI>Fix: Corregido un error en el parser por el cual no detectaba correctamente las sobrecargas del operador &gt;&gt; para el árbol de símbolos.</LI>

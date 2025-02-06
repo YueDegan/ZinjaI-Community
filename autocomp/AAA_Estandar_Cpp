@@ -398,7 +398,7 @@ namespace std
 	round_to_nearest
 	round_toward_infinity
 	round_toward_neg_infinity
-	round_indeterminate, 
+	round_indeterminate
 	denorm_absent	
 	denorm_present
 	denorm_indeterminate

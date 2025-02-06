@@ -6,6 +6,11 @@
 #	exit 1
 #}
 
+function clean {
+	echo "=== cleaning..."
+	make clean-bin >/dev/null
+}
+
 if ! [ -f zinjai.dir ]; then
 	echo "Run this script from ZinjaI's root directory"
 	exit 1
@@ -18,14 +23,22 @@ function pack_src {
 	FNAME=dist/zinjai-src-$VERSION.tgz
 	FLIST=$(git ls-tree -r master --name-only)
 	tar -czvf $FNAME --transform 's,^,zinjai/,' $FLIST >/dev/null
-	echo -n "===done: "
+	echo -n "=== done: "
 	ls -sh $FNAME
 }
 
 function pack_wine {
-	clean
+	echo "=== compiling..."
 	make ARCH=wine$1
 	ARCH=w$1
+	
+	echo -n "=== generating installer... "
+	cd dist
+	wine C:/Inno/ISCC.exe installer-win$1.iss /DMyAppVersion=$VERSION
+	echo -n "=== done: "
+	ls -sh dist/zinjai-$ARCH-$VERSION.exe
+	
+	
 # 	rm -rf dist/pseint 
 # 	mkdir -p dist/pseint
 # 	rm -f bin/linux.txt
@@ -55,15 +68,13 @@ function pack_wine {
 }
 
 function pack_lnx {
-	echo "=== cleaning..."
-	make clean-bin >/dev/null
 	echo "=== compiling..."
 	make ARCH=lnx -j 2 || exit 1
 
 	echo "=== compressing..." 
 	FNAME=dist/zinjai-l$1-$VERSION.tgz
 	EXCLUDE="--exclude=imgs/src --exclude=guihelp/src"
-	INCLUDE="autocomp colours guihelp lang parser samples templates toolchains zinjai.dir bin complements imgs libs readme.txt skins third zinjai"
+	INCLUDE="autocomp colours guihelp lang samples templates toolchains zinjai.dir bin complements imgs libs readme.txt skins third zinjai"
 	tar -czf $FNAME --transform 's,^,zinjai/,' $EXCLUDE $INCLUDE >/dev/null
 	
 	echo -n "=== done: "
@@ -97,6 +108,7 @@ function pack_lnx {
 
 if [ "$1" = "--noclean" ]; then
 	CLEAN=0
+	shift
 else
 	CLEAN=1
 fi

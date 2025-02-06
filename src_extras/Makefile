@@ -1,6 +1,8 @@
 include config.${ARCH}
 MAKE_ARGS=-f Makefile ARCH=${ARCH} -I ../../configs
 
+CXXFLAGS+=-Wno-unused-result
+
 ifdef WINDOWS
 EXTRA_BINS=../${BIN}/shellexecute.exe ../${BIN}/lsdeps.exe ../log.exe ../${TEMP}/xmlres.o
 EXT_FLAGS=-static-libgcc -static-libstdc++
