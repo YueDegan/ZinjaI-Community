@@ -2279,7 +2279,9 @@ void ProjectManager::AnalizeConfig(wxString path, bool exec_comas, wxString ming
 	linking_options=" ";
 	linking_options<<current_toolchain.cpp_linker_options<<" ";
 	if (active_configuration->enable_lto) {
-		linking_options<<co_optim<<" ";
+		if (current_toolchain.type==TC_GCC and current_toolchain.version_cpp>=1104)
+			co_optim.Replace("-flto",wxString("-flto=")<<config->Init.max_jobs);
+		linking_options<<co_optim<<" " ;
 	}
 	// mwindows
 #ifdef __WIN32__
