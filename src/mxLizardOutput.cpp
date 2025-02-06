@@ -52,6 +52,7 @@ void mxLizardOutput::ParseResults (wxArrayString & results) {
 	functions_titles.Add("CCN");
 	functions_titles.Add("token #");
 	functions_titles.Add("params #");
+	functions_titles.Add("length");
 	functions_titles.Add("location");
 	functions_titles.Add("file");
 	mxPRTGenericTable<LizardFunctionRow> *functions = new mxPRTGenericTable<LizardFunctionRow>(functions_titles);
@@ -59,6 +60,7 @@ void mxLizardOutput::ParseResults (wxArrayString & results) {
 	while (i<int(results.GetCount()) && !results[i].StartsWith("-----")) {
 		wxString &s=results[i];
 		LizardFunctionRow r;
+		r.Add(toInt(nextColum(s)));
 		r.Add(toInt(nextColum(s)));
 		r.Add(toInt(nextColum(s)));
 		r.Add(toInt(nextColum(s)));
