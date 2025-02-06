@@ -1,12 +1,13 @@
 #ifndef PARSER_H
 #define PARSER_H
 
+#include <map>
+#include <list>
+#include <functional>
 #include <wx/aui/aui.h>
 #include <wx/hashset.h>
 #include <wx/treectrl.h>
 #include <wx/filename.h>
-#include <map>
-#include <list>
 #include <wx/process.h>
 #include <wx/timer.h>
 
@@ -99,17 +100,9 @@ class Parser {
 	mxParserProcess *process; ///< curren async process (launched by ParseNextFile, interrupting ParseSomething, and waiting to call ParseContinue on termination)
 
 public:
-	class OnEndAction {
-		OnEndAction *next;
-		friend class Parser;
-	public:
-		OnEndAction() : next(nullptr) {}
-		virtual void Run()=0;
-		virtual ~OnEndAction(){}
-	};
-	void OnEnd(OnEndAction *what, bool run_now_if_not_working=false);
+	void OnEnd(std::function<void()> &&what, bool run_now_if_not_working=false);
 private:
-	OnEndAction *on_end;
+	std::function<void()> on_end;
 	
 public:
 	wxTreeCtrl* symbol_tree;

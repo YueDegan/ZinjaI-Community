@@ -3286,7 +3286,7 @@ void static GetFatherMethods(wxString base_header, wxString class_name, wxArrayS
 	// encontrar los metodos a heredar
 	wxTextFile btf(base_header);
 	btf.Open();
-	wxString str, class_tag = wxString("class ")+class_name;
+	wxString str, class_tag = wxString("class ")+class_name+" ";
 	bool on_the_class=false;
 	for ( str = btf.GetFirstLine(); !btf.Eof(); str = btf.GetNextLine() ) {
 		if (str.Contains("class ") && mxUT::LeftTrim(str.Mid(0,2))!="//") {
@@ -3435,10 +3435,7 @@ void ProjectManager::WxfbAutoCheckStep1() {
 	if (loading || !wxfb || !wxfb->activate_integration || !wxfb->autoupdate_projects || wxfb->temp_disabled || wxfb->working) return;
 	
 	if (parser->working) {
-		class LaunchProjectWxfbAutoUpdateStep1Action : public Parser::OnEndAction {
-		public: void Run() override { if (project) project->WxfbAutoCheckStep1(); }
-		};
-		parser->OnEnd(new LaunchProjectWxfbAutoUpdateStep1Action());
+		parser->OnEnd([](){ if (project) project->WxfbAutoCheckStep1(); });
 		return;
 	}
 	
@@ -3459,13 +3456,8 @@ void ProjectManager::WxfbAutoCheckStep1() {
 	WxfbAutoCheckData *old_data = new WxfbAutoCheckData(); // for comparing after parsing updated files and detecting new/deleted windows
 	if (!project->WxfbGenerate(true)) { delete old_data; return; }
 	
-	class LaunchProjectWxfbAutoUpdateStep2Action : public Parser::OnEndAction {
-	private: WxfbAutoCheckData *m_data;
-	public: void Run() override { if (project) project->WxfbAutoCheckStep2(m_data); delete m_data; }
-	public: LaunchProjectWxfbAutoUpdateStep2Action(WxfbAutoCheckData *_data):m_data(_data) {}
-	};
 	parser->Parse(false);
-	parser->OnEnd(new LaunchProjectWxfbAutoUpdateStep2Action(old_data),true);
+	parser->OnEnd([m_data=old_data](){ if (project) project->WxfbAutoCheckStep2(m_data); delete m_data; }, true);
 }
 
 void ProjectManager::WxfbAutoCheckStep2(WxfbAutoCheckData *old_data) {

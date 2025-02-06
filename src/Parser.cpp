@@ -60,22 +60,15 @@ Parser::Parser (mxMainWindow *mainwin) {
 
 
 void Parser::ParseProject(bool show_progress) {
-//	main_window->SetStatusText(wxString(_T("Analizando fuentes...")));
 	home=project->path;
-	wxString str;
-//	project->SaveAll(false);
-
-	for(int i=0;i<2;i++) { 
+	for (int i=0; i<2; ++i) {
 		LocalListIterator<project_file_item*> item(i==0?&project->files.sources:&project->files.headers);
-		while(item.IsValid()) {
+		while (item.IsValid()) {
 			actions.insert(actions.end(),parserAction::ParseProjectFile(project,item->GetFullPath(),!item->AreSymbolsVisible()));
 			item.Next();
 		}
 	}
 	source=nullptr;
-		
-//	if (project->use_wxfb && project->auto_wxfb) parser->OnEnd(POE_AUTOUPDATE_WXFB);
-
 	Parse(show_progress);
 }
 
@@ -293,13 +286,8 @@ void Parser::OnGotoDef(wxAuiNotebook *notebook) {
 
 
 void Parser::Stop(bool clean_end) {
-	if (clean_end) 
-		while (on_end) {
-			OnEndAction *aux=on_end->next;
-			delete on_end;
-			on_end=aux;
-		}
-	should_stop=true;
+	if (clean_end) on_end = {};
+	should_stop = true;
 	actions.clear();
 }
 
@@ -695,13 +683,7 @@ void Parser::ParseSomething(bool first, bool arg_show_progress) {
 		// se va a operar sobre una "copia" de on_end, para evitar que una de estas acciones 
 		// se introduzca a sí misma en esta lista y genere un loop infinito (pasaba al crear
 		// ventanas hijas al volver el foco desde wxfb)
-		OnEndAction *aux_oe = on_end; on_end=nullptr;
-		while (aux_oe) {
-			OnEndAction *aux_i=aux_oe;
-			aux_oe=aux_oe->next;
-			aux_i->Run();
-			delete aux_i;
-		}
+		if (on_end) { on_end(); on_end = {}; }
 		if (show_progress) main_window->SetStatusProgress(-1);
 	}
 	
@@ -734,13 +716,12 @@ void Parser::ParseFile(wxString filename) {
 	Parse();
 }
 
-void Parser::OnEnd(OnEndAction *what, bool run_now_if_not_working) {
+void Parser::OnEnd(std::function<void()> &&what, bool run_now_if_not_working) {
 	if (run_now_if_not_working && !parser->working) {
-		what->Run();
-		delete what;
+		what();
 	} else {
-		what->next=on_end;
-		on_end=what;
+		if (!on_end) on_end = std::move(what);
+		else on_end = [prev=std::move(on_end),next=std::move(what)]() { prev(); next(); };
 	}
 }
 

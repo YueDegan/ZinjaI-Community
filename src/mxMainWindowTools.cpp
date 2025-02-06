@@ -430,22 +430,14 @@ void mxMainWindow::OnToolsWxfbHelpWx(wxCommandEvent &event) {
 	}
 }
 
-
-class ToolsWxfbInheriterAction : public Parser::OnEndAction {
-	bool update;
-public:
-	ToolsWxfbInheriterAction(bool _update):update(_update){}
-	void Run() override { new mxWxfbInheriter(main_window,"",update); }
-};
-
 void mxMainWindow::OnToolsWxfbInheritClass(wxCommandEvent &event) {
 	OnToolsWxfbRegen(event);
-	parser->OnEnd(new ToolsWxfbInheriterAction(false),true);
+	parser->OnEnd([](){ new mxWxfbInheriter(main_window,"",false);} ,true);
 }
 
 void mxMainWindow::OnToolsWxfbUpdateInherit(wxCommandEvent &event) {
 	OnToolsWxfbRegen(event);
-	parser->OnEnd(new ToolsWxfbInheriterAction(true),true);
+	parser->OnEnd([](){ new mxWxfbInheriter(main_window,"",true);} ,true);
 }
 
 void mxMainWindow::OnToolsRemoveComments (wxCommandEvent &event) {
@@ -868,28 +860,18 @@ void mxMainWindow::OnToolsCustomProjectTool(wxCommandEvent &event) {
 	project->custom_tools.Run(event.GetId()-mxID_CUSTOM_PROJECT_TOOL_0);
 }
 
-class ToolsCodeCopyFromHAction : public Parser::OnEndAction {
-	mxSource *source;
-	wxString the_one;
-public:
-	ToolsCodeCopyFromHAction(mxSource *_source,wxString _the_one):source(_source),the_one(_the_one){}
-	void Run() override { main_window->ToolsCodeCopyFromH(source,the_one); }
-};
-
 void mxMainWindow::OnToolsCodeCopyFromH(wxCommandEvent &event) {
 	IF_THERE_IS_SOURCE {
 		mxSource *source = CURRENT_SOURCE;
 		wxString the_one;
 		if (source->sin_titulo || !(the_one=mxUT::GetComplementaryFile(source->source_filename,FT_SOURCE)).Len()) {
-//			mxMessageDialog(this,LANG(MAINW_CODETOOLS_NO_HEADER_FOUND,"No se pudo determinar el archivo de cabecera asociado."),LANG(GENERAL_WARNING,"Advertencia"),mxMD_WARNING|mxMD_OK).ShowModal();
-//			return;
 			the_one = source->GetFullPath();
 		}
 		mxSource *other=IsOpen(the_one);
 		parser->ParseSource(source);
 		if (other) parser->ParseSource(other);
 		else parser->ParseFile(the_one);
-		parser->OnEnd(new ToolsCodeCopyFromHAction(source,the_one),true);
+		parser->OnEnd( [source,the_one](){ main_window->ToolsCodeCopyFromH(source,the_one); }, true);
 	}
 }
 		
