@@ -1,7 +1,7 @@
 #ifndef ENUMS_H
 #define ENUMS_H
 
-/// Determina un tipo de archivo, se utiliza para saber en qué categoría colocarlo dentro del proyecto
+/// Determina un tipo de archivo, se utiliza para saber en quÃ© categorÃ­a colocarlo dentro del proyecto
 enum eFileType { 
 	FT_NULL, 		///< undetermined file type
 		FT_SOURCE, 	///< source (c,cpp,cxx,c++,etc)

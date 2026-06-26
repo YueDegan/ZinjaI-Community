@@ -53,7 +53,7 @@
 #include "ZLog.h"
 #include "mxSourceComments.h"
 
-/// @brief Muestra el cuadro de configuración de cppcheck (mxCppCheckConfigDialog)
+/// @brief Muestra el cuadro de configuraciÃ³n de cppcheck (mxCppCheckConfigDialog)
 void mxMainWindow::OnToolsCppCheckConfig(wxCommandEvent &event) {
 	if (project) new mxCppCheckConfigDialog(this);
 }
@@ -417,8 +417,8 @@ void mxMainWindow::OnToolsWxfbHelpWx(wxCommandEvent &event) {
 	
 	if (help_file.IsEmpty() || !wxFileName::FileExists(mxFN::Join(config->zinjai_dir,config->Help.wxhelp_index)))
 		mxUT::OpenInBrowser(help_file);
-	else if (mxMessageDialog(this,"ZinjaI no pudo encontrar la ayuda de wxWidgets. A continuacion se le permitirá buscarla\n"
-								  "manualmente y luego se recordará esta seleccion (en cualquier momento se puede modificar\n"
+	else if (mxMessageDialog(this,"ZinjaI no pudo encontrar la ayuda de wxWidgets. A continuacion se le permitirÃ¡ buscarla\n"
+								  "manualmente y luego se recordarÃ¡ esta seleccion (en cualquier momento se puede modificar\n"
 								  "desde el cuadro de Preferencias).")
 				.Title("Ayuda wxWidgets").IconInfo().ButtonsOkCancel().Run().ok) 
 	{
@@ -611,12 +611,12 @@ static bool auxOnToolsGprofGcovSet(wxString tool, wxString arg) {
 	if (!project && main_window->notebook_sources->GetPageCount()==0) return false;
 	mxCompilerArgEnabler dlg(main_window,tool,
 							 LANG1(COMP_ARG_GENERIC_INFO,""
-								   "Para poder generar la información de profiling que\n"
-								   "analiza <{1}>, se deben utilizar argumentos específicos\n"
+								   "Para poder generar la informaciÃ³n de profiling que\n"
+								   "analiza <{1}>, se deben utilizar argumentos especÃ­ficos\n"
 								   "al compilar, luego recompilar todo el proyecto/programa\n"
 								   "para que estos cambios tengan efecto (si no lo hace ahora,\n"
-								   "deberá luego utilizar el comando \"Limpiar\" del menú \n"
-								   "\"Ejecución\") y finalmente ejecutar el programa.",tool),
+								   "deberÃ¡ luego utilizar el comando \"Limpiar\" del menÃº \n"
+								   "\"EjecuciÃ³n\") y finalmente ejecutar el programa.",tool),
 							 arg,arg);
 	return dlg.ShowModal() && dlg.GetUserSelection();
 }
@@ -626,11 +626,11 @@ static bool auxOnToolsSanitizer(wxString tool, wxString arg) {
 	mxCompilerArgEnabler dlg(main_window,tool,
 							 LANG1(COMP_ARG_GENERIC_INFO,""
 								   "Para poder activar/desactivar esta herramienta (tool),\n"
-								   "se deben utilizar argumentos específicos al compilar,\n"
+								   "se deben utilizar argumentos especÃ­ficos al compilar,\n"
 								   "y luego recompilar todo el proyecto/programa para que\n"
 								   "estos cambios tengan efecto (si no lo hace ahora,\n"
-								   "deberá luego utilizar el comando \"Limpiar\" del menú \n"
-								   "\"Ejecución\").",tool),
+								   "deberÃ¡ luego utilizar el comando \"Limpiar\" del menÃº \n"
+								   "\"EjecuciÃ³n\").",tool),
 							 arg,arg);
 	return dlg.ShowModal() && dlg.GetUserSelection();
 }
@@ -683,7 +683,7 @@ static void showExternToolErrorMessage(int retval, wxArrayString &errors, wxStri
 }
 
 /**
-* Verifica que exita información de profiling para el fuente o proyecto actual,
+* Verifica que exita informaciÃ³n de profiling para el fuente o proyecto actual,
 * y ejecuta gprof para extraerla un archivo de texto. Retorna el path del archivo
 * generado. Si hay error retorna una cadena vacia.
 **/
@@ -754,7 +754,7 @@ void mxMainWindow::OnToolsGprofShow (wxCommandEvent &event) {
 	ZLINF("Tools-gprof",command + (wxString("\nretval: ")<<retval) );
 	if (retval) { 
 		osd.Hide(); 
-		mxMessageDialog(this,wxString(LANG(MAINW_GPROF_ERROR,"Ha ocurrido un error al intentar procesar la información de perfilado"))+" (error 2).")
+		mxMessageDialog(this,wxString(LANG(MAINW_GPROF_ERROR,"Ha ocurrido un error al intentar procesar la informaciÃ³n de perfilado"))+" (error 2).")
 			.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run(); 
 		return; 
 	}
@@ -963,7 +963,7 @@ void mxMainWindow::OnToolsPreprocHelp ( wxCommandEvent &event ) {
 }
 
 /**
-* @brief Realiza algunas de las acciones del submenú Preprocesador del menú Herramientas
+* @brief Realiza algunas de las acciones del submenÃº Preprocesador del menÃº Herramientas
 *
 * @param id_commnad 1=marcar lineas validas, 2=reemplazar macros
 **/
@@ -1132,8 +1132,8 @@ void mxMainWindow::OnToolsGcovSet (wxCommandEvent & event) {
 void mxMainWindow::OnToolsGcovReset (wxCommandEvent & event) {
 	if (project) {
 		wxString path=project->GetTempFolder();
-		if ( mxMessageDialog(this,wxString("Se eliminarán todos los archivos con extensión .gcov"/*, .gcno*/" y .gcda del"
-										   "\ndirectorio de temporales (")<<path<<")\n¿Desea Continuar?")
+		if ( mxMessageDialog(this,wxString("Se eliminarÃ¡n todos los archivos con extensiÃ³n .gcov"/*, .gcno*/" y .gcda del"
+										   "\ndirectorio de temporales (")<<path<<")\nÂ¿Desea Continuar?")
 				.Title("gcov").ButtonsYesNo().IconWarning().Run().no) return;
 		wxArrayString array;
 		mxUT::GetFilesFromDir(array,path,true);
@@ -1302,7 +1302,7 @@ void mxMainWindow::AuxToolsDisassemble2(wxString out_fname, bool full_scope) {
 	bool on_scope = false; wxString scope_name; // on_scope dice si actualmente estamos o no pasando por el desensamblado de alguna de las lineas que interesan
 	
 	do {
-		wxString line = (input.IsOk() && !input.Eof()) ? text.ReadLine() : ""; // ultima linea ficticia para no tener que repetir código afuera para el último scope
+		wxString line = (input.IsOk() && !input.Eof()) ? text.ReadLine() : ""; // ultima linea ficticia para no tener que repetir cÃ³digo afuera para el Ãºltimo scope
 		bool is_asm = line.StartsWith(" ")||line.StartsWith("\t");
 		if (line.Len() && !is_asm) {
 			if (line.EndsWith(">:")) scope_name = line; // hay lineas "0000004123412 <funcion_que_sigue>:" antes de las que dicen de que linea del fuente vienen
@@ -1316,7 +1316,7 @@ void mxMainWindow::AuxToolsDisassemble2(wxString out_fname, bool full_scope) {
 				wxString snum = line.Mid(src_fname.Len()).AfterFirst(':');
 				if (snum.Contains(' ')) snum = snum.BeforeFirst(' ');
 				long lnum=-1;
-				on_scope = (on_scope&&full_scope) || (snum.ToLong(&lnum) && lnum-1>=lfrom && lnum-1<=lto); // el -1 por todos lados es por la base 0/1 de la numeración
+				on_scope = (on_scope&&full_scope) || (snum.ToLong(&lnum) && lnum-1>=lfrom && lnum-1<=lto); // el -1 por todos lados es por la base 0/1 de la numeraciÃ³n
 				if (on_scope||full_scope) { line = wxString("")<<snum<<":\t"<<src->GetLine(lnum-1); line.Replace("\n",""); line.Replace("\r",""); }
 			} else {
 				if (!full_scope) on_scope=false;

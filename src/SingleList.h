@@ -74,7 +74,7 @@ public:
 		m_size++; 
 		m_vec[pos]=data;
 	}
-	/// redimensionamiento lógico, no se pierden datos
+	/// redimensionamiento lÃ³gico, no se pierden datos
 	void Resize(int new_size) {
 		EnsureMemFor(new_size);
 		m_size=new_size;
@@ -94,7 +94,7 @@ public:
 		m_vec=nullptr;
 		m_capacity=m_size=0;
 	}
-	/// reset logico, no libera memoriaººº
+	/// reset logico, no libera memoriaÂºÂºÂº
 	void Clear() {
 		m_size=0;
 	}

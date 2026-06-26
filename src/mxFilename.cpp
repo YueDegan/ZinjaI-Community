@@ -7,9 +7,9 @@ static char path_sep = wxFileName::GetPathSeparator();
 /** 
 * Concatena una ruta y un nombre de archivo. Si este es relativo, agregando la 
 * barra si es necesario. Si el "archivo" era una ruta absoluta, la devuelve sin cambios.
-* Esta funciÛn se creÛ para encapsular las diferencias entre Windows y GNU/Linux,
-* particularmente, el caracter de separaciÛn, y la presencia/ausencia de la unidad.
-* @param dir El directorio base (puede ser absoluto o relativo, si es relativo se mantendr· asÌ)
+* Esta funci√≥n se cre√≥ para encapsular las diferencias entre Windows y GNU/Linux,
+* particularmente, el caracter de separaci√≥n, y la presencia/ausencia de la unidad.
+* @param dir El directorio base (puede ser absoluto o relativo, si es relativo se mantendr√° as√≠)
 * @param fil El archivo. Puede ser solo un nombre, la parte final de una ruta, o una ruta completa
 * @return Un wxString con la ruta resultante completa
 **/
@@ -26,7 +26,7 @@ wxString mxFN::Join(const wxString &dir1, const wxString &dir2, const wxString &
 	return Join(Join(dir1,dir2),fil);
 }
 /** 
-* Convierte un path absoluto en relativo, siempre y cuando no deba subir m·s
+* Convierte un path absoluto en relativo, siempre y cuando no deba subir m√°s
 * de 2 niveles desde el path de referencia
 **/
 wxString mxFN::MakeRelative(wxString name, wxString path) {

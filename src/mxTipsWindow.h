@@ -14,8 +14,8 @@ class wxTextFile;
 /** 
 * @brief Dialogo para sugerencias (tips).
 * 
-* Di·logo de sugerencias. Muestra la sugerencia del dÌa, o el mensaje que indica
-* las mejoras de la versiÛn, si es la primera vez que se ejecuta una versiÛn.
+* Di√°logo de sugerencias. Muestra la sugerencia del d√≠a, o el mensaje que indica
+* las mejoras de la versi√≥n, si es la primera vez que se ejecuta una versi√≥n.
 **/
 class mxTipsWindow : public wxDialog {
 public:

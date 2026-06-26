@@ -88,21 +88,21 @@ void mxSourceComments::AlignComments (mxSource *src, int lfrom, int lto, int col
 		// la linea comienza en p0 y va hasta pe
 		int p0 = src->PositionFromLine(i), pe = src->GetLineEndPosition(i);
 		
-		// si el comentario comienza en la col 0 con //, no mover, probablemente sea c骴igo comentado
+		// si el comentario comienza en la col 0 con //, no mover, probablemente sea c贸digo comentado
 		if (pe>=p0+2 && src->GetCharAt(p0)=='/' && src->GetCharAt(p0+1)=='/') continue;
 		
-		// el comentario comienza en p2 (>=p1, puede o no haber c骴igo antes)
+		// el comentario comienza en p2 (>=p1, puede o no haber c贸digo antes)
 		int p2 = pe; while (p2>p0 && src->IsComment(p2-1)) --p2;
-		if (p2==pe) continue; // si no hab韆 comentarios en esta linea
+		if (p2==pe) continue; // si no hab铆a comentarios en esta linea
 		// si volvimos para atras por espacios, "trimear" la pos a la izquierda
 		while (p2<pe && isWhite(src,p2)) ++p2;
 		
 		int cp = src->GetColumn(p2); // columna donde comienza el comentario (no es lo mismo que cant de chars, por los tabs)
 		
-		if (cp<col) { // si va m醩 a la derecha, agregar espacios
+		if (cp<col) { // si va m谩s a la derecha, agregar espacios
 			src->InsertText(p2,wxString(wxChar(' '),col-cp));
-		} else if (col<cp) { // si va m醩 a la izquierda quitar espacios entre el c骴igo y el comentario
-			// buscar cuantos espacios hay entre que termina el c骴igo (p1) y empiezan los comentarios (p2)
+		} else if (col<cp) { // si va m谩s a la izquierda quitar espacios entre el c贸digo y el comentario
+			// buscar cuantos espacios hay entre que termina el c贸digo (p1) y empiezan los comentarios (p2)
 			int count = 0, to_remove = col-cp, p1 = p2; 
 			while (p1>p0 && isWhite(src,p1-1) && count<to_remove) { 
 				if (src->GetCharAt(--p1)==' ') --count;

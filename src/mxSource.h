@@ -342,7 +342,7 @@ private:
 	
 	class AutocompHelper {
 		wxTimer timer;
-		int x,y; /// ¿screen? coordinates for autocompletion menu
+		int x,y; /// Â¿screen? coordinates for autocompletion menu
 		int base_pos; ///< position in code where autocompletion keyword starts
 		int user_pos; ///< position in code where user invoked autocompletion (base_pos+keyword.Len())
 	public:
@@ -377,7 +377,7 @@ public:
 	wxFileName temp_filename;
 
 	wxString exec_args;
-	bool sin_titulo, cpp_or_just_c; // para un programa simple sin_titulo, la segunda bandera indica si compilar con g++ (true) o gcc (false), si tiene título se usa la extensión
+	bool sin_titulo, cpp_or_just_c; // para un programa simple sin_titulo, la segunda bandera indica si compilar con g++ (true) o gcc (false), si tiene tÃ­tulo se usa la extensiÃ³n
 	bool IsCppOrJustC();
 
 private:

@@ -31,7 +31,7 @@ bool callback_info(wxString message, int progress) {
 	if (progress) info_win->Progress(progress);
 	if (message.Len()) info_win->Notify(message);
 	if (info_win->ShouldStop()) {
-		int ans = wxMessageBox(SP("øDesea interrumpir la instalaciÛn?","Abort instalation?"),SP("InstalaciÛn de Complementos","Complement installer"),wxYES_NO);
+		int ans = wxMessageBox(SP("¬øDesea interrumpir la instalaci√≥n?","Abort instalation?"),SP("Instalaci√≥n de Complementos","Complement installer"),wxYES_NO);
 		if (ans==wxYES) return false;
 		else info_win->DontStop();
 	}
@@ -60,7 +60,7 @@ bool mxInfoWindow::CheckRequirements() {
 	bool ok = true;
 	if (info.reqver>VERSION) {
 		ok = false;
-		wxMessageBox(SP("El complemento est· diseÒado para un versiÛn m·s actual de ZinjaI.\n"
+		wxMessageBox(SP("El complemento est√° dise√±ado para un versi√≥n m√°s actual de ZinjaI.\n"
 						"Se requiere actualizar ZinjaI para que el complemento funcione correctamente."
 						,
 						"This complement is designed for a newer version of ZinjaI.\n"
@@ -72,9 +72,9 @@ bool mxInfoWindow::CheckRequirements() {
 		if (installed.Index(info.toolchain)==wxNOT_FOUND) {
 			ok = false;
 			wxString msg = SP("Este complemento depende del toolchain \"<toolchain>\",\n"
-							  "que no est· instalado.\n\n"
-							  "Este problema suele deberse a que no es la versiÛn adecuada\n"
-							  "del complemento (ej: en Windows, si instalÛ ZinjaI de 32bits\n"
+							  "que no est√° instalado.\n\n"
+							  "Este problema suele deberse a que no es la versi√≥n adecuada\n"
+							  "del complemento (ej: en Windows, si instal√≥ ZinjaI de 32bits\n"
 							  "y ahora intenta instalar un complemento de 64bits) o a que\n"
 							  "debe actualizar ZinjaI o el archivo del complemento."
 							  ,
@@ -92,7 +92,7 @@ bool mxInfoWindow::CheckRequirements() {
 }
 
 mxInfoWindow::mxInfoWindow(wxString _dest, wxString _file) : 
-	wxFrame(NULL,wxID_ANY,SP("InstalaciÛn de complementos","Complement installer"),wxDefaultPosition,wxDefaultSize) 
+	wxFrame(NULL,wxID_ANY,SP("Instalaci√≥n de complementos","Complement installer"),wxDefaultPosition,wxDefaultSize) 
 {
 	should_stop = false;
 	
@@ -109,14 +109,14 @@ mxInfoWindow::mxInfoWindow(wxString _dest, wxString _file) :
 	SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
 	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 	
-	wxStaticText *stext = new wxStaticText(this,wxID_ANY,SP("InformaciÛn del complemento:","Complement information:"));
+	wxStaticText *stext = new wxStaticText(this,wxID_ANY,SP("Informaci√≥n del complemento:","Complement information:"));
 	sizer->Add(stext,wxSizerFlags().Proportion(0).Expand().Border(wxALL,5));
 	
 	text = new wxTextCtrl(this,wxID_ANY,(SP("Leyendo ","Reading "))+file,wxDefaultPosition,wxDefaultSize,wxTE_MULTILINE|wxTE_READONLY);
 	text->SetMinSize(wxSize(400,200));
 	sizer->Add(text,wxSizerFlags().Proportion(1).Expand().Border(wxALL,5));
 	
-	show_details = new wxCheckBox(this,wxID_ANY,SP("Mostrar detalles durante la instalaciÛn","Show details during installation"));
+	show_details = new wxCheckBox(this,wxID_ANY,SP("Mostrar detalles durante la instalaci√≥n","Show details during installation"));
 	sizer->Add(show_details,wxSizerFlags().Proportion(0).Expand().Border(wxALL,5));
 	
 	gauge = new wxGauge(this,wxID_ANY,1);
@@ -138,7 +138,7 @@ mxInfoWindow::mxInfoWindow(wxString _dest, wxString _file) :
 
 	wxFileSystem::AddHandler(new wxArchiveFSHandler);
 	wxString desc; int fcount,dcount;
-	if (!GetFilesAndDesc(callback_info,file,fcount,dcount,desc)) { wxMessageBox(SP("Ha ocurrido un error durante la instalaciÛn (GetFilesAndDesc).","There was a error installing the complement (GetFilesAndDesc)")); Close(); return; }
+	if (!GetFilesAndDesc(callback_info,file,fcount,dcount,desc)) { wxMessageBox(SP("Ha ocurrido un error durante la instalaci√≥n (GetFilesAndDesc).","There was a error installing the complement (GetFilesAndDesc)")); Close(); return; }
 	if (ShouldStop()) { Close(); return; }
 	desc_split(desc,info);
 	text->SetValue(spanish?info.desc_spanish:info.desc_english);
@@ -148,7 +148,7 @@ mxInfoWindow::mxInfoWindow(wxString _dest, wxString _file) :
 	but_ok->SetFocus(); 
 	step=STEP_SHOWING_INFO;
 	if (not CheckRequirements()) {
-		auto ans = wxMessageBox(SP("øDesea continuar con la instalaciÛn de todas formas?","Do you want to proceed with the installation anyway?"),"Error",wxYES_NO);
+		auto ans = wxMessageBox(SP("¬øDesea continuar con la instalaci√≥n de todas formas?","Do you want to proceed with the installation anyway?"),"Error",wxYES_NO);
 		if (ans==wxNO) Close();
 	}
 }
@@ -156,7 +156,7 @@ mxInfoWindow::mxInfoWindow(wxString _dest, wxString _file) :
 void mxInfoWindow::OnButtonOk (wxCommandEvent & evt) {
 	
 	if (step==STEP_SHOWING_INFO) {
-		if (info.closereq && wxNO==wxMessageBox(SP("Debe cerrar todas las instancias abiertas de ZinjaI antes de continuar. øInstalar ahora?.","You must close all ZinjaI's instances before continuing. Install now?"),SP("Advertencia","Warning"),wxYES_NO)) 
+		if (info.closereq && wxNO==wxMessageBox(SP("Debe cerrar todas las instancias abiertas de ZinjaI antes de continuar. ¬øInstalar ahora?.","You must close all ZinjaI's instances before continuing. Install now?"),SP("Advertencia","Warning"),wxYES_NO)) 
 			return;
 		if (not info.short_name.IsEmpty()) {
 			if (not wxDirExists("complements/installed")) wxMkdir("complements/installed");
@@ -172,10 +172,10 @@ void mxInfoWindow::OnButtonOk (wxCommandEvent & evt) {
 		but_ok->Enable(false);
 		if (details) text->SetValue(SP("Instalando...\n","Installing...\n"));
 		step=STEP_CREATING_DIRS;
-		if (!CreateDirectories(callback_info,file,dest,log_file)) { wxMessageBox(SP("Ha ocurrido un error durante la instalaciÛn (CreateDirectories).","There was a error installing the complement (CreateDirectories)")); Finish(); return; }
+		if (!CreateDirectories(callback_info,file,dest,log_file)) { wxMessageBox(SP("Ha ocurrido un error durante la instalaci√≥n (CreateDirectories).","There was a error installing the complement (CreateDirectories)")); Finish(); return; }
 		if (ShouldStop()) { Finish(); if (log_file) { log_file->AddLine("aborted"); } return; }
 		step=STEP_CREATING_FILES;
-		if (!ExtractFiles(callback_info,file,dest,log_file)) { wxMessageBox(SP("Ha ocurrido un error durante la instalaciÛn (ExtractFiles).","There was a error installing the complement (ExtractFiles)")); Finish(); return; }
+		if (!ExtractFiles(callback_info,file,dest,log_file)) { wxMessageBox(SP("Ha ocurrido un error durante la instalaci√≥n (ExtractFiles).","There was a error installing the complement (ExtractFiles)")); Finish(); return; }
 		if (ShouldStop()) { Finish(); if (log_file) { log_file->AddLine("aborted"); } return; }
 		// falta setear permisos a ejecutables
 #ifndef __WIN32__
@@ -186,11 +186,11 @@ void mxInfoWindow::OnButtonOk (wxCommandEvent & evt) {
 #endif
 		Progress(1);
 		if (log_file) log_file->AddLine("end ok");
-		Notify(SP("InstalaciÛn Finalizada","Instalation completed."));
+		Notify(SP("Instalaci√≥n Finalizada","Instalation completed."));
 		if (info.resetreq)
-			wxMessageBox(SP("Los cambios tendr·n efecto la prÛxima vez que inicie ZinjaI.","Changes will apply next time you start ZinjaI."));
+			wxMessageBox(SP("Los cambios tendr√°n efecto la pr√≥xima vez que inicie ZinjaI.","Changes will apply next time you start ZinjaI."));
 		else 
-			wxMessageBox(SP("La instalaciÛn ha finalizado correctamente.","Installation successfully completed."));
+			wxMessageBox(SP("La instalaci√≥n ha finalizado correctamente.","Installation successfully completed."));
 		Finish();
 	} else if (step==STEP_DONE) Close();
 }

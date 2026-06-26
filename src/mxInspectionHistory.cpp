@@ -4,7 +4,7 @@
 #include "mxSizers.h"
 #include "ids.h"
 
-// por si mañana quiero que esta clase herede de un panel y contenga la lista
+// por si maÅ†ana quiero que esta clase herede de un panel y contenga la lista
 #define lista this 
 #include "mxAUI.h"
 

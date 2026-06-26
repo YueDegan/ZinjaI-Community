@@ -87,11 +87,11 @@ public:
 #endif
 	mxCommonPopup &AddProjectDir() { m_menu.Append(mxID_POPUPS_INSERT_PROJECT_PATH,LANG(GENERAL_POPUP_INSERT_PROJECT_PATH,"insertar directorio del proyecto")); return *this; }
 	mxCommonPopup &AddProjectBin() { m_menu.Append(mxID_POPUPS_INSERT_PROJECT_BIN,LANG(GENERAL_POPUP_INSERT_PROJECT_BIN,"insertar ruta del ejecutable")); return *this; }
-	mxCommonPopup &AddArgs() { m_menu.Append(mxID_POPUPS_INSERT_ARGS,LANG(GENERAL_POPUP_INSERT_ARGS,"argumentos para la ejecución")); return *this; }
+	mxCommonPopup &AddArgs() { m_menu.Append(mxID_POPUPS_INSERT_ARGS,LANG(GENERAL_POPUP_INSERT_ARGS,"argumentos para la ejecuciÃ³n")); return *this; }
 	mxCommonPopup &AddCurrentFile() { m_menu.Append(mxID_POPUPS_INSERT_CURRENT_FILE,LANG(GENERAL_POPUP_INSERT_CURRENT_FILE,"insertar archivo actual")); return *this; }
 	mxCommonPopup &AddCurrentDir() { m_menu.Append(mxID_POPUPS_INSERT_CURRENT_DIR,LANG(GENERAL_POPUP_INSERT_CURRENT_DIR,"insertar directorio del archivo actual")); return *this; }
 	mxCommonPopup &AddWorkDir() { m_menu.Append(mxID_POPUPS_INSERT_WORKDIR,LANG(GENERAL_POPUP_INSERT_WORKDIR,"insertar el directorio de trabajo")); return *this; }
-	mxCommonPopup &AddZinjaiDir() { m_menu.Append(mxID_POPUPS_INSERT_ZINJAI_DIR,LANG(GENERAL_POPUP_INSERT_ZINJAI_DIR,"insertar el directorio de instalación de ZinjaI")); return *this; }
+	mxCommonPopup &AddZinjaiDir() { m_menu.Append(mxID_POPUPS_INSERT_ZINJAI_DIR,LANG(GENERAL_POPUP_INSERT_ZINJAI_DIR,"insertar el directorio de instalaciÃ³n de ZinjaI")); return *this; }
 	mxCommonPopup &AddBrowerCommand() { m_menu.Append(mxID_POPUPS_INSERT_BROWSER,LANG(GENERAL_POPUP_INSERT_BROWSER,"insertar comando del navegador")); return *this; }
 	mxCommonPopup &AddShellCommand() { m_menu.Append(mxID_POPUPS_INSERT_SHELL_EXECUTE,LANG(GENERAL_POPUP_INSERT_SHELL_EXECUTE,"insertar comando para abrir con el programa asociado")); return *this; }
 	
@@ -106,7 +106,7 @@ public:
 * @brief Workaround para insertar la funcionalidad de mxCommonPopup en cualquier dialog con una sola linea
 *
 * la idea era usar la clase mxCommonPopup como base del dialogo que necesite estos popups menus,
-* pero si lo hago así el método ProcessCommandEvent no es del diálogo, y entonces no es de un
+* pero si lo hago asÃ­ el mÃ©todo ProcessCommandEvent no es del diÃ¡logo, y entonces no es de un
 * eventhandler, y entonces el Connect lo rechaza... esta macro es un parche temporal para seguir
 * usando esto con una sola linea en la clase cliente, hasta que solucione lo del event handler...
 **/
@@ -118,14 +118,14 @@ public:
 	friend class mxCommonPopup
 
 /**
-* Prototipo de función que no existe, es solo para engañar al autocompletado
+* Prototipo de funciÃ³n que no existe, es solo para engaÃ±ar al autocompletado
 *
 * Como el autocompletado de ZinjaI no resuelve bien la macro _use_common_popup, en las
-* clases donde se uso, no reconoce el método CommonPopup... pero va a usar en su lugar
-* esta función para autocompletar
+* clases donde se uso, no reconoce el mÃ©todo CommonPopup... pero va a usar en su lugar
+* esta funciÃ³n para autocompletar
 **/
-mxCommonPopup &CommonPopup(wxTextCtrl*); // si esto genera un "undefined reference...", falta "_use_common_popup;" en algún .h
-mxCommonPopup &CommonPopup(wxComboBox *); // si esto genera un "undefined reference...", falta "_use_common_popup;" en algún .h
+mxCommonPopup &CommonPopup(wxTextCtrl*); // si esto genera un "undefined reference...", falta "_use_common_popup;" en algÃºn .h
+mxCommonPopup &CommonPopup(wxComboBox *); // si esto genera un "undefined reference...", falta "_use_common_popup;" en algÃºn .h
 
 #endif
 

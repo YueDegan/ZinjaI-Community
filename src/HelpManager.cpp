@@ -36,7 +36,7 @@ HelpManager::HelpManager() {
 //	file1.Close();
 }
 
-/// funcion auxiliar para las que generan la ayuda r·pida a partir de los datos del parser
+/// funcion auxiliar para las que generan la ayuda r√°pida a partir de los datos del parser
 static void AddDefRef(wxString &content, wxString text, wxString fname, int line) {
 	content<<text<<" \"<A href=\"gotoline:"<<fname<<":"<<line<<"\">"<<fname<<"</A>\" "<<LANG(PARSERHELP_DEFINED_IN_POST,"en la linea")<<" "<<line<<"<BR><BR>";	
 }
@@ -189,12 +189,12 @@ void HelpManager::HelpFor(pd_class *aclass, wxString &content, wxString &index) 
 	}
 	if (methods.Len())
 		if (aclass->file)
-			content<<LANG(PARSERHELP_OWN_METHODS,"MÈtodos propios:")<<_T("<BR><UL>")<<methods<<_T("</UL><BR>");
+			content<<LANG(PARSERHELP_OWN_METHODS,"M√©todos propios:")<<_T("<BR><UL>")<<methods<<_T("</UL><BR>");
 		else
 			content<<LANG(PARSERHELP_FUNCTIONS,"Funciones:")<<_T("<BR><UL>")<<methods<<_T("</UL><BR>");
 	else
 		if (aclass->file)
-			content<<LANG(PARSERHELP_NO_OWN_METHOD_FOUND,"No se declararon mÈtodos propios.")<<_T("<BR><BR>");
+			content<<LANG(PARSERHELP_NO_OWN_METHOD_FOUND,"No se declararon m√©todos propios.")<<_T("<BR><BR>");
 	
 	if (ReloadDoxyIndex()) {
 		wxString dox, link = GetDoxyInfo(aclass, dox);
@@ -217,8 +217,8 @@ void HelpManager::HelpFor(pd_func *afunc, wxString &content, wxString &index) {
 			index<<_T("<LI><A href=\"#")<<id<<_T("\">")<<LANG(PARSERHELP_DESTRUCTOR_FROM_CLASS_PRE,"Destructor")<<_T(" <I>")<<mxUT::ToHtml(afunc->proto)<<_T("</I> ")<<LANG(PARSERHELP_DESTRUCTOR_FROM_CLASS_POST,"de la clase")<<_T(" <I>")<<afunc->space->name<<_T("</I></A></LI>");
 			content<<_T("<A name=\"")<<id<<_T("\"><HR></A><B>")<<LANG(PARSERHELP_DESTRUCTOR_FROM_CLASS_PRE,"Destructor")<<_T(" <I><A href=\"#")<<id<<_T("\">")<<mxUT::ToHtml(afunc->proto)<<_T("</A></I> ")<<LANG(PARSERHELP_DESTRUCTOR_FROM_CLASS_POST,"de la clase")<<_T(" <I><A href=\"quickhelp:")<<afunc->space->name<<_T("\">")<<afunc->space->name<<_T("</A></I></B><BR><BR>");
 		} else {
-			index<<_T("<LI><A href=\"#")<<id<<_T("\">")<<LANG(PARSERHELP_METHOD_FROM_CLASS_PRE,"MÈtodo")<<_T(" <I>")<<mxUT::ToHtml(afunc->proto)<<_T("</I> ")<<LANG(PARSERHELP_METHOD_FROM_CLASS_POST,"de la clase")<<_T(" <I>")<<afunc->space->name<<_T("</I></A></LI>");
-			content<<_T("<A name=\"")<<id<<_T("\"><HR></A><B>")<<LANG(PARSERHELP_METHOD_FROM_CLASS_PRE,"MÈtodo")<<_T(" <I><A href=\"#")<<id<<_T("\">")<<mxUT::ToHtml(afunc->proto)<<_T("</A></I> ")<<LANG(PARSERHELP_METHOD_FROM_CLASS_POST,"de la clase")<<_T(" <I><A href=\"quickhelp:")<<afunc->space->name<<_T("\">")<<afunc->space->name<<_T("</A></I></B><BR><BR>");
+			index<<_T("<LI><A href=\"#")<<id<<_T("\">")<<LANG(PARSERHELP_METHOD_FROM_CLASS_PRE,"M√©todo")<<_T(" <I>")<<mxUT::ToHtml(afunc->proto)<<_T("</I> ")<<LANG(PARSERHELP_METHOD_FROM_CLASS_POST,"de la clase")<<_T(" <I>")<<afunc->space->name<<_T("</I></A></LI>");
+			content<<_T("<A name=\"")<<id<<_T("\"><HR></A><B>")<<LANG(PARSERHELP_METHOD_FROM_CLASS_PRE,"M√©todo")<<_T(" <I><A href=\"#")<<id<<_T("\">")<<mxUT::ToHtml(afunc->proto)<<_T("</A></I> ")<<LANG(PARSERHELP_METHOD_FROM_CLASS_POST,"de la clase")<<_T(" <I><A href=\"quickhelp:")<<afunc->space->name<<_T("\">")<<afunc->space->name<<_T("</A></I></B><BR><BR>");
 		}
 		if (afunc->properties&PD_CONST_PUBLIC)
 			content<<LANG(PARSERHELP_VISIBILITY_PUBLIC,"Visibilidad: Publico")<<_T("<BR><BR>");
@@ -264,7 +264,7 @@ void HelpManager::HelpForEnum(pd_var *avar, wxString &content, wxString &index) 
 	}
 }
 	
-/** Arma el texto de ayuda r·pida para variables globales, atributos, y constantes de tipos enumerados **/
+/** Arma el texto de ayuda r√°pida para variables globales, atributos, y constantes de tipos enumerados **/
 void HelpManager::HelpFor(pd_var *avar, wxString &content, wxString &index) {
 	if (avar->properties&(PD_CONST_ENUM|PD_CONST_ENUM_CONST)) { HelpForEnum(avar,content,index); return; }
 	int id=index_ref_counter++;
@@ -437,7 +437,7 @@ wxString HelpManager::GetQuickHelp(wxString keyword) {
 		ret+=content;
 	else {
 		ret+="<BR>";
-		ret+=LANG1(PARSERHELP_NO_RESULTS,"No se encontro ayuda r·pida para la palabra seleccionada: <{1}>",keyword);
+		ret+=LANG1(PARSERHELP_NO_RESULTS,"No se encontro ayuda r√°pida para la palabra seleccionada: <{1}>",keyword);
 		ret+="<BR><HR><BR>";
 	}
 	

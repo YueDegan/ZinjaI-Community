@@ -30,7 +30,7 @@ class mxProjectConfigWindow : public mxDialog {
 	wxComboBox *configuration_name;
 	project_configuration *configuration;
 
-	// pestaña general
+	// pestaÅ†a general
 	wxTextCtrl *general_working_folder;
 	wxCheckBox *general_always_ask_args;
 	wxTextCtrl *general_args;
@@ -43,7 +43,7 @@ class mxProjectConfigWindow : public mxDialog {
 	wxTextCtrl *linking_icon;
 	wxTextCtrl *linking_manifest;
 	
-	// pestaña compilacion
+	// pestaÅ†a compilacion
 	wxTextCtrl *compiling_macros;
 	wxTextCtrl *compiling_extra_options;
 	wxTextCtrl *compiling_headers_dirs;
@@ -57,7 +57,7 @@ class mxProjectConfigWindow : public mxDialog {
 	wxComboBox *compiling_std_cpp;
 	wxTextCtrl *compiling_temp_folder;
 
-	// pestaña enlazado
+	// pestaÅ†a enlazado
 	//wxTextCtrl *linking_resource_file;
 	wxTextCtrl *linking_extra_options;
 	wxTextCtrl *linking_libraries_dirs;
@@ -66,11 +66,11 @@ class mxProjectConfigWindow : public mxDialog {
 	wxCheckBox *linking_force_relink;
 	wxCheckBox *linking_console_program;
 	
-	// pestaña pasos
+	// pestaÅ†a pasos
 	wxListBox *steps_list;
 	wxComboBox *toolchains_combo;
 	
-	// pestaña bibliotecas
+	// pestaÅ†a bibliotecas
 	wxTextCtrl *libs_to_use;
 	wxListBox *libtobuild_list;
 	wxCheckBox *libtobuild_noexec;

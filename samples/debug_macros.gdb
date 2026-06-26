@@ -2,8 +2,8 @@
 #   STL GDB evaluators/views/utilities                                                     
 #
 #	Estas macros estan basadas en el trabajo de Dan Marinescu, y modificadas
-#   para una mejor interpretación por parte de ZinjaI.
-#   El siguiente comentario en inglés forma parte del archivo original.
+#   para una mejor interpretaciÃ³n por parte de ZinjaI.
+#   El siguiente comentario en inglÃ©s forma parte del archivo original.
 #
 #   Simple GDB Macros writen by Dan Marinescu (H-PhD) - License GPL
 #   Inspired by intial work of Tom Malnar, 

@@ -96,7 +96,7 @@ struct GprofData {
 					break;
 				}
 				if (s[0]=='[') {
-					// la linea de la propia función del nodo
+					// la linea de la propia funciÃ³n del nodo
 					std::string vals[5];
 					cut(s,vals,5);
 					std::string who=vals[4];

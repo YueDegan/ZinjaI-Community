@@ -100,7 +100,7 @@ void mxGCovSideBar::LoadData (bool force) {
 	wxFileName gcda = binary.GetFullPath().BeforeLast('.')+".gcda";
 	wxFileName fname = binary.GetFullPath().BeforeLast('.')+"."+src->GetFileName(true).AfterLast('.')+".gcov";
 	if (force || (gcda.FileExists() && (!fname.FileExists() || fname.GetModificationTime()<=gcda.GetModificationTime()))) { 
-		osd.Create(main_window,"Generando y leyendo información de cobertura (gcov)");
+		osd.Create(main_window,"Generando y leyendo informaciÃ³n de cobertura (gcov)");
 		wxString command="gcov "; command<<mxUT::Quotize(binary.GetName());
 		ZLINF2("mxGCovSideBar::LoadData","Running: "<<command);
 		int retval = mxUT::Execute(binary.GetPath(),command,wxEXEC_SYNC);

@@ -1,6 +1,6 @@
- EspaÒol
+ Espa√±ol
 =========
-Este proyecto est· configurado para generar una biblioteca, junto con el ejecutable. Todos los fuentes que agregue al proyecto formar·n parte de dicha biblioteca, a excepciÛn de main.cpp. Esto es asÌ para que pueda generar un programa cliente que le permita verificar el funcionamiento de su biblioteca. Por defecto, el nombre de la biblioteca es el mismo que el del proyecto, y es de tipo din·mico. Para cambiar cualquiera de estas opciones (tipo, nombre, quÈ fuentes incluir, generar m·s de una biblioteca, etc.) utilice la pestaÒa "Biblioteca" de las opciones de proyecto (men˙ Ejecucion->Opciones). Si sÛlo desea crear una biblioteca, sin generar ejecutable alguno, utilice la opciÛn "Solo generar bibliotecas", ubicada en la parte posterior de la misma pestaÒa.
+Este proyecto est√° configurado para generar una biblioteca, junto con el ejecutable. Todos los fuentes que agregue al proyecto formar√°n parte de dicha biblioteca, a excepci√≥n de main.cpp. Esto es as√≠ para que pueda generar un programa cliente que le permita verificar el funcionamiento de su biblioteca. Por defecto, el nombre de la biblioteca es el mismo que el del proyecto, y es de tipo din√°mico. Para cambiar cualquiera de estas opciones (tipo, nombre, qu√© fuentes incluir, generar m√°s de una biblioteca, etc.) utilice la pesta√±a "Biblioteca" de las opciones de proyecto (men√∫ Ejecucion->Opciones). Si s√≥lo desea crear una biblioteca, sin generar ejecutable alguno, utilice la opci√≥n "Solo generar bibliotecas", ubicada en la parte posterior de la misma pesta√±a.
 
  English
 =========

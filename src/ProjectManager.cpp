@@ -1,6 +1,6 @@
 /** 
 * @file ProjectManager.cpp
-* @brief Implementación de los métodos de la clase ProjectManager
+* @brief ImplementaciÃ³n de los mÃ©todos de la clase ProjectManager
 **/
 
 #include <iostream>
@@ -140,7 +140,7 @@ void ProjectManager::ReloadFatherProjects() {
 			for (GlobalListIterator<project_file_item*> it(&flist.all); it.IsValid(); it.Next()) {
 				project_file_item *item = FindFromRelativePath(it->m_relative_path);
 				if (!item) item = AddFile(it->GetCategory(),it->GetRelativePath(),false);
-				else if (!item->IsInherited()) continue; // si ya estaba en el proyecto como propio, dejarlo así
+				else if (!item->IsInherited()) continue; // si ya estaba en el proyecto como propio, dejarlo asÃ­
 				item->SetFatherProject(zpr_relative_path);
 				main_window->project_tree.SetInherited(item->GetTreeItem(),true);
 			}
@@ -246,7 +246,7 @@ ProjectManager::ProjectManager(wxFileName name):custom_tools(MAX_PROJECT_CUSTOM_
 					inspection_improving_template_from.Add(p.AsString().BeforeFirst('|'));
 					inspection_improving_template_to.Add(p.AsString().AfterFirst('|'));
 				}
-				// para compatibilidad hacia atrás con proyectos de zinjai viejos
+				// para compatibilidad hacia atrÃ¡s con proyectos de zinjai viejos
 				else if (p.Key()=="use_wxfb") GetWxfbConfiguration()->activate_integration = p.AsBool();
 				else if (p.Key()=="auto_wxfb") GetWxfbConfiguration()->autoupdate_projects = p.AsBool();
 			}
@@ -268,7 +268,7 @@ ProjectManager::ProjectManager(wxFileName name):custom_tools(MAX_PROJECT_CUSTOM_
 				else if (p.Key()=="do_link") lib_to_build->do_link = p.AsBool();
 			}
 			
-		} else if (section=="extra_step") { // agregar un paso de compilación adicional a la configuración actual del proyecto
+		} else if (section=="extra_step") { // agregar un paso de compilaciÃ³n adicional a la configuraciÃ³n actual del proyecto
 			compile_extra_step *extra_step = new compile_extra_step;
 			active_configuration->extra_steps.Add(extra_step);
 			for( IniFileReader::Pair p = fil.GetNextPair(); p.IsOk(); p = fil.GetNextPair() ) {
@@ -546,10 +546,10 @@ ProjectManager::ProjectManager(wxFileName name):custom_tools(MAX_PROJECT_CUSTOM_
 						mxMessageDialog::mdAns ans = 
 							mxMessageDialog(main_window,LANG2(PROJMNGR_CHANGE_PROFILE_OPENNING,""
 															  "Parece que esta abriendo un proyecto que tiene seleccionado un perfil\n"
-															  "de compilación y ejecución para otro sistema operativo: \"<{1}>\"\n"
-															  "\n¿Desea cambiar el perfil activo por \"<{2}>\"?",
+															  "de compilaciÃ³n y ejecuciÃ³n para otro sistema operativo: \"<{1}>\"\n"
+															  "\nÂ¿Desea cambiar el perfil activo por \"<{2}>\"?",
 															  active_configuration->name,suggested_configuration->name))
-								.Title(LANG(PROJMNGR_CHANGE_PROFILE_OPENNING_CAPTION,"Perfil de Compilación y Ejecución"))
+								.Title(LANG(PROJMNGR_CHANGE_PROFILE_OPENNING_CAPTION,"Perfil de CompilaciÃ³n y EjecuciÃ³n"))
 								.Check1(LANG(PROJMNGR_CHANGE_PROFILE_OPENNING_CHECK,"Seleccionar otro perfil de la lista"),false)
 								.ButtonsYesNo().IconWarning().Run();
 						do_change = ans.yes;
@@ -562,7 +562,7 @@ ProjectManager::ProjectManager(wxFileName name):custom_tools(MAX_PROJECT_CUSTOM_
 								choices.Add(configurations[i]->name);
 							wxString res=wxGetSingleChoice(
 								LANG(PROJMNGR_CHANGE_PROFILE_OPENNING_CHOICE,"Seleccione el perfil a activar"),
-								LANG(PROJMNGR_CHANGE_PROFILE_OPENNING_CAPTION,"Perfil de Compilación y Ejecución"),
+								LANG(PROJMNGR_CHANGE_PROFILE_OPENNING_CAPTION,"Perfil de CompilaciÃ³n y EjecuciÃ³n"),
 								choices,main_window);
 							if (res.Len())
 								for (int i=0;i<configurations_count;i++)
@@ -657,18 +657,18 @@ ProjectManager::ProjectManager(wxFileName name):custom_tools(MAX_PROJECT_CUSTOM_
 	if (!project_template && version_saved<20161116) { // changes mingw default calling convention
 		mxMessageDialog::mdAns ret =
 			mxMessageDialog(main_window,LANG(PROJECT_MINGW_CC_PROBLEM_DESC,""
-				"El proyecto que está abriendo fue guardado con una versión de ZinjaI que utilizaba\n"
-				"versiones ahora desactualizadas de las herramientas de compilación (mingw). Los\n"
-				"archivos compilados con esas herramientas no serán compatibles con los que se\n"
-				"compilen con la nueva versión disponible. Si utiliza el compilador por defecto\n"
-				"deberá recompilar todo el proyecto. ¿Desea eliminar ahora los objetos compilados\n"
-				"para forzar la recompilación del proyecto antes de la próxima ejecución?\n\n"
+				"El proyecto que estÃ¡ abriendo fue guardado con una versiÃ³n de ZinjaI que utilizaba\n"
+				"versiones ahora desactualizadas de las herramientas de compilaciÃ³n (mingw). Los\n"
+				"archivos compilados con esas herramientas no serÃ¡n compatibles con los que se\n"
+				"compilen con la nueva versiÃ³n disponible. Si utiliza el compilador por defecto\n"
+				"deberÃ¡ recompilar todo el proyecto. Â¿Desea eliminar ahora los objetos compilados\n"
+				"para forzar la recompilaciÃ³n del proyecto antes de la prÃ³xima ejecuciÃ³n?\n\n"
 				"Nota: si su proyecto utiliza bibliotecas no provistas con ZinjaI, probablemente deba\n"
-				"obtener además nuevas versiones de las mismas. En caso de no hacerlo, su programa\n"
-				"podría finalizar anormalmente al intentar ejecutarlo."
+				"obtener ademÃ¡s nuevas versiones de las mismas. En caso de no hacerlo, su programa\n"
+				"podrÃ­a finalizar anormalmente al intentar ejecutarlo."
 				))
 			.Title(LANG(GENERAL_WARNING,"Advertencia")).IconWarning().ButtonsYesNo()
-			.Check1(LANG(PROJECT_MINGW_CC_PROBLEM_MORE,"Mostrar información (web)..."),false).Run();
+			.Check1(LANG(PROJECT_MINGW_CC_PROBLEM_MORE,"Mostrar informaciÃ³n (web)..."),false).Run();
 		if (ret.check1) mxUT::OpenInBrowser("http://cucarachasracing.blogspot.com.ar/2013/07/mingw-y-las-calling-conventions.html");
 		if (ret.yes) { wxCommandEvent evt; main_window->OnRunClean(evt); }
 	}
@@ -795,7 +795,7 @@ bool ProjectManager::Save (bool as_template) {
 		mxMessageDialog::mdAns res 
 			= mxMessageDialog(main_window,"El proyecto que esta por guardar fue creado con una version de ZinjaI superior\n"
 										  "a la que esta utilizando. Si graba el proyecto ahora se convertira a su su\n"
-										  "version. Algunas opciones de configuración del mismo podrian perderse en la\n"
+										  "version. Algunas opciones de configuraciÃ³n del mismo podrian perderse en la\n"
 										  "conversion. Desea guardarlo de todas formas?")
 				.Title("Version del Proyecto").IconWarning().ButtonsYesNo().Run();
 		if (res.no) return false;
@@ -1196,7 +1196,7 @@ void ProjectManager::MoveFile(wxTreeItemId &tree_item, eFileType where) {
 }
 
 void ProjectManager::DeleteFile(project_file_item *item, bool also_delete_from_disk) {
-	// cerrar si está abierto
+	// cerrar si estÃ¡ abierto
 	mxSource *src = main_window->IsOpen(item->GetTreeItem());
 	if (src) {
 		if (also_delete_from_disk) main_window->CloseSource(src);
@@ -1225,11 +1225,11 @@ bool ProjectManager::DeleteFile(wxTreeItemId tree_item) {
 		if (src) new SourceExtras(src); // "tranfers ownership" of extras to the mxSource
 		mxMessageDialog::mdAns ans = also
 			? mxMessageDialog(main_window,LANG1(PROJMNGR_CONFIRM_DETACH_ALSO,""
-												"¿Desea quitar tambien el archivo \"<{1}>\" del proyecto?",item->GetRelativePath()))
+												"Â¿Desea quitar tambien el archivo \"<{1}>\" del proyecto?",item->GetRelativePath()))
 				.Check1(LANG(PROJMNGR_DELETE_FROM_DISK,"Eliminar el archivo del disco"),false)
 				.Title(item->GetRelativePath()).ButtonsYesNo().IconQuestion().Run()
 			: mxMessageDialog(main_window,LANG(PROJMNGR_CONFIRM_DETACH_FILE,""
-											   "¿Desea quitar el archivo del proyecto?"))
+											   "Â¿Desea quitar el archivo del proyecto?"))
 				.Check1(LANG(PROJMNGR_DELETE_FROM_DISK,"Eliminar el archivo del disco"),false)
 				.Title(item->GetRelativePath()).ButtonsYesNo().IconQuestion().Run();
 		if (ans.cancel || ans.no) return false;
@@ -1267,7 +1267,7 @@ bool ProjectManager::DependsOnMacro(project_file_item *item, wxArrayString &macr
 * Si only_one es nullptr se analiza todo el proyecto (fuentes, bibliotecas, pasos 
 * adicionales, ejecutable, etc). Si no es nullptr se analiza solo lo relacionado 
 * a ese archivo en particular, para recompilar un solo objeto manualmente desde
-* el menú contextual del arbol de proyecto.
+* el menÃº contextual del arbol de proyecto.
 **/
 bool ProjectManager::PrepareForBuilding(project_file_item *only_one) {
 	
@@ -1375,7 +1375,7 @@ bool ProjectManager::PrepareForBuilding(project_file_item *only_one) {
 				wxFileName(full_path).Touch();
 				mxSource *src = main_window->IsOpen(item->GetTreeItem());
 				if (src) src->Reload();
-				warnings.Add(LANG1(PROJMNGR_FUTURE_SOURCE,"El fuente <{1}> tenia fecha de modificación en el futuro. Se reemplazó por la fecha actual.",full_path));
+				warnings.Add(LANG1(PROJMNGR_FUTURE_SOURCE,"El fuente <{1}> tenia fecha de modificaciÃ³n en el futuro. Se reemplazÃ³ por la fecha actual.",full_path));
 				mxUT::AreIncludesUpdated(bin_date,full_path,header_dirs_array,true);
 				flag=true;
 			} else 
@@ -1386,7 +1386,7 @@ bool ProjectManager::PrepareForBuilding(project_file_item *only_one) {
 				if (src_date>bin_date) // si el objeto esta desactualizado respecto al fuente 
 					flag=true;
 				else if (bin_date.IsLaterThan(now)) { // si el objeto es del futuro (por las dudas)
-					warnings.Add(LANG1(PROJMNGR_FUTURE_OBJECT,"El objeto <{1}> tenia fecha de modificación en el futuro. Se recompilara el fuente.",full_path));
+					warnings.Add(LANG1(PROJMNGR_FUTURE_OBJECT,"El objeto <{1}> tenia fecha de modificaciÃ³n en el futuro. Se recompilara el fuente.",full_path));
 					flag=true;
 				} else { // ver si el objeto esta desactualizado respecto a los includes del fuente
 					flag=mxUT::AreIncludesUpdated(bin_date,full_path,header_dirs_array,true);
@@ -1609,9 +1609,9 @@ bool ProjectManager::PrepareForBuilding(project_file_item *only_one) {
 
 /** 
 * Guarda todos los archivos del proyecto que esten abiertos y eventualmente tambien
-* el archivo de configuración de proyecto. Si se indica guardar tambien este archivo,
+* el archivo de configuraciÃ³n de proyecto. Si se indica guardar tambien este archivo,
 * pero el proyecto no ha cambiado, no lo reescribe.
-* @param save_project determina si también se debe guardar el archivo de configuración de proyecto
+* @param save_project determina si tambiÃ©n se debe guardar el archivo de configuraciÃ³n de proyecto
 **/
 void ProjectManager::SaveAll(bool save_project) {
 	// guardar los fuentes
@@ -1670,14 +1670,14 @@ long int ProjectManager::CompileFile(compile_and_run_struct_single *compile_and_
 
 /** 
 * Compila un fuente o enlaza el ejecutable si ya estan todos los objetos listos.
-* El paso que ejecuta es el primero de la lista (first_compile_step), y además 
+* El paso que ejecuta es el primero de la lista (first_compile_step), y ademÃ¡s 
 * lo saca de esta lista. Puede fallar si ya no quedan pasos o si hay otros pasos
-* en paralelos que deben finalizar antes de continuar (esto es cuando el próximo
-* paso es de tipo CNS_BARRIER). Se encarga además de lanzar otros pasos en paralelo 
+* en paralelos que deben finalizar antes de continuar (esto es cuando el prÃ³ximo
+* paso es de tipo CNS_BARRIER). Se encarga ademÃ¡s de lanzar otros pasos en paralelo 
 * si es el primero de un conjunto paralelizable (lo cual se indica en la propiedad 
 * start_parallel del paso). Devuelve el pid del proceso que lanzo para 
 * compilar/enlazar o 0 en caso contrario. Coloca el nombre corto del paso que 
-* está ejecutando en caption para que se muestre en la interfaz.
+* estÃ¡ ejecutando en caption para que se muestre en la interfaz.
 **/
 long int ProjectManager::CompileNext(compile_and_run_struct_single *compile_and_run, wxString &caption) {
 
@@ -1738,7 +1738,7 @@ long int ProjectManager::CompileNext(compile_and_run_struct_single *compile_and_
 			break;
 		case CNS_DEBUGSYM:
 			if (!compile_was_ok) return 0;
-			caption=LANG2(PROJMNGR_STRIPING,"Extrayendo información de depuración de \"<{1}>\" - paso <{2}> de 3...",((stripping_info*)step->what)->filename,(wxString()<<((stripping_info*)step->what)->current_step+1));
+			caption=LANG2(PROJMNGR_STRIPING,"Extrayendo informaciÃ³n de depuraciÃ³n de \"<{1}>\" - paso <{2}> de 3...",((stripping_info*)step->what)->filename,(wxString()<<((stripping_info*)step->what)->current_step+1));
 			compile_and_run->pid = Strip(compile_and_run,(stripping_info*)step->what);
 			delete ((stripping_info*)step->what);
 			break;
@@ -1766,7 +1766,7 @@ long int ProjectManager::Link(compile_and_run_struct_single *compile_and_run, li
 }
 
 /**
-* @param paso sirve para saber que paso del proceso de extración se tiene que ejecutar, porque si bien zinjai lo presenta como una sola cosa, en realidad lleva 3 pasos (extraer del ejecutable, stripearle, y añadir la referencia)
+* @param paso sirve para saber que paso del proceso de extraciÃ³n se tiene que ejecutar, porque si bien zinjai lo presenta como una sola cosa, en realidad lleva 3 pasos (extraer del ejecutable, stripearle, y aÃ±adir la referencia)
 **/
 long int ProjectManager::Strip(compile_and_run_struct_single *compile_and_run, stripping_info *info) {
 	wxString command;
@@ -1777,7 +1777,7 @@ long int ProjectManager::Strip(compile_and_run_struct_single *compile_and_run, s
 	compile_and_run->process = new wxProcess(main_window->GetEventHandler(),mxPROCESS_COMPILE);
 	compile_and_run->process->Redirect();
 	compile_and_run->output_type=MXC_EXTRA;
-	compile_and_run->step_label=wxString("Extrayendo símbolos de depuración de ")<<info->filename<<" - paso "<<info->current_step+1<<" de 3";
+	compile_and_run->step_label=wxString("Extrayendo sÃ­mbolos de depuraciÃ³n de ")<<info->filename<<" - paso "<<info->current_step+1<<" de 3";
 	compile_and_run->m_cem_state = errors_manager->InitOtherStep(command);
 	return mxUT::Execute(path, command, wxEXEC_ASYNC,compile_and_run->process);
 }
@@ -1786,7 +1786,7 @@ long int ProjectManager::Run() {
 	// ver que no sea un proyecto sin ejecutable
 	if (active_configuration->dont_generate_exe and active_configuration->output_file.IsEmpty()) {
 		mxMessageDialog(main_window,LANG(PROJMNGR_RUNNING_NO_EXE,""
-										 "Este proyecto no puede ejecutarse porque está configurado\n"
+										 "Este proyecto no puede ejecutarse porque estÃ¡ configurado\n"
 										 "para generar solo bibliotecas y no hay ejecutable externo definido."))
 			.Title(LANG(GENERAL_WARNING,"Aviso")).IconWarning().Run();
 		return 0;
@@ -1837,7 +1837,7 @@ long int ProjectManager::Run() {
 	
 	if (active_configuration->console_program) { // si es de consola...
 		wxString terminal_cmd(config->Files.terminal_command);
-		terminal_cmd.Replace("${TITLE}",LANG(GENERA_CONSOLE_CAPTION,"ZinjaI - Consola de Ejecucion")); // NO USAR ACENTOS, PUEDE ROMER EL X!!!! (me daba un segfault en la libICE al poner el ó en EjeuciÓn)
+		terminal_cmd.Replace("${TITLE}",LANG(GENERA_CONSOLE_CAPTION,"ZinjaI - Consola de Ejecucion")); // NO USAR ACENTOS, PUEDE ROMER EL X!!!! (me daba un segfault en la libICE al poner el Ã³ en EjeuciÃ“n)
 		if (terminal_cmd.Len()!=0) { // corregir espacios al final del comando de la terminal
 			if (terminal_cmd==" " ) terminal_cmd="";
 			else if (terminal_cmd[terminal_cmd.Len()-1]!=' ') terminal_cmd<<" ";
@@ -2154,16 +2154,16 @@ void ProjectManager::Clean() {
 
 /**
 * Cuando se invoca al compilador se requiere una lista de argumentos que dependen
-* directa o indirectamente de varios campos del cuadro de Opciones de Compilación 
-* y Ejecución del Proyecto. No es cómodo convertir estos campos en argumentos
-* para gcc cada vez que se los necesita, y además tampoco es eficiente, ya que por
+* directa o indirectamente de varios campos del cuadro de Opciones de CompilaciÃ³n 
+* y EjecuciÃ³n del Proyecto. No es cÃ³modo convertir estos campos en argumentos
+* para gcc cada vez que se los necesita, y ademÃ¡s tampoco es eficiente, ya que por
 * ejemplo puede requerir ejecutar comandos externos como pkg-config, y se los
-* necesita al menos una vez por cada objeto a generar en el proyecto. Esta función
+* necesita al menos una vez por cada objeto a generar en el proyecto. Esta funciÃ³n
 * se encarga de hacerlo una vez antes de compilar y guardar los resultados en los
 * atributos de esta clase marcados como "temporales".
 * @param path        es el directorio de base a utilizar para todas las rutas
-*                    relativas. En la salida de esta función se utiliza este path
-*                    para convertirlas en absolutas. Usualmente será la carpeta
+*                    relativas. En la salida de esta funciÃ³n se utiliza este path
+*                    para convertirlas en absolutas. Usualmente serÃ¡ la carpeta
 *                    del proyecto, pero a la hora de generar el makefile se deja 
 *                    en blanco, para que se mantengan relativas.
 * @param exec_comas  indica si se deben reemplazar las cadenas entre acentos
@@ -2175,9 +2175,9 @@ void ProjectManager::Clean() {
 *                    la variable ${MINGW_DIR} en las opciones. Es el valor real
 *                    al compilar en zinjai, pero conviene queda como variable
 *                    al generar el makefile.
-* @param force       hay un bool config_analized que indica que la configuración
-*                    ya está actualizada, cuyo caso no hace nada. Este bool sirve
-*                    para omitir esa comprobación y hacer el proceso obligatoriamente.
+* @param force       hay un bool config_analized que indica que la configuraciÃ³n
+*                    ya estÃ¡ actualizada, cuyo caso no hace nada. Este bool sirve
+*                    para omitir esa comprobaciÃ³n y hacer el proceso obligatoriamente.
 **/
 void ProjectManager::AnalizeConfig(wxString path, bool exec_comas, wxString mingw_dir, bool force) { // parse active_configuration to generate the parts of the command line
 	
@@ -2245,7 +2245,7 @@ void ProjectManager::AnalizeConfig(wxString path, bool exec_comas, wxString ming
 	mxUT::ParameterReplace(co_extra,"${ZINJAI_DIR}",config->zinjai_dir);
 	mxUT::ParameterReplace(co_extra,"${PROJECT_PATH}",project->path);
 
-	// opciones de compilación para libs del sistema
+	// opciones de compilaciÃ³n para libs del sistema
 #  ifdef __APPLE__
 	co_extra<<mxUT::Split(active_configuration->libs_to_use,"-framework ")<<" ";
 #  else
@@ -2434,7 +2434,7 @@ int ProjectManager::GetFileList(wxArrayString &array, eFileType cuales, bool rel
 bool ProjectManager::Debug() {
 	if (active_configuration->dont_generate_exe and active_configuration->output_file.IsEmpty()) {
 		mxMessageDialog(main_window,LANG(PROJMNGR_RUNNING_NO_EXE,""
-										 "Este proyecto no puede ejecutarse porque está configurado\n"
+										 "Este proyecto no puede ejecutarse porque estÃ¡ configurado\n"
 										 "para generar solo bibliotecas y no hay ejecutable externo definido."))
 			.Title(LANG(GENERAL_WARNING,"Aviso")).IconWarning().Run();
 		return false;
@@ -2464,10 +2464,10 @@ bool ProjectManager::Debug() {
 }
 
 /**
-* Una vez inicializado gdb, esta función invoca a través de DebugManager los 
+* Una vez inicializado gdb, esta funciÃ³n invoca a travÃ©s de DebugManager los 
 * comandos  necesarios para cargar todos los breakpoints definidos en todos los 
-* archivos del proyecto. Setea además las propiedades de cada uno. Se debe 
-* llamar antes de comenzar la ejecución.
+* archivos del proyecto. Setea ademÃ¡s las propiedades de cada uno. Se debe 
+* llamar antes de comenzar la ejecuciÃ³n.
 **/
 void ProjectManager::SetBreakpoints() {
 	GlobalListIterator<BreakPointInfo*> bpi=BreakPointInfo::GetGlobalIterator();
@@ -2718,12 +2718,12 @@ bool ProjectManager::WxfbGenerate(wxString fbp_file, wxString fbase, bool force_
 	if (fbase.Len()) {
 		if (ret) {
 			if (osd) osd->Hide();
-			wxString message = LANG1(PROJMNGR_REGENERATING_ERROR_1,"No se pudo actualizar automáticamente el código generado a partir de:\n<{1}>",fbp_file);
+			wxString message = LANG1(PROJMNGR_REGENERATING_ERROR_1,"No se pudo actualizar automÃ¡ticamente el cÃ³digo generado a partir de:\n<{1}>",fbp_file);
 			if (wxfb->autoupdate_projects && !wxfb->temp_disabled) {
 				wxfb->temp_disabled = true;
 				message += "\n\n";
 				message += LANG(PROJMNGR_REGENERATING_ERROR_2,""
-								"La actualización automática de estos proyectos\nse deshabilitará temporalmente.");
+								"La actualizaciÃ³n automÃ¡tica de estos proyectos\nse deshabilitarÃ¡ temporalmente.");
 			}
 //			bool just_installed =	
 //				config->CheckComplaintAndInstall(main_window, "", LANG(GENERAL_WARNING,"Advertencia"), 
@@ -2751,13 +2751,13 @@ bool ProjectManager::WxfbGenerate(wxString fbp_file, wxString fbase, bool force_
 	
 	if (!CreateWxfbFlagFile(fflag)) {
 		if (osd) osd->Hide();
-		wxString message = LANG1(PROJMNGR_REGENERATING_ERROR_1,"No se pudo actualizar automáticamente el código generado a partir de:\n<{1}>",fbp_file);
+		wxString message = LANG1(PROJMNGR_REGENERATING_ERROR_1,"No se pudo actualizar automÃ¡ticamente el cÃ³digo generado a partir de:\n<{1}>",fbp_file);
 		message << "\n" << LANG(PROJMNGR_REGENERATING_ERROR_4,"(probablemente no se pueda escribir en la carpeta de proyecto).");
 		if (wxfb->autoupdate_projects && !wxfb->temp_disabled) {
 			wxfb->temp_disabled = true;
 			message += "\n\n";
 			message += LANG(PROJMNGR_REGENERATING_ERROR_2,""
-							"La actualización automática de estos proyectos\nse deshabilitará temporalmente.");
+							"La actualizaciÃ³n automÃ¡tica de estos proyectos\nse deshabilitarÃ¡ temporalmente.");
 		}
 		mxMessageDialog(main_window,message).Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
 		return true;
@@ -2775,7 +2775,7 @@ bool ProjectManager::CreateWxfbFlagFile(wxString flag_file_full_path) {
 		return false;
 	}
 	fil.Clear();
-	fil.AddLine("Este archivo se utiliza para determinar la fecha y hora de la última compilación del proyecto wxFormBuilder homónimo.");
+	fil.AddLine("Este archivo se utiliza para determinar la fecha y hora de la Ãºltima compilaciÃ³n del proyecto wxFormBuilder homÃ³nimo.");
 	fil.AddLine("This is a dummy file to be used as timestamp for the generation of a wxFormBuilder project.");
 	fil.Write();
 	fil.Close();
@@ -2848,9 +2848,9 @@ bool ProjectManager::DeleteExtraStep(project_configuration *conf, compile_extra_
 }
 
 /** 
-* Busca información correspondiente a un paso de compilación personalizado. La busqueda se hace
+* Busca informaciÃ³n correspondiente a un paso de compilaciÃ³n personalizado. La busqueda se hace
 * por nombre.
-* @param conf configuración en la cual buscar; si recibe nullptr utiliza active_configuration
+* @param conf configuraciÃ³n en la cual buscar; si recibe nullptr utiliza active_configuration
 * @param name nombre del paso a buscar, case sensitive
 * @return puntero al paso, si es que existe, sino nullptr
 **/
@@ -2901,13 +2901,13 @@ long int ProjectManager::CompileWithExternToolchain(compile_and_run_struct_singl
 
 
 /** 
-* Determina si se debe realizar o no un paso extra de compilación de acuerdo a
+* Determina si se debe realizar o no un paso extra de compilaciÃ³n de acuerdo a
 * sus dependencias. Si el paso no tiene definido el archivo de salida, se realiza siempre.
 * Si tiene definido el archivo de salida, pero no las dependencias, se realiza solo si
-* el archivo de salida no existe. Si está completamente definido, se realiza si alguno
-* de los archivos de la lista de dependencias tiene fecha de modificación mayor a la del
+* el archivo de salida no existe. Si estÃ¡ completamente definido, se realiza si alguno
+* de los archivos de la lista de dependencias tiene fecha de modificaciÃ³n mayor a la del
 * archivo de salida. Se la invoca desde PrepareForBuilding.
-* @param step puntero a la estructura que contiene la información del paso extra por el que se pregunta
+* @param step puntero a la estructura que contiene la informaciÃ³n del paso extra por el que se pregunta
 * @retval true si es necesario ejecutar este paso
 * @retval false si es no necesario ejecutar este paso
 **/
@@ -2943,7 +2943,7 @@ bool ProjectManager::ShouldDoExtraStep(compile_extra_step *step) {
 * el nombre de proyecto ingresado por el usuario. Se llama desde el asistente de
 * nuevo proyecto, luego de crearlo y abrirlo.
 *
-* @param name nombre del proyecto (nombre del archivo sin ruta ni extensión)
+* @param name nombre del proyecto (nombre del archivo sin ruta ni extensiÃ³n)
 **/
 void ProjectManager::FixTemplateData(wxString name) {
 	project_name=name;
@@ -3093,7 +3093,7 @@ project_library *ProjectManager::AppendLibToBuild(project_configuration *conf) {
 	return new_lib;
 }
 
-/** @brief Elimina una biblioteca a construir de una configuración **/
+/** @brief Elimina una biblioteca a construir de una configuraciÃ³n **/
 bool ProjectManager::DeleteLibToBuild(project_configuration *conf, project_library *lib_to_del) {
 	int pos = conf->libs_to_build.FindPtr(lib_to_del);
 	if (pos!=conf->libs_to_build.NotFound()) {
@@ -3104,7 +3104,7 @@ bool ProjectManager::DeleteLibToBuild(project_configuration *conf, project_libra
 	}
 }
 
-/** @brief Elimina una biblioteca a construir de una configuración **/
+/** @brief Elimina una biblioteca a construir de una configuraciÃ³n **/
 project_library *ProjectManager::GetLibToBuild(project_configuration *conf, wxString libname) {
 	for(JavaVectorIterator<project_library> lib(conf->libs_to_build); lib.IsValid(); lib.Next())
 		if (lib->libname==libname) return lib;
@@ -3306,7 +3306,7 @@ bool ProjectManager::WxfbUpdateClass(wxString wxfb_class, wxString user_class) {
 	pd_class *pdc_son = parser->GetClass(user_class);
 	wxString cfile = mxUT::GetComplementaryFile(pdc_son->file->name,FT_HEADER);
 	if (cfile.Len()==0) { // si tampoco hay "public:", no hay caso
-		mxMessageDialog(main_window,"No se pudo determinar donde definir los nuevos metodos.\nNo se encontró el archivo fuente complementario.")
+		mxMessageDialog(main_window,"No se pudo determinar donde definir los nuevos metodos.\nNo se encontrÃ³ el archivo fuente complementario.")
 			.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
 		return false;
 	}
@@ -3427,8 +3427,8 @@ ProjectManager::WxfbAutoCheckData::WxfbAutoCheckData() {
 /**
 * Parte 1, se llama al recibir el foco en la ventana principal. Primero mira si hay cambios
 * en los proyectos cd wxfb comparando los archivos de proyecto con los archivos flags que 
-* genera ZinjaI, y si los hay hace regererar el código, manda a parsear los nuevos fuentes
-* y programa el paso 2 para después del parseo.
+* genera ZinjaI, y si los hay hace regererar el cÃ³digo, manda a parsear los nuevos fuentes
+* y programa el paso 2 para despuÃ©s del parseo.
 **/
 void ProjectManager::WxfbAutoCheckStep1() {
 	
@@ -3439,7 +3439,7 @@ void ProjectManager::WxfbAutoCheckStep1() {
 		return;
 	}
 	
-	// primero una verificación rapida para evitar que este evento moleste muy seguido
+	// primero una verificaciÃ³n rapida para evitar que este evento moleste muy seguido
 	bool something_changed=false;
 	for(int i=0;i<wxfb->projects.GetSize();i++) {
 		// ver si hay que regenerar (comparando con fflag)
@@ -3517,8 +3517,8 @@ void ProjectManager::WxfbAutoCheckStep2(WxfbAutoCheckData *old_data) {
 				mxMessageDialog(main_window,LANG3(WXFB_ASK_BEFORE_AUTO_DELETING,""
 											"ZinjaI ha detectado que la clase <{1}> hereda de\n"
 											"otra clase anteriormente autogenerada por wxFormBuilder\n"
-											"(<{2}>) que ha sido eliminada en el diseñador.\n"
-											"¿Desea eliminar los fuentes correspondiente a dicha clase?\n"
+											"(<{2}>) que ha sido eliminada en el diseÃ±ador.\n"
+											"Â¿Desea eliminar los fuentes correspondiente a dicha clase?\n"
 											"Los fuentes son: <{3}>\n"
 											"\n"
 											"Advertencia: debe estar seguro de que no contienen definiciones ajenas\n"
@@ -3588,7 +3588,7 @@ bool ProjectManager::WxfbNewClass(wxString base_name, wxString name) {
 	if (wxFileName::FileExists(cpp_name) || wxFileName::FileExists(h_name)) {
 		mxMessageDialog::mdAns ans = 
 			mxMessageDialog(main_window,LANG(PROJECT_WXFB_NEWFILE_EXISTS,""
-											 "Ya existe un archivo con ese nombre. ¿Desea reemplazarlo?"))
+											 "Ya existe un archivo con ese nombre. Â¿Desea reemplazarlo?"))
 			.Title(cpp_name).ButtonsYesNo().IconError().Run();
 		if (ans.no) return false;
 	}

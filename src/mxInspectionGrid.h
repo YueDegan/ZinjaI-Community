@@ -50,7 +50,7 @@ public:
 		void CopyStatus(const InspectionGridRow &o) {
 			if (o.expression_renderer->HasIcon()) expression_renderer->SetIconPlus(); else expression_renderer->SetIconNull();
 			if (o.value_renderer->HasIcon()) value_renderer->SetIconPlus(); else value_renderer->SetIconNull();
-			status=o.status; // tal vez no debería copiar status ???
+			status=o.status; // tal vez no deberÄ·a copiar status ???
 			frame_level=o.frame_level; on_thread=o.on_thread; is_frozen=o.is_frozen;
 		}
 		void Swap(InspectionGridRow &o) {

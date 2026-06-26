@@ -24,10 +24,10 @@ mxWxfbConfigDialog::mxWxfbConfigDialog()
 	
 	conf=project->GetWxfbConfiguration(false);
 	
-	sizer.BeginCheck( LANG(WXFBSETUP_ACTIVATE,"Activar integración con wxFormBuilder") )
+	sizer.BeginCheck( LANG(WXFBSETUP_ACTIVATE,"Activar integraciÃ³n con wxFormBuilder") )
 		.Value(conf->activate_integration).Id(wxID_FIND).EndCheck(m_activate_integration);
 	
-	sizer.BeginCheck( LANG(WXFBSETUP_AUTOUPDATE,"Regenerar proyectos wxFormBuilder automáticamente") )
+	sizer.BeginCheck( LANG(WXFBSETUP_AUTOUPDATE,"Regenerar proyectos wxFormBuilder automÃ¡ticamente") )
 		.Value(conf->autoupdate_projects).RegisterIn(m_disabler).EndCheck(m_autoupdate_projects);
 	
 	sizer.BeginLine().Space(15).
@@ -38,13 +38,13 @@ mxWxfbConfigDialog::mxWxfbConfigDialog()
 	sizer.BeginCheck( LANG(WXFBSETUP_UPDATE_CLASSES,"Crear/eliminar clases heredadas luego de regenerar") )
 		.Value(conf->update_class_list).RegisterIn(m_disabler).EndCheck(m_update_class_list);
 	
-	sizer.BeginCheck( LANG(WXFBSETUP_UPDATE_METHODS,"Actualizar clases heredadas automáticamente") )
+	sizer.BeginCheck( LANG(WXFBSETUP_UPDATE_METHODS,"Actualizar clases heredadas automÃ¡ticamente") )
 		.Value(conf->update_methods).RegisterIn(m_disabler).EndCheck(m_update_methods);
 	
 	sizer.BeginCheck( LANG(WXFBSETUP_READONLY,"Marcar fuentes generados por wxfb como solo-lectura") )
 		.Value(conf->set_wxfb_sources_as_readonly).RegisterIn(m_disabler).EndCheck(m_set_wxfb_sources_as_readonly);
 	
-	sizer.BeginCheck( LANG(WXFBSETUP_HIDEONGOTO,"Ocultar métodos y clases generadas por wxfb en el cuadro \"Ir a Función/Clase/Método\"") )
+	sizer.BeginCheck( LANG(WXFBSETUP_HIDEONGOTO,"Ocultar mÃ©todos y clases generadas por wxfb en el cuadro \"Ir a FunciÃ³n/Clase/MÃ©todo\"") )
 		.Value(conf->dont_show_base_classes_in_goto).RegisterIn(m_disabler).EndCheck(m_dont_show_base_classes_in_goto);
 	
 	sizer.BeginBottom().Help().Ok().Cancel().EndBottom(this).SetAndFit();

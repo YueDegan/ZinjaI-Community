@@ -23,7 +23,7 @@ BEGIN_EVENT_TABLE(mxBySourceCompilingOpts,wxDialog)
 END_EVENT_TABLE()
 
 mxBySourceCompilingOpts::mxBySourceCompilingOpts(wxWindow *parent, project_file_item *item) 
-	: mxDialog( parent ,LANG(BYSRCOPTS_CAPTION,"Opciones de compilaci髇 por fuente") )
+	: mxDialog( parent ,LANG(BYSRCOPTS_CAPTION,"Opciones de compilaci贸n por fuente") )
 {
 	BoolFlagGuard fg(mask_list_selection_event);
 	
@@ -55,16 +55,16 @@ mxBySourceCompilingOpts::mxBySourceCompilingOpts(wxWindow *parent, project_file_
 		.EndLine();
 	right_sizer.BeginLabel("").EndLabel();
 	right_sizer.BeginSection( LANG(BYSRCOPTS_FROM_PROFILE,"Tomar desde el perfil") ) 
-		.BeginCheck( LANG(PROJECTCONFIG_COMPILING_EXTRA_ARGS,"Parametros extra para la compilaci髇")) .EndCheck(fp_extra)
+		.BeginCheck( LANG(PROJECTCONFIG_COMPILING_EXTRA_ARGS,"Parametros extra para la compilaci贸n")) .EndCheck(fp_extra)
 		.BeginCheck( LANG(PROJECTCONFIG_COMPILING_MACROS,"Macros a definir") ).EndCheck(fp_macros)
 		.BeginCheck( LANG(PROJECTCONFIG_COMPILING_EXTRA_PATHS,"Directorios adicionales para buscar cabeceras") ).EndCheck(fp_includes)
 		.BeginCheck( LANG(PROJECTCONFIG_COMPILING_STD,"Estandar") ).EndCheck(fp_std)
 		.BeginCheck( LANG(PROJECTCONFIG_COMPILING_WARNINGS,"Nivel de advertencias") ).EndCheck(fp_warnings)
-		.BeginCheck( LANG(PROJECTCONFIG_COMPILING_DEBUG,"Informacion de depuraci髇") ).EndCheck(fp_debug)
-		.BeginCheck( LANG(PROJECTCONFIG_COMPILING_OPTIM,"Nivel de optimizaci髇") ).EndCheck(fp_optimizations)
+		.BeginCheck( LANG(PROJECTCONFIG_COMPILING_DEBUG,"Informacion de depuraci贸n") ).EndCheck(fp_debug)
+		.BeginCheck( LANG(PROJECTCONFIG_COMPILING_OPTIM,"Nivel de optimizaci贸n") ).EndCheck(fp_optimizations)
 		.EndSection();
 	
-	right_sizer.BeginText( LANG(BYSRCOPTS_ADDITIONAL_ARGS,"Argumentos de compilaci髇 adicionales") ).MultiLine().EndText(additional_args);
+	right_sizer.BeginText( LANG(BYSRCOPTS_ADDITIONAL_ARGS,"Argumentos de compilaci贸n adicionales") ).MultiLine().EndText(additional_args);
 
 	wxArrayString profiles_list;
 	for(int i=0;i<project->configurations_count;i++) profiles_list.Add(project->configurations[i]->name);

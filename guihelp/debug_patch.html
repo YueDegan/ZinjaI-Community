@@ -1,19 +1,19 @@
 <HTML>
 <HEAD><TITLE>ZinjaI - Help</TITLE></HEAD><BODY>
-<B>CorrecciÛn de un ejecutable durante la depuraciÛn</B><BR>
+<B>Correcci√≥n de un ejecutable durante la depuraci√≥n</B><BR>
 <BR>
-Usualmente, un ejecutable no cambia a lo largo de su ejecuciÛn (ya sea mediante el depurador o su ejecuciÛn regular). En general, al corregir un error en el cÛdigo fuente detectado curante una sesiÛn de depuraciÛn se debe detener completamente el programa (finalizar), recompilar el ejecutable y volver a iniciar la ejecuciÛn (desde cero). ZinjaI permite en algunos casos muy particulares recompilar el ejecutable durante una pausa en la depuraciÛn, y continuar luego la misma utilizando el nuevo ejecutable corregido. Este mecanismo utiliza gdb para modificar bytes de la im·gen en memoria que el depurador tiene del ejecutable, pero no actualiza variables en memoria ni ning˙n otro contenido generado por la ejecuciÛn (como la pila de llamadas a funciones, memoria reservada, archivos abiertos, etc). Se puede aplicar para casos la estructura en memoria del nuevo ejecutable coincide con la del anterior, pero varÌan ciertas constantes o expresiones. Por ejemplo, cuando en una funciÛn cambia el valor con que se inicializa una variable, o cuando se invierte una condiciÛn en una estructura de control.<BR>
+Usualmente, un ejecutable no cambia a lo largo de su ejecuci√≥n (ya sea mediante el depurador o su ejecuci√≥n regular). En general, al corregir un error en el c√≥digo fuente detectado curante una sesi√≥n de depuraci√≥n se debe detener completamente el programa (finalizar), recompilar el ejecutable y volver a iniciar la ejecuci√≥n (desde cero). ZinjaI permite en algunos casos muy particulares recompilar el ejecutable durante una pausa en la depuraci√≥n, y continuar luego la misma utilizando el nuevo ejecutable corregido. Este mecanismo utiliza gdb para modificar bytes de la im√°gen en memoria que el depurador tiene del ejecutable, pero no actualiza variables en memoria ni ning√∫n otro contenido generado por la ejecuci√≥n (como la pila de llamadas a funciones, memoria reservada, archivos abiertos, etc). Se puede aplicar para casos la estructura en memoria del nuevo ejecutable coincide con la del anterior, pero var√≠an ciertas constantes o expresiones. Por ejemplo, cuando en una funci√≥n cambia el valor con que se inicializa una variable, o cuando se invierte una condici√≥n en una estructura de control.<BR>
 <BR>
 Para modificar un ejecutable debe:<OL>
-<LI>Pausar la depuraciÛn, mediante el comando "Interrumpir" del men˙ "Depuracion" o mediante un punto de interrupciÛn.</LI>
-<LI>Reliazar las modificaciones al cÛdigo fuente. Por defecto, ZinjaI no permite modificar un cÛdigo fuente mientras se est· depurando, por los que podrÌa ver un mensaje de advertencia. El cuadro de di·logo de dicho mensaje incluye en la parte inferior un checkbox para desactivar la advertencia y permitir la modificaciÛn.</LI>
-<LI>Recompilar el ejecutable, utilizando el comando "Compilar" del men˙ "EjecuciÛn".</LI>
-<LI>Aplicar los cambios del nuevo ejecutable en la versiÛn en memoria que est· utilizando el depurador, mediante el comando "Actualizar ejecutable..." del submen˙ "M·s..." del men˙ "DepuraciÛn". Luego de la actualizaciÛn ver· un cuadro de di·logo con un res˙men indicando cuantos cambios se detectaron y cuantos han sido aplicados con Èxito. No es necesario que todos los cambios detectados sean aplicados con Èxito para que el mecanismo funcione de la forma esperada.</LI>
-<LI>Continuar la depuraciÛn. La prÛxima vez que el programa ejecute el cÛdigo modificado observar· la diferencia.</LI>
+<LI>Pausar la depuraci√≥n, mediante el comando "Interrumpir" del men√∫ "Depuracion" o mediante un punto de interrupci√≥n.</LI>
+<LI>Reliazar las modificaciones al c√≥digo fuente. Por defecto, ZinjaI no permite modificar un c√≥digo fuente mientras se est√° depurando, por los que podr√≠a ver un mensaje de advertencia. El cuadro de di√°logo de dicho mensaje incluye en la parte inferior un checkbox para desactivar la advertencia y permitir la modificaci√≥n.</LI>
+<LI>Recompilar el ejecutable, utilizando el comando "Compilar" del men√∫ "Ejecuci√≥n".</LI>
+<LI>Aplicar los cambios del nuevo ejecutable en la versi√≥n en memoria que est√° utilizando el depurador, mediante el comando "Actualizar ejecutable..." del submen√∫ "M√°s..." del men√∫ "Depuraci√≥n". Luego de la actualizaci√≥n ver√° un cuadro de di√°logo con un res√∫men indicando cuantos cambios se detectaron y cuantos han sido aplicados con √©xito. No es necesario que todos los cambios detectados sean aplicados con √©xito para que el mecanismo funcione de la forma esperada.</LI>
+<LI>Continuar la depuraci√≥n. La pr√≥xima vez que el programa ejecute el c√≥digo modificado observar√° la diferencia.</LI>
 </OL><BR>
 <BR>
-Nota: Actualmente esta funcionalidad no est· disponible en la versiÛn para Windows por limitaciones del depurador gdb.<BR>
+Nota: Actualmente esta funcionalidad no est√° disponible en la versi√≥n para Windows por limitaciones del depurador gdb.<BR>
 <BR>
 <BR>
-Puede encontra m·s detalles del funcionamiento y un video demostrando el uso de esta funcionalidad en <A href="http://cucarachasracing.blogspot.com.ar/2014/06/corrigiendo-un-ejecutable-sin-reiniciar.html">http://cucarachasracing.blogspot.com.ar/2014/06/corrigiendo-un-ejecutable-sin-reiniciar.html</A>.
+Puede encontra m√°s detalles del funcionamiento y un video demostrando el uso de esta funcionalidad en <A href="http://cucarachasracing.blogspot.com.ar/2014/06/corrigiendo-un-ejecutable-sin-reiniciar.html">http://cucarachasracing.blogspot.com.ar/2014/06/corrigiendo-un-ejecutable-sin-reiniciar.html</A>.
 </BODY></HTML>

@@ -80,26 +80,26 @@ int main(int argc, char *argv[]) {
 	pid_t pid=fork();
 	if (pid==0) {
 		execvp(argv[0],argv);
-		// ver si es porque no tiene permiso de ejecución, en cuyo caso intentamos cambiarlos
+		// ver si es porque no tiene permiso de ejecuciÃ³n, en cuyo caso intentamos cambiarlos
 		struct stat sb;
 		if (stat(argv[0],&sb)!=-1 && !(sb.st_mode&S_IXUSR)) {
 			string cmd("chmod a+x \""); cmd+=argv[0]; cmd+="\"";
 			system(cmd.c_str());
 			execvp(argv[0],argv);
-			cerr<<"Necesita darle permisos de ejecución al archivo zinjai.bin."<<endl;
+			cerr<<"Necesita darle permisos de ejecuciÃ³n al archivo zinjai.bin."<<endl;
 			cerr<<"Puede intentar hacerlo con el comando \"sudo chmod a+x zinjai.bin\"."<<endl;
 		}
 	} else {
 		int ret=0;
 		waitpid(pid,&ret,0);
-		if (ret) { // si algo falló en la ejecución, ver si faltan bibliotecas
+		if (ret) { // si algo fallÃ³ en la ejecuciÃ³n, ver si faltan bibliotecas
 			string s;
 			s+="ldd \""; s+=argv[0]; s+="\""; 
 			s+=" | grep \"not found\" >/dev/null";
 			if (system(s.c_str())==0) {
 				cerr<<endl<<endl;
 				cerr<<"Puede que su sistema no tenga todas las bibliotecas necesarias para ejecutar ZinjaI."<<endl;
-				cerr<<"Instale las bibliotecas faltantes con el gestor de paquetes de su distribuciÃ³n."<<endl;
+				cerr<<"Instale las bibliotecas faltantes con el gestor de paquetes de su distribuciÃƒÂ³n."<<endl;
 				cerr<<"Las bibliotecas faltantes son:"<<endl;
 				string s; s+="ldd \""; s+=argv[0]; s+="\""; 
 				s+=" | grep \"not found\" | cut -d . -f 1";

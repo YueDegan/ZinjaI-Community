@@ -7,7 +7,7 @@ class mxSource;
 class project_file_item;
 
 /**
-* @brief guarda toda la información acerca de un punto de interrupción
+* @brief guarda toda la informaciÃ³n acerca de un punto de interrupciÃ³n
 *
 * Saves all information related to a breakpoint: it's gdb status, all options 
 * setted in mxBreakOptions, and its handler for the mxSource's marker. It also 

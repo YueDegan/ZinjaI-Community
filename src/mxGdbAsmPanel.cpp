@@ -20,7 +20,7 @@ mxGdbAsmPanel::mxGdbAsmPanel (wxWindow * parent) : wxPanel(parent), m_marker_han
 	m_code->MarkerDefine(m_code->next_available_marker,wxSTC_MARK_SHORTARROW, g_ctheme->DEFAULT_FORE, "Z GREEN");
 	m_code->SetZoom(-1);
 	sizer->Add(m_code,sizers->Exp1);
-	m_asm_step_mode = new wxCheckBox(this,wxID_ANY,LANG(GDBASM_STEP_MODE,"Avanzar paso a paso por instrucci髇 de m醧uina (para Step In y Step Over)"));
+	m_asm_step_mode = new wxCheckBox(this,wxID_ANY,LANG(GDBASM_STEP_MODE,"Avanzar paso a paso por instrucci贸n de m谩quina (para Step In y Step Over)"));
 	sizer->Add(m_asm_step_mode,sizers->Exp0);
 	SetSizer(sizer);
 	Update();
@@ -37,13 +37,13 @@ void mxGdbAsmPanel::Update ( ) {
 	
 	wxString pc = debug->InspectExpression("$pc").BeforeFirst(' ');
 	AddressRange::addr_t addr = AddressRange::Parse(pc);
-	if (m_current_range.Contains(addr)) { // si la funci髇 ya esta siendo mostrada
+	if (m_current_range.Contains(addr)) { // si la funci贸n ya esta siendo mostrada
 		if (m_marker_handle!=-1) 
 			m_code->MarkerDeleteHandle(m_marker_handle);
 		m_marker_handle = -1;
 	} else {
 		auto it = m_cache.find(AddressRange(addr));
-		if (it==m_cache.end()) { // si es la primera vez que se analiza esa funci髇
+		if (it==m_cache.end()) { // si es la primera vez que se analiza esa funci贸n
 			wxString ans = debug->SendCommand("disassemble /m").stream;
 			AddressRange range = ParseCode(ans);
 			it = m_cache.insert(std::pair<AddressRange,wxString>(range,ans)).first;
@@ -76,12 +76,12 @@ mxGdbAsmPanel::AddressRange mxGdbAsmPanel::ParseCode (wxString ans) {
 		if (line.IsEmpty()) continue;
 		// quitar el indicador de la instruccion actual
 		if (line.StartsWith("=>")) { line[0]=' '; line[1]=' '; }
-		// determinar si es linea de c骴igo m醧uina, 
+		// determinar si es linea de c贸digo m谩quina, 
 		bool inner = false;
 		int i1=0, l=line.Len();
 		while(i1<l&&line[i1]==' ')++i1;
 		if (i1+2<l && line[i1]=='0' && line[i1+1]=='x') {
-			// y extrar la direcci髇 para definir el rango de direcciones de la funci髇
+			// y extrar la direcci贸n para definir el rango de direcciones de la funci贸n
 			int i2 = i1; inner = true;
 			while(i2<l&&line[i2]!=' ')++i2;
 			range.m_to = AddressRange::Parse(line.Mid(i1,i2-i1));

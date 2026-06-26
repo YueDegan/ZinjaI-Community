@@ -124,9 +124,9 @@ void mxUpdatesChecker::OnCloseButton(wxCommandEvent &evt) {
 
 void mxUpdatesChecker::OnChangesButton(wxCommandEvent &evt) {
 #ifdef __WIN3__
-	bool do_exit = mxMessageDialog(this,"Si decide actualizar ZinjaI ahora, deberá cerrar \n"
+	bool do_exit = mxMessageDialog(this,"Si decide actualizar ZinjaI ahora, deberÃ¡ cerrar \n"
 						 "esta instancia antes de ejecutar el nuevo instalador.\n\n"
-						 "¿Desea cerrar ZinjaI ahora?").IconQuestion().ButtonsYesNo().Run().yes;
+						 "Â¿Desea cerrar ZinjaI ahora?").IconQuestion().ButtonsYesNo().Run().yes;
 #else
 	bool do_exit = false;
 #endif

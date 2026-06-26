@@ -1,3 +1,3 @@
-#### Cuadros de diálogo
+#### Cuadros de diÃ¡logo
 
-Seleccione un cuadro de diálogo en el árbol índice de la ayuda para ver su descripción y utilidad.
+Seleccione un cuadro de diÃ¡logo en el Ã¡rbol Ã­ndice de la ayuda para ver su descripciÃ³n y utilidad.

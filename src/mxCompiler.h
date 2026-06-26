@@ -34,7 +34,7 @@ typedef int CAR_ERROR_LINE; // information about last error line that may condic
 #define CAR_EL_FLAG_NESTED     (1<<7) // a series of nested notes is adds the first line as error child, and the rest as children of that first one
 #define CAR_EL_FLAG_USE_PREV   (1<<8) // use message from previous line for margin error (for lines like "foo.cpp:xx: required from here.")
 
-//! Informaci髇 acerca de una compilaci髇 en proceso (puede ser realmente una compilaci髇, o un paso adicional, o hasta una ejecuci髇... es decir, cualquier proceso relacionado a la construcci髇 y/o ejecuci髇)
+//! Informaci贸n acerca de una compilaci贸n en proceso (puede ser realmente una compilaci贸n, o un paso adicional, o hasta una ejecuci贸n... es decir, cualquier proceso relacionado a la construcci贸n y/o ejecuci贸n)
 struct compile_and_run_struct_single {
 	std::function<void()> on_end; ///< what to do after this process if it runs ok
 	bool killed; ///< indica si fue interrumpido adrede, para usar en OnProcessTerminate
@@ -78,9 +78,9 @@ public:
 	// compile_and_run_struct_common
 	mxSource *last_compiled; ///< ultimo fuente compilado
 	mxSource *last_runned; ///< ultimo fuente ejecutado
-	wxString last_caption; ///< titulo de la pesta馻 del ultimo fuente ejecutado
+	wxString last_caption; ///< titulo de la pesta帽a del ultimo fuente ejecutado
 	wxTimer *timer; ///< timer que actualiza el arbol de compilacion mientras compila
-	wxString valgrind_cmd; ///< indica si la proxima ejecuci髇 se hace con valgrind
+	wxString valgrind_cmd; ///< indica si la proxima ejecuci贸n se hace con valgrind
 	bool CheckForExecutablePermision(wxString file); ///< en linux, verifica que tenga permisos de ejecucion
 };
 

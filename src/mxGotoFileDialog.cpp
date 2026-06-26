@@ -7,7 +7,7 @@
 mxGotoFileDialog::mxGotoFileDialog(wxString text, wxWindow* parent, int _goto_line) 
 	: mxGotoListDialog( parent, LANG(GOTOFILE_CAPTION,"Ir a..."), 
 		LANG(GOTOFILE_ENTER_FILENAME,"Ingrese parte del nombre del archivo que desea abrir:"),
-		"Buscar clase/metodo/función..." )
+		"Buscar clase/metodo/funciÃ³n..." )
 {
 	SetExtraButtonAccelerator(wxACCEL_CTRL|wxACCEL_SHIFT,'g');
 	goto_line=_goto_line;

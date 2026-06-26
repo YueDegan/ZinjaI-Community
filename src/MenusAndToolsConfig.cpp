@@ -33,16 +33,16 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 		AddMenuItem(mnFILE, myMenuItem("open",mxID_FILE_OPEN, LANG(MENUITEM_FILE_OPEN,"&Abrir...")).ShortCut("Ctrl+O").Description("Abrir un archivo o un proyecto existente...").Map());
 		BeginSubMenu(mnFILE,LANG(MENUITEM_FILE_RECENT_SOURCES,"Fuentes Abiertos Recientemente"),"Muestra los ultimos archivos abiertos como programas simples","recentSimple.png",mxID_FILE_SOURCE_RECENT,maMAPPED);
 			AddSeparator(mnFILE);
-			AddMenuItem(mnFILE, myMenuItem("recent_simple",mxID_FILE_SOURCE_HISTORY_MORE,LANG(MENU_FILE_RECENT_MORE,"Más...")).Description("Muestra un dialogo con la lista completa de archivos recientes"));
+			AddMenuItem(mnFILE, myMenuItem("recent_simple",mxID_FILE_SOURCE_HISTORY_MORE,LANG(MENU_FILE_RECENT_MORE,"MÃ¡s...")).Description("Muestra un dialogo con la lista completa de archivos recientes"));
 		EndSubMenu(mnFILE);
 		BeginSubMenu(mnFILE,LANG(MENUITEM_FILE_RECENT_PROJECTS,"Proyectos Abiertos Recientemente"),"Muestra los ultimos proyectos abiertos","recentProject.png",mxID_FILE_PROJECT_RECENT,maMAPPED);
 			AddSeparator(mnFILE);
-			AddMenuItem(mnFILE, myMenuItem("recent_project",mxID_FILE_PROJECT_HISTORY_MORE,LANG(MENU_FILE_RECENT_MORE,"Más...")).ShortCut("Ctrl+Shift+O").Description("Muestra un dialogo con la lista completa de proyectos recientes"));
+			AddMenuItem(mnFILE, myMenuItem("recent_project",mxID_FILE_PROJECT_HISTORY_MORE,LANG(MENU_FILE_RECENT_MORE,"MÃ¡s...")).ShortCut("Ctrl+Shift+O").Description("Muestra un dialogo con la lista completa de proyectos recientes"));
 		EndSubMenu(mnFILE);
 		AddMenuItem(mnFILE, myMenuItem("save",mxID_FILE_SAVE, LANG(MENUITEM_FILE_SAVE,"&Guardar")).ShortCut("Ctrl+S").Description("Guardar el archivo actual").EnableIf(ecSOURCE));
 		AddMenuItem(mnFILE, myMenuItem("save_as",mxID_FILE_SAVE_AS, LANG(MENUITEM_FILE_SAVE_AS,"G&uardar Como...")).ShortCut("Ctrl+Shift+S").Description("Guardar el archivo actual con otro nombre...").EnableIf(ecSOURCE));
 		AddMenuItem(mnFILE, myMenuItem("save_all",mxID_FILE_SAVE_ALL, LANG(MENUITEM_FILE_SAVE_ALL,"Guardar &Todo...")).ShortCut("Ctrl+Alt+Shift+S").Description("Guarda todos los archivos abiertos y el proyecto actual...").EnableIf(ecSOURCE));
-		AddMenuItem(mnFILE, myMenuItem("save_project",mxID_FILE_SAVE_PROJECT, LANG(MENUITEM_FILE_SAVE_PROJECT,"Guar&dar Proyecto")).ShortCut("Ctrl+Alt+S").Description("Guardar la configuarición actual del proyecto").EnableIf(ecPROJECT));
+		AddMenuItem(mnFILE, myMenuItem("save_project",mxID_FILE_SAVE_PROJECT, LANG(MENUITEM_FILE_SAVE_PROJECT,"Guar&dar Proyecto")).ShortCut("Ctrl+Alt+S").Description("Guardar la configuariciÃ³n actual del proyecto").EnableIf(ecPROJECT));
 		AddMenuItem(mnFILE, myMenuItem("export_html",mxID_FILE_EXPORT_HTML, LANG(MENUITEM_FILE_EXPORT_HTML,"Exportar a HTML...")).Description("Genera un archiv HTML con el codigo fuente").EnableIf(ecSOURCE));
 		AddMenuItem(mnFILE, myMenuItem("print",mxID_FILE_PRINT, LANG(MENUITEM_FILE_PRINT,"&Imprimir...")).Description("Imprime el codigo fuente actual").EnableIf(ecSOURCE));
 		AddMenuItem(mnFILE, myMenuItem("reload",mxID_FILE_RELOAD, LANG(MENUITEM_FILE_RELOAD,"&Recargar")).ShortCut("Ctrl+Shift+R").Description("Recarga la version en disco del archivo actual.").EnableIf(ecSOURCE));
@@ -50,27 +50,27 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 		AddMenuItem(mnFILE, myMenuItem("close_all",mxID_FILE_CLOSE_ALL, LANG(MENUITEM_FILE_CLOSE_ALL,"Cerrar &Todo")).ShortCut("Ctrl+Alt+Shift+W").Description("Cierra todos los archivos abiertos").EnableIf(ecSOURCE));
 		AddMenuItem(mnFILE, myMenuItem("close_project",mxID_FILE_CLOSE_PROJECT, LANG(MENUITEM_FILE_CLOSE_PROJECT,"Cerrar Pro&yecto")).ShortCut("Ctrl+Shift+W").Description("Cierra el proyecto actual").EnableIf(ecPROJECT));
 		AddSeparator(mnFILE);
-		AddMenuItem(mnFILE, myMenuItem("project_config",mxID_FILE_PROJECT_CONFIG, LANG(MENUITEM_FILE_PROJECT_CONFIG,"&Configuración del Proyecto...")).ShortCut("Ctrl+Shift+P").Description("Configurar las propiedades generales de un proyecto...").EnableIf(ecPROJECT));
+		AddMenuItem(mnFILE, myMenuItem("project_config",mxID_FILE_PROJECT_CONFIG, LANG(MENUITEM_FILE_PROJECT_CONFIG,"&ConfiguraciÃ³n del Proyecto...")).ShortCut("Ctrl+Shift+P").Description("Configurar las propiedades generales de un proyecto...").EnableIf(ecPROJECT));
 		AddMenuItem(mnFILE, myMenuItem("preferences",mxID_FILE_PREFERENCES, LANG(MENUITEM_FILE_PREFERENCES,"&Preferencias...")).ShortCut("Ctrl+P").Description("Configurar el entorno..."));
 		AddSeparator(mnFILE);
 		AddMenuItem(mnFILE, myMenuItem("exit",mxID_FILE_EXIT, LANG(MENUITEM_FILE_EXIT,"&Salir")).ShortCut("Alt+F4").Description("Salir del programa!"));
 	}
 	
 	
-	menues[mnEDIT].Init("edit",LANG(MENUITEM_EDIT,"&Edición")); {
+	menues[mnEDIT].Init("edit",LANG(MENUITEM_EDIT,"&EdiciÃ³n")); {
 		AddMenuItem(mnEDIT, myMenuItem("undo",mxID_EDIT_UNDO, LANG(MENUITEM_EDIT_UNDO,"&Deshacer")).ShortCut("Ctrl+Z").Description("Deshacer el ultimo cambio").EnableIf(ecSOURCE));
 		AddMenuItem(mnEDIT, myMenuItem("redo",mxID_EDIT_REDO, LANG(MENUITEM_EDIT_REDO,"&Rehacer")).ShortCut("Ctrl+Shift+Z").Description("Rehacer el ultimo cambio desecho").EnableIf(ecSOURCE));
 		AddMenuItem(mnEDIT, myMenuItem("undo_history",mxID_EDIT_UNDO_HISTORY, LANG(MENUITEM_EDIT_UNDO_HISTORY,"Historial de cambios..."))/*.ShortCut("Ctrl+Shift+Z").Description("Rehacer el ultimo cambio desecho")*/.EnableIf(ecSOURCE));
 		AddSeparator(mnEDIT);
-		AddMenuItem(mnEDIT, myMenuItem("cut",mxID_EDIT_CUT, LANG(MENUITEM_EDIT_CUT,"C&ortar")).ShortCut("Ctrl+X").Description("Cortar la selección al portapapeles").EnableIf(ecSOURCE));
-		AddMenuItem(mnEDIT, myMenuItem("copy",mxID_EDIT_COPY, LANG(MENUITEM_EDIT_COPY,"&Copiar")).ShortCut("Ctrl+C").Description("Copiar la selección al portapapeles").EnableIf(ecSOURCE));
+		AddMenuItem(mnEDIT, myMenuItem("cut",mxID_EDIT_CUT, LANG(MENUITEM_EDIT_CUT,"C&ortar")).ShortCut("Ctrl+X").Description("Cortar la selecciÃ³n al portapapeles").EnableIf(ecSOURCE));
+		AddMenuItem(mnEDIT, myMenuItem("copy",mxID_EDIT_COPY, LANG(MENUITEM_EDIT_COPY,"&Copiar")).ShortCut("Ctrl+C").Description("Copiar la selecciÃ³n al portapapeles").EnableIf(ecSOURCE));
 		AddMenuItem(mnEDIT, myMenuItem("paste",mxID_EDIT_PASTE, LANG(MENUITEM_EDIT_PASTE,"&Pegar")).ShortCut("Ctrl+V").Description("Pegar el contenido del portapapeles").EnableIf(ecSOURCE));
 		AddMenuItem(mnEDIT, myMenuItem("move_up",mxID_EDIT_TOGGLE_LINES_UP, LANG(MENUITEM_EDIT_LINES_UP,"Mover Hacia Arriba")).ShortCut("Ctrl+T").Description("Mueve la o las lineas seleccionadas hacia arriba").EnableIf(ecSOURCE));
 		AddMenuItem(mnEDIT, myMenuItem("move_down",mxID_EDIT_TOGGLE_LINES_DOWN, LANG(MENUITEM_EDIT_LINES_DOWN,"Mover Hacia Abajo")).ShortCut("Ctrl+Shift+T").Description("Mueve la o las lineas seleccionadas hacia abajo").EnableIf(ecSOURCE));
-		AddMenuItem(mnEDIT, myMenuItem("duplicate",mxID_EDIT_DUPLICATE_LINES, LANG(MENUITEM_EDIT_DUPLICATE_LINES,"&Duplicar Linea(s)")).ShortCut("Ctrl+L").Description("Copia la linea actual del cursor, o las lineas seleccionadas, nuevamente a continuación").EnableIf(ecSOURCE));
+		AddMenuItem(mnEDIT, myMenuItem("duplicate",mxID_EDIT_DUPLICATE_LINES, LANG(MENUITEM_EDIT_DUPLICATE_LINES,"&Duplicar Linea(s)")).ShortCut("Ctrl+L").Description("Copia la linea actual del cursor, o las lineas seleccionadas, nuevamente a continuaciÃ³n").EnableIf(ecSOURCE));
 		AddMenuItem(mnEDIT, myMenuItem("delete_lines",mxID_EDIT_DELETE_LINES, LANG(MENUITEM_EDIT_DELETE_LINES,"&Eliminar Linea(s)")).ShortCut("Shift+Ctrl+L").Description("Elimina la linea actual del cursor nuevamente, o las lineas seleccionadas").EnableIf(ecSOURCE));
 		AddSeparator(mnEDIT);
-		AddMenuItem(mnEDIT, myMenuItem("goto_class",mxID_EDIT_GOTO_FUNCTION, LANG(MENUITEM_EDIT_GOTO_FUNCTION,"&Ir a Funcion/Clase/Metodo...")).ShortCut("Ctrl+Shift+G").Description("Abrir el fuente con la declaración de una funcion, clase o metodo...").EnableIf(ecPROJECT_OR_SOURCE));
+		AddMenuItem(mnEDIT, myMenuItem("goto_class",mxID_EDIT_GOTO_FUNCTION, LANG(MENUITEM_EDIT_GOTO_FUNCTION,"&Ir a Funcion/Clase/Metodo...")).ShortCut("Ctrl+Shift+G").Description("Abrir el fuente con la declaraciÃ³n de una funcion, clase o metodo...").EnableIf(ecPROJECT_OR_SOURCE));
 		AddMenuItem(mnEDIT, myMenuItem("goto_file",mxID_EDIT_GOTO_FILE, LANG(MENUITEM_EDIT_GOTO_FILE,"&Ir a Archivo...")).ShortCut("Ctrl+Shift+F").Description("Abrir un archivo en particular buscandolo por parte de su nombre...").EnableIf(ecPROJECT_OR_SOURCE));
 		AddMenuItem(mnEDIT, myMenuItem("goto_line",mxID_EDIT_GOTO, LANG(MENUITEM_EDIT_GOTO_LINE,"&Ir a Linea...")).ShortCut("Ctrl+G").Description("Mover el cursor a una linea determinada en el archivo...").EnableIf(ecSOURCE));
 		AddMenuItem(mnEDIT, myMenuItem("find",mxID_EDIT_FIND, LANG(MENUITEM_EDIT_FIND,"&Buscar...")).ShortCut("Ctrl+F").Description("Buscar una cadena en el archivo...").EnableIf(ecPROJECT_OR_SOURCE));
@@ -119,18 +119,18 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 		AddMenuItem(mnVIEW, myMenuItem("project_tree",mxID_VIEW_PROJECT_TREE, LANG(MENUITEM_VIEW_PROJECT_TREE,"Mostrar Arbol de &Proyecto")).Description("Muestra el panel del arbol de proyecto/archivos abiertos").Checkeable(false));
 		AddMenuItem(mnVIEW, myMenuItem("explorer_tree",mxID_VIEW_EXPLORER_TREE, LANG(MENUITEM_VIEW_EXPLORER_TREE,"Mostrar &Explorardor de Archivos")).ShortCut("Ctrl+E").Description("Muestra el panel explorador de archivos").Checkeable(false));
 		AddMenuItem(mnVIEW, myMenuItem("symbols_tree",mxID_VIEW_SYMBOLS_TREE, LANG(MENUITEM_VIEW_SYMBOLS_TREE,"Mostrar Arbol de &Simbolos")).Description("Analiza el codigo fuente y construye un arbol con los simbolos declarados en el mismo.").Checkeable(false));
-		AddMenuItem(mnVIEW, myMenuItem("compiler_tree",mxID_VIEW_COMPILER_TREE, LANG(MENUITEM_VIEW_COMPILER_TREE,"Mostrar Resultados de la &Compilación")).Description("Muestra un panel con la salida del compilador").Checkeable(false));
-		AddMenuItem(mnVIEW, myMenuItem("minimap",mxID_VIEW_MINIMAP, LANG(MENUITEM_VIEW_MINIMAP,"Mostrar Mini-&mapa (experimental)")).Description("Muestra un panel con una vista en miniatura del código fuente").Checkeable(false));
+		AddMenuItem(mnVIEW, myMenuItem("compiler_tree",mxID_VIEW_COMPILER_TREE, LANG(MENUITEM_VIEW_COMPILER_TREE,"Mostrar Resultados de la &CompilaciÃ³n")).Description("Muestra un panel con la salida del compilador").Checkeable(false));
+		AddMenuItem(mnVIEW, myMenuItem("minimap",mxID_VIEW_MINIMAP, LANG(MENUITEM_VIEW_MINIMAP,"Mostrar Mini-&mapa (experimental)")).Description("Muestra un panel con una vista en miniatura del cÃ³digo fuente").Checkeable(false));
 		BeginSubMenu(mnVIEW, LANG(MENUITEM_VIEW_TOOLBARS,"Barras de herramientas"));
-			// los atributos de Checkeable se setean más tarde porque a esta altura todavía no se leyó la configuracion
+			// los atributos de Checkeable se setean mÃ¡s tarde porque a esta altura todavÃ­a no se leyÃ³ la configuracion
 			AddMenuItem(mnVIEW, myMenuItem("toolbar_file",mxID_VIEW_TOOLBAR_FILE, LANG(MENUITEM_VIEW_TOOLBAR_FILE,"&Mostrar Barra de Herramientas Archivo")).Description("Muestra la barra de herramientas para el manejo de archivos")/*.Checkeable(_toolbar_visible(tbFILE))*/);
-			AddMenuItem(mnVIEW, myMenuItem("toolbar_edit",mxID_VIEW_TOOLBAR_EDIT, LANG(MENUITEM_VIEW_TOOLBAR_EDIT,"&Mostrar Barra de Herramientas Edición")).Description("Muestra la barra de herramientas para la edición del fuente")/*.Checkeable(_toolbar_visible(tbEDIT))*/);
-			AddMenuItem(mnVIEW, myMenuItem("toolbar_view",mxID_VIEW_TOOLBAR_VIEW, LANG(MENUITEM_VIEW_TOOLBAR_VIEW,"&Mostrar Barra de Herramientas Ver")).Description("Muestra la barra de herramientas para las opciones de visualización")/*.Checkeable(_toolbar_visible(tbVIEW))*/);
+			AddMenuItem(mnVIEW, myMenuItem("toolbar_edit",mxID_VIEW_TOOLBAR_EDIT, LANG(MENUITEM_VIEW_TOOLBAR_EDIT,"&Mostrar Barra de Herramientas EdiciÃ³n")).Description("Muestra la barra de herramientas para la ediciÃ³n del fuente")/*.Checkeable(_toolbar_visible(tbEDIT))*/);
+			AddMenuItem(mnVIEW, myMenuItem("toolbar_view",mxID_VIEW_TOOLBAR_VIEW, LANG(MENUITEM_VIEW_TOOLBAR_VIEW,"&Mostrar Barra de Herramientas Ver")).Description("Muestra la barra de herramientas para las opciones de visualizaciÃ³n")/*.Checkeable(_toolbar_visible(tbVIEW))*/);
 			AddMenuItem(mnVIEW, myMenuItem("toolbar_find",mxID_VIEW_TOOLBAR_FIND, LANG(MENUITEM_VIEW_TOOLBAR_FIND,"&Mostrar Barra de Busqueda Rapida")).Description("Muestra un cuadro de texto en la barra de herramientas que permite buscar rapidamente en un fuente")/*.Checkeable(_toolbar_visible(tbFIND))*/);
-			AddMenuItem(mnVIEW, myMenuItem("toolbar_run",mxID_VIEW_TOOLBAR_RUN, LANG(MENUITEM_VIEW_TOOLBAR_RUN,"&Mostrar Barra de Herramientas Ejecución")).Description("Muestra la barra de herramientas para la compilación y ejecución del programa")/*.Checkeable(_toolbar_visible(tbRUN))*/);
+			AddMenuItem(mnVIEW, myMenuItem("toolbar_run",mxID_VIEW_TOOLBAR_RUN, LANG(MENUITEM_VIEW_TOOLBAR_RUN,"&Mostrar Barra de Herramientas EjecuciÃ³n")).Description("Muestra la barra de herramientas para la compilaciÃ³n y ejecuciÃ³n del programa")/*.Checkeable(_toolbar_visible(tbRUN))*/);
 			AddMenuItem(mnVIEW, myMenuItem("toolbar_tools",mxID_VIEW_TOOLBAR_TOOLS, LANG(MENUITEM_VIEW_TOOLBAR_TOOLS,"&Mostrar Barra de Herramientas Herramientas")).Description("Muestra la barra de herramientas para las herramientas adicionales")/*.Checkeable(_toolbar_visible(tbTOOLS))*/);
 			AddMenuItem(mnVIEW, myMenuItem("toolbar_projecs",mxID_VIEW_TOOLBAR_PROJECT, LANG(MENUITEM_VIEW_TOOLBAR_PROJECT,"&Mostrar Barra de Herramientas Proyecto")).Description("Muestra la barra de herramientas para las herramientas personalizables propias del proyecto")/*.Checkeable(_toolbar_visible(tbPROJECT))*/.EnableIf(ecPROJECT));
-			AddMenuItem(mnVIEW, myMenuItem("toolbar_debug",mxID_VIEW_TOOLBAR_DEBUG, LANG(MENUITEM_VIEW_TOOLBAR_DEBUG,"&Mostrar Barra de Herramientas Depuración")).Description("Muestra la barra de herramientas para la depuración del programa")/*.Checkeable(_toolbar_visible(tbDEBUG))*/);
+			AddMenuItem(mnVIEW, myMenuItem("toolbar_debug",mxID_VIEW_TOOLBAR_DEBUG, LANG(MENUITEM_VIEW_TOOLBAR_DEBUG,"&Mostrar Barra de Herramientas DepuraciÃ³n")).Description("Muestra la barra de herramientas para la depuraciÃ³n del programa")/*.Checkeable(_toolbar_visible(tbDEBUG))*/);
 			AddMenuItem(mnVIEW, myMenuItem("toolbar_misc",mxID_VIEW_TOOLBAR_MISC, LANG(MENUITEM_VIEW_TOOLBAR_MISC,"&Mostrar Barra de Herramientas Miscelanea")).Description("Muestra la barra de herramientas con commandos miselaneos")/*.Checkeable(_toolbar_visible(tbMISC))*/);
 			AddMenuItem(mnVIEW, myMenuItem("toolbar_config",mxID_VIEW_TOOLBARS_CONFIG, LANG(MENUITEM_VIEW_TOOLBARS_CONFIG,"&Configurar...")).Icon("preferences.png"));
 		EndSubMenu(mnVIEW);
@@ -140,24 +140,24 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 	}
 	
 	
-	menues[mnRUN].Init("run",LANG(MENUITEM_RUN,"E&jecución")); {
+	menues[mnRUN].Init("run",LANG(MENUITEM_RUN,"E&jecuciÃ³n")); {
 		AddMenuItem(mnRUN, myMenuItem("run",mxID_RUN_RUN, LANG(MENUITEM_RUN_RUN,"&Ejecutar...")).ShortCut("F9").Description("Guarda y compila si es necesario, luego ejecuta el programa").Map().EnableIf(ecPROJECT_OR_SOURCE));
 		AddMenuItem(mnRUN, myMenuItem("run_old",mxID_RUN_RUN_OLD, LANG(MENUITEM_RUN_OLD,"Ejecutar (sin recompilar)...")).ShortCut("Ctrl+F9").Description("Ejecuta el binario existente sin recompilar primero").EnableIf(ecPROJECT_OR_SOURCE));
 		AddMenuItem(mnRUN, myMenuItem("compile",mxID_RUN_COMPILE, LANG(MENUITEM_RUN_COMPILE,"&Compilar")).ShortCut("Shift+F9").Description("Guarda y compila el fuente actual").Map().EnableIf(ecPROJECT_OR_SOURCE));
 		AddMenuItem(mnRUN, myMenuItem("clean",mxID_RUN_CLEAN, LANG(MENUITEM_RUN_CLEAN,"&Limpiar")).ShortCut("Ctrl+Shift+F9").Description("Elimina los objetos y ejecutables compilados").Map().EnableIf(ecPROJECT_OR_SOURCE));
-		AddMenuItem(mnRUN, myMenuItem("stop",mxID_RUN_STOP, LANG(MENUITEM_RUN_STOP,"&Detener")).Description("Detiene la ejecución del programa").Map().EnableIf(ecPROJECT_OR_SOURCE));
-		AddMenuItem(mnRUN, myMenuItem("options",mxID_RUN_CONFIG, LANG(MENUITEM_RUN_OPTIONS,"&Opciones...")).ShortCut("Alt+F9").Description("Configura la compilación y ejecución de los programas").EnableIf(ecPROJECT_OR_SOURCE));
+		AddMenuItem(mnRUN, myMenuItem("stop",mxID_RUN_STOP, LANG(MENUITEM_RUN_STOP,"&Detener")).Description("Detiene la ejecuciÃ³n del programa").Map().EnableIf(ecPROJECT_OR_SOURCE));
+		AddMenuItem(mnRUN, myMenuItem("options",mxID_RUN_CONFIG, LANG(MENUITEM_RUN_OPTIONS,"&Opciones...")).ShortCut("Alt+F9").Description("Configura la compilaciÃ³n y ejecuciÃ³n de los programas").EnableIf(ecPROJECT_OR_SOURCE));
 	}
 	
 	
-	menues[mnDEBUG].Init("debug",LANG(MENUITEM_DEBUG,"&Depuración")); {
+	menues[mnDEBUG].Init("debug",LANG(MENUITEM_DEBUG,"&DepuraciÃ³n")); {
 		AddMenuItem(mnDEBUG, myMenuItem("debug", mxID_DEBUG_RUN, LANG(MENUITEM_DEBUG_START,"&Iniciar/Continuar")).ShortCut("F5"));
 		AddMenuItem(mnDEBUG, myMenuItem("pause", mxID_DEBUG_PAUSE, LANG(MENUITEM_DEBUG_PAUSE,"Interrum&pir")).EnableIf(ecDEBUG_NOT_PAUSED));
 		AddMenuItem(mnDEBUG, myMenuItem("stop", mxID_DEBUG_STOP, LANG(MENUITEM_DEBUG_STOP,"&Detener")).ShortCut("Shift+F5").EnableIf(ecDEBUG));
 		AddMenuItem(mnDEBUG, myMenuItem("step_in", mxID_DEBUG_STEP_IN, LANG(MENUITEM_DEBUG_STEP_IN,"Step &In")).ShortCut("F6").EnableIf(ecDEBUG_PAUSED));
 		AddMenuItem(mnDEBUG, myMenuItem("step_over", mxID_DEBUG_STEP_OVER, LANG(MENUITEM_DEBUG_STEP_OVER,"Step &Over")).ShortCut("F7").EnableIf(ecDEBUG_PAUSED));
 		AddMenuItem(mnDEBUG, myMenuItem("step_out", mxID_DEBUG_STEP_OUT, LANG(MENUITEM_DEBUG_STEP_OUT,"Step O&ut")).ShortCut("Shift+F6").EnableIf(ecDEBUG_PAUSED));
-		AddMenuItem(mnDEBUG, myMenuItem("auto_step", mxID_DEBUG_AUTO_STEP, LANG(MENUITEM_DEBUG_AUTO_STEP,"Repetir Step In/Over Automáticamente")).Checkeable(false));
+		AddMenuItem(mnDEBUG, myMenuItem("auto_step", mxID_DEBUG_AUTO_STEP, LANG(MENUITEM_DEBUG_AUTO_STEP,"Repetir Step In/Over AutomÃ¡ticamente")).Checkeable(false));
 		AddMenuItem(mnDEBUG, myMenuItem("run_until", mxID_DEBUG_RUN_UNTIL, LANG(MENUITEM_DEBUG_RUN_UNTIL,"Ejecutar &Hasta el Cursor")).ShortCut("Shift+F7").EnableIf(ecDEBUG_PAUSED));
 		AddMenuItem(mnDEBUG, myMenuItem("function_return", mxID_DEBUG_RETURN, LANG(MENUITEM_DEBUG_RETURN,"&Return")).ShortCut("Ctrl+F6").EnableIf(ecDEBUG_PAUSED));
 		AddMenuItem(mnDEBUG, myMenuItem("jump", mxID_DEBUG_JUMP, LANG(MENUITEM_DEBUG_JUMP,"Continuar Desde Aqui")).ShortCut("Ctrl+F5").EnableIf(ecDEBUG_PAUSED));
@@ -168,19 +168,19 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 		AddSeparator(mnDEBUG);
 		AddMenuItem(mnDEBUG, myMenuItem("inspections",mxID_DEBUG_INSPECT, LANG(MENUITEM_DEBUG_INSPECT,"Panel de In&specciones")).ShortCut("Shift+F2"));
 		AddMenuItem(mnDEBUG, myMenuItem("backtrace", mxID_DEBUG_BACKTRACE, LANG(MENUITEM_DEBUG_BACKTRACE,"&Trazado Inverso")));
-		AddMenuItem(mnDEBUG, myMenuItem("threadlist", mxID_DEBUG_THREADLIST, LANG(MENUITEM_DEBUG_THREADLIST,"&Hilos de Ejecución")));
+		AddMenuItem(mnDEBUG, myMenuItem("threadlist", mxID_DEBUG_THREADLIST, LANG(MENUITEM_DEBUG_THREADLIST,"&Hilos de EjecuciÃ³n")));
 		AddMenuItem(mnDEBUG, myMenuItem("log_panel", mxID_DEBUG_LOG_PANEL, LANG(MENUITEM_DEBUG_SHOW_LOG_PANEL,"&Mostrar mensajes del depurador")));
 		AddSeparator(mnDEBUG);
-		BeginSubMenu(mnDEBUG, LANG(MENUITEM_DEBUG_MORE,"Más..."));
+		BeginSubMenu(mnDEBUG, LANG(MENUITEM_DEBUG_MORE,"MÃ¡s..."));
 			AddMenuItem(mnDEBUG, myMenuItem("debug_attach",mxID_DEBUG_ATTACH, LANG(MENUITEM_DEBUG_ATTACH,"&Adjuntar...")).EnableIf(ecNOT_DEBUG));
 			AddMenuItem(mnDEBUG, myMenuItem("debug_target",mxID_DEBUG_TARGET, LANG(MENUITEM_DEBUG_TARGET,"&Conectar...")).EnableIf(ecNOT_DEBUG));
 #ifndef __WIN32__
 			AddMenuItem(mnDEBUG, myMenuItem("core_dump",mxID_DEBUG_LOAD_CORE_DUMP, LANG(MENUITEM_DEBUG_LOAD_CORE_DUMP,"Cargar &Volcado de Memoria...")).EnableIf(ecNOT_DEBUG));
 			AddMenuItem(mnDEBUG, myMenuItem("save_core_dump",mxID_DEBUG_SAVE_CORE_DUMP,LANG(MENUITEM_SAVE_CORE_DUMP,"Guardar &Volcado de Memoria...")).EnableIf(ecDEBUG_PAUSED));
-			AddMenuItem(mnDEBUG, myMenuItem("enable_inverse_exec",mxID_DEBUG_ENABLE_INVERSE_EXEC, LANG(MENUITEM_DEBUG_ENABLE_INVERSE,"Habilitar Ejecución Hacia Atras")).Checkeable(false).EnableIf(ecDEBUG_PAUSED));
+			AddMenuItem(mnDEBUG, myMenuItem("enable_inverse_exec",mxID_DEBUG_ENABLE_INVERSE_EXEC, LANG(MENUITEM_DEBUG_ENABLE_INVERSE,"Habilitar EjecuciÃ³n Hacia Atras")).Checkeable(false).EnableIf(ecDEBUG_PAUSED));
 			AddMenuItem(mnDEBUG, myMenuItem("inverse_exec",mxID_DEBUG_INVERSE_EXEC, LANG(MENUITEM_DEBUG_INVERSE,"Ejecutar Hacia Atras")).Checkeable(false).EnableIf(ecDEBUG_PAUSED));
-			AddMenuItem(mnDEBUG, myMenuItem("set_signals",mxID_DEBUG_SET_SIGNALS, LANG(MENUITEM_DEBUG_SET_SIGNALS,"Configurar comportamiento ante señales...")).EnableIf(ecNOT_DEBUG_OR_DEBUG_PAUSED));
-			AddMenuItem(mnDEBUG, myMenuItem("send_signal",mxID_DEBUG_SEND_SIGNAL, LANG(MENUITEM_DEBUG_SEND_SIGNALS,"Enviar señal...")).EnableIf(ecDEBUG_PAUSED));
+			AddMenuItem(mnDEBUG, myMenuItem("set_signals",mxID_DEBUG_SET_SIGNALS, LANG(MENUITEM_DEBUG_SET_SIGNALS,"Configurar comportamiento ante seÃ±ales...")).EnableIf(ecNOT_DEBUG_OR_DEBUG_PAUSED));
+			AddMenuItem(mnDEBUG, myMenuItem("send_signal",mxID_DEBUG_SEND_SIGNAL, LANG(MENUITEM_DEBUG_SEND_SIGNALS,"Enviar seÃ±al...")).EnableIf(ecDEBUG_PAUSED));
 #endif
 			AddMenuItem(mnDEBUG, myMenuItem("gdb_registers",mxID_DEBUG_SHOW_REGISTERS, LANG(MENUITEM_DEBUG_SHOW_REGISTERS,"Mostrar panel de registros...")).EnableIf(ecDEBUG_PAUSED));
 			AddMenuItem(mnDEBUG, myMenuItem("gdb_asm",mxID_DEBUG_SHOW_ASM, LANG(MENUITEM_DEBUG_SHOW_ASM,"Mostrar desensamblado...")).EnableIf(ecDEBUG_PAUSED));
@@ -194,18 +194,18 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 	
 	menues[mnTOOLS].Init("tools",LANG(MENUITEM_TOOLS,"&Herramientas")); {
 		AddMenuItem(mnTOOLS, myMenuItem("draw_flow",mxID_TOOLS_DRAW_FLOW, LANG(MENUITEM_TOOLS_DRAW_FLOWCHART,"Dibujar Diagrama de &Flujo...")).Description("Genera un diagrama de flujo a partir del bloque de codigo actual").EnableIf(ecSOURCE));
-		AddMenuItem(mnTOOLS, myMenuItem("draw_classes",mxID_TOOLS_DRAW_CLASSES, LANG(MENUITEM_TOOLS_DRAW_CLASS_HIERARCHY,"Dibujar &Jerarquía de Clases...")).EnableIf(ecPROJECT_OR_SOURCE));
+		AddMenuItem(mnTOOLS, myMenuItem("draw_classes",mxID_TOOLS_DRAW_CLASSES, LANG(MENUITEM_TOOLS_DRAW_CLASS_HIERARCHY,"Dibujar &JerarquÃ­a de Clases...")).EnableIf(ecPROJECT_OR_SOURCE));
 		
-		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_CODE,"&Generación de código")).Icon("code.png"));
-			AddMenuItem(mnTOOLS, myMenuItem("copy_code_from_h",mxID_TOOLS_CODE_COPY_FROM_H, LANG(MENUITEM_TOOLS_CODE_COPY_FROM_H,"Implementar Métodos/Funciones faltantes...")).ShortCut("Ctrl+Shift+H").EnableIf(ecSOURCE));
-			AddMenuItem(mnTOOLS, myMenuItem("generate_function_dec",mxID_TOOLS_CODE_GENERATE_FUNCTION_DEC, LANG(MENUITEM_TOOLS_CODE_GENERATE_FUNCTION_DEC,"Generar definición de función a partir de llamada")).EnableIf(ecSOURCE));
-			AddMenuItem(mnTOOLS, myMenuItem("generate_function_def",mxID_TOOLS_CODE_GENERATE_FUNCTION_DEF, LANG(MENUITEM_TOOLS_CODE_GENERATE_FUNCTION_DEF,"Generar declaración de función a partir de llamada")).EnableIf(ecSOURCE));
-			AddMenuItem(mnTOOLS, myMenuItem("extract_function",mxID_TOOLS_CODE_EXTRACT_FUNCTION, LANG(MENUITEM_TOOLS_CODE_EXTRACT_FUNCTION,"Extraer código en nueva función")).EnableIf(ecSOURCE));
-			AddMenuItem(mnTOOLS, myMenuItem("code_surround_if",mxID_TOOLS_CODE_SURROUND_IF, LANG(MENUITEM_TOOLS_CODE_SURROUND_IF,"Rodear selección con \"if () { ... }\"")).EnableIf(ecSOURCE));
-			AddMenuItem(mnTOOLS, myMenuItem("code_surround_while",mxID_TOOLS_CODE_SURROUND_WHILE, LANG(MENUITEM_TOOLS_CODE_SURROUND_WHILE,"Rodear selección con \"while () { ... }\"")).EnableIf(ecSOURCE));
-			AddMenuItem(mnTOOLS, myMenuItem("code_surround_do",mxID_TOOLS_CODE_SURROUND_DO, LANG(MENUITEM_TOOLS_CODE_SURROUND_DO,"Rodear selección con \"do { ... } while();\"")).EnableIf(ecSOURCE));
-			AddMenuItem(mnTOOLS, myMenuItem("code_surround_for",mxID_TOOLS_CODE_SURROUND_FOR, LANG(MENUITEM_TOOLS_CODE_SURROUND_FOR,"Rodear selección con \"for () { ... }\"")).EnableIf(ecSOURCE));
-			AddMenuItem(mnTOOLS, myMenuItem("code_surround_ifdef",mxID_TOOLS_CODE_SURROUND_IFDEF, LANG(MENUITEM_TOOLS_CODE_SURROUND_IFDEF,"Rodear selección con \"#ifdef ... #endif\"")).EnableIf(ecSOURCE));
+		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_CODE,"&GeneraciÃ³n de cÃ³digo")).Icon("code.png"));
+			AddMenuItem(mnTOOLS, myMenuItem("copy_code_from_h",mxID_TOOLS_CODE_COPY_FROM_H, LANG(MENUITEM_TOOLS_CODE_COPY_FROM_H,"Implementar MÃ©todos/Funciones faltantes...")).ShortCut("Ctrl+Shift+H").EnableIf(ecSOURCE));
+			AddMenuItem(mnTOOLS, myMenuItem("generate_function_dec",mxID_TOOLS_CODE_GENERATE_FUNCTION_DEC, LANG(MENUITEM_TOOLS_CODE_GENERATE_FUNCTION_DEC,"Generar definiciÃ³n de funciÃ³n a partir de llamada")).EnableIf(ecSOURCE));
+			AddMenuItem(mnTOOLS, myMenuItem("generate_function_def",mxID_TOOLS_CODE_GENERATE_FUNCTION_DEF, LANG(MENUITEM_TOOLS_CODE_GENERATE_FUNCTION_DEF,"Generar declaraciÃ³n de funciÃ³n a partir de llamada")).EnableIf(ecSOURCE));
+			AddMenuItem(mnTOOLS, myMenuItem("extract_function",mxID_TOOLS_CODE_EXTRACT_FUNCTION, LANG(MENUITEM_TOOLS_CODE_EXTRACT_FUNCTION,"Extraer cÃ³digo en nueva funciÃ³n")).EnableIf(ecSOURCE));
+			AddMenuItem(mnTOOLS, myMenuItem("code_surround_if",mxID_TOOLS_CODE_SURROUND_IF, LANG(MENUITEM_TOOLS_CODE_SURROUND_IF,"Rodear selecciÃ³n con \"if () { ... }\"")).EnableIf(ecSOURCE));
+			AddMenuItem(mnTOOLS, myMenuItem("code_surround_while",mxID_TOOLS_CODE_SURROUND_WHILE, LANG(MENUITEM_TOOLS_CODE_SURROUND_WHILE,"Rodear selecciÃ³n con \"while () { ... }\"")).EnableIf(ecSOURCE));
+			AddMenuItem(mnTOOLS, myMenuItem("code_surround_do",mxID_TOOLS_CODE_SURROUND_DO, LANG(MENUITEM_TOOLS_CODE_SURROUND_DO,"Rodear selecciÃ³n con \"do { ... } while();\"")).EnableIf(ecSOURCE));
+			AddMenuItem(mnTOOLS, myMenuItem("code_surround_for",mxID_TOOLS_CODE_SURROUND_FOR, LANG(MENUITEM_TOOLS_CODE_SURROUND_FOR,"Rodear selecciÃ³n con \"for () { ... }\"")).EnableIf(ecSOURCE));
+			AddMenuItem(mnTOOLS, myMenuItem("code_surround_ifdef",mxID_TOOLS_CODE_SURROUND_IFDEF, LANG(MENUITEM_TOOLS_CODE_SURROUND_IFDEF,"Rodear selecciÃ³n con \"#ifdef ... #endif\"")).EnableIf(ecSOURCE));
 			AddSeparator(mnTOOLS);
 			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_CODE_HELP, LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Icon("help.png"));
 		EndSubMenu(mnTOOLS);
@@ -214,11 +214,11 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 			AddMenuItem(mnTOOLS, myMenuItem("comment",mxID_EDIT_COMMENT, LANG(MENUITEM_TOOLS_COMMENTS_COMMENT,"&Comentar")).Description("Convierte el texto seleccionado en comentario anadiendo \"//\" a cada linea"));
 			AddMenuItem(mnTOOLS, myMenuItem("uncomment",mxID_EDIT_UNCOMMENT, LANG(MENUITEM_TOOLS_COMMENTS_UNCOMMENT,"&Descomentar")).Description("Descomente el texto seleccionado eliminando \"//\" de cada linea"));
 			AddMenuItem(mnTOOLS, myMenuItem("align_comments",mxID_TOOLS_ALIGN_COMMENTS, LANG(MENUITEM_TOOLS_COMMENTS_ALIGN_COMMENTS,"&Alinear Comentarios...")).Description("Mueve todos los comentarios hacia una determinada columna"));
-			AddMenuItem(mnTOOLS, myMenuItem("wrap_comments",mxID_TOOLS_WRAP_COMMENT, LANG(MENUITEM_TOOLS_COMMENTS_WRAP_COMMENT,"Ajuste de &Lineas...")).Description("Reacomoda el flujo de un comentario multilineas para que cada renglon no sobrepase un ancho máximo"));
-			AddMenuItem(mnTOOLS, myMenuItem("remove_comments",mxID_TOOLS_REMOVE_COMMENTS, LANG(MENUITEM_TOOLS_COMMENTS_DELETE_COMMENTS,"&Eliminar Comentarios")).Description("Quita todos los comentarios del codigo fuente o de la selección"));
+			AddMenuItem(mnTOOLS, myMenuItem("wrap_comments",mxID_TOOLS_WRAP_COMMENT, LANG(MENUITEM_TOOLS_COMMENTS_WRAP_COMMENT,"Ajuste de &Lineas...")).Description("Reacomoda el flujo de un comentario multilineas para que cada renglon no sobrepase un ancho mÃ¡ximo"));
+			AddMenuItem(mnTOOLS, myMenuItem("remove_comments",mxID_TOOLS_REMOVE_COMMENTS, LANG(MENUITEM_TOOLS_COMMENTS_DELETE_COMMENTS,"&Eliminar Comentarios")).Description("Quita todos los comentarios del codigo fuente o de la selecciÃ³n"));
 		EndSubMenu(mnTOOLS);
 		
-		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_PREPROC,"Preprocesador")).Description("Muestra información generada por el preprocesador de C++").Icon("preproc.png").EnableIf(ecSOURCE));
+		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_PREPROC,"Preprocesador")).Description("Muestra informaciÃ³n generada por el preprocesador de C++").Icon("preproc.png").EnableIf(ecSOURCE));
 			AddMenuItem(mnTOOLS, myMenuItem("preproc_expand_macros",mxID_TOOLS_PREPROC_EXPAND_MACROS, LANG(MENUITEM_TOOLS_PREPROC_EXPAND_MACROS,"Expandir Macros")).ShortCut("Ctrl+Shift+M"));
 			AddMenuItem(mnTOOLS, myMenuItem("preproc_mark_valid",mxID_TOOLS_PREPROC_MARK_VALID, LANG(MENUITEM_TOOLS_PREPROC_MARK_VALID,"Marcar Lineas No Compiladas")).ShortCut("Ctrl+Alt+M"));
 			AddMenuItem(mnTOOLS, myMenuItem("preproc_unmark_all",mxID_TOOLS_PREPROC_UNMARK_ALL, LANG(MENUITEM_TOOLS_PREPROC_UNMARK_ALL,"Borrar Marcas")).ShortCut("Ctrl+Alt+Shift+M"));
@@ -228,18 +228,18 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 		
 		AddSeparator(mnTOOLS);
 		
-		AddMenuItem(mnTOOLS, myMenuItem("generate_makefile", mxID_TOOLS_MAKEFILE, LANG(MENUITEM_TOOLS_GENERATE_MAKEFILE,"&Generar Makefile...")).Description("Genera el Makefile a partir de los fuentes y la configuración seleccionada").EnableIf(ecPROJECT));
-		AddMenuItem(mnTOOLS, myMenuItem("open_terminal", mxID_TOOLS_CONSOLE, LANG(MENUITEM_TOOLS_OPEN_TERMINAL,"Abrir Co&nsola...")).Description("Inicia una terminal para interactuar con el intérprete de comandos del sistema operativo"));
-		AddMenuItem(mnTOOLS, myMenuItem("exe_info", mxID_TOOLS_EXE_PROPS, LANG(MENUITEM_TOOLS_EXE_INFO,"&Propiedades del Ejecutable...")).Description("Muestra información sobre el archivo compilado").EnableIf(ecPROJECT_OR_SOURCE));
-		AddMenuItem(mnTOOLS, myMenuItem("proy_stats", mxID_TOOLS_PROJECT_STATISTICS, LANG(MENUITEM_TOOLS_PROJECT_STATISTICS,"Estadísticas del Proyecto...")).Description("Muestra información estadistica sobre los fuentes y demas archivos del proyecto").EnableIf(ecPROJECT));
+		AddMenuItem(mnTOOLS, myMenuItem("generate_makefile", mxID_TOOLS_MAKEFILE, LANG(MENUITEM_TOOLS_GENERATE_MAKEFILE,"&Generar Makefile...")).Description("Genera el Makefile a partir de los fuentes y la configuraciÃ³n seleccionada").EnableIf(ecPROJECT));
+		AddMenuItem(mnTOOLS, myMenuItem("open_terminal", mxID_TOOLS_CONSOLE, LANG(MENUITEM_TOOLS_OPEN_TERMINAL,"Abrir Co&nsola...")).Description("Inicia una terminal para interactuar con el intÃ©rprete de comandos del sistema operativo"));
+		AddMenuItem(mnTOOLS, myMenuItem("exe_info", mxID_TOOLS_EXE_PROPS, LANG(MENUITEM_TOOLS_EXE_INFO,"&Propiedades del Ejecutable...")).Description("Muestra informaciÃ³n sobre el archivo compilado").EnableIf(ecPROJECT_OR_SOURCE));
+		AddMenuItem(mnTOOLS, myMenuItem("proy_stats", mxID_TOOLS_PROJECT_STATISTICS, LANG(MENUITEM_TOOLS_PROJECT_STATISTICS,"EstadÃ­sticas del Proyecto...")).Description("Muestra informaciÃ³n estadistica sobre los fuentes y demas archivos del proyecto").EnableIf(ecPROJECT));
 		AddMenuItem(mnTOOLS, myMenuItem("draw_project", mxID_TOOLS_DRAW_PROJECT, LANG(MENUITEM_TOOLS_DRAW_PROJECT,"Grafo del Proyecto...")).EnableIf(ecPROJECT));
 		
-		BeginSubMenu(mnTOOLS,LANG(MENUITEM_TOOLS_SHARE,"Compartir Archivos en la &Red Local"),"Permite enviar o recibir códigos fuentes a traves de una red LAN","share.png");
+		BeginSubMenu(mnTOOLS,LANG(MENUITEM_TOOLS_SHARE,"Compartir Archivos en la &Red Local"),"Permite enviar o recibir cÃ³digos fuentes a traves de una red LAN","share.png");
 			AddMenuItem(mnTOOLS, myMenuItem("open_shared",mxID_TOOLS_SHARE_OPEN, LANG(MENUITEM_TOOLS_SHARE_OPEN,"&Abrir compartido...")).Description("Abre un archivo compartido por otra PC en la red local."));
 			AddMenuItem(mnTOOLS, myMenuItem("share_source",mxID_TOOLS_SHARE_SHARE, LANG(MENUITEM_TOOLS_SHARE_SHARE,"&Compartir actual...")).Description("Comparte el archivo en la red local.").EnableIf(ecSOURCE));
 			AddMenuItem(mnTOOLS, myMenuItem("share_list",mxID_TOOLS_SHARE_LIST, LANG(MENUITEM_TOOLS_SHARE_LIST,"&Ver lista de compartidos propios...")).Description("Comparte el archivo en la red local."));
 			AddSeparator(mnTOOLS);
-			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_SHARE_HELP, LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra ayuda acerca de la compartición de archivos en ZinjaI").Icon("help.png"));
+			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_SHARE_HELP, LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra ayuda acerca de la comparticiÃ³n de archivos en ZinjaI").Icon("help.png"));
 		EndSubMenu(mnTOOLS);
 		
 		AddSeparator(mnTOOLS);
@@ -254,27 +254,27 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 			AddMenuItem(mnTOOLS, myMenuItem("diff_show",mxID_TOOLS_DIFF_SHOW,LANG(MENUITEM_TOOLS_DIFF_SHOW,"Mostrar Cambio")).ShortCut("Alt+Shift+Ins").Description("Muestra en un globo emergente el cambio a aplicar"));
 			AddMenuItem(mnTOOLS, myMenuItem("diff_apply",mxID_TOOLS_DIFF_APPLY,LANG(MENUITEM_TOOLS_DIFF_APPLY,"Apl&icar Cambio")).ShortCut("Alt+Ins").Description("Aplica el cambio marcado en la linea actual"));
 			AddMenuItem(mnTOOLS, myMenuItem("diff_discard",mxID_TOOLS_DIFF_DISCARD,LANG(MENUITEM_TOOLS_DIFF_DISCARD,"De&scartar Cambio")).ShortCut("Alt+Del").Description("Descarta el cambio marcado en la linea actual"));
-			AddMenuItem(mnTOOLS, myMenuItem("diff_clear",mxID_TOOLS_DIFF_CLEAR,LANG(MENUITEM_TOOLS_DIFF_CLEAR,"&Borrar Marcas")).ShortCut("Alt+Shift+Del").Description("Quita los colores y marcas que se agregaron en un fuente producto de una comparación"));
+			AddMenuItem(mnTOOLS, myMenuItem("diff_clear",mxID_TOOLS_DIFF_CLEAR,LANG(MENUITEM_TOOLS_DIFF_CLEAR,"&Borrar Marcas")).ShortCut("Alt+Shift+Del").Description("Quita los colores y marcas que se agregaron en un fuente producto de una comparaciÃ³n"));
 			AddSeparator(mnTOOLS);
-			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_DIFF_HELP,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra ayuda acerca de la comparación de fuentes en ZinjaI").Icon("help.png"));
+			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_DIFF_HELP,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra ayuda acerca de la comparaciÃ³n de fuentes en ZinjaI").Icon("help.png"));
 		EndSubMenu(mnTOOLS);
 		
-		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_LIZARD,"Medir complejidad (lizard)")).Description("Permite analizar la complejidad ciclomática por función.").Icon("lizard.png").EnableIf(ecPROJECT));
+		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_LIZARD,"Medir complejidad (lizard)")).Description("Permite analizar la complejidad ciclomÃ¡tica por funciÃ³n.").Icon("lizard.png").EnableIf(ecPROJECT));
 			AddMenuItem(mnTOOLS, myMenuItem("lizard_run",mxID_TOOLS_LIZARD_RUN,LANG(MENUITEM_TOOLS_LIZARD_RUN,"&Analizar ahora...")).ShortCut(""));
 			AddSeparator(mnTOOLS);
-			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_LIZARD_HELP,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra una breve ayuda acerca de la integración de Lizard en ZinjaI").Icon("help.png"));
+			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_LIZARD_HELP,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra una breve ayuda acerca de la integraciÃ³n de Lizard en ZinjaI").Icon("help.png"));
 		EndSubMenu(mnTOOLS);
 		
-		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_DOXYGEN,"Generar &Documentación (doxygen)")).Description("Doxygen permite generar automaticamente documentación a partir del codigo y sus comentarios").Icon("doxygen.png").EnableIf(ecPROJECT));
-			AddMenuItem(mnTOOLS, myMenuItem("doxy_generate",mxID_TOOLS_DOXY_GENERATE,LANG(MENUITEM_TOOLS_DOXYGEN_GENERATE,"&Generar...")).ShortCut("Ctrl+Shift+F1").Description("Ejecuta doxygen para generar la documentación de forma automatica"));
-			AddMenuItem(mnTOOLS, myMenuItem("doxy_config",mxID_TOOLS_DOXY_CONFIG,LANG(MENUITEM_TOOLS_DOXYGEN_CONFIGURE,"&Configurar...")).Description("Permite establecer opciones para el archivo de configuración de doxygen"));
-			AddMenuItem(mnTOOLS, myMenuItem("doxy_view",mxID_TOOLS_DOXY_VIEW,LANG(MENUITEM_TOOLS_DOXYGEN_VIEW,"&Ver...")).ShortCut("Ctrl+F1").Description("Abre un explorador y muestra la documentación generada"));
+		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_DOXYGEN,"Generar &DocumentaciÃ³n (doxygen)")).Description("Doxygen permite generar automaticamente documentaciÃ³n a partir del codigo y sus comentarios").Icon("doxygen.png").EnableIf(ecPROJECT));
+			AddMenuItem(mnTOOLS, myMenuItem("doxy_generate",mxID_TOOLS_DOXY_GENERATE,LANG(MENUITEM_TOOLS_DOXYGEN_GENERATE,"&Generar...")).ShortCut("Ctrl+Shift+F1").Description("Ejecuta doxygen para generar la documentaciÃ³n de forma automatica"));
+			AddMenuItem(mnTOOLS, myMenuItem("doxy_config",mxID_TOOLS_DOXY_CONFIG,LANG(MENUITEM_TOOLS_DOXYGEN_CONFIGURE,"&Configurar...")).Description("Permite establecer opciones para el archivo de configuraciÃ³n de doxygen"));
+			AddMenuItem(mnTOOLS, myMenuItem("doxy_view",mxID_TOOLS_DOXY_VIEW,LANG(MENUITEM_TOOLS_DOXYGEN_VIEW,"&Ver...")).ShortCut("Ctrl+F1").Description("Abre un explorador y muestra la documentaciÃ³n generada"));
 			AddSeparator(mnTOOLS);
-			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_DOXY_HELP,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra una breve ayuda acerca de la integración de Doxygen en ZinjaI").Icon("help.png"));
+			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_DOXY_HELP,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra una breve ayuda acerca de la integraciÃ³n de Doxygen en ZinjaI").Icon("help.png"));
 		EndSubMenu(mnTOOLS);
 		
-		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_WXFB,"Diseñar &Interfaces (wxFormBuilder)")).Description("Diseño visual de interfaces con la biblioteca wxWidgets").Icon("wxfb.png").EnableIf(ecPROJECT));
-			AddMenuItem(mnTOOLS, myMenuItem("wxfb_config",mxID_TOOLS_WXFB_CONFIG,LANG(MENUITEM_TOOLS_WXFB_CONFIG,"Configurar &Integración con wxFormBuilder...")).Description("Configura características adicionales que facilitan el uso de wxFormBuilder"));
+		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_WXFB,"DiseÃ±ar &Interfaces (wxFormBuilder)")).Description("DiseÃ±o visual de interfaces con la biblioteca wxWidgets").Icon("wxfb.png").EnableIf(ecPROJECT));
+			AddMenuItem(mnTOOLS, myMenuItem("wxfb_config",mxID_TOOLS_WXFB_CONFIG,LANG(MENUITEM_TOOLS_WXFB_CONFIG,"Configurar &IntegraciÃ³n con wxFormBuilder...")).Description("Configura caracterÃ­sticas adicionales que facilitan el uso de wxFormBuilder"));
 			AddMenuItem(mnTOOLS, myMenuItem("wxfb_new_res",mxID_TOOLS_WXFB_NEW_RES,LANG(MENUITEM_TOOLS_WXFB_NEW_RESOURCE,"&Adjuntar un Nuevo Proyecto wxFB...")).Description("Crea un nuevo proyecto wxFormBuilder y lo agrega al proyecto en ZinjaI"));
 			AddMenuItem(mnTOOLS, myMenuItem("wxfb_load_res",mxID_TOOLS_WXFB_LOAD_RES,LANG(MENUITEM_TOOLS_WXFB_LOAD_RESOURCE,"&Adjuntar un Proyecto wxFB Existente...")).Description("Agrega un proyecto wxFormBuilder ya existente al proyecto en ZinjaI"));
 			AddMenuItem(mnTOOLS, myMenuItem("wxfb_regen",mxID_TOOLS_WXFB_REGEN,LANG(MENUITEM_TOOLS_WXFB_REGENERATE,"&Regenerar Proyectos wxFB")).ShortCut("Shift+Alt+F9").Description("Ejecuta wxFormBuilder para regenerar los archivos de recurso o fuentes que correspondan").Map());
@@ -282,10 +282,10 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 			AddMenuItem(mnTOOLS, myMenuItem("wxfb_update_inherit",mxID_TOOLS_WXFB_UPDATE_INHERIT,LANG(MENUITEM_TOOLS_WXFB_UPDATE_INHERIT,"Act&ualizar Clase Heredada...")).Description("Actualiza los metodos de una clase que hereda de las definidas por algun proyecto wxfb").Map());
 			AddSeparator(mnTOOLS);
 			AddMenuItem(mnTOOLS, myMenuItem("wxfb_help_wx",mxID_TOOLS_WXFB_HELP_WX,LANG(MENUITEM_TOOLS_WXFB_REFERENCE,"Referencia &wxWidgets...")).Description("Muestra la ayuda de la biblioteca wxWidgets"));
-			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_WXFB_HELP,LANG(MENUITEM_TOOLS_WXFB_HELP,"A&yuda wxFB...")).Description("Muestra una breve ayuda acerca de la integración de wxFormBuilder en ZinjaI").Icon("help.png"));
+			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_WXFB_HELP,LANG(MENUITEM_TOOLS_WXFB_HELP,"A&yuda wxFB...")).Description("Muestra una breve ayuda acerca de la integraciÃ³n de wxFormBuilder en ZinjaI").Icon("help.png"));
 		EndSubMenu(mnTOOLS);
 		
-		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_CPPCHECK,"Análisis Estático (cppcheck)")).Icon("cppcheck.png"));
+		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_CPPCHECK,"AnÃ¡lisis EstÃ¡tico (cppcheck)")).Icon("cppcheck.png"));
 			AddMenuItem(mnTOOLS, myMenuItem("cppcheck_run",mxID_TOOLS_CPPCHECK_RUN, LANG(MENUITEM_TOOLS_CPPCHECK_RUN,"Iniciar...")));
 			AddMenuItem(mnTOOLS, myMenuItem("cppcheck_config",mxID_TOOLS_CPPCHECK_CONFIG, LANG(MENUITEM_TOOLS_CPPCHECK_CONFIG,"Configurar...")));
 			AddMenuItem(mnTOOLS, myMenuItem("cppcheck_view",mxID_TOOLS_CPPCHECK_VIEW, LANG(MENUITEM_TOOLS_CPPCHECK_VIEW,"Mostrar Panel de Resultados")));
@@ -293,40 +293,40 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_CPPCHECK_HELP,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Icon("help.png"));
 		EndSubMenu(mnTOOLS);
 		
-		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_GPROF,"Perfil de Ejecución (gprof)")).Description("Gprof permite analizar las llamadas a funciones y sus tiempos de ejecución.").Icon("gprof.png").EnableIf(ecPROJECT_OR_SOURCE));
-			AddMenuItem(mnTOOLS, myMenuItem("gprof_activate",mxID_TOOLS_GPROF_SET, LANG(MENUITEM_TOOLS_GPROF_ACTIVATE,"Habilitar/Deshabilitar")).Description("Añade/remueve los argumentos necesarios a la configuración de compilación y reconstruye el ejecutable."));
+		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_GPROF,"Perfil de EjecuciÃ³n (gprof)")).Description("Gprof permite analizar las llamadas a funciones y sus tiempos de ejecuciÃ³n.").Icon("gprof.png").EnableIf(ecPROJECT_OR_SOURCE));
+			AddMenuItem(mnTOOLS, myMenuItem("gprof_activate",mxID_TOOLS_GPROF_SET, LANG(MENUITEM_TOOLS_GPROF_ACTIVATE,"Habilitar/Deshabilitar")).Description("AÃ±ade/remueve los argumentos necesarios a la configuraciÃ³n de compilaciÃ³n y reconstruye el ejecutable."));
 			BeginSubMenu(mnTOOLS,LANG(MENUITEM_TOOLS_GPROF_LAYOUT,"Algoritmo de Dibujo"),"Permite seleccionar entre dos algoritmos diferentes para dibujar el grafo","dotfdp.png");
 				AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_GPROF_DOT, LANG(MENUITEM_TOOLS_GPROF_DOT,"dot"))/*.Checkeable(config->Init.graphviz_dot)*/);
 				AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_GPROF_FDP, LANG(MENUITEM_TOOLS_GPROF_FDP,"fdp"))/*.Checkeable(config->Init.graphviz_dot)*/);
 			EndSubMenu(mnTOOLS);
-			AddMenuItem(mnTOOLS, myMenuItem("gprof_show_graph",mxID_TOOLS_GPROF_SHOW, LANG(MENUITEM_TOOLS_GPROF_SHOW,"Visualizar Resultados (grafo)...")).Description("Muestra graficamente la información de profiling de la ultima ejecución."));
-			AddMenuItem(mnTOOLS, myMenuItem("gprof_list_output",mxID_TOOLS_GPROF_LIST, LANG(MENUITEM_TOOLS_GPROF_LIST,"Listar Resultados (texto)")).Description("Muestra la información de profiling de la ultima ejecución sin procesar."));
+			AddMenuItem(mnTOOLS, myMenuItem("gprof_show_graph",mxID_TOOLS_GPROF_SHOW, LANG(MENUITEM_TOOLS_GPROF_SHOW,"Visualizar Resultados (grafo)...")).Description("Muestra graficamente la informaciÃ³n de profiling de la ultima ejecuciÃ³n."));
+			AddMenuItem(mnTOOLS, myMenuItem("gprof_list_output",mxID_TOOLS_GPROF_LIST, LANG(MENUITEM_TOOLS_GPROF_LIST,"Listar Resultados (texto)")).Description("Muestra la informaciÃ³n de profiling de la ultima ejecuciÃ³n sin procesar."));
 			AddSeparator(mnTOOLS);
-			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_GPROF_HELP,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra ayuda acerca de como generar e interpretar la información de profiling").Icon("help.png"));
+			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_GPROF_HELP,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra ayuda acerca de como generar e interpretar la informaciÃ³n de profiling").Icon("help.png"));
 		EndSubMenu(mnTOOLS);
 		
-		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_GCOV,"&Test de Cobertura (gcov)")).Description("Gcov permite contabilizar cuantas veces se ejecuta cada linea del código fuente.").Icon("gcov.png").EnableIf(ecPROJECT_OR_SOURCE));
-			AddMenuItem(mnTOOLS, myMenuItem("gcov_activate",mxID_TOOLS_GCOV_SET, LANG(MENUITEM_TOOLS_GCOV_ACTIVATE,"Habilitar/Deshabilitar")).Description("Añade/remueve los argumentos necesarios a la configuración de compilación y reconstruye el ejecutable."));
+		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_GCOV,"&Test de Cobertura (gcov)")).Description("Gcov permite contabilizar cuantas veces se ejecuta cada linea del cÃ³digo fuente.").Icon("gcov.png").EnableIf(ecPROJECT_OR_SOURCE));
+			AddMenuItem(mnTOOLS, myMenuItem("gcov_activate",mxID_TOOLS_GCOV_SET, LANG(MENUITEM_TOOLS_GCOV_ACTIVATE,"Habilitar/Deshabilitar")).Description("AÃ±ade/remueve los argumentos necesarios a la configuraciÃ³n de compilaciÃ³n y reconstruye el ejecutable."));
 			AddMenuItem(mnTOOLS, myMenuItem("gcov_show_bar",mxID_TOOLS_GCOV_SHOW, LANG(MENUITEM_TOOLS_GCOV_SHOW_BAR,"Mostrar barra de resultados")).Description("Muestra un panel con los conteos por linea en el margen izquierdo de la ventana."));
 			AddMenuItem(mnTOOLS, myMenuItem("gcov_reset",mxID_TOOLS_GCOV_RESET, LANG(MENUITEM_TOOLS_GCOV_RESET,"Eliminar resultados")).Description("Elimina los archivos de resultados generados por el test de cobertura."));
 #ifndef __WIN32__
 			AddMenuItem(mnTOOLS, myMenuItem("lcov_run",mxID_TOOLS_GCOV_LCOV_RUN, LANG(MENUITEM_TOOLS_GCOV_RUN_LCOV,"Procesar resultados con lcov...")).Description("lcov es una herramienta externa para generar htmls a partir de los resultados de gcov.").EnableIf(ecPROJECT));
 #endif
 			AddSeparator(mnTOOLS);
-			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_GCOV_HELP,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra ayuda acerca de como generar e interpretar la información del test de cobertura").Icon("help.png"));
+			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_GCOV_HELP,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra ayuda acerca de como generar e interpretar la informaciÃ³n del test de cobertura").Icon("help.png"));
 		EndSubMenu(mnTOOLS);
 		
-		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_SANITIZERS,"&Sanitizers (llvm-clang/gcc)")).Description("Instrumentar el ejecutable generado para detectar cierto tipo de errores en tiempo de ejecución.").Icon("gcov.png").EnableIf(ecPROJECT_OR_SOURCE));
-			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_address",  mxID_TOOLS_SANITIZERS_ADDRESS,   LANG(MENUITEM_TOOLS_SANITIZERS_ADDRESS,  "Address Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilación asociados a este sanitizer."));
-			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_leak",     mxID_TOOLS_SANITIZERS_LEAK,      LANG(MENUITEM_TOOLS_SANITIZERS_LEAK,     "Leak Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilación asociados a este sanitizer."));
-			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_memory",   mxID_TOOLS_SANITIZERS_MEMORY,    LANG(MENUITEM_TOOLS_SANITIZERS_MEMORY,   "Memory Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilación asociados a este sanitizer."));
-			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_thread",   mxID_TOOLS_SANITIZERS_THREAD,    LANG(MENUITEM_TOOLS_SANITIZERS_THREAD,   "Thread Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilación asociados a este sanitizer."));
-			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_undefined",mxID_TOOLS_SANITIZERS_UNDEFINED, LANG(MENUITEM_TOOLS_SANITIZERS_UNDEFINED,"Undefined Behavior Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilación asociados a este sanitizer."));
+		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_SANITIZERS,"&Sanitizers (llvm-clang/gcc)")).Description("Instrumentar el ejecutable generado para detectar cierto tipo de errores en tiempo de ejecuciÃ³n.").Icon("gcov.png").EnableIf(ecPROJECT_OR_SOURCE));
+			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_address",  mxID_TOOLS_SANITIZERS_ADDRESS,   LANG(MENUITEM_TOOLS_SANITIZERS_ADDRESS,  "Address Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilaciÃ³n asociados a este sanitizer."));
+			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_leak",     mxID_TOOLS_SANITIZERS_LEAK,      LANG(MENUITEM_TOOLS_SANITIZERS_LEAK,     "Leak Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilaciÃ³n asociados a este sanitizer."));
+			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_memory",   mxID_TOOLS_SANITIZERS_MEMORY,    LANG(MENUITEM_TOOLS_SANITIZERS_MEMORY,   "Memory Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilaciÃ³n asociados a este sanitizer."));
+			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_thread",   mxID_TOOLS_SANITIZERS_THREAD,    LANG(MENUITEM_TOOLS_SANITIZERS_THREAD,   "Thread Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilaciÃ³n asociados a este sanitizer."));
+			AddMenuItem(mnTOOLS, myMenuItem("sanitizers_undefined",mxID_TOOLS_SANITIZERS_UNDEFINED, LANG(MENUITEM_TOOLS_SANITIZERS_UNDEFINED,"Undefined Behavior Sanitizer...")).Description("Permite agregar o quitar los argumentos de compilaciÃ³n asociados a este sanitizer."));
 //			AddSeparator(mnTOOLS);
-//			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_SANITIZERS,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra ayuda acerca de como generar e interpretar la información del test de cobertura").Icon("help.png"));
+//			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_SANITIZERS,LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Description("Muestra ayuda acerca de como generar e interpretar la informaciÃ³n del test de cobertura").Icon("help.png"));
 		EndSubMenu(mnTOOLS);
 	#ifndef __WIN32__
-		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_VALGRIND,"Análisis Dinámico (valgrind)")).Description("Valgrind permite analizar el uso de memoria dinamica para detectar perdidas y otros errores").Icon("valgrind.png").EnableIf(ecPROJECT_OR_SOURCE));
+		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_VALGRIND,"AnÃ¡lisis DinÃ¡mico (valgrind)")).Description("Valgrind permite analizar el uso de memoria dinamica para detectar perdidas y otros errores").Icon("valgrind.png").EnableIf(ecPROJECT_OR_SOURCE));
 			AddMenuItem(mnTOOLS, myMenuItem("valgrind_run",mxID_TOOLS_VALGRIND_RUN, LANG(MENUITEM_TOOLS_VALGRIND_RUN,"Ejecutar...")));
 			AddMenuItem(mnTOOLS, myMenuItem("valgrind_debug",mxID_TOOLS_VALGRIND_DEBUG, LANG(MENUITEM_TOOLS_VALGRIND_RUN,"Depurar...")));
 			AddMenuItem(mnTOOLS, myMenuItem("valgrind_view",mxID_TOOLS_VALGRIND_VIEW, LANG(MENUITEM_TOOLS_VALGRIND_VIEW,"Mostrar Panel de Resultados")));
@@ -336,7 +336,7 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 	#endif
 		BeginSubMenu(mnTOOLS,myMenuItem("",wxID_ANY,LANG(MENUITEM_TOOLS_OBJDUMP,"Desensamblar (objdump)")).Icon("asm.png"));
 			AddMenuItem(mnTOOLS, myMenuItem("objbdump_asm_sel",mxID_TOOLS_OBJDUMP_DISASM_SELECTION, LANG(MENUITEM_TOOLS_OBJDUMP_DISASM_SELECTION,"Lineas seleccionadas...")));
-			AddMenuItem(mnTOOLS, myMenuItem("objbdump_asm_func",mxID_TOOLS_OBJDUMP_DISASM_FUNCTION, LANG(MENUITEM_TOOLS_OBJDUMP_DISASM_FUNCTION,"Función/Método actual...")));
+			AddMenuItem(mnTOOLS, myMenuItem("objbdump_asm_func",mxID_TOOLS_OBJDUMP_DISASM_FUNCTION, LANG(MENUITEM_TOOLS_OBJDUMP_DISASM_FUNCTION,"FunciÃ³n/MÃ©todo actual...")));
 			AddSeparator(mnTOOLS);
 			AddMenuItem(mnTOOLS, myMenuItem("",mxID_TOOLS_OBJDUMP_HELP, LANG(MENUITEM_TOOLS_COMMON_HELP,"A&yuda...")).Icon("help.png"));
 		EndSubMenu(mnTOOLS);
@@ -360,7 +360,7 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 	menues[mnHELP].Init("help",LANG(MENUITEM_HELP,"A&yuda")); {
 		AddMenuItem(mnHELP, myMenuItem("help_cpp",mxID_HELP_CPP, LANG(MENUITEM_HELP_CPP,"Referencia C/C++...")).ShortCut("Alt+F1").Description("Muestra una completa referencia sobre el lenguaje"));
 		AddMenuItem(mnHELP, myMenuItem("help_ide",mxID_HELP_GUI, LANG(MENUITEM_HELP_ZINJAI,"Ayuda sobre ZinjaI...")).ShortCut("F1").Description("Muestra la ayuda sobre el uso y las caracteristicas de este entorno..."));
-		AddMenuItem(mnHELP, myMenuItem("help_project",mxID_HELP_PROJECT, LANG(MENUITEM_HELP_PROJECT,"Ayuda del proyecto actual...")).Description("Muestra una pagina de ayuda personalizada definida en la configuración del proyecto...").EnableIf(ecPROJECT));
+		AddMenuItem(mnHELP, myMenuItem("help_project",mxID_HELP_PROJECT, LANG(MENUITEM_HELP_PROJECT,"Ayuda del proyecto actual...")).Description("Muestra una pagina de ayuda personalizada definida en la configuraciÃ³n del proyecto...").EnableIf(ecPROJECT));
 		AddMenuItem(mnHELP, myMenuItem("find_command",mxID_HELP_FIND_COMMAND, LANG(MENUITEM_HELP_FIND_COMMAND,"Buscar y ejecutar comando...")).ShortCut("Ctrl+F2"));
 		AddMenuItem(mnHELP, myMenuItem("tutorials",mxID_HELP_TUTORIAL, LANG(MENUITEM_HELP_TUTORIALS,"Tutoriales...")).Description("Abre el cuadro de ayuda y muestra el indice de tutoriales disponibles"));
 		AddMenuItem(mnHELP, myMenuItem("shortcuts",mxID_HELP_SHORTCUTS, LANG(MENUITEM_HELP_SHORTCUTS,"Atajos de teclado...")).Description("Muestra en la ventana de ayuda la lista de atajos de teclado disponibles en ZinjaI"));
@@ -374,36 +374,36 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 	menues[mnHIDDEN].Init("hidden",LANG(MENUITEM_GLOBAL_SHORTCUTS,"Otros")); {
 		AddMenuItem(mnHIDDEN, myMenuItem("highlight_keyword",mxID_EDIT_HIGHLIGHT_WORD,LANG(MENUITEM_HIDDEN_HIGHLIGHT_KEYWORD,"Resaltar identificador")));
 		AddMenuItem(mnHIDDEN, myMenuItem("find_keyword",mxID_EDIT_FIND_KEYWORD,LANG(MENUITEM_HIDDEN_FIND_KEYWORD,"Buscar identificador en todos los archivos")));
-		AddMenuItem(mnHIDDEN, myMenuItem("lowercase",mxID_EDIT_MAKE_LOWERCASE,LANG(MENUITEM_HIDDEN_MAKE_LOWERCASE,"Pasar a minúsuculas")).ShortCut("Ctrl+U"));
-		AddMenuItem(mnHIDDEN, myMenuItem("uppercase",mxID_EDIT_MAKE_UPPERCASE,LANG(MENUITEM_HIDDEN_MAKE_UPPERCASE,"Pasar a mayúsuculas")).ShortCut("Ctrl+Shift+U"));
+		AddMenuItem(mnHIDDEN, myMenuItem("lowercase",mxID_EDIT_MAKE_LOWERCASE,LANG(MENUITEM_HIDDEN_MAKE_LOWERCASE,"Pasar a minÃºsuculas")).ShortCut("Ctrl+U"));
+		AddMenuItem(mnHIDDEN, myMenuItem("uppercase",mxID_EDIT_MAKE_UPPERCASE,LANG(MENUITEM_HIDDEN_MAKE_UPPERCASE,"Pasar a mayÃºsuculas")).ShortCut("Ctrl+Shift+U"));
 		AddMenuItem(mnHIDDEN, myMenuItem("update_symbols",mxID_VIEW_UPDATE_SYMBOLS,LANG(MENUITEM_HIDDEN_UPDATE_SYMBOLS,"Actualizar arbol de simbolos")).ShortCut("F2"));
 		AddMenuItem(mnHIDDEN, myMenuItem("autocomplete",mxID_EDIT_FORCE_AUTOCOMPLETE,LANG(MENUITEM_HIDDEN_FORCE_AUTOCOMPLETE,"Autocompletar")).ShortCut("Ctrl+Space"));
-		AddMenuItem(mnHIDDEN, myMenuItem("open_selected",mxID_FILE_OPEN_SELECTED,LANG(MENUITEM_HIDDEN_OPEN_SELECTED,"Abrir archivo seleccionado en el código")).ShortCut("Ctrl+Return"));
-		AddMenuItem(mnHIDDEN, myMenuItem("rect_edit",mxID_EDIT_RECTANGULAR_EDITION,LANG(MENUITEM_HIDDEN_RECTANGULAR_EDITION,"Activar edición rectangular")).ShortCut("Alt+Return"));
+		AddMenuItem(mnHIDDEN, myMenuItem("open_selected",mxID_FILE_OPEN_SELECTED,LANG(MENUITEM_HIDDEN_OPEN_SELECTED,"Abrir archivo seleccionado en el cÃ³digo")).ShortCut("Ctrl+Return"));
+		AddMenuItem(mnHIDDEN, myMenuItem("rect_edit",mxID_EDIT_RECTANGULAR_EDITION,LANG(MENUITEM_HIDDEN_RECTANGULAR_EDITION,"Activar ediciÃ³n rectangular")).ShortCut("Alt+Return"));
 		AddMenuItem(mnHIDDEN, myMenuItem("highligh_edit",mxID_EDIT_HIGHLIGHTED_WORD_EDITION,LANG(MENUITEM_HIDDEN_HIGHLIGHTED_WORD_EDITION,"Editar identificador resaltado")).ShortCut("Alt+Shift+Return"));
-		AddMenuItem(mnHIDDEN, myMenuItem("prev_tab_1",mxID_VIEW_NOTEBOOK_PREV,LANG(MENUITEM_HIDDEN_PREV_TAB,"Pestaña de código anterior")).ShortCut("Ctrl+Shift+Tab"));
-		AddMenuItem(mnHIDDEN, myMenuItem("next_tab_1",mxID_VIEW_NOTEBOOK_NEXT,LANG(MENUITEM_HIDDEN_NEXT_TAB,"Pestaña de código siguiente")).ShortCut("Ctrl+Tab"));
-		AddMenuItem(mnHIDDEN, myMenuItem("prev_tab_2",mxID_VIEW_NOTEBOOK_PREV,LANG(MENUITEM_HIDDEN_PREV_TAB,"Pestaña de código anterior")).ShortCut("Ctrl+PageUp"));
-		AddMenuItem(mnHIDDEN, myMenuItem("next_tab_2",mxID_VIEW_NOTEBOOK_NEXT,LANG(MENUITEM_HIDDEN_NEXT_TAB,"Pestaña de código siguiente")).ShortCut("Ctrl+PageDown"));
+		AddMenuItem(mnHIDDEN, myMenuItem("prev_tab_1",mxID_VIEW_NOTEBOOK_PREV,LANG(MENUITEM_HIDDEN_PREV_TAB,"PestaÃ±a de cÃ³digo anterior")).ShortCut("Ctrl+Shift+Tab"));
+		AddMenuItem(mnHIDDEN, myMenuItem("next_tab_1",mxID_VIEW_NOTEBOOK_NEXT,LANG(MENUITEM_HIDDEN_NEXT_TAB,"PestaÃ±a de cÃ³digo siguiente")).ShortCut("Ctrl+Tab"));
+		AddMenuItem(mnHIDDEN, myMenuItem("prev_tab_2",mxID_VIEW_NOTEBOOK_PREV,LANG(MENUITEM_HIDDEN_PREV_TAB,"PestaÃ±a de cÃ³digo anterior")).ShortCut("Ctrl+PageUp"));
+		AddMenuItem(mnHIDDEN, myMenuItem("next_tab_2",mxID_VIEW_NOTEBOOK_NEXT,LANG(MENUITEM_HIDDEN_NEXT_TAB,"PestaÃ±a de cÃ³digo siguiente")).ShortCut("Ctrl+PageDown"));
 		AddMenuItem(mnHIDDEN, myMenuItem("",mxID_DEBUG_DO_THAT,"").ShortCut("Ctrl+Shift+F5"));
 		AddMenuItem(mnHIDDEN, myMenuItem("open_header",mxID_FILE_OPEN_H,LANG(MENUITEM_HIDDEN_OPEN_H,"Alternar entre .h y .cpp")).ShortCut("F12"));
-		AddMenuItem(mnHIDDEN, myMenuItem("compiling_options",mxID_RUN_CONFIG,LANG(MENUITEM_HIDDEN_RUN_CONFIG,"Opciones de compilación y ejecución")).ShortCut("Ctrl+Alt+P"));
+		AddMenuItem(mnHIDDEN, myMenuItem("compiling_options",mxID_RUN_CONFIG,LANG(MENUITEM_HIDDEN_RUN_CONFIG,"Opciones de compilaciÃ³n y ejecuciÃ³n")).ShortCut("Ctrl+Alt+P"));
 		AddMenuItem(mnHIDDEN, myMenuItem("",mxID_INTERNAL_INFO,"").ShortCut("Ctrl+Shift+F6"));
-		AddMenuItem(mnHIDDEN, myMenuItem("where_am_i",mxID_WHERE_AM_I,LANG(MENUITEM_HIDDEN_WHERE_I_AM,"Mostrar ubicación y contexto en el código")).ShortCut("Ctrl+Alt+Space"));
-		AddMenuItem(mnHIDDEN, myMenuItem("autocode_autocomplete",mxID_EDIT_AUTOCODE_AUTOCOMPLETE,LANG(MENUITEM_HIDDEN_AUTOCODE_AUTOCOMPLETE,"Autocompletado de autocódigos")).ShortCut("Ctrl+Shift+Space"));
+		AddMenuItem(mnHIDDEN, myMenuItem("where_am_i",mxID_WHERE_AM_I,LANG(MENUITEM_HIDDEN_WHERE_I_AM,"Mostrar ubicaciÃ³n y contexto en el cÃ³digo")).ShortCut("Ctrl+Alt+Space"));
+		AddMenuItem(mnHIDDEN, myMenuItem("autocode_autocomplete",mxID_EDIT_AUTOCODE_AUTOCOMPLETE,LANG(MENUITEM_HIDDEN_AUTOCODE_AUTOCOMPLETE,"Autocompletado de autocÃ³digos")).ShortCut("Ctrl+Shift+Space"));
 		AddMenuItem(mnHIDDEN, myMenuItem("close_all_but",mxID_FILE_CLOSE_ALL_BUT_ONE,LANG(MENUITEM_HIDDEN_CLOSE_ALL_BUT_ONE,"Cerrar todos los fuentes excepto el actual")).ShortCut("Ctrl+Alt+W"));	
-		AddMenuItem(mnHIDDEN, myMenuItem("toolbar_find",mxID_EDIT_FIND_FROM_TOOLBAR,LANG(MENUITEM_HIDDEN_FIND_FROM_TOOLBAR,"Ir a la barra de herramienta de búsqueda")).ShortCut("Ctrl+Alt+F"));	
-		AddMenuItem(mnHIDDEN, myMenuItem("macro_record",mxID_MACRO_RECORD,LANG(MENUITEM_HIDDEN_MACRO_RECORD,"Iniciar/Detener grabación de macro de teclado")).ShortCut("Ctrl+Shift+Q"));
+		AddMenuItem(mnHIDDEN, myMenuItem("toolbar_find",mxID_EDIT_FIND_FROM_TOOLBAR,LANG(MENUITEM_HIDDEN_FIND_FROM_TOOLBAR,"Ir a la barra de herramienta de bÃºsqueda")).ShortCut("Ctrl+Alt+F"));	
+		AddMenuItem(mnHIDDEN, myMenuItem("macro_record",mxID_MACRO_RECORD,LANG(MENUITEM_HIDDEN_MACRO_RECORD,"Iniciar/Detener grabaciÃ³n de macro de teclado")).ShortCut("Ctrl+Shift+Q"));
 		AddMenuItem(mnHIDDEN, myMenuItem("macro_replay",mxID_MACRO_REPLAY,LANG(MENUITEM_HIDDEN_MACRO_REPLAY,"Reproducir macro de teclado")).ShortCut("Ctrl+Q"));	
-		AddMenuItem(mnHIDDEN, myMenuItem("help_code",mxID_HELP_CODE,LANG(MENUITEM_HIDDEN_HELP_CODE,"Ayuda rápida")).ShortCut("Shift+F1"));
-		AddMenuItem(mnHIDDEN, myMenuItem("history_prev",mxID_NAVIGATION_HISTORY_PREV,LANG(MENUITEM_HIDDEN_NAVIGATION_HISTORY_PREV,"Historial de navegación -> ubicación anterior")).ShortCut("Alt+Left"));
-		AddMenuItem(mnHIDDEN, myMenuItem("history_next",mxID_NAVIGATION_HISTORY_NEXT,LANG(MENUITEM_HIDDEN_NAVIGATION_HISTORY_NEXT,"Historial de navegación -> ubicación siguiente")).ShortCut("Alt+Right"));
-		AddMenuItem(mnHIDDEN, myMenuItem("break_enable",mxID_DEBUG_ENABLE_DISABLE_BREAKPOINT,LANG(MENUITEM_HIDDEN_ENABLE_BREAKPOINT,"Habilitar/deshabilitar punto de interrupción")).ShortCut("").Checkeable(true));
+		AddMenuItem(mnHIDDEN, myMenuItem("help_code",mxID_HELP_CODE,LANG(MENUITEM_HIDDEN_HELP_CODE,"Ayuda rÃ¡pida")).ShortCut("Shift+F1"));
+		AddMenuItem(mnHIDDEN, myMenuItem("history_prev",mxID_NAVIGATION_HISTORY_PREV,LANG(MENUITEM_HIDDEN_NAVIGATION_HISTORY_PREV,"Historial de navegaciÃ³n -> ubicaciÃ³n anterior")).ShortCut("Alt+Left"));
+		AddMenuItem(mnHIDDEN, myMenuItem("history_next",mxID_NAVIGATION_HISTORY_NEXT,LANG(MENUITEM_HIDDEN_NAVIGATION_HISTORY_NEXT,"Historial de navegaciÃ³n -> ubicaciÃ³n siguiente")).ShortCut("Alt+Right"));
+		AddMenuItem(mnHIDDEN, myMenuItem("break_enable",mxID_DEBUG_ENABLE_DISABLE_BREAKPOINT,LANG(MENUITEM_HIDDEN_ENABLE_BREAKPOINT,"Habilitar/deshabilitar punto de interrupciÃ³n")).ShortCut("").Checkeable(true));
 		AddMenuItem(mnHIDDEN, myMenuItem("update_inspections",mxID_DEBUG_UPDATE_INSPECTIONS, LANG(MENUITEM_DEBUG_UPDATE_INSPECTIONS,"Actualizar inspecciones")).Icon("inspect_update.png"));
 		
 		AddMenuItem(mnHIDDEN, myMenuItem("change_shortcuts",mxID_CHANGE_SHORTCUTS, LANG(MENUITEM_HELP_SHORTCUTS,"Atajos de teclado...")).ShortCut("Ctrl+Alt+Z"));
 		AddMenuItem(mnHIDDEN, myMenuItem("toolbar_settings",mxID_TOOLBAR_SETTINGS, LANG(MENUITEM_TOOLBAR_SETTINGS,"Configurar barras de herramientas...")).ShortCut(""));
-		AddMenuItem(mnHIDDEN, myMenuItem("codetools_popup",mxID_TOOLS_CODE_POPUP, LANG(MENUITEM_CODETOOLS_POPUP,"Mostrar menú de generación de código")).ShortCut("Ctrl+Shift+X"));
+		AddMenuItem(mnHIDDEN, myMenuItem("codetools_popup",mxID_TOOLS_CODE_POPUP, LANG(MENUITEM_CODETOOLS_POPUP,"Mostrar menÃº de generaciÃ³n de cÃ³digo")).ShortCut("Ctrl+Shift+X"));
 		
 		AddMenuItem(mnHIDDEN, myMenuItem("source_properties",mxID_PROJECT_POPUP_PROPERTIES, LANG(MAINW_PROJECT_FILE_POPUP_PROPERTIES,"Propiedades del archivo...")).EnableIf(ecSOURCE));
 		AddMenuItem(mnHIDDEN, myMenuItem("open_folder",mxID_PROJECT_POPUP_OPEN_FOLDER, LANG(MAINW_PROJECT_FILE_POPUP_OPEN_FOLDER,"Abrir carpeta contenedora...")).EnableIf(ecSOURCE));
@@ -416,20 +416,20 @@ void MenusAndToolsConfig::LoadMenuData ( ) {
 		
 		AddMenuItem(mnHIDDEN, myMenuItem("compile_first",mxID_PROJECT_POPUP_COMPILE_FIRST,LANG(MAINW_PROJECT_FILE_POPUP_COMPILE_FIRST,"Compilar este fuente &primero")).EnableIf(ecPROJECT_AND_SOURCE).Checkeable(false));
 		AddMenuItem(mnHIDDEN, myMenuItem("recompile_one",mxID_PROJECT_POPUP_COMPILE_NOW,LANG(MAINW_PROJECT_FILE_POPUP_RECOMPILE,"Recompilar este fuente a&hora")).EnableIf(ecPROJECT_AND_SOURCE));
-		AddMenuItem(mnHIDDEN, myMenuItem("src_compiling_opts",mxID_PROJECT_POPUP_COMPILING_OPTS,LANG(MAINW_PROJECT_FILE_POPUP_COMPILING_OPTS,"Opciones de compilación por fuente...")).EnableIf(ecPROJECT));
+		AddMenuItem(mnHIDDEN, myMenuItem("src_compiling_opts",mxID_PROJECT_POPUP_COMPILING_OPTS,LANG(MAINW_PROJECT_FILE_POPUP_COMPILING_OPTS,"Opciones de compilaciÃ³n por fuente...")).EnableIf(ecPROJECT));
 		AddMenuItem(mnHIDDEN, myMenuItem("read_only",mxID_PROJECT_POPUP_READONLY,LANG(MAINW_PROJECT_FILE_POPUP_READONLY,"Solo lectura")).EnableIf(ecPROJECT_AND_SOURCE).Checkeable(false));
-		AddMenuItem(mnHIDDEN, myMenuItem("hide_symbols",mxID_PROJECT_POPUP_HIDE_SYMBOLS,LANG(MAINW_PROJECT_FILE_POPUP_HIDE_SYMBOLS,"Ignorar símbolos en búsquedas")).EnableIf(ecPROJECT_AND_SOURCE).Checkeable(false));
+		AddMenuItem(mnHIDDEN, myMenuItem("hide_symbols",mxID_PROJECT_POPUP_HIDE_SYMBOLS,LANG(MAINW_PROJECT_FILE_POPUP_HIDE_SYMBOLS,"Ignorar sÃ­mbolos en bÃºsquedas")).EnableIf(ecPROJECT_AND_SOURCE).Checkeable(false));
 		
 		AddMenuItem(mnHIDDEN, myMenuItem("move_to_sources",mxID_PROJECT_POPUP_MOVE_TO_SOURCES,LANG(MAINW_PROJECT_FILE_POPUP_MOVE_TO_SOURCES,"Mover a &Fuentes")).EnableIf(ecPROJECT_AND_SOURCE));
 		AddMenuItem(mnHIDDEN, myMenuItem("move_to_headers",mxID_PROJECT_POPUP_MOVE_TO_HEADERS,LANG(MAINW_PROJECT_FILE_POPUP_MOVE_TO_HEADERS,"Mover a &Cabeceras")).EnableIf(ecPROJECT_AND_SOURCE));
 		AddMenuItem(mnHIDDEN, myMenuItem("move_to_others",mxID_PROJECT_POPUP_MOVE_TO_OTHERS,LANG(MAINW_PROJECT_FILE_POPUP_MOVE_TO_OTHERS,"Mover a &Otros")).EnableIf(ecPROJECT_AND_SOURCE));
 		
-		AddMenuItem(mnHIDDEN, myMenuItem("last_compiler_output",mxID_COMPILER_POPUP_FULL,LANG(MAINW_OPEN_LAST_COMPILER_OUTPUT,"Abrir última salida")));
-		AddMenuItem(mnHIDDEN, myMenuItem("attach_multiple_files",mxID_PROJECT_POPUP_ADD_MULTI,LANG(MAINW_PROJECT_FILE_POPUP_ADD_MULTI,"&Agregar Múltiples Archivos...")).EnableIf(ecPROJECT));
+		AddMenuItem(mnHIDDEN, myMenuItem("last_compiler_output",mxID_COMPILER_POPUP_FULL,LANG(MAINW_OPEN_LAST_COMPILER_OUTPUT,"Abrir Ãºltima salida")));
+		AddMenuItem(mnHIDDEN, myMenuItem("attach_multiple_files",mxID_PROJECT_POPUP_ADD_MULTI,LANG(MAINW_PROJECT_FILE_POPUP_ADD_MULTI,"&Agregar MÃºltiples Archivos...")).EnableIf(ecPROJECT));
 		AddMenuItem(mnHIDDEN, myMenuItem("set_as_master",mxID_FILE_SET_AS_MASTER,LANG(MENUITEM_FILE_SET_AS_MASTER,"Ejecutar siempre este fuente")).EnableIf(ecSOURCE).Checkeable(false));
 		
 		AddMenuItem(mnHIDDEN, myMenuItem("inspect_on_mover",mxID_DEBUG_INSPECT_ON_MOUSE_OVER,LANG(PREFERENCES_DEBUG_INSPECT_ON_MOUSE_OVER,"Mostrar el valor de una variables al colocar el mouse sobre la misma") ).Checkeable(true));
-		AddMenuItem(mnHIDDEN, myMenuItem("return_focus_on_continue",mxID_DEBUG_RETURN_FOCUS_ON_CONTINUE,LANG(PREFERENCES_DEBUG_RETURN_FOCUS_ON_CONTINUE,"Devolver el foco a la aplicación en depuración luego de una pausa") ).Checkeable(true));
+		AddMenuItem(mnHIDDEN, myMenuItem("return_focus_on_continue",mxID_DEBUG_RETURN_FOCUS_ON_CONTINUE,LANG(PREFERENCES_DEBUG_RETURN_FOCUS_ON_CONTINUE,"Devolver el foco a la aplicaciÃ³n en depuraciÃ³n luego de una pausa") ).Checkeable(true));
 		
 		AddMenuItem(mnHIDDEN, myMenuItem("combine_project_template",mxID_TOOLS_COMBINE_TEMPLATE,LANG(MAINW_TOOLS_COMBINE_TEMPLATES,"Combinar con otra plantilla...") ).EnableIf(ecPROJECT));
 	
@@ -470,7 +470,7 @@ void MenusAndToolsConfig::LoadToolbarsData ( ) {
 	}
 	
 	
-	toolbars[tbEDIT].Init("edit",LANG(CAPTION_TOOLBAR_EDIT,"Edición"),"T1"); {
+	toolbars[tbEDIT].Init("edit",LANG(CAPTION_TOOLBAR_EDIT,"EdiciÃ³n"),"T1"); {
 		AddToolbarItem(tbEDIT,myToolbarItem(menues[mnEDIT],mxID_EDIT_UNDO).Visible());
 		AddToolbarItem(tbEDIT,myToolbarItem(menues[mnEDIT],mxID_EDIT_REDO).Visible());
 		AddToolbarItem(tbEDIT,myToolbarItem(menues[mnEDIT],mxID_EDIT_COPY).Visible());
@@ -527,7 +527,7 @@ void MenusAndToolsConfig::LoadToolbarsData ( ) {
 		AddToolbarItem(tbVIEW,myToolbarItem(menues[mnVIEW],mxID_FOLD_SHOW_5)); // 3,LANG(TOOLBAR_CAPTION_UNFOLD_LEVEL_3,"Desplegar el Tercer Nivel"),ipre+_T("unfold3.png"),LANG(TOOLBAR_DESC_UNFOLD_LEVEL_3,""));
 	}
 	
-	toolbars[tbRUN].Init("run",LANG(CAPTION_TOOLBAR_RUN,"Ejecución"),"T1"); {
+	toolbars[tbRUN].Init("run",LANG(CAPTION_TOOLBAR_RUN,"EjecuciÃ³n"),"T1"); {
 		AddToolbarItem(tbRUN,myToolbarItem(menues[mnRUN],mxID_RUN_COMPILE).Visible());
 		AddToolbarItem(tbRUN,myToolbarItem(menues[mnRUN],mxID_RUN_RUN).Label(LANG(TOOLBAR_CAPTION_RUN_RUN,"Guardar, compilar y ejecutar...")).Visible());
 		AddToolbarItem(tbRUN,myToolbarItem(menues[mnRUN],mxID_RUN_RUN_OLD));
@@ -547,7 +547,7 @@ void MenusAndToolsConfig::LoadToolbarsData ( ) {
 	}
 	
 	
-	toolbars[tbDEBUG].Init("debug",LANG(CAPTION_TOOLBAR_DEBUG,"Depuración"),"t3"); {
+	toolbars[tbDEBUG].Init("debug",LANG(CAPTION_TOOLBAR_DEBUG,"DepuraciÃ³n"),"t3"); {
 		AddToolbarItem(tbDEBUG,myToolbarItem(menues[mnDEBUG],mxID_DEBUG_RUN).Visible());
 		AddToolbarItem(tbDEBUG,myToolbarItem(menues[mnDEBUG],mxID_DEBUG_PAUSE).Visible());
 		AddToolbarItem(tbDEBUG,myToolbarItem(menues[mnDEBUG],mxID_DEBUG_STOP).Visible());
@@ -650,7 +650,7 @@ void MenusAndToolsConfig::LoadToolbarsData ( ) {
 	}
 	
 	
-	toolbars[tbMISC].Init("misc",LANG(CAPTION_TOOLBAR_MISC,"Miscelánea"),"T1"); {
+	toolbars[tbMISC].Init("misc",LANG(CAPTION_TOOLBAR_MISC,"MiscelÃ¡nea"),"T1"); {
 		AddToolbarItem(tbMISC,myToolbarItem(menues[mnFILE],mxID_FILE_PREFERENCES).Visible());
 		AddToolbarItem(tbMISC,myToolbarItem(menues[mnHELP],mxID_HELP_FIND_COMMAND).Visible());
 		AddToolbarItem(tbMISC,myToolbarItem(menues[mnHELP],mxID_HELP_CPP).Visible());
@@ -665,9 +665,9 @@ void MenusAndToolsConfig::LoadToolbarsData ( ) {
 	}
 	
 	/// @todo: agregar la de proyecto para que sea mas facil abajo crearla???
-	toolbars[tbFIND].Init("find",LANG(CAPTION_TOOLBAR_FIND,"Búsqueda"),"T1");
+	toolbars[tbFIND].Init("find",LANG(CAPTION_TOOLBAR_FIND,"BÃºsqueda"),"T1");
 	toolbars[tbPROJECT].Init("project",LANG(CAPTION_TOOLBAR_PROJECT,"Proyecto"),"T1");
-	toolbars[tbSTATUS].Init("status",LANG(CAPTION_TOOLBAR_STATUS,"Estado de la depuración"),"t3");
+	toolbars[tbSTATUS].Init("status",LANG(CAPTION_TOOLBAR_STATUS,"Estado de la depuraciÃ³n"),"t3");
 	toolbars[tbDIFF].Init("diff",LANG(CAPTION_TOOLBAR_DIFF,"Diff"),"f");
 	
 }
@@ -817,7 +817,7 @@ int getKeyCode(const wxString &key) {
 	return 0;
 }
 /**
-* @brief Crea los menúes de la ventana principal y los configura en el modo inicial (no debug, no project)
+* @brief Crea los menÃºes de la ventana principal y los configura en el modo inicial (no debug, no project)
 **/
 void MenusAndToolsConfig::CreateMenues () {
 	
@@ -893,8 +893,8 @@ void MenusAndToolsConfig::CreateToolbars() {
 		wxString icsz = wxString()<<icon_size<<"x"<<icon_size;
 		mxMessageDialog(nullptr,
 			wxString()<<LANG1(MAIN_WINDOW_NO_ICON_SIZE,""
-			"El tema de iconos seleccionado no tiene iconos del tamaño elegido (<{1}>)\n"
-			"Se utilizaran los iconos del tamaño predeterminado (16x16).\n"
+			"El tema de iconos seleccionado no tiene iconos del tamaÃ±o elegido (<{1}>)\n"
+			"Se utilizaran los iconos del tamaÃ±o predeterminado (16x16).\n"
 			"Para modificarlo utilice el cuadro de Preferencias (menu Archivo).",wxString()<<icsz))
 			.Title(LANG(GENERAL_WARNING,"Advertencia")).IconWarning().Run();
 		icon_size=16;
@@ -942,11 +942,11 @@ void MenusAndToolsConfig::CreateToolbars() {
 		mxUT::AddTool(tb.wx_toolbar,mxID_TOOLS_DIFF_SHOW,LANG(TOOLBAR_CAPTION_TOOLS_DIFF_SHOW,"Mostrar Cambio"),ipre+_T("diff_show.png"),LANG(TOOLBAR_DESC_TOOLS_DIFF_SHOW,"Herramientas -> Comparar Archivos -> Mostrar Cambio"));
 		mxUT::AddTool(tb.wx_toolbar,mxID_TOOLS_DIFF_APPLY,LANG(TOOLBAR_CAPTION_TOOLS_DIFF_APPLY,"Aplicar Cambio"),ipre+_T("diff_apply.png"),LANG(TOOLBAR_DESC_TOOLS_DIFF_APPLY,"Herramientas -> Comparar Archivos -> Aplicar Cambio"));
 		mxUT::AddTool(tb.wx_toolbar,mxID_TOOLS_DIFF_DISCARD,LANG(TOOLBAR_CAPTION_TOOLS_DIFF_DISCARD,"Descartar Cambio"),ipre+_T("diff_discard.png"),LANG(TOOLBAR_DESC_TOOLS_DIFF_DISCARD,"Herramientas -> Comparar Archivos -> Descartar Cambio"));
-		mxUT::AddTool(tb.wx_toolbar,mxID_TOOLS_DIFF_CLEAR,LANG(TOOLBAR_CAPTION_TOOLS_DIFF_CLEAR,"Borrar Marcas de Comparación"),ipre+_T("diff_clear.png"),LANG(TOOLBAR_DESC_TOOLS_DIFF_CLEAR,"Herramientas -> Comparar Archivos -> Borrar Marcas"));
+		mxUT::AddTool(tb.wx_toolbar,mxID_TOOLS_DIFF_CLEAR,LANG(TOOLBAR_CAPTION_TOOLS_DIFF_CLEAR,"Borrar Marcas de ComparaciÃ³n"),ipre+_T("diff_clear.png"),LANG(TOOLBAR_DESC_TOOLS_DIFF_CLEAR,"Herramientas -> Comparar Archivos -> Borrar Marcas"));
 		GetToolbarPosition(MenusAndToolsConfig::tbDIFF).visible=false; // do not show diff toolbar on startup
 	}
 	
-	// ajustar tamaños
+	// ajustar tamaÃ±os
 	for(unsigned int tb_id=0;tb_id<tbCOUNT_FULL;tb_id++) AdjustToolbarSize(tb_id);
 	main_window->SortToolbars(false);
 }

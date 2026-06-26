@@ -6,11 +6,11 @@
 * @brief Dialogo para instalar complementos
 * 
 * Este dialogo permite seleccionar un complemento para instalar en ZinjaI.
-* No es en realidad este di·logo quien lo instala, ya que ZinjaI podrÌa no 
-* tener permisos suficientes para modificar su instalaciÛn, o hasta podrÌa ser
-* necesario modificar el propio binario que se est· ejecutando. Por eso, el
-* di·logo permite elegir el complemento y invoca a otro ejecutable para
-* que complete la instalaciÛn pas·ndole los datos que necesita.
+* No es en realidad este di√°logo quien lo instala, ya que ZinjaI podr√≠a no 
+* tener permisos suficientes para modificar su instalaci√≥n, o hasta podr√≠a ser
+* necesario modificar el propio binario que se est√° ejecutando. Por eso, el
+* di√°logo permite elegir el complemento y invoca a otro ejecutable para
+* que complete la instalaci√≥n pas√°ndole los datos que necesita.
 **/
 class mxComplementInstallerWindow : public wxDialog {
 private:
@@ -18,13 +18,13 @@ protected:
 public:
 	/// @brief Constuctor
 	mxComplementInstallerWindow(wxWindow *parent);
-	/// @brief Callback del botÛn "Instalar...", lleva a elegir el archivo del complemento y lanzar la instalaciÛn
+	/// @brief Callback del bot√≥n "Instalar...", lleva a elegir el archivo del complemento y lanzar la instalaci√≥n
 	void OnOkButton(wxCommandEvent &evt);
-	/// @brief Callback del botÛn de ayuda
+	/// @brief Callback del bot√≥n de ayuda
 	void OnHelpButton(wxCommandEvent &evt);
-	/// @brief Callback del botÛn "Descargar...", abre en un navegador el sitio para descargar complementos
+	/// @brief Callback del bot√≥n "Descargar...", abre en un navegador el sitio para descargar complementos
 	void OnDownloadButton(wxCommandEvent &evt);
-	/// @brief Callback del botÛn "Cerrar", cierra la ventana sin hacer nada m·s
+	/// @brief Callback del bot√≥n "Cerrar", cierra la ventana sin hacer nada m√°s
 	void OnCancelButton(wxCommandEvent &evt);
 	/// @brief Destruye (quita de la memoria) la ventana cuando de cierra
 	void OnClose(wxCloseEvent &evt);

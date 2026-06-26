@@ -98,7 +98,7 @@ void mxLocalsGrid::OnCellPopupMenu (int row, int col) {
 	menu.AppendSeparator();
 	for(int i=0;i<main_window->inspection_ctrl->GetTabsCount();i++) {
 		if (main_window->inspection_ctrl->PageIsInspectionsGrid(i))
-			menu.Append(mxID_LAST_ID+i,LANG1(LOCALGRID_POPUP_ADD_TO_INSPECTIONS_GRID,"Agregar como inspección en \"<{1}>\"",main_window->inspection_ctrl->GetPageTitle(i)));
+			menu.Append(mxID_LAST_ID+i,LANG1(LOCALGRID_POPUP_ADD_TO_INSPECTIONS_GRID,"Agregar como inspecciÃ³n en \"<{1}>\"",main_window->inspection_ctrl->GetPageTitle(i)));
 	}
 	menu.AppendSeparator();
 	

@@ -173,7 +173,7 @@ void mxOpenRecentDialog::OnCharHook (wxKeyEvent &event) {
 void mxOpenRecentDialog::OnClear(wxCommandEvent &event) {
 	if (projects) {
 		wxMenu *menu_recent = menu_data->GetMenu(mxID_FILE_PROJECT_RECENT);
-		if ( mxMessageDialog(this,LANG(RECENT_CONFIRM_CLEAR_PROJECT_HISTORY,"¿Desea eliminar la lista de proyectos recientes?"))
+		if ( mxMessageDialog(this,LANG(RECENT_CONFIRM_CLEAR_PROJECT_HISTORY,"Â¿Desea eliminar la lista de proyectos recientes?"))
 				.Title(LANG(GENERAL_CONFIRM,"Confirmacion")).ButtonsYesNo().IconQuestion().Run().yes )
 		{
 			for (unsigned int i=0;i<CM_HISTORY_MAX_LEN;i++) {
@@ -185,7 +185,7 @@ void mxOpenRecentDialog::OnClear(wxCommandEvent &event) {
 		}
 	} else {
 		wxMenu *menu_recent = menu_data->GetMenu(mxID_FILE_SOURCE_RECENT);
-		if ( mxMessageDialog(this,LANG(RECENT_CONFIRM_CLEAR_FILE_HISTORY,"¿Desea eliminar la lista de archivos recientes?"))
+		if ( mxMessageDialog(this,LANG(RECENT_CONFIRM_CLEAR_FILE_HISTORY,"Â¿Desea eliminar la lista de archivos recientes?"))
 				.Title(LANG(GENERAL_CONFIRM,"Confirmacion")).ButtonsYesNo().IconWarning().Run().yes )
 		{
 			for (unsigned int i=0;i<CM_HISTORY_MAX_LEN;i++) {

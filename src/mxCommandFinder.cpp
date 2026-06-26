@@ -30,7 +30,7 @@ mxCommandFinder::mxCommandFinder ( )
 
 static wxString normalize(wxString s) {
 	static wxString to = _T("aaaaaaeeeeeeiiiiiioooooouuuuuunn"), 
-					from = _T( "\u00E0\u00E1\u00E4\u00C0\u00C1\u00C4\u00E8\u00E9\u00Eb\u00C8\u00C9\u00CB\u00EC\u00ED\u00EF\u00CC\u00CD\u00CF\u00F2\u00F3\u00F6\u00D2\u00D3\u00D6\u00F9\u00FA\u00FC\u00D9\u00DA\u00DC\u00F1\u00D1"); // ·‡‰¡¿ƒÈËÎ…»ÀÌÏÔÕÃœÛÚˆ”“÷˙˘¸⁄Ÿ‹Ò—
+					from = _T( "\u00E0\u00E1\u00E4\u00C0\u00C1\u00C4\u00E8\u00E9\u00Eb\u00C8\u00C9\u00CB\u00EC\u00ED\u00EF\u00CC\u00CD\u00CF\u00F2\u00F3\u00F6\u00D2\u00D3\u00D6\u00F9\u00FA\u00FC\u00D9\u00DA\u00DC\u00F1\u00D1"); // √°√†√§√Å√Ä√Ñ√©√®√´√â√à√ã√≠√¨√Ø√ç√å√è√≥√≤√∂√ì√í√ñ√∫√π√º√ö√ô√ú√±√ë
 	for( wxString::iterator it0=s.begin(); it0!=s.end(); ++it0 ) {
 		auto it1 = from.begin(), it2 = to.begin();
 		while (it1!=from.end()) {
@@ -138,7 +138,7 @@ void mxCommandFinderText::OnKey (wxKeyEvent &evt) {
 mxCommandFinderText::mxCommandFinderText (wxWindow * parent) 
 	: wxTextCtrl(parent,wxID_ANY,"",wxDefaultPosition,wxSize(300,-1),wxTE_PROCESS_ENTER), list(parent) 
 {
-	SetToolTip(LANG(FINDCOMMAND_HELP,"Introduzca una o m·s palabras claves para buscar, y presione Enter para seleccionar un resultado"));
+	SetToolTip(LANG(FINDCOMMAND_HELP,"Introduzca una o m√°s palabras claves para buscar, y presione Enter para seleccionar un resultado"));
 }
 
 void mxCommandFinderList::OnTimer (wxTimerEvent & evt) {

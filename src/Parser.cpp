@@ -337,7 +337,7 @@ long Parser::ParseNextFileStart(wxFileName filename, wxString HashName, bool hid
 
 void Parser::ParseNextFileContinue(const wxString &s) {
 	
-	// toda linea de cbrowser empieza con un entero indicando qué es, de 1 o 2 digitos, seguido por punto y coma
+	// toda linea de cbrowser empieza con un entero indicando quÃ© es, de 1 o 2 digitos, seguido por punto y coma
 	int id, p[15]; int l=s.Len();
 	if (l>2 && GetChar(s,1)==';') {
 		id = GetChar(s,0)-'0';
@@ -681,7 +681,7 @@ void Parser::ParseSomething(bool first, bool arg_show_progress) {
 		if (main_window && !compiler->IsCompiling())
 			main_window->SetStatusText(LANG(GENERAL_READY,"Listo"));
 		// se va a operar sobre una "copia" de on_end, para evitar que una de estas acciones 
-		// se introduzca a sí misma en esta lista y genere un loop infinito (pasaba al crear
+		// se introduzca a sÃ­ misma en esta lista y genere un loop infinito (pasaba al crear
 		// ventanas hijas al volver el foco desde wxfb)
 		if (on_end) { on_end(); on_end = {}; }
 		if (show_progress) main_window->SetStatusProgress(-1);

@@ -9,12 +9,12 @@ inline const char *ToCStyleString(const wxString &wx_str) { return static_cast<c
 inline std::string ToStdString(const wxString &wx_str) { return ToCStyleString(wx_str); }
 #endif
 
-//á: 00E1
-//é: 00E9
-//í: 00ED
-//ó: 00F3
-//ú: 00FA
-//ñ: 00F1
-//¿: 00BF
-//¡: 00A1
-//Ü: 00FC
+//Ã¡: 00E1
+//Ã©: 00E9
+//Ã­: 00ED
+//Ã³: 00F3
+//Ãº: 00FA
+//Ã±: 00F1
+//Â¿: 00BF
+//Â¡: 00A1
+//Ãœ: 00FC

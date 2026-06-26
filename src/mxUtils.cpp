@@ -117,7 +117,7 @@ wxMenuItem *mxUT::AddItemToMenu(wxMenu *menu, wxWindowID id, const wxString &cap
 
 wxMenuItem *mxUT::AddSubMenuToMenu(wxMenu *menu, wxMenu *menu_h, const wxString &caption, const wxString &help, const wxString &filename) {
 	wxMenuItem *item = 	menu->AppendSubMenu(menu_h, caption, help);
-	// en windows, al menos con wx 2.8, si le pongo icono me cambia el tamaño de la fuente
+	// en windows, al menos con wx 2.8, si le pongo icono me cambia el tamaÃ±o de la fuente
 	wxString bmp_fname = mxFN::Join(config->HighDPI()?"24":"16",filename);
 	// el if_win32 es porque en win10 con hidpi al setear el icono el tamano de fuente se vuelve al "normal" (sin el zoom)
 	if (_if_win32(OSDep::GetDPI()<=96 &&,) filename.Len() && bitmaps->HasBitmap(bmp_fname,true))
@@ -299,7 +299,7 @@ wxString mxUT::UnSplit(const wxArrayString &array, const wxString &sep, bool add
 }
 
 wxString mxUT::Split(wxString str, wxString pre, wxString post) {
-	/// @todo: reescribir este método reusando el otro Split
+	/// @todo: reescribir este mÃ©todo reusando el otro Split
 	int i=0, l=str.Len();
 	wxString ret;
 	bool comillas = false;
@@ -607,7 +607,7 @@ wxString mxUT::LeftTrim(wxString str) {
 }
 
 /**
-* Distancia de Levenshtein, basado en el articulo de la Wikipedia en Español. Esta
+* Distancia de Levenshtein, basado en el articulo de la Wikipedia en EspaÃ±ol. Esta
 * distancia mida la cantidad de operaciones (insercion, eliminacion o reemplazo)
 * necesarias para convertir una cadena en la otra. En este caso, la primer cadena
 * se asume en minusculas, la segunda se convierte temporalmente durante la comparacion.
@@ -639,7 +639,7 @@ int mxUT::Levenshtein(const char *s1, int n1, const char *s2, int n2) {
 }
 
 /** 
-* Elimina los elementos repetidos del wxArrayString. Para eso necesita que esté ordenado
+* Elimina los elementos repetidos del wxArrayString. Para eso necesita que estÃ© ordenado
 * @param array el arreglo a purgar
 * @param sort falso si el arreglo ya viene ordenado, true si se debe ordenar aqui
 **/
@@ -687,19 +687,19 @@ bool mxUT::Compare(const wxArrayString &array1, const wxArrayString &array2, boo
 * (verificando que exista) un .c/.cpp /.cxx/.c++ con el mismo nombre y viseversa.
 *
 * Busca primero en el mismo directorio que the_one, sino, si hay un proyecto
-* abierto, busca en los archivos del proyecto (que podrían estar en otros
+* abierto, busca en los archivos del proyecto (que podrÃ­an estar en otros
 * directorios)
 *
 * @param the_one path completo del archivo
 * @param force_ext sirve para forzar el tipo de archivo que recibe: cabecera  o
-fuente. El default adivina según la extensión
+fuente. El default adivina segÃºn la extensiÃ³n
 * @return el nombre del complementario, o una cadena vacia si no lo encuentra
 **/
 wxString mxUT::GetComplementaryFile(wxFileName the_one, eFileType force_ext) {
 	if (force_ext==FT_NULL) force_ext=GetFileType(the_one.GetFullPath());
 	wxArrayString exts;
 	mxUT::Split(force_ext==FT_HEADER?config->Files.source_file_extensions:config->Files.header_file_extensions,exts);
-	// primero, ver si el otro archivo está en el mismo directorio
+	// primero, ver si el otro archivo estÃ¡ en el mismo directorio
 	for(unsigned int i=0;i<exts.Count();i++) {
 		the_one.SetExt(exts[i]);
 		if (the_one.FileExists())
@@ -721,7 +721,7 @@ wxString mxUT::GetComplementaryFile(wxFileName the_one, eFileType force_ext) {
 * Busca los procesos en ejecucion que se lanzaron desde zinjai. Para esto
 * busca los procesos hijos de zinjai que no empiecen como config->Files.terminal_command
 * (proyectos lanzados sin terminal y runner) y los "bisnietos" (lanzados en un terminal,
-* zinjai->consola->runner->bisnieto). En windows no está implementado.
+* zinjai->consola->runner->bisnieto). En windows no estÃ¡ implementado.
 **/
 void mxUT::GetRunningChilds(wxArrayString &childs) {
 	long pid = wxGetProcessId();
@@ -800,7 +800,7 @@ void mxUT::OpenInBrowser(wxString url) {
 void mxUT::OpenFolder(wxString path) {
 	if (config->Files.explorer_command==_T("<<sin configurar>>")) {
 		wxMessageBox(LANG(CONFIG_EXPLORER_PROBLEM,"No se ha definido el explorador de archivos a utilizar\n"
-			                                       "Puede configurar el mismo en la pestaña \"Rutas 2\" del\n"
+			                                       "Puede configurar el mismo en la pestaÃ±a \"Rutas 2\" del\n"
 												   "cuadro de Preferencias (menu Archivo->Preferencias)."),LANG(CONFIG_EXPLORER,"Explorador de archivos"));
 	} else {
 		wxString cmd = config->Files.explorer_command;
@@ -933,9 +933,9 @@ wxString mxUT::UrlEncode(wxString str) {
 	str.Replace("!","%21");
 	str.Replace("\"","%22");
 	str.Replace("?","%3F");
-	str.Replace("¿","%BF");
+	str.Replace("Â¿","%BF");
 	str.Replace("+","%2B");
-	str.Replace("¡","%A1");
+	str.Replace("Â¡","%A1");
 	str.Replace("=","%3D");
 	return str;
 }
