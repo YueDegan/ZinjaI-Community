@@ -24,12 +24,12 @@ mxDoxyDialog::mxDoxyDialog(wxWindow *parent)
 	CreateSizer sizer(this);
 	wxNotebook *nb;
 	sizer.BeginNotebook().EndNotebook(nb);
-	nb->AddPage(CreateGeneralPanel(nb), LANG(DOXYCONF_BASIC_OPTIONS,"Opciones Básicas"));
-	nb->AddPage(CreateMorePanel(nb), LANG(DOXYCONF_MORE_OPTIONS,"Más Opciones"));
+	nb->AddPage(CreateGeneralPanel(nb), LANG(DOXYCONF_BASIC_OPTIONS,"Opciones BÃ¡sicas"));
+	nb->AddPage(CreateMorePanel(nb), LANG(DOXYCONF_MORE_OPTIONS,"MÃ¡s Opciones"));
 	nb->AddPage(CreateExtraPanel(nb), LANG(DOXYCONF_EXTRA_TAB,"Campos Adicionales"));
 //	sizer.BeginNotebook()
-//		.AddPage(this,&mxDoxyDialog::CreateGeneralPanel, LANG(DOXYCONF_BASIC_OPTIONS,"Opciones Básicas"))
-//		.AddPage(this,&mxDoxyDialog::CreateMorePanel, LANG(DOXYCONF_MORE_OPTIONS,"Más Opciones"))
+//		.AddPage(this,&mxDoxyDialog::CreateGeneralPanel, LANG(DOXYCONF_BASIC_OPTIONS,"Opciones BÃ¡sicas"))
+//		.AddPage(this,&mxDoxyDialog::CreateMorePanel, LANG(DOXYCONF_MORE_OPTIONS,"MÃ¡s Opciones"))
 //		.AddPage(this,&mxDoxyDialog::CreateExtraPanel, LANG(DOXYCONF_EXTRA_TAB,"Campos Adicionales"))
 //		.EndNotebook();
 	sizer.BeginBottom().Help().Ok().Cancel().EndBottom(this).SetAndFit();
@@ -48,7 +48,7 @@ void mxDoxyDialog::OnOkButton(wxCommandEvent &evt) {
 	m_doxygen_config->name = name_ctrl->GetValue();
 	m_doxygen_config->version = version_ctrl->GetValue();
 	m_doxygen_config->save = save_ctrl->GetValue();
-	m_doxygen_config->lang = lang_ctrl->GetValue()==LANG(DOXYCONF_LANG_ES,"Español")?"Spanish":"English";
+	m_doxygen_config->lang = lang_ctrl->GetValue()==LANG(DOXYCONF_LANG_ES,"EspaÃ±ol")?"Spanish":"English";
 	m_doxygen_config->html = html_ctrl->GetValue();
 	m_doxygen_config->preprocess = preprocess_ctrl->GetValue();
 	m_doxygen_config->extra_static = static_ctrl->GetValue();
@@ -71,7 +71,7 @@ wxPanel *mxDoxyDialog::CreateGeneralPanel (wxNotebook *notebook) {
 	sizer.BeginText( LANG(DOXYCONF_PROJECT_NAME,"Nombre del Proyecto") )
 		.Value(m_doxygen_config->name).EndText(name_ctrl);
 	
-	sizer.BeginText( LANG(DOXYCONF_PROJECT_VER,"Versión del proyecto") )
+	sizer.BeginText( LANG(DOXYCONF_PROJECT_VER,"VersiÃ³n del proyecto") )
 		.Value(m_doxygen_config->version).EndText(version_ctrl);
 	
 	sizer.BeginText( LANG(DOXYCONF_DEST_DIR,"Directorio destino") )
@@ -101,9 +101,9 @@ wxPanel *mxDoxyDialog::CreateGeneralPanel (wxNotebook *notebook) {
 
 wxPanel *mxDoxyDialog::CreateExtraPanel (wxNotebook *notebook) {
 	CreatePanelAndSizer sizer(notebook);
-	sizer.BeginLabel( LANG(DOXYCONF_EXTRA_LABEL,"El texto de este campo se agregará sin cambios en el\n"
-											    "Doxyfile. Puede utilizarlo para definir parámetros\n"
-											    "no contemplados en este cuadro de diálogo.") ).Center().EndLabel();
+	sizer.BeginLabel( LANG(DOXYCONF_EXTRA_LABEL,"El texto de este campo se agregarÃ¡ sin cambios en el\n"
+											    "Doxyfile. Puede utilizarlo para definir parÃ¡metros\n"
+											    "no contemplados en este cuadro de diÃ¡logo.") ).Center().EndLabel();
 	extra_conf = new wxTextCtrl(sizer.GetPanel(),wxID_ANY,m_doxygen_config->extra_conf,wxDefaultPosition,wxDefaultSize,wxTE_MULTILINE);
 	sizer.Add(extra_conf,sizers->BA10_Exp1);
 	sizer.Set();
@@ -114,7 +114,7 @@ wxPanel *mxDoxyDialog::CreateMorePanel (wxNotebook *notebook) {
 	CreatePanelAndSizer sizer(notebook);
 	
 	sizer.BeginCombo( LANG(DOXYCONF_LANG,"Idioma") )
-		.Add(LANG(DOXYCONF_LANG_ES,"Español"))
+		.Add(LANG(DOXYCONF_LANG_ES,"EspaÃ±ol"))
 		.Add(LANG(DOXYCONF_LANG_EN,"Ingles"))
 		.Select(m_doxygen_config->lang=="Spanish"?0:1)
 		.EndCombo(lang_ctrl);
@@ -125,7 +125,7 @@ wxPanel *mxDoxyDialog::CreateMorePanel (wxNotebook *notebook) {
 	sizer.BeginCheck( LANG(DOXYCONF_ENABLE_PREPROC,"Habilitar preprocesado") )
 		.Value(m_doxygen_config->preprocess).EndCheck(preprocess_ctrl);
 	
-	sizer.BeginCheck( LANG(DOXYCONF_EXTRA_PRIVATE,"Incluir métodos/atributos privados") )
+	sizer.BeginCheck( LANG(DOXYCONF_EXTRA_PRIVATE,"Incluir mÃ©todos/atributos privados") )
 		.Value(m_doxygen_config->extra_private).EndCheck(private_ctrl);
 	
 	sizer.BeginCheck( LANG(DOXYCONF_EXTRA_STATIC,"Incluir funciones/variables static") )
@@ -134,19 +134,19 @@ wxPanel *mxDoxyDialog::CreateMorePanel (wxNotebook *notebook) {
 	sizer.BeginCheck( LANG(DOXYCONF_ONLY_DOC_ENTITIES,"Extraer solo las entidades documentadas") )
 		.Value(m_doxygen_config->hideundocs).EndCheck(hideundocs_ctrl);
 	
-	sizer.BeginCheck( LANG(DOXYCONF_GENERATE_LATEX,"Generar documentación Latex") )
+	sizer.BeginCheck( LANG(DOXYCONF_GENERATE_LATEX,"Generar documentaciÃ³n Latex") )
 		.Value(m_doxygen_config->latex).EndCheck(latex_ctrl);
 	
-	sizer.BeginCheck( LANG(DOXYCONF_GENERATE_HTML,"Generar documentación HTML") )
+	sizer.BeginCheck( LANG(DOXYCONF_GENERATE_HTML,"Generar documentaciÃ³n HTML") )
 		.Value(m_doxygen_config->html).EndCheck(html_ctrl);
 	
-	sizer.BeginCheck( LANG(DOXYCONF_SHOW_NAV_TREE,"Mostrar arbol de navegación (para doc HTML)") )
+	sizer.BeginCheck( LANG(DOXYCONF_SHOW_NAV_TREE,"Mostrar arbol de navegaciÃ³n (para doc HTML)") )
 		.Value(m_doxygen_config->html_navtree).EndCheck(html_navtree_ctrl);
 	
-	sizer.BeginCheck( LANG(DOXYCONF_INCLUDE_SEARCH_ENGINE,"Incluir motor de búsquedas (para doc HTML)") )
+	sizer.BeginCheck( LANG(DOXYCONF_INCLUDE_SEARCH_ENGINE,"Incluir motor de bÃºsquedas (para doc HTML)") )
 		.Value(m_doxygen_config->html_searchengine).EndCheck(html_searchengine_ctrl);
 	
-	sizer.BeginCheck( LANG(DOXYCONF_USE_IN_QUICKHELP,"Utilizar en ayuda rápida") )
+	sizer.BeginCheck( LANG(DOXYCONF_USE_IN_QUICKHELP,"Utilizar en ayuda rÃ¡pida") )
 		.Value(m_doxygen_config->use_in_quickhelp).EndCheck(use_in_quickhelp_ctrl);
 	
 	sizer.Set();

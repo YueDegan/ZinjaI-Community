@@ -43,7 +43,7 @@ public:
 	} * event_listener;
 	void SetEventListener(EventListener *s);
 	
-	/// Cuando una inspeccion deja de ser valida, esta función elimina las hijas del arbol y del sistema de depuracion
+	/// Cuando una inspeccion deja de ser valida, esta funciÃ³n elimina las hijas del arbol y del sistema de depuracion
 	void DeleteChildrenInspections(int pos, bool destroy_root=false);
 	
 	// eventos generados por DebuggerInspection

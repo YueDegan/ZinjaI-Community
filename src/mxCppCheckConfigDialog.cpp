@@ -36,7 +36,7 @@ BEGIN_EVENT_TABLE(mxCppCheckConfigDialog,wxDialog)
 END_EVENT_TABLE()
 
 mxCppCheckConfigDialog::mxCppCheckConfigDialog(wxWindow *parent)
-	: mxDialog(parent, LANG(CPPCHECK_CONFIG_CAPTION,"Configuraci髇 de CppCheck") ),
+	: mxDialog(parent, LANG(CPPCHECK_CONFIG_CAPTION,"Configuraci贸n de CppCheck") ),
 	  project_cppcheck_config(project->GetCppCheckConfiguration(true))
 {
 	CreateSizer(this)
@@ -53,7 +53,7 @@ mxCppCheckConfigDialog::mxCppCheckConfigDialog(wxWindow *parent)
 wxPanel *mxCppCheckConfigDialog::CreateGeneralPanel(wxNotebook *notebook) {
 	CreatePanelAndSizer sizer(notebook);
 	
-	sizer.BeginCheck( LANG(CPPCHECK_COPY_FROM_CONFIG,"Copiar configuraci髇 (macros definidas) de las opciones del proyecto") )
+	sizer.BeginCheck( LANG(CPPCHECK_COPY_FROM_CONFIG,"Copiar configuraci贸n (macros definidas) de las opciones del proyecto") )
 		.Bind(m_binder,project_cppcheck_config->copy_from_config).Id(mxID_CPPCHECK_COPYCONFIG).EndCheck();
 		
 	sizer.BeginText( LANG(CPPCHECK_CONFIG_D,"  Configuraciones a verificar") )
@@ -70,7 +70,7 @@ wxPanel *mxCppCheckConfigDialog::CreateGeneralPanel(wxNotebook *notebook) {
 	sizer.BeginText( LANG(CPPCHECK_PLATFORM,"Verificaciones especificas de una plataforma") )
 		.Bind(m_binder,project_cppcheck_config->platform).Button(mxID_CPPCHECK_PLATFORM).EndText(platform);
 	
-	sizer.BeginText( LANG(CPPCHECK_STANDARD,"Verificaciones especificas de un est醤dar") )
+	sizer.BeginText( LANG(CPPCHECK_STANDARD,"Verificaciones especificas de un est谩ndar") )
 		.Bind(m_binder,project_cppcheck_config->standard).Button(mxID_CPPCHECK_STANDARD).EndText(standard);
 	
 	sizer.BeginText( LANG(CPPCHECK_SUPPRESS_IDS,"Supresiones") )
@@ -82,10 +82,10 @@ wxPanel *mxCppCheckConfigDialog::CreateGeneralPanel(wxNotebook *notebook) {
 	sizer.BeginCheck( LANG(CPPCHECK_INLINE_SUPPR,"Habilitar supresiones inline") )
 		.Bind(m_binder,project_cppcheck_config->inline_suppr).EndCheck();
 	
-	sizer.BeginCheck( LANG(CPPCHECK_PARALLELIZE,"Paralelizar ejecuci髇") )
+	sizer.BeginCheck( LANG(CPPCHECK_PARALLELIZE,"Paralelizar ejecuci贸n") )
 		.Bind(m_binder,project_cppcheck_config->parallelize).EndCheck();
 	
-	sizer.BeginCheck( LANG(CPPCHECK_SAVE,"Guardar esta configuraci髇 con el proyecto") )
+	sizer.BeginCheck( LANG(CPPCHECK_SAVE,"Guardar esta configuraci贸n con el proyecto") )
 		.Bind(m_binder,project_cppcheck_config->save_in_project).EndCheck();
 	
 	sizer.Set();

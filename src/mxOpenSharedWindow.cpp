@@ -32,7 +32,7 @@ mxOpenSharedWindow::mxOpenSharedWindow(wxWindow* parent, wxWindowID id, const wx
 	if (!g_share_manager) g_share_manager = new ShareManager();
 	
 	clients_list = new wxListBox(this,mxID_SHARE_CLIENTS_LIST,wxDefaultPosition, wxSize(200,150));
-	wxStaticText *help_text_1 = new wxStaticText(this,wxID_ANY,LANG(OPENSHARED_STEP_1,"1) Dirección de origen:"));
+	wxStaticText *help_text_1 = new wxStaticText(this,wxID_ANY,LANG(OPENSHARED_STEP_1,"1) DirecciÃ³n de origen:"));
 	hostname = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize);
 	wxBitmapButton *button_step_1 = new wxBitmapButton (this, mxID_SHARE_GET_LIST, *bitmaps->buttons.next);
 	

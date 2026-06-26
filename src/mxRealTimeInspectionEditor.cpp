@@ -37,7 +37,7 @@ mxRealTimeInspectionEditor::mxRealTimeInspectionEditor(const wxString &expressio
 	DebuggerInspection *di;
 	(di = DebuggerInspection::Create(expression,DIF_DONT_USE_HELPER,this,false))->Init();
 	if (di->GetDbiType()!=DIT_VARIABLE_OBJECT) {
-		mxMessageDialog(main_window,LANG(REALTIMEINSP_ERROR_CREATING_INSPECTION,"Ha ocurrido un error al registrar la inspecciÛn"))
+		mxMessageDialog(main_window,LANG(REALTIMEINSP_ERROR_CREATING_INSPECTION,"Ha ocurrido un error al registrar la inspecci√≥n"))
 			.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
 		Destroy(); return;
 	}
@@ -56,7 +56,7 @@ mxRealTimeInspectionEditor::mxRealTimeInspectionEditor(const wxString &expressio
 	scroll_win->SetSizer(sizer); this->SetSizer(out_sizer);
 	Layout(); Resize(false);
 	
-	// usamos un accelerator para F5, que ser· continuar o actualizar
+	// usamos un accelerator para F5, que ser√° continuar o actualizar
 	std::pair<int,int> shortcut = _menu_item_2(mnDEBUG,mxID_DEBUG_RUN)->GetFlagAndKeycode();
 	wxAcceleratorEntry aentry(shortcut.first,shortcut.second,mxID_DEBUG_RUN);
 	if (shortcut.second) this->SetAcceleratorTable( wxAcceleratorTable(1,&aentry) );

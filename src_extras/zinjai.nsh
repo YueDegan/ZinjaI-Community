@@ -95,10 +95,10 @@ SectionEnd
 
 ; Section descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "Entorno ZinjaI. Tamaño aproximado: 55 MB"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "Herramientas de compilacion, depuracion y otros GNU. Tamaño aproximado: 183 MB"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC04} "Archivos necesarios para compilar aplicaciones que utilicen Freeglut y/o Glew. Tamaño Aproximado: 6MB"
-;  !insertmacro MUI_DESCRIPTION_TEXT ${SEC05} "Código fuente del entorno. Tamaño aproximado: 20 MB"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "Entorno ZinjaI. TamaÃ±o aproximado: 55 MB"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "Herramientas de compilacion, depuracion y otros GNU. TamaÃ±o aproximado: 183 MB"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC04} "Archivos necesarios para compilar aplicaciones que utilicen Freeglut y/o Glew. TamaÃ±o Aproximado: 6MB"
+;  !insertmacro MUI_DESCRIPTION_TEXT ${SEC05} "CÃ³digo fuente del entorno. TamaÃ±o aproximado: 20 MB"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC01b} "Asociar fuentes (c,c++,cpp,cxx,h,h++,hpp,hxx) para abrir con ZinjaI"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 

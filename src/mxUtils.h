@@ -101,7 +101,7 @@ public:
 	//! Agrega comillas si la cadena tiene un espacio, coma o punto y coma, pero ademas mira que comilla usar (simple, doble o ambas)
 	static wxString QuotizeEx(const wxString &what);
 	
-	//! Agrega comillas simples a una linea de comandos, respetando las comillas anteriores si habÌa
+	//! Agrega comillas simples a una linea de comandos, respetando las comillas anteriores si hab√≠a
 	static wxString SingleQuotes(wxString what);
 	
 	static wxString EscapeString(wxString str, bool add_comillas=false);
@@ -120,7 +120,7 @@ public:
 	/** @brief Quita espacios del comienzo de una cadena **/
 	static wxString LeftTrim(wxString str);
 	
-	/// @brief Concatena una cadena en una linea reemplazando saltos de linea por "\\n" (y escapando las dem·s '\\')
+	/// @brief Concatena una cadena en una linea reemplazando saltos de linea por "\\n" (y escapando las dem√°s '\\')
 	static wxString Text2Line(const wxString &text);
 	/// @brief Divide una linea generada con Text2Line en una cadena en una cadena con varias lineas
 	static wxString Line2Text(const wxString &line);
@@ -141,7 +141,7 @@ public:
 	static bool XCopy(wxString src, wxString dst, bool ask=true, bool replace=false);
 	//! Ejecuta los comandos entre acentos de una cadena y los reemplaza por su salida (simi Makefile)
 	static wxString ExecComas(wxString where, wxString line);
-	//! Ejecuta un comando de forma sincrÛnica y devuelve en una cadena su salida (usar mxUT::GetOutput("") para limpiar el cache interno)
+	//! Ejecuta un comando de forma sincr√≥nica y devuelve en una cadena su salida (usar mxUT::GetOutput("") para limpiar el cache interno)
 	static wxString GetOutput(wxString command, bool also_error=false, bool use_cache=false);
 	//! Devuelve una cadena convertida a HTML
 	static wxString ToHtml(wxString text, bool full=false);

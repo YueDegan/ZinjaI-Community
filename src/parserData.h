@@ -583,8 +583,8 @@ struct pd_func { // funciones y metodos (las func no tienen por space una clase,
 	pd_file *file_def; // archivo donde se definio
 	int line_def; // linea donde se definio
 	pd_ref *ref_def; // la referencia que la apunta (dentro del archivo)
-	unsigned short props_def; // visibilidad/static/virtual/øcommon/etc?
-	unsigned short props_dec; // visibilidad/static/virtual/øcommon/etc?
+	unsigned short props_def; // visibilidad/static/virtual/‚îêcommon/etc?
+	unsigned short props_dec; // visibilidad/static/virtual/‚îêcommon/etc?
 	unsigned short properties;
 	wxString name; // nombre pelado
 	wxString proto; // prototipo completo

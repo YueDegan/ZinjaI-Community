@@ -51,7 +51,7 @@ mxBreakOptions::mxBreakOptions(BreakPointInfo *bpi)
 		count_text = nullptr;
 	}
 	sizer.BeginText( LANG(BREAKOPTS_CONDITION,"Condicion") ).Value(m_bpi->cond).EndText(cond_text);
-	sizer.BeginCombo( LANG(BREAKOPTS_ACTION,"Acción") )
+	sizer.BeginCombo( LANG(BREAKOPTS_ACTION,"AcciÃ³n") )
 		.Add(LANG(BREAKTOPS_ACTIONS_ALWAYS,"Detener siempre"))
 		.Add(LANG(BREAKTOPS_ACTIONS_ONCE,"Detener solo la primera vez"))
 		.Add(LANG(BREAKTOPS_ACTIONS_INSPECTIONS,"Solo actualizar inspecciones (no detener)"))
@@ -60,7 +60,7 @@ mxBreakOptions::mxBreakOptions(BreakPointInfo *bpi)
 		sizer.BeginLabel( LANG(BREAKOPTS_ERROR_PLACING_BREAKPOINT,"Error al colocar breakpoint") ).EndLabel();
 	if (m_bpi->gdb_status==BPS_ERROR_CONDITION)
 		sizer.BeginLabel( LANG(BREAKOPTS_INVALID_CONDITION,"La condicion actual no es valida") ).EndLabel();
-	sizer.BeginText( LANG(BREAKOPTS_ANNTOATION,"Anotación") )
+	sizer.BeginText( LANG(BREAKOPTS_ANNTOATION,"AnotaciÃ³n") )
 		.MultiLine().Value(m_bpi->annotation).EndText(annotation_text);
 	
 	sizer.BeginBottom().Help().Ok().Cancel().EndBottom(this);
@@ -109,8 +109,8 @@ void mxBreakOptions::OnOkButton(wxCommandEvent &evt) {
 	}
 	if (m_bpi->gdb_status==BPS_ERROR_CONDITION) {
 		if ( mxMessageDialog(this,LANG(BREAKOPTS_ERROR_SETTING_CONDITION,""
-									   "La condición ingresada no es correcta.\n"
-									   "¿Colocar el punto de control incondicionalmente?."))
+									   "La condiciÃ³n ingresada no es correcta.\n"
+									   "Â¿Colocar el punto de control incondicionalmente?."))
 				.Title(LANG(GENERAL_ERROR,"Advertencia")).IconError().ButtonsYesNo().Run().no )
 		{
 			return;

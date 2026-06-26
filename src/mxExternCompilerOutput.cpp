@@ -28,7 +28,7 @@ mxExternCompilerOutput::mxExternCompilerOutput(wxWindow *compiler_panel)
 	wxTreeCtrl::AssignImageList(imglist);
 	
 	m_last_cmd = m_root = wxTreeCtrl::AddRoot("Extern Toolchain Root");
-	m_status = wxTreeCtrl::AppendItem(m_root,LANG(CAPTION_COMPILER_OUTPUT,"Resultados de la Compilación"),Status);
+	m_status = wxTreeCtrl::AppendItem(m_root,LANG(CAPTION_COMPILER_OUTPUT,"Resultados de la CompilaciÃ³n"),Status);
 }
 
 void mxExternCompilerOutput::AddLine (mxExternCompilerOutput::Type t, const wxString &message) {
@@ -91,7 +91,7 @@ void mxExternCompilerOutput::OnViewFullOutput (wxCommandEvent & evt) {
 
 void mxExternCompilerOutput::Clear ( ) {
 	m_full_output.Clear();
-	wxTreeCtrl::SetItemText(m_status,LANG(CAPTION_COMPILER_OUTPUT,"Resultados de la Compilación"));
+	wxTreeCtrl::SetItemText(m_status,LANG(CAPTION_COMPILER_OUTPUT,"Resultados de la CompilaciÃ³n"));
 	while(true) {
 		wxTreeItemIdValue cookie;
 		wxTreeCtrl::GetFirstChild(m_root,cookie);

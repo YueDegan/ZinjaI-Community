@@ -7,7 +7,7 @@
 #include "mxSourceParsingAux.h"
 
 #define GenerateFunction_error(retval) { \
-	mxMessageDialog(main_window,LANG(CODE_CANNOT_GENERATE_FUNCTION,"No se pudo determinar el prototipo de la función.")) \
+	mxMessageDialog(main_window,LANG(CODE_CANNOT_GENERATE_FUNCTION,"No se pudo determinar el prototipo de la funciÃ³n.")) \
 		.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run(); return retval; }
 
 static int GetScopeStart(mxSource * src, int pos) {

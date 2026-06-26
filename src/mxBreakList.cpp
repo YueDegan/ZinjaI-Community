@@ -36,7 +36,7 @@ mxBreakList::mxBreakList() : wxDialog(main_window, wxID_ANY, LANG(BREAKLIST_CAPT
 	grid->SetColLabelValue(BL_COL_ENABLE,LANG(BREAKLIST_STATE,"Estado"));
 	grid->SetColLabelValue(BL_COL_HIT,LANG(BREAKLIST_COUNTER,"Conteo"));
 	grid->SetColLabelValue(BL_COL_COND,LANG(BREAKLIST_CONDITION,"Condicion"));
-	grid->SetColLabelValue(BL_COL_ANNOTATION,LANG(BREAKOPTS_ANNTOATION,"Anotación"));
+	grid->SetColLabelValue(BL_COL_ANNOTATION,LANG(BREAKOPTS_ANNTOATION,"AnotaciÃ³n"));
 	grid->SetColLabelAlignment(wxALIGN_CENTRE,wxALIGN_CENTRE);
 	grid->SetRowLabelSize(0);
 	grid->SetSelectionMode(wxGrid::wxGridSelectRows);

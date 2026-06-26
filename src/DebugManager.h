@@ -26,7 +26,7 @@ enum DEBUG_STATUS { // stages of a debug session
 };
 
 
-/// estructura para guardar la configuración del manejo de una señal en gdb (ver Debug::GetSignals)
+/// estructura para guardar la configuraciÃ³n del manejo de una seÃ±al en gdb (ver Debug::GetSignals)
 struct SignalHandlingInfo {
 	wxString name, description;
 	bool pass,print,stop;
@@ -78,7 +78,7 @@ public:
 };
 
 /**
-* @brief Administra la comunicación entre la interfaz y el depurador gdb
+* @brief Administra la comunicaciÃ³n entre la interfaz y el depurador gdb
 **/
 class DebugManager {
 	friend class myBTEventHandler;
@@ -103,7 +103,7 @@ public:
 
 private:
 	long gdb_version; ///< version de gdb, se consulta al iniciar la depuracion, si es 7.6 por ej, guarda 7006
-	bool should_pause; ///< puede que al hacer click en la pausa no se pause realmente (que la señal que envía no llegue a término, no se por qué, pero pasa cuando hay un breakpoint de los que solo actualizan la tabla de inspecciones)
+	bool should_pause; ///< puede que al hacer click en la pausa no se pause realmente (que la seÃ±al que envÃ­a no llegue a tÃ©rmino, no se por quÃ©, pero pasa cuando hay un breakpoint de los que solo actualizan la tabla de inspecciones)
 	bool has_symbols; ///< si cuando el debugger no inicia es porque no el ejecutable no tiene info de depuracion se baja esta bandera
 	bool recording_for_reverse; ///< indica si se ejecuto el comando "record" para habilitar luega la ejecucion hacia atras
 	bool attached; ///< indica si el programa se inicio en el depurador, o el depurador es "attacheo" mas tarde, para saber como salir
@@ -264,10 +264,10 @@ public:
 	/** @brief Inicia el depurador para explorar un archivo core de GNU/Linux **/
 	bool LoadCoreDump(wxString core_file, mxSource *source);
 	
-	/** @brief Genera un core dump. Se utiliza durante la depuración para guardar un estado en una pausa. **/
+	/** @brief Genera un core dump. Se utiliza durante la depuraciÃ³n para guardar un estado en una pausa. **/
 	bool SaveCoreDump(wxString core_file);
 	
-	/** @brief Resetea los atributos de estado para comenzar un nuevo proceso de depuración **/
+	/** @brief Resetea los atributos de estado para comenzar un nuevo proceso de depuraciÃ³n **/
 	void ResetDebuggingStuff();
 	
 	/** @brief Devuelve la salida de un comando sin los agregados de mi, para usar con las inspecciones-macro **/

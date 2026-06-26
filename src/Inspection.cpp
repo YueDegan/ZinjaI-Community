@@ -43,7 +43,7 @@ void DebuggerInspection::UpdateAllVO(const wxString &voname) {
 	wxString s = debug->SendCommand("-var-update --all-values ",voname).result;
 	if (!s.StartsWith("^done")) there_was_an_error_evaluating_an_inspecction=true;
 	else for(unsigned int i=6,l=s.Len();i<l-4;i++) { // empieza en 6 porque primero dice algo como "^done,...."
-		if (s[i]=='f' && s[i+1]=='r' && s[i+2]=='a' && s[i+3]=='m' && s[i+4]=='e' && s[i+5]=='=') { // hubo un problema al evaluar una inspecci髇 que requer韆 c骴igo
+		if (s[i]=='f' && s[i+1]=='r' && s[i+2]=='a' && s[i+3]=='m' && s[i+4]=='e' && s[i+5]=='=') { // hubo un problema al evaluar una inspecci贸n que requer铆a c贸digo
 			// la salida de gdb sera algo como: 
 			//		^done,changelist=[reason="signal-received",signal-name="SIGTRAP",signal-meaning= // indica que revento
 			//		"Trace/breakpoint trap",frame={..,args=[{name="...",value="..."},...},...,       // tipo backtrace, esos name= no son inspecciones
@@ -116,12 +116,12 @@ void DebuggerInspection::UpdateAllVO(const wxString &voname) {
 
 void DebuggerInspection::ErrorOnEvaluation() {
 	mxMessageDialog(main_window,LANG(INSPECTION_ERROR_ON_OPERATOR_EVALUATION,""
-								"Ha ocurrido un error durante la evaluaci髇 de una o m醩 inspecciones.\n"
-								"Puede deberse a que la evaluaci髇 requiera la ejecuci髇 de c骴igo (por\n"
-								"ejemplo cuando involucra la sobrecarga de un operador) y esta ejecuci髇\n"
-								"se haya interrumpido por un error o por una se馻l. En ese caso, el stack\n"
+								"Ha ocurrido un error durante la evaluaci贸n de una o m谩s inspecciones.\n"
+								"Puede deberse a que la evaluaci贸n requiera la ejecuci贸n de c贸digo (por\n"
+								"ejemplo cuando involucra la sobrecarga de un operador) y esta ejecuci贸n\n"
+								"se haya interrumpido por un error o por una se帽al. En ese caso, el stack\n"
 								"puede haber cambiado (ver trazado inverso).\n\n"
-								"Si el problema persiste, limpie la tabla de inspecciones y reinicie la\ndepuraci髇."))
+								"Si el problema persiste, limpie la tabla de inspecciones y reinicie la\ndepuraci贸n."))
 		.Title(LANG(GENERAL_ERROR,"Error")).IconWarning().Run();		
 	debug->UpdateBacktrace(false);
 }
@@ -130,7 +130,7 @@ bool DebuggerInspection::Break(SingleList<DebuggerInspection*> &children, bool s
 	__debug_log_method__;
 	if (!debug->CanTalkToGDB()) return false;
 	
-	// auxiliares para escribir la expresi髇 final a partir de la expresi髇 base y los nombre de los hijos
+	// auxiliares para escribir la expresi贸n final a partir de la expresi贸n base y los nombre de los hijos
 	wxString base_exp = RewriteExpressionForBreaking(expression);
 	bool is_array = IsArray(); wxString base_pre = is_array?"[":".", base_post=is_array?"]":"";
 	
@@ -157,7 +157,7 @@ bool DebuggerInspection::Break(SingleList<DebuggerInspection*> &children, bool s
 					i++;
 				if (i==l || s[i-1]==']' || s[i]=='}') break; else i++;
 			}
-			// por cada hijo, crea una nueva inspecci髇 dependiente
+			// por cada hijo, crea una nueva inspecci贸n dependiente
 			DebuggerInspection *di = new DebuggerInspection(this,c.name,c.exp,c.type,c.num_children,(improve_children_expressions?DIF_AUTO_IMPROVE:0));
 			di_children++;
 			all_inspections.Add(di);
@@ -245,7 +245,7 @@ void myUserHelperDIEH::OnDIValueChanged (DebuggerInspection * di) {
 }
 
 /**
-* @brief intenta hacer el match entre el tipo de una inspecci髇 y un patr髇 configurado en la lista de mejoras autom醫icas
+* @brief intenta hacer el match entre el tipo de una inspecci贸n y un patr贸n configurado en la lista de mejoras autom谩ticas
 *
 * Ejemplo: si pattern="std::list<${TYPE}, std::allocator<${TYPE}> >", type="std::list<int, std::alocator<int> >"
 * new_expr=">plist ${EXP} ${TYPE}" y expr="lista1", la funcion modificara new_expr a ">plist lista1 int" 
@@ -325,9 +325,9 @@ bool DebuggerInspection::TryToImproveExpression (wxString type, wxString &new_ex
 wxString DebuggerInspection::GetUserStatusText (DEBUG_INSPECTION_MESSAGE type) {
 	switch(type) {
 	case DIMSG_PENDING:
-		return LANG(INSPECTION_MSG_PENDING,"<<< evaluaci髇 pendiente >>>");
+		return LANG(INSPECTION_MSG_PENDING,"<<< evaluaci贸n pendiente >>>");
 	case DIMSG_OUT_OF_SCOPE:
-		return LANG(INSPECTION_MSG_PENDING_OUT_OF_SCOPE,"<<< fuera de 醡bito >>>");
+		return LANG(INSPECTION_MSG_PENDING_OUT_OF_SCOPE,"<<< fuera de 谩mbito >>>");
 	case DIMSG_ERROR:
 		return LANG(INSPECTION_MSG_ERROR,"<<< error >>>");
 	}

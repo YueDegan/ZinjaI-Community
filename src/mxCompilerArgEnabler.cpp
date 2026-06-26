@@ -16,13 +16,13 @@ mxCompilerArgEnabler::mxCompilerArgEnabler(wxWindow *parent, wxString title,
 {
 	CreateSizer sizer(this);
 	if (project && current_toolchain.IsExtern()) {
-		wxString alt_text = LANG3(COMP_ARG_EXTERN,"ZinjaI solo puede ajustar autom醫icamente los argumentos\n"
-								                  "de compilaci髇 cuando se utiliza un toolchain basado\n"
+		wxString alt_text = LANG3(COMP_ARG_EXTERN,"ZinjaI solo puede ajustar autom谩ticamente los argumentos\n"
+								                  "de compilaci贸n cuando se utiliza un toolchain basado\n"
 								                  "directamente enn LLV-CLANG o GCC. Su proyecto utiliza un\n"
-									 			  "toolchain externo (<{1}>), por lo que deber醆n"
-								                  "modificar los argumentos de compilaci髇 en el archivo de\n"
-												  "configuraci髇 que corresponda a dicho toolchain.\n\n"
-								                  "Argumentos adicionales para los pasos de compilaci髇 son:\n"
+									 			  "toolchain externo (<{1}>), por lo que deber谩\n"
+								                  "modificar los argumentos de compilaci贸n en el archivo de\n"
+												  "configuraci贸n que corresponda a dicho toolchain.\n\n"
+								                  "Argumentos adicionales para los pasos de compilaci贸n son:\n"
 								                  "<{2}>\n\n"
 								                  "Argumentos adicionales para los pasos de enlazado son:\n"
 								                  "<{3}>\n",current_toolchain.file,comp_arg,m_link_arg);

@@ -30,7 +30,7 @@ class widgetDisabler;
 class widgetBinder;
 
 /**
-* @brief Funciones de utilería para colocar controles en los cuadros de configuracion
+* @brief Funciones de utilerÃ­a para colocar controles en los cuadros de configuracion
 *
 * http://cucarachasracing.blogspot.com.ar/2016/03/describiendo-los-cuadros-de-dialogo-de.html
 **/
@@ -43,7 +43,7 @@ public:
 	
 	enum OnClosePolicy { OCP_NULL, OCP_HIDE, OCP_DESTROY };
 	
-	// varias funciones deprecadas, que eliminaré cuando termine de reemplazar 
+	// varias funciones deprecadas, que eliminarÃ© cuando termine de reemplazar 
 	// todos sus usos por las nuevas interfaces que agrega esta clase
 	static wxCheckBox *AddCheckBox (wxBoxSizer *sizer, wxWindow *panel, wxString text, bool value=false, wxWindowID id = wxID_ANY,bool margin=false);
 	static wxTextCtrl *AddTextCtrl (wxBoxSizer *sizer, wxWindow *panel, wxString text, wxString value="", int id=wxID_ANY);

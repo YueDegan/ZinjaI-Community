@@ -49,7 +49,7 @@ mxMultipleFileChooser::mxMultipleFileChooser(wxString apath, bool from_new_proje
 	awhere.Add(LANG(MAINW_PT_HEADERS,"Cabeceras"));
 	awhere.Add(LANG(MAINW_PT_OTHERS,"Otros"));
 	awhere.Add(LANG(MAINW_PT_AUTO,"<determinar por extension>"));
-	cmb_where = mxDialog::AddComboBox(sizer,this,LANG(MULTIFILE_WHERE,"Agregar en categoría"),awhere,3);
+	cmb_where = mxDialog::AddComboBox(sizer,this,LANG(MULTIFILE_WHERE,"Agregar en categorÃ­a"),awhere,3);
 	
 	wxBoxSizer *bottomSizer = new wxBoxSizer(wxHORIZONTAL);
 	
@@ -87,7 +87,7 @@ void mxMultipleFileChooser::OnButtonOk(wxCommandEvent &event) {
 	int nn=0; for (int i=0;i<n;i++) if (list->IsChecked(i)) nn++;
 	if (!m_from_new_project_wizard) {
 		mxMessageDialog::mdAns x =
-			mxMessageDialog(this,LANG1(MULTIFILE_CONFIRM_ADD,"¿Desea agregar <{1}> archivos al proyecto?",wxString()<<nn))
+			mxMessageDialog(this,LANG1(MULTIFILE_CONFIRM_ADD,"Â¿Desea agregar <{1}> archivos al proyecto?",wxString()<<nn))
 				.Title(LANG(GENERAL_CONFIRM,"Confirmacion")).ButtonsYesNo().IconQuestion().Run();
 		if (x.no) return;
 	}

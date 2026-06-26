@@ -12,7 +12,7 @@ BEGIN_EVENT_TABLE(mxOSD, wxDialog)
 	EVT_PAINT (mxOSD::OnPaint)
 	EVT_BUTTON(wxID_CANCEL,mxOSD::OnCancel)
 	EVT_TIMER(mxID_TIMER_OSD, mxOSD::OnTimer)
-	EVT_SIZE(mxOSD::OnResize) // el resize por default me cambia el tamaño del cancel button
+	EVT_SIZE(mxOSD::OnResize) // el resize por default me cambia el tamaÃ±o del cancel button
 END_EVENT_TABLE()
 	
 wxFont *mxOSD::font = nullptr;
@@ -138,7 +138,7 @@ void mxOSD::Execute(wxString command, wxString message, std::function<void(int)>
 	mxOSDProcess *osd_proc = new mxOSDProcess(aon_end);
 	osd_proc->Redirect();
 	osd_proc->pid = mxExecute(command, /*wxEXEC_NODISABLE|*/wxEXEC_ASYNC|wxEXEC_MAKE_GROUP_LEADER,osd_proc); // el wxEXEC_MAKE_GROUP_LEADER es para que funcione el wxKILL_CHILDREN en linux
-	if (!osd_proc->pid) { delete osd_proc; aon_end(-1); return; } // si no se lanzó
+	if (!osd_proc->pid) { delete osd_proc; aon_end(-1); return; } // si no se lanzÃ³
 	
 	osd_proc->Detach();
 	auto lambda = [osd_proc](){ wxProcess::Kill(osd_proc->pid,wxSIGKILL,wxKILL_CHILDREN); osd_proc->cancelled=true; };

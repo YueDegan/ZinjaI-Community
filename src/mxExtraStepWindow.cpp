@@ -19,7 +19,7 @@ BEGIN_EVENT_TABLE(mxExtraStepWindow, wxDialog)
 END_EVENT_TABLE()
 
 mxExtraStepWindow::mxExtraStepWindow(wxWindow *parent, project_configuration *conf, compile_extra_step *astep) 
-	: mxDialog(parent, LANG(EXTRASTEP_CAPTION,"Paso de Compilación Personalizado") ) 
+	: mxDialog(parent, LANG(EXTRASTEP_CAPTION,"Paso de CompilaciÃ³n Personalizado") ) 
 {
 	configuration=conf;
 	step=astep;

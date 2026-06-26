@@ -26,7 +26,7 @@ END_EVENT_TABLE()
 mxBacktraceGrid::mxBacktraceGrid(wxWindow *parent):mxGrid(parent,BG_COLS_COUNT,wxID_ANY,wxSize(400,300)) {
 	m_prev_cant_levels = 0; m_current_selection = -1;
 	mxGrid::InitColumn(BG_COL_LEVEL,LANG(BACKTRACE_LEVEL,"Nivel"),10);
-	mxGrid::InitColumn(BG_COL_FUNCTION,LANG(BACKTRACE_FUNCTION,"Función"),19);
+	mxGrid::InitColumn(BG_COL_FUNCTION,LANG(BACKTRACE_FUNCTION,"FunciÃ³n"),19);
 	mxGrid::InitColumn(BG_COL_FILE,LANG(BACKTRACE_FILE,"Archivo"),21);
 	mxGrid::InitColumn(BG_COL_LINE,LANG(BACKTRACE_LINE,"Linea"),10);
 	mxGrid::InitColumn(BG_COL_ARGS,LANG(BACKTRACE_ARGS,"Argumentos"),36);
@@ -185,7 +185,7 @@ void mxBacktraceGrid::OnCellPopupMenu(int row, int col) {
 		menu.Append(mxID_BACKTRACE_GOTO_POS,wxString(LANG(BACKTRACE_GOTO_PRE,"Ir a "))+GetCellValue(selected_row,BG_COL_FILE)+LANG(BACKTRACE_GOTO_POST," : ")+GetCellValue(selected_row,BG_COL_LINE));
 		if (!debug->IsDebugging() || debug->CanTalkToGDB()) {
 			menu.Append(mxID_BACKTRACE_ADD_FILE_TO_BLACKLIST,LANG(BACKTRACE_BLACKLIST_THIS_FILE,"Evitar detenerse este fuente (para step in)"));
-			menu.Append(mxID_BACKTRACE_ADD_FUNCTION_TO_BLACKLIST,LANG(BACKTRACE_BLACKLIST_THIS_FUNCTION,"Evitar detenerse esta función (para step in)"));
+			menu.Append(mxID_BACKTRACE_ADD_FUNCTION_TO_BLACKLIST,LANG(BACKTRACE_BLACKLIST_THIS_FUNCTION,"Evitar detenerse esta funciÃ³n (para step in)"));
 		}
 	}
 	this->SetGridCursor(selected_row,col);

@@ -91,7 +91,7 @@ mxColoursEditor::mxColoursEditor(wxWindow *aparent)
 	wxStaticText *helpt=new wxStaticText(this,wxID_ANY,LANG(COLORS_HELP,""
 		"Puede ingresar los colores con formato HTML o utilizando el boton de "
 		"los tres punto para inciar un selector grafico. El formato html es \"#ABCDEF\" "
-		"donde AB, CD y EF son los valores en notación hexadecimal para R, G y B."));
+		"donde AB, CD y EF son los valores en notaciÃ³n hexadecimal para R, G y B."));
 	helpt->SetMinSize(wxSize(10,-1));
 	mySizer->Add(helpt,sizers->BA5_Exp0);
 	mySizer->Add(scroll,sizers->BA5_Exp1);

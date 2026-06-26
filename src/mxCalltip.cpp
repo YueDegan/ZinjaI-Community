@@ -114,7 +114,7 @@ void mxCalltip::SetArg (int cur_arg) {
 		if (entries[i].len>max_len) { 
 			max_len=entries[i].len; max_i=i;
 		}
-	// obtener tamaño de letras para calcular el tamaño de la ventana y la longitud de las lineas
+	// obtener tamaÅ†o de letras para calcular el tamaÅ†o de la ventana y la longitud de las lineas
 	my_font.SetWeight(wxFONTWEIGHT_BOLD); 
 	wxMemoryDC dc; dc.SetFont(my_font);
 	wxSize sz = dc.GetTextExtent(entries[max_i].line);
@@ -136,7 +136,7 @@ void mxCalltip::SetArg (int cur_arg) {
 	if (cant_lines==0) cant_lines=max_len=1;
 	// redimensionar acorde a lo que se conto, y controlar que no se salga de la pantalla 
 	// (delta_char!=0 indica que es para el autocompletado)
-	// (como no se sabe el tamaño de la pantalla, se asume de 0,0 hasta la esquina inferior derecha de main_window)
+	// (como no se sabe el tamaÅ†o de la pantalla, se asume de 0,0 hasta la esquina inferior derecha de main_window)
 	int delta_w=0;
 	if (delta_chars) {
 		int vscrool_x = wxSystemSettings::GetMetric(wxSYS_VSCROLL_X);

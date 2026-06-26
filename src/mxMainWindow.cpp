@@ -695,9 +695,9 @@ void mxMainWindow::OnProjectTreePopup(wxTreeEvent &event) {
 		project_tree.selected_parent=project_tree.selected_item;
 		menu.Append(mxID_PROJECT_POPUP_OPEN_ALL, LANG(MAINW_PROJECT_FILE_POPUP_OPEN_ALL,"Abrir &Todos"));
 		menu.Append(mxID_PROJECT_POPUP_ADD, LANG(MAINW_PROJECT_FILE_POPUP_ADD,"&Agregar Archivo..."));
-		menu.Append(mxID_PROJECT_POPUP_ADD_MULTI, LANG(MAINW_PROJECT_FILE_POPUP_ADD_MULTI,"&Agregar Múltiples Archivos..."));
+		menu.Append(mxID_PROJECT_POPUP_ADD_MULTI, LANG(MAINW_PROJECT_FILE_POPUP_ADD_MULTI,"&Agregar MÃºltiples Archivos..."));
 	} else {
-		PopulateProjectFilePopupMenu(menu,project->files.FindFromItem(project_tree.selected_item),false); // el if debería ser innecesario en este punto
+		PopulateProjectFilePopupMenu(menu,project->files.FindFromItem(project_tree.selected_item),false); // el if deberÃ­a ser innecesario en este punto
 	}	
 	menu.AppendSeparator();
 	menu.AppendCheckItem(mxID_PROJECT_POPUP_TOGGLE_FULLPATH, LANG(MAINW_PROJECT_FILE_POPUP_TOGGLE_FULL_PATH_ON,"Mostrar rutas relativas completas"))
@@ -709,7 +709,7 @@ void mxMainWindow::OnProjectTreePopup(wxTreeEvent &event) {
 void mxMainWindow::OnCompilerTreePopup(wxTreeEvent &event) {
 	mxHidenPanelIgnoreGuard ignore_autohide;
 	wxMenu menu("");
-	menu.Append(mxID_COMPILER_POPUP_FULL, LANG(MAINW_OPEN_LAST_COMPILER_OUTPUT,"Abrir última salida"));
+	menu.Append(mxID_COMPILER_POPUP_FULL, LANG(MAINW_OPEN_LAST_COMPILER_OUTPUT,"Abrir Ãºltima salida"));
 	
 	auto *comp_data = compiler_tree.treeCtrl->GetItemData(event.GetItem());
 	if (comp_data) menu.Append(mxID_COMPILER_POPUP_COPY, LANG(MAINW_COPY_ERROR_MESSAGE,"Copiar mensaje de error"));
@@ -724,7 +724,7 @@ void mxMainWindow::OnCompilerTreePopup(wxTreeEvent &event) {
 
 void mxMainWindow::OnCompilerTreeToggleUnSTD(wxCommandEvent &event) {
 	config->Init.beautify_compiler_errors = !config->Init.beautify_compiler_errors;
-	mxMessageDialog(this,LANG(MAINW_REQUIRES_RECOMPILATION,"Los cambios tendrán efecto a partir de la próxima compilación")).IconInfo().ButtonsOk().Run();
+	mxMessageDialog(this,LANG(MAINW_REQUIRES_RECOMPILATION,"Los cambios tendrÃ¡n efecto a partir de la prÃ³xima compilaciÃ³n")).IconInfo().ButtonsOk().Run();
 }
 
 void mxMainWindow::OnCompilerTreeCopy(wxCommandEvent &event) {
@@ -1180,14 +1180,14 @@ void mxMainWindow::OnSelectError (wxTreeEvent &event) {
 	NavigationHistory::MaskGuard nhg;
 	// ver si es alguno de los mensajes de zinjai
 	wxString item_text=(compiler_tree.treeCtrl->GetItemText(event.GetItem()));
-	if (item_text==LANG(MAINW_WARNING_NO_EXCUTABLE_PERMISSION,"El binario no tiene permisos de ejecución.")) {
+	if (item_text==LANG(MAINW_WARNING_NO_EXCUTABLE_PERMISSION,"El binario no tiene permisos de ejecuciÃ³n.")) {
 		LoadInQuickHelpPanel(mxFN::Join(config->Help.guihelp_dir,"zerror_noexecperm.html"),false); return;
-	} else if (item_text.EndsWith(LANG(PROJMNGR_FUTURE_SOURCE_POST," tenia fecha de modificación en el futuro. Se reemplazo por la fecha actual."))) {
+	} else if (item_text.EndsWith(LANG(PROJMNGR_FUTURE_SOURCE_POST," tenia fecha de modificaciÃ³n en el futuro. Se reemplazo por la fecha actual."))) {
 		LoadInQuickHelpPanel(mxFN::Join(config->Help.guihelp_dir,"zerror_futuretimestamp.html"),false); return;
 	} else if (item_text==LANG(PROJMNGR_MANIFEST_NOT_FOUND,"No se ha encontrado el archivo manifest.xml.")) {
 		LoadInQuickHelpPanel(mxFN::Join(config->Help.guihelp_dir,"zerror_missingiconmanifest.html"),false); return;
-	} else if (project && item_text.StartsWith(LANG(MAINW_COMPILATION_CUSTOM_STEP_ERROR,"Error al ejecutar paso de compilación personalizado: "))) {
-		int n = wxString(LANG(MAINW_COMPILATION_CUSTOM_STEP_ERROR,"Error al ejecutar paso de compilación personalizado: ")).Len();
+	} else if (project && item_text.StartsWith(LANG(MAINW_COMPILATION_CUSTOM_STEP_ERROR,"Error al ejecutar paso de compilaciÃ³n personalizado: "))) {
+		int n = wxString(LANG(MAINW_COMPILATION_CUSTOM_STEP_ERROR,"Error al ejecutar paso de compilaciÃ³n personalizado: ")).Len();
 		wxString custom_step_name = item_text.Mid(n); 
 		mxProjectConfigWindow *pwin = new mxProjectConfigWindow(this);
 		pwin->SelectCustomStep(custom_step_name);
@@ -1203,8 +1203,8 @@ void mxMainWindow::OnSelectError (wxTreeEvent &event) {
 				mxMessageDialog::mdAns ans = 
 					mxMessageDialog(main_window,LANG1(MAINW_SAVE_LINK_ERROR_TRUNCATED_FILE,""
 													  "Este error puede deberse a compilaciones interrumpidas, o a la presencia\n"
-													  "de objetos compilados en otros sistemas. Si este fuera el caso, podría\n"
-													  "solucionarse simplemente recompilando el fuente asociado. ¿Desea recompilar\n"
+													  "de objetos compilados en otros sistemas. Si este fuera el caso, podrÃ­a\n"
+													  "solucionarse simplemente recompilando el fuente asociado. Â¿Desea recompilar\n"
 													  "\"<{1}>\" ahora?",fi->GetRelativePath()))
 						.Title(fi->GetRelativePath()).ButtonsYesNo().IconQuestion().Run();
 				if (ans.yes) { AuxCompileOne(*fi); return; }
@@ -1419,7 +1419,7 @@ void mxMainWindow::OnNotebookPageClose(wxAuiNotebookEvent& event) {
 			mxMessageDialog(main_window,LANG(MAINW_ASK_CLOSE_SHARED,""
 											 "El archivo esta siendo compartido con modificaciones.\n"
 											 "Si lo cierra dejara de estar disponible.\n"
-											 "¿Realmente desea cerrar el archivo?"))
+											 "Â¿Realmente desea cerrar el archivo?"))
 				.Check1(LANG(MAINW_SHARE_AFTER_CLOSE,"Continuar compartiendo (\"sin modificaciones\") despues de cerrarlo."),false)
 				.Title(source->page_text).ButtonsYesNo().Run();
 		if (ans.yes) {
@@ -1658,7 +1658,7 @@ wxPanel* mxMainWindow::CreateCompilerTree() {
 	imglist->Add(bitmaps->GetBitmap(tdir+"co_project_warning.png"));
 	compiler_tree.treeCtrl->AssignImageList(imglist);
 	
-	compiler_tree.root = compiler_tree.treeCtrl->AddRoot("Resultados de la Compilación:", 0);
+	compiler_tree.root = compiler_tree.treeCtrl->AddRoot("Resultados de la CompilaciÃ³n:", 0);
 	wxArrayTreeItemIds items;
 	compiler_tree.state = compiler_tree.treeCtrl->AppendItem(compiler_tree.root, "ZinjaI",2);
 	compiler_tree.errors = compiler_tree.treeCtrl->AppendItem(compiler_tree.root, LANG(MAINW_CT_ERRORS,"Errores"), 0);
@@ -1721,7 +1721,7 @@ void mxMainWindow::OnProcessTerminate (wxProcessEvent& event) {
 	
 	// si es uno interrumpido adrede, liberar memoria y no hacer nada mas
 	if (compile_and_run->killed) { 
-		SetCompilingStatus(LANG(MAINW_STATUS_RUN_FINISHED,"Ejecución Finalizada"));
+		SetCompilingStatus(LANG(MAINW_STATUS_RUN_FINISHED,"EjecuciÃ³n Finalizada"));
 		delete compile_and_run; return;
 	}
 
@@ -1729,7 +1729,7 @@ void mxMainWindow::OnProcessTerminate (wxProcessEvent& event) {
 	if (compile_and_run->compiling) { // si termino la compilacion
 		compiler->ParseCompilerOutput(compile_and_run,event.GetExitCode()==0);
 	} else { // si termino la ejecucion
-		SetCompilingStatus(LANG(MAINW_STATUS_RUN_FINISHED,"Ejecución Finalizada"));
+		SetCompilingStatus(LANG(MAINW_STATUS_RUN_FINISHED,"EjecuciÃ³n Finalizada"));
 		if (compile_and_run->valgrind_cmd.Len()) ShowValgrindPanel(mxVO_VALGRIND,mxFN::Join(config->temp_dir,"valgrind.out"));
 		delete compile_and_run->process;
 		delete compile_and_run;
@@ -1755,7 +1755,7 @@ void mxMainWindow::StartExecutionStuff (compile_and_run_struct_single *compile_a
 		if (compile_and_run->compiling)
 			SetCompilingStatus(LANG(MAINW_COULDNOT_LAUNCH_PROCESS,"No se pudo lanzar el proceso"));
 		else
-			SetCompilingStatus(LANG(MAINW_COULDNOT_RUN,"No se pudo lanzar la ejecución!"));
+			SetCompilingStatus(LANG(MAINW_COULDNOT_RUN,"No se pudo lanzar la ejecuciÃ³n!"));
 		delete compile_and_run;
 		return;
 	}
@@ -1864,7 +1864,7 @@ void mxMainWindow::RunSource (mxSource *source) {
 #endif
 	
 	wxString command(config->Files.terminal_command);
-	command.Replace("${TITLE}",LANG(GENERA_CONSOLE_CAPTION,"ZinjaI - Consola de Ejecucion")); // NO USAR ACENTOS, PUEDE ROMER EL X!!!! (me daba un segfault en la libICE al poner el ó en EjeuciÓn)
+	command.Replace("${TITLE}",LANG(GENERA_CONSOLE_CAPTION,"ZinjaI - Consola de Ejecucion")); // NO USAR ACENTOS, PUEDE ROMER EL X!!!! (me daba un segfault en la libICE al poner el Ã³ en EjeuciÃ“n)
 	if (command.Len()!=0) {
 		if (command==" ") 
 			command="";
@@ -1942,8 +1942,8 @@ void mxMainWindow::OnFileSaveAll (wxCommandEvent &event) {
 }
 
 /**
-* @brief Cierra una pestaña de codigo, pidiendo confirmacion al usuario si hay cambios
-* @param i Indice de la pestaña a cerrar, o -1 para cerrar la actual
+* @brief Cierra una pestaÃ±a de codigo, pidiendo confirmacion al usuario si hay cambios
+* @param i Indice de la pestaÃ±a a cerrar, o -1 para cerrar la actual
 **/
 bool mxMainWindow::CloseFromGui (int i) {
 	if (i<0) i=notebook_sources->GetSelection();
@@ -2074,9 +2074,9 @@ bool mxMainWindow::CloseSource (int i) {
 	if (g_share_manager && g_share_manager->Exists(source))  {
 		mxMessageDialog::mdAns ans = 
 			mxMessageDialog(main_window,LANG(MAINW_ASK_CLOSE_SHARED,""
-											 "El archivo está siendo compartido con modificaciones.\n"
+											 "El archivo estÃ¡ siendo compartido con modificaciones.\n"
 											 "Si lo cierra dejara de estar disponible.\n"
-											 "¿Realmente desea cerrar el archivo?"))
+											 "Â¿Realmente desea cerrar el archivo?"))
 				.Check1(LANG(MAINW_SHARE_AFTER_CLOSE,""
 							 "Continuar compartiendo (\"sin modificaciones\") despues de cerrarlo."),false)
 				.Title(source->page_text).ButtonsYesNo().Run();
@@ -2567,20 +2567,20 @@ void mxMainWindow::OpenFileFromGui (wxFileName filename, int *multiple) {
 			const int never_move=8;
 			const int always_replace=16;
 			const int never_replace=32;
-			// ver si hay que adjuntarlo al proyecto además de abrirlo
+			// ver si hay que adjuntarlo al proyecto ademÃ¡s de abrirlo
 			bool attach=true;
 			if (multiple && (*multiple)&(always_attach|never_attach)) {
 				attach=(*multiple)&always_attach;
 			} else {
 				mxMessageDialog::mdAns ans1 = 
-					mxMessageDialog(main_window,LANG(MAINW_ADD_TO_PROJECT_QUESTION,"¿Desea agregar el archivo al proyecto?"))
+					mxMessageDialog(main_window,LANG(MAINW_ADD_TO_PROJECT_QUESTION,"Â¿Desea agregar el archivo al proyecto?"))
 						.Check1(multiple?LANG(MAINW_ADD_TO_PROJECT_CHECK,"Hacer lo mismo para todos"):"",false)
 						.Title(filename.GetFullPath()).IconQuestion().ButtonsYesNo().Run();
 				attach = ans1.yes;
 				if (multiple && ans1.check1) (*multiple)|=(attach?always_attach:never_attach);
 			}
 			if (attach) {
-				// si no esta en la carpeta del proyecto, preguntar si hay que copiarlo ahí
+				// si no esta en la carpeta del proyecto, preguntar si hay que copiarlo ahÃ­
 				wxString aux_project_path=project->path; aux_project_path.Replace("\\","/",true); if (aux_project_path.EndsWith("/")) aux_project_path.RemoveLast();
 				wxString aux_file_path=filename.GetFullPath(); aux_file_path.Replace("\\","/",true); if (aux_file_path.EndsWith("/")) aux_file_path.RemoveLast();
 #ifdef __WIN32__
@@ -2596,7 +2596,7 @@ void mxMainWindow::OpenFileFromGui (wxFileName filename, int *multiple) {
 						mxMessageDialog::mdAns ans2 =
 							mxMessageDialog(main_window,LANG(MAINW_MOVE_TO_PROJECT_PATH_QUESTION,""
 															 "El archivo que intenta agregar no se encuentra en el directorio del\n"
-															 "proyecto. ¿Desea copiar el archivo al directorio del proyecto?"))
+															 "proyecto. Â¿Desea copiar el archivo al directorio del proyecto?"))
 								.Check1(multiple?LANG(MAINW_ADD_TO_PROJECT_CHECK,"Hacer lo mismo para todos"):"",false)
 								.Title(filename.GetFullPath()).IconQuestion().ButtonsYesNo().Run();
 						move = ans2.yes;
@@ -2609,7 +2609,7 @@ void mxMainWindow::OpenFileFromGui (wxFileName filename, int *multiple) {
 						} else {
 							mxMessageDialog::mdAns ans3 =
 								mxMessageDialog(main_window,LANG(MAINW_OVERWRITE_ON_PROJECT_PATH_QUESTION,""
-																 "El archivo ya existe en el directorio de proyecto.\n"																 "¿Desea reemplazarlo?"))
+																 "El archivo ya existe en el directorio de proyecto.\n"																 "Â¿Desea reemplazarlo?"))
 									.Check1(multiple?LANG(MAINW_ADD_TO_PROJECT_CHECK,"Hacer lo mismo para todos"):"",true)
 									.Title(filename.GetFullPath()).IconQuestion().ButtonsYesNo().Run();
 							replace = ans3.yes;
@@ -2827,7 +2827,7 @@ void mxMainWindow::OnFileSaveAs (wxCommandEvent &event) {
 		// acentos en paths, no en nombres de archivos porque esos los detecta el file-picker
 		if (file.GetFullPath().IsEmpty()) { // problems due to ansi-wx on utf8-linux
 			mxMessageDialog(this,LANG(MAINW_CANT_PROBLEM_WITH_ACCENTS_ON_LOAD,""
-									  "El nombre del archivo o de algún directorio en su ruta\n"
+									  "El nombre del archivo o de algÃºn directorio en su ruta\n"
 									  "contiene acentos u otro caracteres especiales. En este\n"
 									  "sistema ZinjaI no puede guardar correctamente los\n"
 									  "cambios del archivo a menos que modifique su nombre o ruta."))
@@ -3084,7 +3084,7 @@ void mxMainWindow::OnEditInsertInclude(wxCommandEvent &event) {
 			return;
 		} else { // conseguir el h y darselo al source para que haga lo que corresponda
 			
-			wxString user_namespace; // si el código tiene explícito el namespace, va aca
+			wxString user_namespace; // si el cÃ³digo tiene explÃ­cito el namespace, va aca
 			if (keyw_start>2 && source->GetCharAt(keyw_start-1)==':'&&source->GetCharAt(keyw_start-2)==':')
 				user_namespace = source->GetTextRange(source->WordStartPosition(keyw_start-3,true),keyw_start-2);
 			wxString path = source->sin_titulo?wxString(""):source->source_filename.GetPathWithSep();
@@ -3168,7 +3168,7 @@ void mxMainWindow::OnDebugAttach ( wxCommandEvent &event ) {
 		cual.BeforeFirst(' ').ToLong(&dpid);
 	if (!dpid) return;
 	wxString command = wxString("attach ")<<dpid;
-	wxString message = LANG1(DEBUG_STATUS_ATTACHED_TO,"Depurador adjuntado al proceso <{[1]}>. Ejecución pausada.",(wxString()<<dpid));
+	wxString message = LANG1(DEBUG_STATUS_ATTACHED_TO,"Depurador adjuntado al proceso <{[1]}>. EjecuciÃ³n pausada.",(wxString()<<dpid));
 	debug->SpecialStart(project?nullptr:CURRENT_SOURCE,command,message,false);
 	if (debug->IsDebugging()) debug->SetChildPid(dpid);
 }
@@ -3184,7 +3184,7 @@ wxString mxMainWindow::DebugTargetCommon (wxString target, bool should_continue)
 	target = mxGetTextFromUser("Target (arguments for gdb's target command):",_menu_item_2(mnDEBUG,mxID_DEBUG_ATTACH)->GetPlainLabel(),target,this);
 	if (target.Len()) {
 		wxString command = wxString("target ")<<target;
-		wxString message = LANG(DEBUG_STATUS_TARGET_DONE,"Depuración iniciada correctamente.");
+		wxString message = LANG(DEBUG_STATUS_TARGET_DONE,"DepuraciÃ³n iniciada correctamente.");
 		debug->SpecialStart(project?nullptr:CURRENT_SOURCE,command,message,should_continue);
 	}
 	return target;
@@ -3201,7 +3201,7 @@ void mxMainWindow::OnDebugRun( wxCommandEvent &event ) {
 		if (debug->IsPaused())
 			debug->Continue();
 	} else {
-		SetCompilingStatus("Preparando depuración...");
+		SetCompilingStatus("Preparando depuraciÃ³n...");
 		ZLINF("MainWindow","OnDebugRun wxYield:in");
 		wxYield();
 		ZLINF("MainWindow","OnDebugRun wxYield:out");
@@ -3277,7 +3277,7 @@ void mxMainWindow::OnDebugStepOver ( wxCommandEvent &event ) {
 void mxMainWindow::OnDebugReturn ( wxCommandEvent &event ) {
 	if (debug->CanTalkToGDB()) {
 		wxString res;
-		if (mxGetTextFromUser(res,LANG(DEBUG_RETURN_VALUE,"Valor de retorno:"), LANG(DEBUG_RETURN_FROM_FUNCTION,"Salir de la función") , "", this))
+		if (mxGetTextFromUser(res,LANG(DEBUG_RETURN_VALUE,"Valor de retorno:"), LANG(DEBUG_RETURN_FROM_FUNCTION,"Salir de la funciÃ³n") , "", this))
 			debug->Return(res);
 	}
 }
@@ -3293,7 +3293,7 @@ void mxMainWindow::OnDebugRunUntil ( wxCommandEvent &event ) {
 	IF_THERE_IS_SOURCE {
 		mxSource *source = CURRENT_SOURCE;
 		if (!debug->RunUntil(source->GetFullPath(),source->GetCurrentLine())) {
-			mxMessageDialog(main_window,LANG(DEBUG_RUN_UNTIL_ERROR,"La dirección actual no es válida."))
+			mxMessageDialog(main_window,LANG(DEBUG_RUN_UNTIL_ERROR,"La direcciÃ³n actual no es vÃ¡lida."))
 				.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
 		}
 	}
@@ -3703,7 +3703,7 @@ void mxMainWindow::SetExplorerPath(wxString path) {
 void mxMainWindow::OnSelectExplorerItem (wxTreeEvent &event) {
 	explorer_tree.selected_item = event.GetItem();
 	if (explorer_tree.selected_item==explorer_tree.root) {
-		wxDirDialog dlg(this,"Seleccione la ubicación:",explorer_tree.path);
+		wxDirDialog dlg(this,"Seleccione la ubicaciÃ³n:",explorer_tree.path);
 		if (wxID_OK==dlg.ShowModal()) {
 			SetExplorerPath(dlg.GetPath());
 			config->Files.last_dir = dlg.GetPath();
@@ -3727,10 +3727,10 @@ void mxMainWindow::OnExplorerTreePopup(wxTreeEvent &event) {
 	
 	wxMenu menu("");
 	if (explorer_tree.selected_item==explorer_tree.root) {
-		menu.Append(mxID_EXPLORER_POPUP_CHANGE_PATH, LANG(MAINW_EXPLORER_POPUP_CHANGE_PATH,"&Cambiar Ubicación..."));
+		menu.Append(mxID_EXPLORER_POPUP_CHANGE_PATH, LANG(MAINW_EXPLORER_POPUP_CHANGE_PATH,"&Cambiar UbicaciÃ³n..."));
 		menu.Append(mxID_EXPLORER_POPUP_PATH_UP, LANG(MAINW_EXPLORER_POPUP_LEVEL_UP,"&Subir un Nivel"));
 		if (notebook_sources->GetPageCount())
-			menu.Append(mxID_FILE_EXPLORE_FOLDER, LANG(MAINW_EXPLORER_POPUP_TAKE_FROM_SOURCE,"Tomar Ubicación del Archivo Abierto"));
+			menu.Append(mxID_FILE_EXPLORE_FOLDER, LANG(MAINW_EXPLORER_POPUP_TAKE_FROM_SOURCE,"Tomar UbicaciÃ³n del Archivo Abierto"));
 		if (!explorer_tree.show_only_sources)
 			menu.Append(mxID_EXPLORER_POPUP_OPEN_ALL, LANG(MAINW_EXPLORER_POPUP_OPEN_ALL,"&Abrir Todos los Archivos"));
 		menu.Append(mxID_EXPLORER_POPUP_OPEN_SOURCES, LANG(MAINW_EXPLORER_POPUP_OPEN_SOURCES,"Abrir &Todos los Fuentes"));
@@ -3768,7 +3768,7 @@ void mxMainWindow::OnExplorerTreeUpdate(wxCommandEvent &evt) {
 }
 
 void mxMainWindow::OnExplorerTreeChangePath(wxCommandEvent &evy) {
-	wxDirDialog dlg(this,LANG(MAINW_EXPLORER_SELECT_PATH,"Seleccione la ubicación:"),explorer_tree.path);
+	wxDirDialog dlg(this,LANG(MAINW_EXPLORER_SELECT_PATH,"Seleccione la ubicaciÃ³n:"),explorer_tree.path);
 	if (wxID_OK==dlg.ShowModal()) {
 		SetExplorerPath(dlg.GetPath());
 		config->Files.last_dir = dlg.GetPath();
@@ -3895,21 +3895,21 @@ wxString mxMainWindow::GetExplorerItemPath(wxTreeItemId item) {
 void mxMainWindow::OnSymbolsGenerateAutocompletionIndex(wxCommandEvent &evt) {
 	
 	if (!parser->last_file->next) {
-		mxMessageDialog(main_window,LANG(MAINW_GENERATE_AUTOCOMP_INDEX_EMPTY,"No hay fuentes para generar el índice. Abra uno \n"
-																			 "o más archivos para que ZinjaI analice y extraiga \n"
-																			 "los símbolos que conformarán el nuevo índice"))
-			.Title(LANG(MAINW_GENERATE_AUTOCOMP_INDEX_CAPTION,"Generación de índice de autocompletado")).IconError().Run();
+		mxMessageDialog(main_window,LANG(MAINW_GENERATE_AUTOCOMP_INDEX_EMPTY,"No hay fuentes para generar el Ã­ndice. Abra uno \n"
+																			 "o mÃ¡s archivos para que ZinjaI analice y extraiga \n"
+																			 "los sÃ­mbolos que conformarÃ¡n el nuevo Ã­ndice"))
+			.Title(LANG(MAINW_GENERATE_AUTOCOMP_INDEX_CAPTION,"GeneraciÃ³n de Ã­ndice de autocompletado")).IconError().Run();
 	}
 	
 	wxString fname = wxGetTextFromUser(
-		LANG(MAINW_GENERATE_AUTOCOMP_INDEX_NAME,"Nombre del nuevo índice"),
-		LANG(MAINW_GENERATE_AUTOCOMP_INDEX_CAPTION,"Generación de índice de autocompletado"),
+		LANG(MAINW_GENERATE_AUTOCOMP_INDEX_NAME,"Nombre del nuevo Ã­ndice"),
+		LANG(MAINW_GENERATE_AUTOCOMP_INDEX_CAPTION,"GeneraciÃ³n de Ã­ndice de autocompletado"),
 		"",this);
 	if (!fname.Len()) return;
 	fname=mxFN::Join(config->config_dir,"autocomp",fname);
 	if (wxFileName::FileExists(fname)) {
-		if ( mxMessageDialog(main_window,LANG(MAINW_GENERATE_AUTOCOMP_INDEX_OVERWRITE,"El indice ya existe, ¿desea reemplazarlo?"))
-			.Title(LANG(MAINW_GENERATE_AUTOCOMP_INDEX_CAPTION,"Generación de índice de autocompletado")).ButtonsYesNo().IconQuestion().Run().no )
+		if ( mxMessageDialog(main_window,LANG(MAINW_GENERATE_AUTOCOMP_INDEX_OVERWRITE,"El indice ya existe, Â¿desea reemplazarlo?"))
+			.Title(LANG(MAINW_GENERATE_AUTOCOMP_INDEX_CAPTION,"GeneraciÃ³n de Ã­ndice de autocompletado")).ButtonsYesNo().IconQuestion().Run().no )
 		{
 			return;
 		}
@@ -3935,11 +3935,11 @@ void mxMainWindow::OnSymbolsGenerateAutocompletionIndex(wxCommandEvent &evt) {
 	if (wxID_OK!=dlg2.ShowModal()) return;
 	if (g_code_helper->GenerateAutocompletionIndex(dlg2.GetPath(),fname)) {
 		mxMessageDialog(main_window,LANG(MAINW_GENERATE_AUTOCOMP_INDEX_GENERATED,"Indice generado correctamente."))
-			.Title(LANG(MAINW_GENERATE_AUTOCOMP_INDEX_CAPTION,"Generación de índice de autocompletado")).IconInfo().Run();
+			.Title(LANG(MAINW_GENERATE_AUTOCOMP_INDEX_CAPTION,"GeneraciÃ³n de Ã­ndice de autocompletado")).IconInfo().Run();
 		mxPreferenceWindow::Delete();
 	} else {
 		mxMessageDialog(main_window,LANG(MAINW_GENERATE_AUTOCOMP_INDEX_ERROR,"Ha ocurrido un error al intentar generar el archivo."))
-			.Title(LANG(MAINW_GENERATE_AUTOCOMP_INDEX_CAPTION,"Generación de índice de autocompletado")).IconError().Run();
+			.Title(LANG(MAINW_GENERATE_AUTOCOMP_INDEX_CAPTION,"GeneraciÃ³n de Ã­ndice de autocompletado")).IconError().Run();
 	}
 }
 
@@ -4781,7 +4781,7 @@ void mxMainWindow::UpdateStylesInSources ( ) {
 
 void mxMainWindow::OnDebugSendSignal (wxCommandEvent & event) {
 	static wxString prev;
-	wxArrayString signames; signames.Add(LANG(DEBUG_SIGNAL_NONE,"<none>: continuar sin enviar ninguna señal"));
+	wxArrayString signames; signames.Add(LANG(DEBUG_SIGNAL_NONE,"<none>: continuar sin enviar ninguna seÃ±al"));
 	std::vector<SignalHandlingInfo> vsig;
 	debug->GetSignals(vsig); if(vsig.empty()) return;
 	for(unsigned int i=0;i<vsig.size();i++) signames.Add(vsig[i].name+": "+vsig[i].description);
@@ -4880,10 +4880,10 @@ void mxMainWindow::CompileSource (bool force_compile, std::function<void()> acti
 				mxMessageDialog(this,LANG(MAINW_RUN_HEADER_WARNING,""
 										  "Esta intentando compilar/ejecutar un archivo de cabecera.\n"
 										  "Probablemente deba intentar ejecutar un archivo fuente que\n"
-										  "incluya esta cabecera. ¿Desea continuar?\n\n"
+										  "incluya esta cabecera. Â¿Desea continuar?\n\n"
 										  "Nota: puede configurar un fuente para que se ejecute siempre\n"
 										  "dicho fuente sin importar cual otro tenga el foco con click\n"
-										  "derecho sobre la pesataña del mismo."))
+										  "derecho sobre la pesataÃ±a del mismo."))
 					.Check1(LANG(MAINW_RUN_HEADER_CHECK,"No volver a mostrar este mensaje"),false)
 					.Title(LANG(GENERAL_WARNING,"Aviso")).ButtonsYesNo().IconWarning().Run();
 			if (ans.no) return;

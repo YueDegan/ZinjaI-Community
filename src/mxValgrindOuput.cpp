@@ -205,7 +205,7 @@ void mxValgrindOuput::OnPopup(wxTreeEvent &evt) {
 	menu.Append(mxID_VALGRIND_DELETE_FROM_TREE, LANG(VALGRIND_DELETE_FROM_TREE,"Eliminar Items"));
 	if (mode==mxVO_CPPCHECK && !GetCppCheckId(sel).IsEmpty()) {
 		menu.AppendSeparator();
-		menu.Append(mxID_VALGRIND_ADD_TO_SUPPRESSIONS, LANG(VALGRIND_ADD_TO_SUPPRESSIONS,"Agregar supresión"));
+		menu.Append(mxID_VALGRIND_ADD_TO_SUPPRESSIONS, LANG(VALGRIND_ADD_TO_SUPPRESSIONS,"Agregar supresiÃ³n"));
 	}
 	PopupMenu(&menu,evt.GetPoint());
 	

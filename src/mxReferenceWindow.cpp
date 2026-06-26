@@ -341,8 +341,8 @@ bool mxReferenceWindow::PopulateInitialTree ( ) {
 	if (!fil.Exists()) {
 		mxMessageDialog::mdAns res = 
 			mxMessageDialog(main_window,LANG(CPPREF_NOT_FOUND,""
-								 "No se encontrÛ el archivo indice. Es probable que la\n"
-								 "referencia no est· instalada, ya que no se incluye por\n"
+								 "No se encontr√≥ el archivo indice. Es probable que la\n"
+								 "referencia no est√° instalada, ya que no se incluye por\n"
 								 "defecto en todas las versiones de ZinjaI.\n\n"
 								 "Si dispone de acceso a internet puede descargarla e\n"
 								 "instalarla como complemento ahora."))

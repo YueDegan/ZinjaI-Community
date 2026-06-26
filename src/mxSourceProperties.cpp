@@ -35,7 +35,7 @@ mxSourceProperties::mxSourceProperties(wxString path, mxSource *src)
 	tsize<<filename.GetSize()<<" B";
 	
 	sizer.BeginText( "Ubicacion" ).Value(filename.GetFullPath()).ReadOnly().EndText();
-	sizer.BeginText( "Tamaño" ).Short().Value(tsize).ReadOnly().EndText();
+	sizer.BeginText( "TamaÅ†o" ).Short().Value(tsize).ReadOnly().EndText();
 	sizer.BeginText( "Fecha ultima modifiacion" )
 		.Value(filename.GetModificationTime().Format("%H:%M:%S - %d/%B/%Y"))
 		.Short().ReadOnly().EndText();

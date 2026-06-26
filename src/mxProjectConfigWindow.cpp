@@ -79,7 +79,7 @@ END_EVENT_TABLE()
 wxString mxExtraStepWindow::new_name;
 	
 mxProjectConfigWindow::mxProjectConfigWindow(wxWindow* parent) 
-	: mxDialog(parent, LANG(PROJECTCONFIG_CAPTION,"Opciones de Compilación y Ejecución"), mxDialog::OCP_NULL ),
+	: mxDialog(parent, LANG(PROJECTCONFIG_CAPTION,"Opciones de CompilaciÃ³n y EjecuciÃ³n"), mxDialog::OCP_NULL ),
 	  discard(true), configuration(project->active_configuration)
 {
 	CreateSizer sizer(this);
@@ -95,11 +95,11 @@ mxProjectConfigWindow::mxProjectConfigWindow(wxWindow* parent)
 		.BeginButton( LANG(PROJECTCONFIG_DELETE_PROFILE,"Eliminar") ).Id(mxID_PROJECT_CONFIG_REMOVE).EndButton()
 		.EndLine();
 	
-	// crear las pestañas con las opciones de la configuracion
+	// crear las pestaÃ±as con las opciones de la configuracion
 	sizer.BeginNotebook()
 		.AddPageIf(config->Help.show_extra_panels,this,&mxProjectConfigWindow::CreateQuickHelpPanel, LANG(PROJECTCONFIG_HELP,"Ayuda"))
-		.AddPage(this,&mxProjectConfigWindow::CreateGeneralPanel, LANG(PROJECTCONFIG_GENERAL,"Ejecución"))
-		.AddPage(this,&mxProjectConfigWindow::CreateCompilingPanel, LANG(PROJECTCONFIG_COMPILING,"Compilación"))
+		.AddPage(this,&mxProjectConfigWindow::CreateGeneralPanel, LANG(PROJECTCONFIG_GENERAL,"EjecuciÃ³n"))
+		.AddPage(this,&mxProjectConfigWindow::CreateCompilingPanel, LANG(PROJECTCONFIG_COMPILING,"CompilaciÃ³n"))
 		.AddPage(this,&mxProjectConfigWindow::CreateLinkingPanel, LANG(PROJECTCONFIG_LINKING,"Enlazado"))
 		.AddPage(this,&mxProjectConfigWindow::CreateLibsPanel, LANG(PROJECTCONFIG_LIBRARIES,"Bibliotecas"))
 		.AddPage(this,&mxProjectConfigWindow::CreateStepsPanel, LANG(PROJECTCONFIG_SEQUENCE,"Secuencia"))
@@ -131,7 +131,7 @@ wxPanel *mxProjectConfigWindow::CreateQuickHelpPanel (wxNotebook *notebook) {
 wxPanel *mxProjectConfigWindow::CreateLinkingPanel (wxNotebook *notebook) {
 	CreatePanelAndSizer sizer(notebook);
 	
-	sizer.BeginText( LANG(PROJECTCONFIG_LINKING_EXTRA_ARGS,"Parámetros extra para el enlazado") )
+	sizer.BeginText( LANG(PROJECTCONFIG_LINKING_EXTRA_ARGS,"ParÃ¡metros extra para el enlazado") )
 		.Value(configuration->linking_extra).Button(mxID_PROJECT_CONFIG_LINK_EXTRA_BUTTON)
 		.RegisterIn(wx_noexe).RegisterIn(wx_extern).EndText(linking_extra_options);
 			
@@ -143,7 +143,7 @@ wxPanel *mxProjectConfigWindow::CreateLinkingPanel (wxNotebook *notebook) {
 		.Value(configuration->libraries).Button(mxID_PROJECT_CONFIG_LINK_LIBS_BUTTON)
 		.RegisterIn(wx_noexe).RegisterIn(wx_extern).EndText(linking_libraries);
 
-	sizer.BeginCombo( LANG(PROJECTCONFIG_DEBUG_INFO,"Información para depuración") )
+	sizer.BeginCombo( LANG(PROJECTCONFIG_DEBUG_INFO,"InformaciÃ³n para depuraciÃ³n") )
 		.Add(LANG(PROJECTCONFIG_DEBUG_INFO_KEEP,"Mantener en el binario"))
 		.Add(LANG(PROJECTCONFIG_DEBUG_INFO_COPY,"Extraer a un archivo separado"))
 		.Add(LANG(PROJECTCONFIG_DEBUG_INFO_STRIP,"Eliminar del binario"))
@@ -160,7 +160,7 @@ wxPanel *mxProjectConfigWindow::CreateLinkingPanel (wxNotebook *notebook) {
 		.RegisterIn(wx_noexe) _if_win32( .RegisterIn(wx_extern), )
 		.Value(configuration->console_program).EndCheck(linking_console_program);
 				
-	sizer.BeginCheck( LANG(PROJECTCONFIG_LINKING_FORCE_RELINK,"Reenlazar obligatoriamente en la proxima compilación/ejecución") )
+	sizer.BeginCheck( LANG(PROJECTCONFIG_LINKING_FORCE_RELINK,"Reenlazar obligatoriamente en la proxima compilaciÃ³n/ejecuciÃ³n") )
 		.RegisterIn(wx_noexe).RegisterIn(wx_extern)
 		.Value(project->force_relink).EndCheck(linking_force_relink);
 			
@@ -183,14 +183,14 @@ wxPanel *mxProjectConfigWindow::CreateGeneralPanel (wxNotebook *notebook) {
 		.Value(configuration->output_file).Button(mxID_PROJECT_GENERAL_EXE_PATH)
 		./*RegisterIn(wx_noexe).*/EndText(general_output_file);
 					
-	sizer.BeginCombo( LANG(PROJECTCONFIG_GENERAL_EXEC_METHOD,"Mecanismo de ejecución") )
+	sizer.BeginCombo( LANG(PROJECTCONFIG_GENERAL_EXEC_METHOD,"Mecanismo de ejecuciÃ³n") )
 		.Add(LANG(PROJECTCONFIG_GENERAL_EXEC_METHOD_REGULAR,"Regular (se lanza directamente el ejecutable)"))
 		.Add(LANG(PROJECTCONFIG_GENERAL_EXEC_METHOD_WRAPPER,"Mediante un wrapper (otro programa lanza al ejecutable)"))
-		.Add(LANG(PROJECTCONFIG_GENERAL_EXEC_METHOD_INI,"Con inicialización (se ejecuta un script antes)"))
-		.Add(LANG(PROJECTCONFIG_GENERAL_EXEC_METHOD_SCRIPT,"Solo script (el script deberá lanzar el ejecutable)"))
+		.Add(LANG(PROJECTCONFIG_GENERAL_EXEC_METHOD_INI,"Con inicializaciÃ³n (se ejecuta un script antes)"))
+		.Add(LANG(PROJECTCONFIG_GENERAL_EXEC_METHOD_SCRIPT,"Solo script (el script deberÃ¡ lanzar el ejecutable)"))
 		.Select(configuration->exec_method).Id(mxID_PROJECT_CONFIG_EXEC_METHOD).EndCombo(general_exec_method);
 					
-	sizer.BeginText( LANG(PROJECTCONFIG_GENERAL_SCRIPT,"Script para ejecución/comando wrapper") )
+	sizer.BeginText( LANG(PROJECTCONFIG_GENERAL_SCRIPT,"Script para ejecuciÃ³n/comando wrapper") )
 		.Value(configuration->exec_script).Button(mxID_PROJECT_CONFIG_EXEC_SCRIPT)
 		.RegisterIn(wx_noscript).EndText(general_exec_script);
 					
@@ -198,7 +198,7 @@ wxPanel *mxProjectConfigWindow::CreateGeneralPanel (wxNotebook *notebook) {
 		.Value(configuration->working_folder).Button(mxID_PROJECT_CONFIG_WORKING_DIR)
 		./*RegisterIn(wx_noexe).*/EndText(general_working_folder);
 	
-	sizer.BeginText( LANG(PROJECTCONFIG_GENERAL_RUNNING_ARGS,"Argumentos para la ejecución") )
+	sizer.BeginText( LANG(PROJECTCONFIG_GENERAL_RUNNING_ARGS,"Argumentos para la ejecuciÃ³n") )
 		.Value(configuration->args).Button(mxID_PROJECT_CONFIG_ARGS_BUTTON)
 		./*RegisterIn(wx_noexe).*/EndText(general_args);
 	
@@ -206,7 +206,7 @@ wxPanel *mxProjectConfigWindow::CreateGeneralPanel (wxNotebook *notebook) {
 		.Value(configuration->always_ask_args)./*RegisterIn(wx_noexe).*/EndCheck(general_always_ask_args);
 	
 
-	sizer.BeginCombo( LANG(PROJECTCONFIG_GENERAL_WAIT_KEY,"Esperar una tecla luego de la ejecución") )
+	sizer.BeginCombo( LANG(PROJECTCONFIG_GENERAL_WAIT_KEY,"Esperar una tecla luego de la ejecuciÃ³n") )
 		.Add(LANG(PROJECTCONFIG_GENERAL_WAIT_KEY_NEVER,"Nunca"))
 		.Add(LANG(PROJECTCONFIG_GENERAL_WAIT_KEY_ERROR,"En caso de error"))
 		.Add(LANG(PROJECTCONFIG_GENERAL_WAIT_KEY_ALWAYS,"Siempre"))
@@ -225,7 +225,7 @@ wxPanel *mxProjectConfigWindow::CreateGeneralPanel (wxNotebook *notebook) {
 wxPanel *mxProjectConfigWindow::CreateCompilingPanel (wxNotebook *notebook) {
 	CreatePanelAndSizer sizer(notebook);
 		
-	sizer.BeginText( LANG(PROJECTCONFIG_COMPILING_EXTRA_ARGS,"Parámetros extra para la compilación") )
+	sizer.BeginText( LANG(PROJECTCONFIG_COMPILING_EXTRA_ARGS,"ParÃ¡metros extra para la compilaciÃ³n") )
 		.Value(configuration->compiling_extra).Button(mxID_PROJECT_CONFIG_COMPILE_EXTRA_BUTTON)
 		.RegisterIn(wx_extern).EndText(compiling_extra_options);
 						
@@ -292,8 +292,8 @@ wxPanel *mxProjectConfigWindow::CreateCompilingPanel (wxNotebook *notebook) {
 		.Add(LANG(PROJECTCONFIG_COMPILING_OPTIM_LEVEL_1,"Nivel 1"))
 		.Add(LANG(PROJECTCONFIG_COMPILING_OPTIM_LEVEL_2,"Nivel 2"))
 		.Add(LANG(PROJECTCONFIG_COMPILING_OPTIM_LEVEL_3,"Nivel 3"))
-		.Add(LANG(PROJECTCONFIG_COMPILING_OPTIM_SIZE,"Reducir Tamaño"))
-		.Add(LANG(PROJECTCONFIG_COMPILING_OPTIM_DEBUG,"Depuración"))
+		.Add(LANG(PROJECTCONFIG_COMPILING_OPTIM_SIZE,"Reducir TamaÃ±o"))
+		.Add(LANG(PROJECTCONFIG_COMPILING_OPTIM_DEBUG,"DepuraciÃ³n"))
 		.Add(LANG(PROJECTCONFIG_COMPILING_OPTIM_FAST,"Velocidad"))
 		.Select(configuration->optimization_level).RegisterIn(wx_extern)
 		.EndCombo(compiling_optimization_level);
@@ -342,7 +342,7 @@ void mxProjectConfigWindow::OnTempDirButton(wxCommandEvent &event){
 }
 
 void mxProjectConfigWindow::OnEnvVarsButton(wxCommandEvent &event){
-	new mxEnumerationEditor(this,"Parámetros extra para el compilador",general_env_vars,false);
+	new mxEnumerationEditor(this,"ParÃ¡metros extra para el compilador",general_env_vars,false);
 }
 
 void mxProjectConfigWindow::OnWorkingDirButton(wxCommandEvent &event) {
@@ -389,9 +389,9 @@ void mxProjectConfigWindow::OnSelectConfigButton(wxCommandEvent &event) {
 
 void mxProjectConfigWindow::OnRemoveConfigButton(wxCommandEvent &event) {
 	if (project->configurations_count==1) {
-		mxMessageDialog(this,LANG(PROJECTCONFIG_CANT_DELETE_LAST_PROFILE,"No puede eliminar la única configuración existente"))
+		mxMessageDialog(this,LANG(PROJECTCONFIG_CANT_DELETE_LAST_PROFILE,"No puede eliminar la Ãºnica configuraciÃ³n existente"))
 			.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
-	} else if (mxMessageDialog(this,wxString(LANG(PROJECTCONFIG_CONFIRM_DELETE_PRE,"¿Seguro que desea eliminar la configuración "))+configuration->name+"?")
+	} else if (mxMessageDialog(this,wxString(LANG(PROJECTCONFIG_CONFIRM_DELETE_PRE,"Â¿Seguro que desea eliminar la configuraciÃ³n "))+configuration->name+"?")
 			       .Title(LANG(GENERAL_WARNING,"Advertencia")).IconWarning().ButtonsYesNo().Run().yes)
 	{
 		int i=0;
@@ -434,11 +434,11 @@ void mxProjectConfigWindow::OnRemoveConfigButton(wxCommandEvent &event) {
 }
 
 void mxProjectConfigWindow::OnRenameConfigButton(wxCommandEvent &event) {
-	wxString res = mxGetTextFromUser(LANG(PROJECTCONFIG_PROFILE_NEW_NAME,"Nuevo nombre:"), LANG(PROJECTCONFIG_RENAME_PROFILE,"Renombrar configuración:") , configuration->name, this);
+	wxString res = mxGetTextFromUser(LANG(PROJECTCONFIG_PROFILE_NEW_NAME,"Nuevo nombre:"), LANG(PROJECTCONFIG_RENAME_PROFILE,"Renombrar configuraciÃ³n:") , configuration->name, this);
 	if (res!="") {
 		for (int i=0;i<project->configurations_count;i++)
 			if (project->configurations[i]!=configuration && project->configurations[i]->name==res) {
-				mxMessageDialog(this,LANG(PROJECTCONFIG_PROFILE_NAME_REPEATED,"Ya existe otra configuración con ese nombre"))
+				mxMessageDialog(this,LANG(PROJECTCONFIG_PROFILE_NAME_REPEATED,"Ya existe otra configuraciÃ³n con ese nombre"))
 					.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
 				return;
 			}
@@ -454,7 +454,7 @@ void mxProjectConfigWindow::OnRenameConfigButton(wxCommandEvent &event) {
 }
 
 /**
-* Copia los valores de la configuración actual a los controles del dialogo
+* Copia los valores de la configuraciÃ³n actual a los controles del dialogo
 **/
 void mxProjectConfigWindow::LoadValues() {
 
@@ -537,7 +537,7 @@ void mxProjectConfigWindow::OnOkButton(wxCommandEvent &event){
 }
 
 /**
-* Guarda los valores de los controles del dialogo en la configuración actual
+* Guarda los valores de los controles del dialogo en la configuraciÃ³n actual
 **/
 bool mxProjectConfigWindow::SaveValues() {
 	
@@ -607,7 +607,7 @@ void mxProjectConfigWindow::OnHelpButton(wxCommandEvent &event){
 
 void mxProjectConfigWindow::OnCompilingExtraOptionsButton(wxCommandEvent &evt) {
 	CommonPopup(compiling_extra_options).CommaSplit(false).BasePath(project->path)
-		.Caption( LANG(PROJECTCONFIG_COMPILING_EXTRA_ARGS,"Parámetros extra para la compilación") )
+		.Caption( LANG(PROJECTCONFIG_COMPILING_EXTRA_ARGS,"ParÃ¡metros extra para la compilaciÃ³n") )
 		.AddEditAsText().AddEditAsList().AddFilename().AddPath().AddMinGWDir().Run(this);
 }
 
@@ -619,7 +619,7 @@ void mxProjectConfigWindow::OnCompilingHeadersDirsButton(wxCommandEvent &evt) {
 
 void mxProjectConfigWindow::OnLinkingExtraOptionsButton(wxCommandEvent &evt) {
 	CommonPopup(linking_extra_options).CommaSplit(false).BasePath(project->path)
-		.Caption( LANG(PROJECTCONFIG_LINKING_EXTRA_ARGS,"Parámetros extra para el enlazado") )
+		.Caption( LANG(PROJECTCONFIG_LINKING_EXTRA_ARGS,"ParÃ¡metros extra para el enlazado") )
 		.AddEditAsText().AddEditAsList().AddFilename().AddPath().AddMinGWDir().Run(this);
 }
 
@@ -637,7 +637,7 @@ void mxProjectConfigWindow::OnLinkingLibrariesButton(wxCommandEvent &evt) {
 
 void mxProjectConfigWindow::OnGeneralArgsButton(wxCommandEvent &evt) {
 	CommonPopup(general_args).CommaSplit(false).BasePath(mxFN::Join(project->path,general_working_folder->GetValue()))
-		.Caption( LANG(PROJECTCONFIG_GENERAL_RUNNING_ARGS,"Argumentos para la ejecución") )
+		.Caption( LANG(PROJECTCONFIG_GENERAL_RUNNING_ARGS,"Argumentos para la ejecuciÃ³n") )
 		.AddEditAsText().AddEditAsList().AddFilename().AddPath().Run(this);
 }
 
@@ -661,7 +661,7 @@ wxPanel *mxProjectConfigWindow::CreateStepsPanel (wxNotebook *notebook) {
 		.BeginButton("Opciones...").Id(mxID_PROJECT_CONFIG_TOOLCHAIN_OPTIONS).EndButton()
 		.EndLine();
 
-	sizer.BeginLabel( LANG(PROJECTCONFIG_STEPS_COMPILATION_SEQUENCE,"Secuencia de compilación:") ).RegisterIn(wx_extern).EndLabel();
+	sizer.BeginLabel( LANG(PROJECTCONFIG_STEPS_COMPILATION_SEQUENCE,"Secuencia de compilaciÃ³n:") ).RegisterIn(wx_extern).EndLabel();
 	
 	steps_list = new wxListBox(panel,wxID_ANY);
 	wx_extern.Add(steps_list);

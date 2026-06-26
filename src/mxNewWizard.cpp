@@ -258,7 +258,7 @@ void mxNewWizard::OnProjectCreate() {
 						base_classes.Add(father->father);
 				}
 			}
-			// buscar todos los métodos virtuales de todas esas clases
+			// buscar todos los mÃ©todos virtuales de todas esas clases
 			wxArrayString virtual_methods;
 			for(unsigned int i=0;i<base_classes.GetCount();i++) {
 				pd_class *cls=parser->GetClass(base_classes[i]);
@@ -292,7 +292,7 @@ void mxNewWizard::OnProjectCreate() {
 				// preguntar cuales va a querer implementar
 				wxArrayInt sels; 
 				for (unsigned int i=0;i<virtual_methods.GetCount();i++) sels.Add(i);
-				/*int nsels=*/wxGetSelectedChoices(sels,"Seleccione los métodos virtuales de las clases ancestras a implementar","Nueva clase",virtual_methods,this);
+				/*int nsels=*/wxGetSelectedChoices(sels,"Seleccione los mÃ©todos virtuales de las clases ancestras a implementar","Nueva clase",virtual_methods,this);
 				// eliminar los no seleccionados
 				for(int i=virtual_methods.GetCount()-1;i>=0;i--) { 
 					if (sels.Index(i)==wxNOT_FOUND) 
@@ -329,7 +329,7 @@ void mxNewWizard::OnProjectCreate() {
 				cpp_file.AddLine("}");
 				cpp_file.AddLine("");
 			}
-			for(unsigned int i=0;i<virtual_methods.GetCount();i++) { // métodos virtuales heredados
+			for(unsigned int i=0;i<virtual_methods.GetCount();i++) { // mÃ©todos virtuales heredados
 				// los metodos virtuales aparecen en el arreglo, con el scope de la clase original, no la nueva
 				virtual_methods[i]=
 					virtual_methods[i].BeforeFirst('(').BeforeLast(':').BeforeLast(' ') 
@@ -368,7 +368,7 @@ void mxNewWizard::OnProjectCreate() {
 				}
 			}
 			h_file.AddLine("");
-			wxString inherits; // texto de la declaración de herencia
+			wxString inherits; // texto de la declaraciÃ³n de herencia
 			for (int i=0;i<config->Init.inherit_num;i++)
 				if (onproject_inherit_class[i]->GetValue().Len()) {
 					if (inherits.Len())
@@ -711,7 +711,7 @@ void mxNewWizard::CreatePanelStart() {
 	start_radio->SetItemToolTip(1,LANG(NEWWIZARD_TIP_TEMPLATE,"Crea un nuevo archivo con un esqueleto basico de programa (crea la funcion main e incluye cabeceras acordes al tipo de programa seleccionado)."));
 //	start_radio->SetItemToolTip(2,LANG(NEWWIZARD_TIP_WIZARD,"Permite seleccionar que tipo de funciones y contenedores quiere utilizar ."));
 	start_radio->SetItemToolTip(2,LANG(NEWWIZARD_TIP_PROJECT,"Crea un nuevo proyecto. A diferencia de un programa simple, el proyecto puede constar de mas de un archivo fuente y guarda tambien otras configuraciones como bibliotecas utilizadas, parametros para el compilador, etc."));
-	start_radio->SetItemToolTip(3,LANG(NEWWIZARD_TIP_IMPORT,"Crea un archivo de proyecto para ZinjaI a partir de fuentes ya existentes. Utilice esta opción para migrar a ZinjaI proyectos creados con otros IDEs o basados en Makefiles o herramientas similares."));
+	start_radio->SetItemToolTip(3,LANG(NEWWIZARD_TIP_IMPORT,"Crea un archivo de proyecto para ZinjaI a partir de fuentes ya existentes. Utilice esta opciÃ³n para migrar a ZinjaI proyectos creados con otros IDEs o basados en Makefiles o herramientas similares."));
 
 	start_radio->SetSelection(1);
 	sizer->Add(start_radio,sizers->Exp0);

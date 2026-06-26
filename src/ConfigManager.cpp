@@ -37,7 +37,7 @@ ConfigManager *config;
 * but MenusAndToolsConfig needs an initialized ConfigManager to use the proper 
 * language
 *
-* ver la descripciÛn de la clase para entender la secuencia de inicializaciÛn
+* ver la descripci√≥n de la clase para entender la secuencia de inicializaci√≥n
 **/
 struct DelayedConfigLines {
 	wxArrayString toolbars_keys;
@@ -76,13 +76,13 @@ void ConfigManager::DoInitialChecks() {
 		wxString xterm_error_msg = LANG(CONFIG_NO_TERMINAL_FOUND,""
 			"No se ha encontrado una terminal conocida. Se recomienda instalar\n"
 			"xterm; luego configure el parametro \"Comando del Terminal\" en la\n"
-			"pestaÒa \"Rutas 1\" del cuadro de \"Preferencias\".");
+			"pesta√±a \"Rutas 1\" del cuadro de \"Preferencias\".");
 		LinuxTerminalInfo::Initialize();
 		for(int i=0;i<LinuxTerminalInfo::count;i++) { 
 			if (LinuxTerminalInfo::list[i].Test()) {
 				Files.terminal_command = LinuxTerminalInfo::list[i].run_command;
 				if (LinuxTerminalInfo::list[i].warning) {
-					xterm_error_msg = LANG1(CONFIG_TERMINAL_WARNING,"La aplicaciÛn terminal que se ha encontrado instalada\n"
+					xterm_error_msg = LANG1(CONFIG_TERMINAL_WARNING,"La aplicaci√≥n terminal que se ha encontrado instalada\n"
 																	"es <{1}>. Algunas versiones de esta terminal pueden generar\n"
 																	"problemas al intentar ejecutar un programa o proyecto. Si no logra\n"
 																	"ejecutar correctamente desde ZinjaI ninguno de los programas/proyectos\n"
@@ -96,7 +96,7 @@ void ConfigManager::DoInitialChecks() {
 		if (xterm_error_msg.Len()) {
 			if (CheckComplaintAndInstall(nullptr,
 				LinuxTerminalInfo::list[0].test_command,
-				LANG(CONFIG_TERMINAL,"Terminal de ejecuciÛn"),
+				LANG(CONFIG_TERMINAL,"Terminal de ejecuci√≥n"),
 				xterm_error_msg, "xterm","","terminal")) 
 			{
 				Files.terminal_command = LinuxTerminalInfo::list[0].run_command;
@@ -129,7 +129,7 @@ void ConfigManager::DoInitialChecks() {
 				Init.compiler_seen = CheckComplaintAndInstall(
 					nullptr,"g++ --version",LANG(CONFIG_COMPILER,"Compilador C++"),
 					LANG(CONFIG_COMPILER_NOT_FOUND,"No se ha encontrado un compilador para C++ (g++ o clang). Debe instalarlo\n"
-												   "con el gestor de paquetes que corresponda a su distribuciÛn\n"
+												   "con el gestor de paquetes que corresponda a su distribuci√≥n\n"
 												   "(apt-get, yum, yast, installpkg, etc.)"), 
 					"build-essential");
 			}
@@ -143,7 +143,7 @@ void ConfigManager::DoInitialChecks() {
 			nullptr, config->Files.debugger_command+" --version",
 			LANG(CONFIG_DEBUGGER,"Depurador"),
 			LANG(CONFIG_DEBUGGER_NOT_FOUND,"No se ha encontrado el depurador (gdb). Debe instalarlo con\n"
-			"el gestor de paquetes que corresponda a su distribuciÛn\n"
+			"el gestor de paquetes que corresponda a su distribuci√≥n\n"
 			"(apt-get, yum, yast, installpkg, etc.)"),
 			"gdb");
 #else
@@ -151,7 +151,7 @@ void ConfigManager::DoInitialChecks() {
 			nullptr, config->Files.debugger_command+" --version",
 			LANG(CONFIG_DEBUGGER,"Depurador"),
 			LANG(CONFIG_DEBUGGER_NOT_FOUND,"No se ha encontrado el depurador (gdb). Debe instalarlo con\n"
-			"el gestor de paquetes que corresponda a su distribuciÛn\n"
+			"el gestor de paquetes que corresponda a su distribuci√≥n\n"
 			"(apt-get, yum, yast, installpkg, etc.)"),
 			"gdb");
 #endif	
@@ -407,7 +407,7 @@ bool ConfigManager::Load() {
 	if (Init.version<20170926 && Files.debugger_command=="gdb") Files.debugger_command = "~/.zinjai/gdb.bin";
 	if (Init.version<20170605) Files.terminal_command = mxFN::Join("bin","mac-terminal-wrapper.bin"); // some installations still have an invalid configuration
 #endif
-	if (Init.version<20100806) Files.terminal_command.Replace("ZinjaI - Consola de Ejecucion","${TITLE}"); // NO USAR ACENTOS, PUEDE ROMER EL X!!!! (me daba un segfault en la libICE al poner el Û en Ejeuci”n)
+	if (Init.version<20100806) Files.terminal_command.Replace("ZinjaI - Consola de Ejecucion","${TITLE}"); // NO USAR ACENTOS, PUEDE ROMER EL X!!!! (me daba un segfault en la libICE al poner el √≥ en Ejeuci√ìn)
 	if (Init.version<20101112 && Help.autocomp_indexes.Len()) Help.autocomp_indexes<<",STL_Iteradores";
 	if (Init.version<20110418) Debug.use_colours_for_inspections=true;
 	if (Init.version<20110420) Init.check_for_updates=true;
@@ -973,12 +973,12 @@ bool ConfigManager::CheckWxfbPresent() {
 	wxString message = LANG(PROJMNGR_WXFB_NOT_FOUND,"El proyecto utiliza wxFormBuilder, pero este software\n"
 							"no se encuentra correctamente instalado/configurado en\n"
 							"su PC. Si ya se encuentra instalado debe configurar su\n"
-							"ubicaciÛn en el cuadro de \"Preferencias\".");
+							"ubicaci√≥n en el cuadro de \"Preferencias\".");
 	if (wxfb_conf->autoupdate_projects && !wxfb_conf->temp_disabled) {
 		wxfb_conf->temp_disabled = true;
 		message += "\n\n";
 		message += LANG(PROJMNGR_REGENERATING_ERROR_2,""
-						"La actualizaciÛn autom·tica de estos proyectos\nse deshabilitar· temporalmente.");
+						"La actualizaci√≥n autom√°tica de estos proyectos\nse deshabilitar√° temporalmente.");
 		
 	}
 	bool just_installed =
@@ -1016,7 +1016,7 @@ bool ConfigManager::CheckDoxygenPresent() {
 		LANG(GENERAL_WARNING,"Advertencia"),
 		LANG(MAINW_DOXYGEN_MISSING,"Doxygen no se encuentra correctamente instalado/configurado\n"
 								   "en su pc. Si ya se encuentra instalado,debe configurar su\n"
-								   "ubiciaciÛn en el cuadro de \"Preferencias\"."),
+								   "ubiciaci√≥n en el cuadro de \"Preferencias\"."),
 		"doxygen","http://www.doxygen.org","doxygen");
 	return config->Init.doxygen_seen;
 }
@@ -1032,7 +1032,7 @@ bool ConfigManager::CheckValgrindPresent() {
 		LANG(MAINW_VALGRIND_MISSING,""
 			 "Valgrind no se encuentra correctamente instalado/configurado\n"
 			 "en su pc. Si ya se encuentra instalado deve configurar su\n"
-			 "ubiciacion en la pestaÒa en el cuadro de \"Preferencias\"."),
+			 "ubiciacion en la pesta√±a en el cuadro de \"Preferencias\"."),
 		"valgrind","http://valgrind.org","valgrind");
 	return config->Init.valgrind_seen;
 }
@@ -1061,7 +1061,7 @@ bool ConfigManager::CheckCppCheckPresent() {
 		LANG(GENERAL_WARNING,"Advertencia"),
 		LANG(MAINW_CPPCHECK_MISSING,"CppCheck no se encuentra correctamente instalado/configurado\n"
 									"en su pc. Si ya se encuentra instalado debe configurar su\n"
-									"ubiciaciÛn en el cuadro de \"Preferencias\"."),
+									"ubiciaci√≥n en el cuadro de \"Preferencias\"."),
 		"cppcheck","http://cppcheck.sourceforge.net","cppcheck");
 	return config->Init.cppcheck_seen;
 }
@@ -1134,11 +1134,11 @@ void ConfigManager::FinishLoading ( ) {
 //	if (Init.mac_stc_zflags==-1) {
 //		Init.mac_stc_zflags = 0;
 //		if (mxMessageDialog(nullptr,LANG(CONFIG_MAC_DEADKEYS_PROBLEM_QUESTION,""
-//						"øUtiliza un teclado en espaÒol donde '[' y '{' se ingresan con\n"
-//						"AltGr y las teclas que est·n a la derecha de las teclas 'P' y '—'?\n"
+//						"¬øUtiliza un teclado en espa√±ol donde '[' y '{' se ingresan con\n"
+//						"AltGr y las teclas que est√°n a la derecha de las teclas 'P' y '√ë'?\n"
 //						"\n"
-//						"Nota: si m·s tarde detecta problemas con estas teclas puede volver\n"
-//						"a cambiar esta configuaciÛn desde el cuadro de preferencias.\n"
+//						"Nota: si m√°s tarde detecta problemas con estas teclas puede volver\n"
+//						"a cambiar esta configuaci√≥n desde el cuadro de preferencias.\n"
 //					)).IconQuestion().ButtonsYesNo().Run().yes) 
 //		{
 //			Init.mac_stc_zflags = ZF_FIXDEADKEYS_ESISO;
@@ -1224,22 +1224,22 @@ bool ConfigManager::ComplaintAndInstall(wxWindow *parent, const wxString &check_
 	
 	mxMessageDialog::mdAns ans = mxMessageDialog(parent,error_msg).Title(what).IconWarning()
 		.Check1(pref_msg,apt_message.IsEmpty()).Check2(apt_message.IsEmpty()?web_msg:apt_message,true).Run(); // informar/preguntar
-	if (ans.check2 && !apt_message.IsEmpty()) { // si habÌa apt-get, 
+	if (ans.check2 && !apt_message.IsEmpty()) { // si hab√≠a apt-get, 
 		TryToInstallWithAptGet(parent,what,pkgname); // intentar instalar
 		wxString check_output = check_command.IsEmpty()?"":mxUT::GetOutput(check_command,true,false);
 		if (check_output.Len() && !check_output.StartsWith("execvp")) // si anda, ya esta instalada
 			return true; 
-		// si fallÛ apt-get, avisar e intentar abrir el sitio web de descarga
+		// si fall√≥ apt-get, avisar e intentar abrir el sitio web de descarga
 #ifdef __APPLE__
 		if (pkgname=="gdb") return false;
 #endif
-		ans = mxMessageDialog(parent,LANG(CONFIG_APTGET_FAILED,"FallÛ la instalaciÛn autom·tica."))
+		ans = mxMessageDialog(parent,LANG(CONFIG_APTGET_FAILED,"Fall√≥ la instalaci√≥n autom√°tica."))
 				.Title(what).IconWarning().Check1(pref_msg,true).Check2(web_msg,true).Run();
 	}
-	if (ans.check2) { // si no habÌa apt-get, o si fallo (por eso repito la pregunta del if), abrir el sitio web
+	if (ans.check2) { // si no hab√≠a apt-get, o si fallo (por eso repito la pregunta del if), abrir el sitio web
 		mxUT::OpenInBrowser(website);
 	}
-	if (ans.check1) { // si no habÌa apt-get, o si fallo (por eso repito la pregunta del if), abrir el sitio web
+	if (ans.check1) { // si no hab√≠a apt-get, o si fallo (por eso repito la pregunta del if), abrir el sitio web
 		mxPreferenceWindow::ShowUp()->SetPathsPage(preferences_field);
 	}
 	return false;
@@ -1259,9 +1259,9 @@ void ConfigManager::TryToInstallWithAptGet (wxWindow * parent, const wxString & 
 	}
 #endif
 	mxMessageDialog(parent,
-					LANG(CONFIG_ABOUT_TO_APTGET,"A continuaciÛn se intentar· instalar el software faltante en una nueva\n"
-												"terminal. PodrÌa requerir ingresar la contraseÒa del administrador.\n"
-												"ZinjaI continuar· cuando se cierre dicha terminal.")
+					LANG(CONFIG_ABOUT_TO_APTGET,"A continuaci√≥n se intentar√° instalar el software faltante en una nueva\n"
+												"terminal. Podr√≠a requerir ingresar la contrase√±a del administrador.\n"
+												"ZinjaI continuar√° cuando se cierre dicha terminal.")
 					).Title(what).Run();
 	wxExecute(mxUT::GetCommandForRunningInTerminal(
 		wxString("ZinjaI - sudo apt-get install ")+pkgname,

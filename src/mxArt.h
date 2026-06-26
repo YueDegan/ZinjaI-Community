@@ -14,7 +14,7 @@ class wxBitmap;
 #define PROPX (bitmaps->text_ref_x)
 #define PROPY (bitmaps->text_ref_y)
 
-//! Estructura para almacenar recuros gr·ficos comunes
+//! Estructura para almacenar recuros gr√°ficos comunes
 class mxArt {
 public:
 	int text_ref_x,text_ref_y;

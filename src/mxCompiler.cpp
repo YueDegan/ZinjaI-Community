@@ -114,13 +114,13 @@ mxCompiler::mxCompiler(/*wxTreeCtrl *atree, wxTreeItemId s, wxTreeItemId e, wxTr
 
 /**
 * @param on_end En cualquier caso se hacer cargo de esta accion. Si hay que 
-*               compilar se la transfiere al proyecto, si est· todo listo
+*               compilar se la transfiere al proyecto, si est√° todo listo
 *               la ejecuta y le hace luego el delete.
 **/
 void mxCompiler::BuildOrRunProject(bool prepared, std::function<void()> on_end) {
 	if (project->GetWxfbActivated() && project->GetWxfbConfiguration()->working) return;
 	main_window->extern_compiler_output->Clear();
-	main_window->SetCompilingStatus(LANG(GENERAL_PREPARING_BUILDING,"Preparando compilaciÛn..."),true);
+	main_window->SetCompilingStatus(LANG(GENERAL_PREPARING_BUILDING,"Preparando compilaci√≥n..."),true);
 	ZLINF("Compiler","BuildOrRunProject wxYield:in");
 	wxYield();
 	ZLINF("Compiler","BuildOrRunProject wxYield:out");
@@ -139,7 +139,7 @@ void mxCompiler::BuildOrRunProject(bool prepared, std::function<void()> on_end) 
 			if (current_toolchain.IsExtern()) main_window->m_aui->Show(PaneId::Compiler,true);
 			main_window->StartExecutionStuff(compile_and_run,current);
 		} else {
-			main_window->SetStatusText(LANG(MAINW_COMPILATION_INTERRUPTED,"CompilaciÛn interrumpida."));
+			main_window->SetStatusText(LANG(MAINW_COMPILATION_INTERRUPTED,"Compilaci√≥n interrumpida."));
 			delete compile_and_run;
 		}
 	} else {
@@ -176,7 +176,7 @@ static inline bool ErrorLineIsChild(const wxString &error_line) {
 		AuxSkip(error_line,p,l,ns);
 	
 	if (ns>=3) return true; // puede venir directo el mensaje.. si empieza "indentado" con 3 espacios, es child
-	if (AuxCompare(error_line,p,"note:") or AuxCompare(error_line,p,"NOTE:")) return true; // o la palabra note (99% de las veces est· en min˙sculas, pero ld en algunos mensajes lo pone en may˙sculas)
+	if (AuxCompare(error_line,p,"note:") or AuxCompare(error_line,p,"NOTE:")) return true; // o la palabra note (99% de las veces est√° en min√∫sculas, pero ld en algunos mensajes lo pone en may√∫sculas)
 	AuxSkip(error_line,p,l,ns); // palabra "error:" o "warning:"
 	if (ns>=3) return true; // puede venir directo el mensaje.. si empieza "indentado" con 3 espacios, es child
 	return false;
@@ -272,7 +272,7 @@ void mxCompiler::ParseSomeErrors(compile_and_run_struct_single *compile_and_run)
 			continue;
 		}
 		
-		// reemplazar templates para que sea m·s legible
+		// reemplazar templates para que sea m√°s legible
 		
 		// averiguar si es error, warning, o parte de un error/warning anterior/siguiente
 		CAR_ERROR_LINE action = ParseSomeErrorsOneLine(compile_and_run,error_line);
@@ -281,7 +281,7 @@ void mxCompiler::ParseSomeErrors(compile_and_run_struct_single *compile_and_run)
 //		if (action==CAR_EL_ERROR) {
 //			num_errors++; 
 //			if (num_errors>config->Init.max_errors) {
-//				compile_and_run->process->Kill(compile_and_run->pid,wxSIGKILL); // matar el proceso, por si entra en loop infinito, podrÌa colgar zinjai
+//				compile_and_run->process->Kill(compile_and_run->pid,wxSIGKILL); // matar el proceso, por si entra en loop infinito, podr√≠a colgar zinjai
 //				compile_and_run->last_error_item_IsOk=false;
 //				continue;
 //			}
@@ -294,14 +294,14 @@ void mxCompiler::ParseSomeErrors(compile_and_run_struct_single *compile_and_run)
 //			}
 //		} else if (action==CAR_EL_CHILD_LAST||action==CAR_EL_CHILD_SWAP) {
 //			if (!compile_and_run->last_error_item_IsOk && (num_warnings>config->Init.max_errors||num_errors>config->Init.max_errors)) {
-//				compile_and_run->process->Kill(compile_and_run->pid,wxSIGKILL); // matar el proceso, por si entra en loop infinito, podrÌa colgar zinjai
+//				compile_and_run->process->Kill(compile_and_run->pid,wxSIGKILL); // matar el proceso, por si entra en loop infinito, podr√≠a colgar zinjai
 //				continue;
 //			}
 //		}
 		
 		if (action&(CAR_EL_TYPE_ERROR|CAR_EL_TYPE_WARNING)) { // nuevo error o warning
 			errors_manager->AddError(compile_and_run->m_cem_state,action&CAR_EL_TYPE_ERROR,error_line);
-		} else if (action&CAR_EL_TYPE_CHILD_LAST) { // continua el ˙ltimo error
+		} else if (action&CAR_EL_TYPE_CHILD_LAST) { // continua el √∫ltimo error
 			errors_manager->AddNoteForLastOne(compile_and_run->m_cem_state,error_line,action);
 		} else if (action&CAR_EL_TYPE_CHILD_NEXT) { // parte (hijos) del siguiente error
 			errors_manager->AddNoteForNextOne(compile_and_run->m_cem_state,error_line,action);
@@ -366,16 +366,16 @@ void mxCompiler::ParseCompilerOutput(compile_and_run_struct_single *compile_and_
 					time_t elapsed_time = time(nullptr)-project->compile_startup_time;
 					if (elapsed_time>5) {
 						if (elapsed_time/60==0)
-							main_window->SetCompilingStatus(LANG1(MAINW_COMPILING_DONE_SECONDS,"CompilaciÛn finalizada ( tiempo transcurrido: <{1}> segundos ).",wxString()<<elapsed_time));
+							main_window->SetCompilingStatus(LANG1(MAINW_COMPILING_DONE_SECONDS,"Compilaci√≥n finalizada ( tiempo transcurrido: <{1}> segundos ).",wxString()<<elapsed_time));
 						if (elapsed_time/60==1)
-							main_window->SetCompilingStatus(LANG1(MAINW_COMPILING_DONE_ONE_MINUTE,"CompilaciÛn finalizada ( tiempo transcurrido: un minuto y <{1}> segundos ).",wxString()<<(elapsed_time%60)));
+							main_window->SetCompilingStatus(LANG1(MAINW_COMPILING_DONE_ONE_MINUTE,"Compilaci√≥n finalizada ( tiempo transcurrido: un minuto y <{1}> segundos ).",wxString()<<(elapsed_time%60)));
 						else
-							main_window->SetCompilingStatus(LANG2(MAINW_COMPILING_DONE_MINUTES_AND_SECONDS,"CompilaciÛn finalizada ( tiempo transcurrido: <{1}> minutos y <{2}> segundos ).",wxString()<<(elapsed_time/60),wxString()<<(elapsed_time%60)));
+							main_window->SetCompilingStatus(LANG2(MAINW_COMPILING_DONE_MINUTES_AND_SECONDS,"Compilaci√≥n finalizada ( tiempo transcurrido: <{1}> minutos y <{2}> segundos ).",wxString()<<(elapsed_time/60),wxString()<<(elapsed_time%60)));
 					} else {
-						main_window->SetCompilingStatus(LANG(MAINW_COMPILING_DONE,"CompilaciÛn finalizada."));
+						main_window->SetCompilingStatus(LANG(MAINW_COMPILING_DONE,"Compilaci√≥n finalizada."));
 					}
 					errors_manager->CompilationFinished();
-//					main_window->SetCompilingStatus(LANG(MAINW_COMPILING_DONE,"CompilaciÛn Finalizada"));
+//					main_window->SetCompilingStatus(LANG(MAINW_COMPILING_DONE,"Compilaci√≥n Finalizada"));
 					// ejecutar o depurar
 					auto on_end = compile_and_run->on_end;
 					valgrind_cmd=compile_and_run->valgrind_cmd;
@@ -384,7 +384,7 @@ void mxCompiler::ParseCompilerOutput(compile_and_run_struct_single *compile_and_
 					valgrind_cmd="";
 				} else {
 					compile_and_run->compiling=false;
-					main_window->SetCompilingStatus(LANG(MAINW_COMPILATION_INTERRUPTED,"CompilaciÛn interrumpida!"),true);
+					main_window->SetCompilingStatus(LANG(MAINW_COMPILATION_INTERRUPTED,"Compilaci√≥n interrumpida!"),true);
 					main_window->SetStatusProgress(0);
 					main_window->m_aui->Show(PaneId::Compiler,true);
 					delete compile_and_run; compile_and_run=nullptr;
@@ -393,7 +393,7 @@ void mxCompiler::ParseCompilerOutput(compile_and_run_struct_single *compile_and_
 		} else { // si era un ejercicio simple, ver si hay que ejecutar
 			CheckForExecutablePermision(last_compiled->GetBinaryFileName().GetFullPath());
 			main_window->SetStatusProgress(0);
-			main_window->SetCompilingStatus(LANG(MAINW_COMPILING_DONE,"CompilaciÛn Finalizada"),true);
+			main_window->SetCompilingStatus(LANG(MAINW_COMPILING_DONE,"Compilaci√≥n Finalizada"),true);
 			errors_manager->CompilationFinished();
 			auto on_end = compile_and_run->on_end;
 			valgrind_cmd=compile_and_run->valgrind_cmd;
@@ -405,11 +405,11 @@ void mxCompiler::ParseCompilerOutput(compile_and_run_struct_single *compile_and_
 		// informar y no seguir
 		if (!project || project->compile_was_ok) {
 			main_window->SetStatusProgress(0);
-			main_window->SetCompilingStatus(LANG(MAINW_COMPILATION_INTERRUPTED,"CompilaciÛn interrumpida!"),true);
+			main_window->SetCompilingStatus(LANG(MAINW_COMPILATION_INTERRUPTED,"Compilaci√≥n interrumpida!"),true);
 			compile_and_run->compiling=false;
 //			wxBell();
 			if (compile_and_run->output_type==MXC_EXTRA)
-				errors_manager->AddZinjaiError(true,wxString(LANG(MAINW_COMPILATION_CUSTOM_STEP_ERROR,"Error al ejecutar paso de compilaciÛn personalizado: "))<<compile_and_run->step_label);
+				errors_manager->AddZinjaiError(true,wxString(LANG(MAINW_COMPILATION_CUSTOM_STEP_ERROR,"Error al ejecutar paso de compilaci√≥n personalizado: "))<<compile_and_run->step_label);
 			errors_manager->CompilationFinished();
 			main_window->SetFocusToSourceAfterEvents();
 			if (!project) g_code_helper->TryToSuggestTemplateSolutionForLinkingErrors(compile_and_run->m_cem_state.full_output,compile_and_run->on_end);
@@ -424,7 +424,7 @@ void mxCompiler::ParseCompilerOutput(compile_and_run_struct_single *compile_and_
 					return; // avoid final delete
 				} else {
 					main_window->SetStatusProgress(0);
-					main_window->SetStatusText(LANG(MAINW_COMPILATION_INTERRUPTED,"CompilaciÛn interrumpida!"));
+					main_window->SetStatusText(LANG(MAINW_COMPILATION_INTERRUPTED,"Compilaci√≥n interrumpida!"));
 				}
 			}
 		}
@@ -520,7 +520,7 @@ bool mxCompiler::CheckForExecutablePermision(wxString file) {
 	if (!wxFileName::IsFileExecutable(file)) {
 		system(ToCStyleString(wxString("chmod a+x ")+mxUT::Quotize(file)));
 		if (!wxFileName::IsFileExecutable(file)) {
-			errors_manager->AddZinjaiError(true,LANG(MAINW_WARNING_NO_EXCUTABLE_PERMISSION,"El binario no tiene permisos de ejecuciÛn."));
+			errors_manager->AddZinjaiError(true,LANG(MAINW_WARNING_NO_EXCUTABLE_PERMISSION,"El binario no tiene permisos de ejecuci√≥n."));
 			return false;
 		} else {
 			errors_manager->AddZinjaiError(false,LANG(MAINW_WARNING_EXCUTABLE_PERMISSION_CHANGED,"Se cambiaron los permisos del binario (chmod a+x)."));

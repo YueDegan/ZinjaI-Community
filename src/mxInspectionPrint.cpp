@@ -23,8 +23,8 @@ mxInspectionPrint::mxInspectionPrint(wxString expression, bool is_frameless) : w
 	
 	wxString s = di->GetValue();
 	if (s.Len()) {
-		// calcular tamaño de la ventana para el texto que tiene y con la relacion de aspecto a
-		// la idea es, con texto en una line tamaño w*h => defino T=w*h, y quiero w*a=h.. con esas
+		// calcular tamaÅ†o de la ventana para el texto que tiene y con la relacion de aspecto a
+		// la idea es, con texto en una line tamaÅ†o w*h => defino T=w*h, y quiero w*a=h.. con esas
 		// dos ecuaciones despejo w y h (en base a T y a), y despues aplico un "coeficiente de 
 		// seguridad" cf (porque el texto hace wrap por palabras, y yo calculo como si fuera por 
 		// pixeles), y +h0 para considerar el statictext con el tipo a modo de barra de estado

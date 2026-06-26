@@ -47,7 +47,7 @@ mxWxfbInheriter::mxWxfbInheriter(wxWindow *parent, wxString classname, bool upda
 	if (mode==WXFBI_NEW_CLASS_SPECIFIC) {
 		mySizer->Add(new wxStaticText(this, wxID_ANY, 
 			LANG(WXFB_AUTOINHERIT_MESSAGE,""
-			"ZinjaI ha detectado una nueva clase (ventana, di·logo, panel, etc)\n"
+			"ZinjaI ha detectado una nueva clase (ventana, di√°logo, panel, etc)\n"
 			"en un archivo generado por wxFormBuilder. Puede generar ahora una \n"
 			"herencia a partir de dicha clase. Introduzca el nombre de la nueva \n"
 			"clase heradad para hacerlo, o presione cancelar en caso contrario."

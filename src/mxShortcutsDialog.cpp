@@ -37,7 +37,7 @@ public:
 		if (shift) text<<"Shift+";
 		if (alt) text<<"Alt+";
 		if (key!="..." || text.Len()) text<<key; 
-		else text="Presione una combinación de teclas";
+		else text="Presione una combinaciÃ³n de teclas";
 		current->SetValue(text);
 		current->SetFocus();
 	}

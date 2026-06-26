@@ -356,7 +356,7 @@ mxSource::mxSource (wxWindow *parent, wxString ptext, project_file_item *fitem)
 	SetDropTarget(new mxDropTarget(this));
 	UsePopUp(wxSTC_POPUP_NEVER);
 #ifndef __WIN32__
-	// el default para BufferedDraw es true, pero por alguna razÛn en algun momento
+	// el default para BufferedDraw es true, pero por alguna raz√≥n en algun momento
 	// lo puse en false, tal vez por velocidad o problemas de refresco
 	// en gtk parece no cambiar nada, pero en windows genera un flickering molesto
 	// (para verlo solo basta pararse al comienzo de una linea con codigo y esperar)
@@ -636,7 +636,7 @@ void mxSource::OnMarginClick (wxStyledTextEvent &event) {
 		int l = LineFromPosition (event.GetPosition());
 		BreakPointInfo *bpi=m_extras->FindBreakpointFromLine(this,l);
 		
-		// si apretÛ shift o ctrl (por alguna razon en linux solo me anda shift) mostrar el cuadro de opciones
+		// si apret√≥ shift o ctrl (por alguna razon en linux solo me anda shift) mostrar el cuadro de opciones
 		if (event.GetModifiers()&wxSTC_KEYMOD_SHIFT || event.GetModifiers()&wxSTC_KEYMOD_CTRL) {
 			if (!debug->IsDebugging() || debug->CanTalkToGDB()) {
 				if (!bpi) { // si no habia, lo crea
@@ -969,9 +969,9 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
 //	RaiiRestoreValue<SingleList<mxSource::MacroAction>*> mask_macro_events(main_window->m_macro,nullptr);
 	char chr = (char)event.GetKey();
 	// la siguiente condicion verifica contra el estado interno de wx porque si el 
-	// usuario estaba en un menu, se moviÛ r·pido a otro lugar y lanzÛ un segundo
-	// menu, puede que en el medio no se haya ejecutado ning˙n updateui como para
-	// que mi calltip_mode se entere de ese cambio... y en ese caso el filtro reventarÌa
+	// usuario estaba en un menu, se movi√≥ r√°pido a otro lugar y lanz√≥ un segundo
+	// menu, puede que en el medio no se haya ejecutado ning√∫n updateui como para
+	// que mi calltip_mode se entere de ese cambio... y en ese caso el filtro reventar√≠a
 	if (calltip_mode==MXS_AUTOCOMP && wxStyledTextCtrl::AutoCompActive()) { 
 		if (!II_IS_KEYWORD_CHAR(chr)) HideCalltip();
 		else if (config_source.autocompFilters) 
@@ -991,8 +991,8 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
 		} else if (chr=='(') { 
 			InsertText(pos++,")" );
 		} else if (chr=='{') {
-			// ver si va o no adem·s el punto y coma
-			int p_start = GetStatementStartPos(pos-2); // buscar donde empieza la declaraciÛn
+			// ver si va o no adem√°s el punto y coma
+			int p_start = GetStatementStartPos(pos-2); // buscar donde empieza la declaraci√≥n
 			if (GetStyleAt(p_start)==wxSTC_C_WORD && GetTextRange(p_start,p_start+8)=="template") { // si es template, saltear el template
 				int l=pos,s; char c; // auxiliares para II_*
 				p_start+=8;	II_FRONT(p_start,II_IS_NOTHING_4(p_start));
@@ -1085,7 +1085,7 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
 				SetLineIndentation(GetCurrentLine(),0);
 			
 		} else if (chr=='{') {
-			// llave que abre, si est· sola en la linea, corregirle el indentado
+			// llave que abre, si est√° sola en la linea, corregirle el indentado
 			int p=GetCurrentPos()-2, l=GetCurrentLine();
 			int e=PositionFromLine(l);
 			char c;
@@ -1219,7 +1219,7 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
 									} else if (TextRangeWas(p_aux,"do")) // si es "do" agregar tambien el "while(...);"
 										to_insert = "\n} while();";
 								} else if (s==wxSTC_C_OPERATOR && (c==']'||c=='&')) { // ...o para la sobrecarga por tipo de refencia, o atributos
-									/// @todo: podrÌa ser una lambda... si es ... = [](){ ... habrÌa que agregar el punto y coma
+									/// @todo: podr√≠a ser una lambda... si es ... = [](){ ... habr√≠a que agregar el punto y coma
 									to_insert="\n}";
 								}
 										
@@ -1386,10 +1386,10 @@ void mxSource::OnCharAdded (wxStyledTextEvent &event) {
 					return;
 				}
 			}
-			int p=WordStartPosition(e,true); int pos_key=p; // pos_key guarda la posiciÛn donde comienza la palabra a autocompletar
+			int p=WordStartPosition(e,true); int pos_key=p; // pos_key guarda la posici√≥n donde comienza la palabra a autocompletar
 			if (e-p+1>=config->Help.min_len_for_completion || chr==',' || chr=='(') {
 				wxString key = GetTextRange(p,e+1);
-				if (last_failed_autocompletion.IsSameLocation(pos_key,key,parser->data_age)) return; // no intentar autocompletar nuevamente si ya se intentÛ un caracter atr·s
+				if (last_failed_autocompletion.IsSameLocation(pos_key,key,parser->data_age)) return; // no intentar autocompletar nuevamente si ya se intent√≥ un caracter atr√°s
 				s=GetStyleAt(p-1);
 				if (p && s==wxSTC_C_PREPROCESSOR) {
 					int pos_num = p-1; II_BACK(pos_num,II_IS_2(pos_num,'\t','\n'));
@@ -1874,7 +1874,7 @@ void mxSource::OnPopupMenuMargin(wxMouseEvent &evt) {
 
 void mxSource::OnPopupMenuInside(wxMouseEvent &evt, bool fix_current_pos) {
 	
-	// mover el cursor a la posiciÛn del click (a menos que haya una selecciÛn y se clickeÛ dentro)
+	// mover el cursor a la posici√≥n del click (a menos que haya una selecci√≥n y se clicke√≥ dentro)
 	int p1=GetSelectionStart(), p2=GetSelectionEnd();
 	if (fix_current_pos && p1==p2) {
 		int p = PositionFromPointClose(evt.GetX(),evt.GetY());
@@ -1924,7 +1924,7 @@ void mxSource::OnPopupMenuInside(wxMouseEvent &evt, bool fix_current_pos) {
 	}
 	mxUT::AddItemToMenu(&menu,_menu_item_2(mnHIDDEN,mxID_WHERE_AM_I));
 	PopulatePopupMenuCodeTools(*code_menu);
-	mxUT::AddSubMenuToMenu(&menu,code_menu,LANG(MENUITEM_TOOLS_CODE,"&GeneraciÛn de cÛdigo"),"","");
+	mxUT::AddSubMenuToMenu(&menu,code_menu,LANG(MENUITEM_TOOLS_CODE,"&Generaci√≥n de c√≥digo"),"","");
 	menu.AppendSeparator();
 	
 	mxUT::AddItemToMenu(&menu,_menu_item_2(mnEDIT,mxID_EDIT_UNDO));
@@ -1965,10 +1965,10 @@ void mxSource::PopulatePopupMenuCodeTools(wxMenu &menu) {
 		int a1,a2; single_scope = true;
 		for(int i=0;i<2;i++) {
 			single_scope = single_scope &&GetCurrentScopeLimits(i?p1:p2,a1,a2,true); // scope mas interno de pX
-			while (single_scope && (a1>=p1&&a2<=p2) ) { // mientras estÈ totalmente contenido... ir un scope m·s "arriba"
+			while (single_scope && (a1>=p1&&a2<=p2) ) { // mientras est√© totalmente contenido... ir un scope m√°s "arriba"
 				single_scope = GetCurrentScopeLimits(a1-1,a1,a2,true);
 			}
-			single_scope = single_scope && ( (a1<=p1&&a2>=p2) ); // ahora el scope externo deberÌa contener totalmente a p1-p2
+			single_scope = single_scope && ( (a1<=p1&&a2>=p2) ); // ahora el scope externo deber√≠a contener totalmente a p1-p2
 		}
 	}
 	
@@ -2006,10 +2006,10 @@ mxSource::StcTypeInfo mxSource::FindTypeOfByKey(const wxString &key, int pos, bo
 	
 /**
 * Averigua el tipo de una variable dentro de un contexto. 
-* Primero busca en el cÛdigo del archivo hacia atras y mira lo que parezca
-* una declaraciÛn de variable. Si piensa que est· en alguna funciÛn tambien
-* mira los argumentos y anota el scope si la funciÛn parece el mÈtodo de una
-* clase, para que al final si no encontrÛ nada le pueda preguntar al parser
+* Primero busca en el c√≥digo del archivo hacia atras y mira lo que parezca
+* una declaraci√≥n de variable. Si piensa que est√° en alguna funci√≥n tambien
+* mira los argumentos y anota el scope si la funci√≥n parece el m√©todo de una
+* clase, para que al final si no encontr√≥ nada le pueda preguntar al parser
 * por esa clase
 **/
 wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_template_spec) {
@@ -2090,8 +2090,8 @@ wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_te
 		
 		c = GetCharAt(p_from);
 		
-		if (c==')' && !init_pos) { // ver si era una funciÛn/mÈtodo
-			// avanzar despues del parÈntesis y ver si abre una llave
+		if (c==')' && !init_pos) { // ver si era una funci√≥n/m√©todo
+			// avanzar despues del par√©ntesis y ver si abre una llave
 			p=p_from+1; int l=GetLength();
 			II_FRONT(p,II_IS_NOTHING_4(p))
 			// saltear el const
@@ -2133,12 +2133,12 @@ wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_te
 					if (p!=wxSTC_INVALID_POSITION) { // si es un parametro
 						p_to=p;
 						int template_level=0; // sino se confunde la , de un map<int,int> con el final del argumento
-						// corta en el '(' si es una lista de args de funciÛn; o en el ';'/':' si es parte de un for (solo vale si somos la 1er parte)
+						// corta en el '(' si es una lista de args de funci√≥n; o en el ';'/':' si es parte de un for (solo vale si somos la 1er parte)
 						while (p_to>p_begin_of_args_list && (!(II_IS_2(p_to,'(',';')||(c==':'&&(GetCharAt(p_to-1)!=':'&&GetCharAt(p_to+1)!=':')))||template_level)) {
-							// ',', '=' y first_arg son para distinguir si es la var declarada, o est· en la expresiÛn con que se inicializa
+							// ',', '=' y first_arg son para distinguir si es la var declarada, o est√° en la expresi√≥n con que se inicializa
 							if (c==',') { if (in_for) first_arg = false; else if (template_level==0) break; } // en una func, cada var tiene su tipo... en un for puede haber varias para el mismo
 							else if (c=='=') { if (first_arg) { p_to=wxSTC_INVALID_POSITION; break; } }
-							// el ')' es para salter funciones y expresiones cuando otra que est· antes en la lista tiene una expresiÛn que la inicializa
+							// el ')' es para salter funciones y expresiones cuando otra que est√° antes en la lista tiene una expresi√≥n que la inicializa
 							else if (c==')') { p_to = BraceMatch(p_to); if (p_to==wxSTC_INVALID_POSITION) break; }
 							// tratar de saltear templates... se puede confundir con lo operador <, >, << y >>
 							else if (c=='>') template_level++;
@@ -2198,7 +2198,7 @@ wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_te
 			if (p_from==wxSTC_INVALID_POSITION)
 				break;
 			p_from--;
-			// ver si era una funciÛn, y en ese caso saltear tambien el prototipo
+			// ver si era una funci√≥n, y en ese caso saltear tambien el prototipo
 			II_BACK(p_from,II_IS_NOTHING_4(p_from));
 			// saltear el const
 			if (p_from>4&&GetCharAt(p_from-4)=='c'&&GetCharAt(p_from-3)=='o'&&GetCharAt(p_from-2)=='n'&&GetCharAt(p_from-1)=='s'&&GetCharAt(p_from)=='t'&&(GetCharAt(p_from-5)==')'||II_IS_NOTHING_4(p_from-5))) {
@@ -2231,11 +2231,11 @@ wxString mxSource::FindTypeOfByKey_impl(wxString &key, int &pos, bool include_te
 			
 			p = p_typeend;
 			if (p!=wxSTC_INVALID_POSITION) {
-				// ver si lo que sigue tiene cara de nombres de variable para la declaracion ø?
+				// ver si lo que sigue tiene cara de nombres de variable para la declaracion ¬ø?
 				while (II_IS_NOTHING_4(p)) p++; // side-effect: setea c para el if
 				if ( IsKeywordChar(c,false) || c=='&' || c=='*') {
 					dims=0;
-//					if (p1!=p2 && !TextRangeIs(p,p2,"else") && !TextRangeIs(p,p2,"delete")) { /// que hacÌa este if???
+//					if (p1!=p2 && !TextRangeIs(p,p2,"else") && !TextRangeIs(p,p2,"delete")) { /// que hac√≠a este if???
 						p=p_ocur-1;
 						while (II_IS_NOTHING_4(p)) {
 							p--;
@@ -2354,7 +2354,7 @@ void mxSource::ShowBaloon(wxString str, int p) {
 	// mostrar utilizando el mecanismo de calltip de scintilla
 	SetCalltipMode(MXS_BALOON);
 	wxStyledTextCtrl::CallTipShow(p,str);
-	// para que querÌamos un yield aca???
+	// para que quer√≠amos un yield aca???
 	ZLINF("Source","ShowBaloon wxYield:in");
 	wxYield();
 	ZLINF("Source","ShowBaloon wxYield:out");
@@ -2393,7 +2393,7 @@ wxString mxSource::FindTypeOfByPos_impl(int p,int &dims, bool include_template_s
 			return scope;
 		}
 	}
-	if (c==')') { // si hay un parentesis puede que ya estÈ todo resuelto (cast)
+	if (c==')') { // si hay un parentesis puede que ya est√© todo resuelto (cast)
 		p = BraceMatch(p);
 		if (p==wxSTC_INVALID_POSITION) {
 			dims=SRC_PARSING_ERROR;
@@ -2529,25 +2529,25 @@ wxString mxSource::FindTypeOfByPos_impl(int p,int &dims, bool include_template_s
 }
 
 /**
-* @brief determina en quÈ funciÛn o clase est·mos actualmente
+* @brief determina en qu√© funci√≥n o clase est√°mos actualmente
 * 
-* Se usa para saber el scope con el que consultar al Ìndice de autocompletado,
+* Se usa para saber el scope con el que consultar al √≠ndice de autocompletado,
 * y para mostrar el contexto (WhereAmI). El primer uso va con full_scope en falso
-* para que retorna nada m·s que el nombre del scope (Ej: "mi_clase"), mientras que
-* el segundo va con full_scope en true para que incluya el nombre del mÈtodo
+* para que retorna nada m√°s que el nombre del scope (Ej: "mi_clase"), mientras que
+* el segundo va con full_scope en true para que incluya el nombre del m√©todo
 * (Ej: "mi_clase::mi_metodo") o el tipo de definicion (Ej: "class mi_clase").
 * Los argumentos se retornan por separado porque se usan en los dos casos: en el
 * primero para obtener los identificadores para usarlos al autocompletar, en el 
-* segundo para mostrarlos como est·n. Se retornan como posiciones del cÛdigo
-* que son las de los parÈntesis. Se retornan asÌ y no como wxString para poder
-* analizarlos en el cÛdigo y utilizar asÌ el coloreado como ayuda. Si no hay
-* argumentos args no se modifica, por lo que deberÌa entrar con valores
-* inv·lidos (como {-1,-1}) para saber desde afuera si el valor de retorno es real.
+* segundo para mostrarlos como est√°n. Se retornan como posiciones del c√≥digo
+* que son las de los par√©ntesis. Se retornan as√≠ y no como wxString para poder
+* analizarlos en el c√≥digo y utilizar as√≠ el coloreado como ayuda. Si no hay
+* argumentos args no se modifica, por lo que deber√≠a entrar con valores
+* inv√°lidos (como {-1,-1}) para saber desde afuera si el valor de retorno es real.
 *
 * En scope_start retorna las pos en algun punto del prototipo, o donde empieza la
-* clase... Si es local_start==true es la funciÛn/mÈtodo, sino puede ser el scope
+* clase... Si es local_start==true es la funci√≥n/m√©todo, sino puede ser el scope
 * de la clase... (para el autocompletado necesito el de la clase, para refactory y 
-* otras yerbas puedo necesitar el del mÈtodo. Ojo que la pos puede no ser
+* otras yerbas puedo necesitar el del m√©todo. Ojo que la pos puede no ser
 * el comienzo, sino estar a mitad del prototipo... Usar GetStatementStartPos para 
 * tener el verdadero comienzo.
 **/ 
@@ -2588,7 +2588,7 @@ wxString mxSource::FindScope(int pos, wxString *args, bool full_scope, int *scop
 					op=p; first_p=p+1;
 					p=WordStartPosition(p,true)-1;
 					if (scope_start) *scope_start=p;
-					if (full_scope) scope=GetTextRange(p+1,op+1); // nombre de un mÈtodo?
+					if (full_scope) scope=GetTextRange(p+1,op+1); // nombre de un m√©todo?
 					II_BACK(p,II_IS_NOTHING_4(p));
 					// el "GetCharAt(p)==','" se agrego el 29/09 para los constructores en constructores
 					if (GetCharAt(p)==':' || GetCharAt(p)==',' || (p && GetCharAt(p)=='~' && GetCharAt(p-1)==':')) {
@@ -2680,10 +2680,10 @@ void mxSource::OnToolTipTime (wxStyledTextEvent &event) {
 	
 	static int old_p = -1, count_p = 0;
 	
-	// no mostrar tooltips si no es la pestaÒa del notebook seleccionada, o el foco no esta en esta ventana
+	// no mostrar tooltips si no es la pesta√±a del notebook seleccionada, o el foco no esta en esta ventana
 	if (!main_window->IsActive() || main_window->focus_source!=this) return; 
 	
-	// no mostrar si el mouse no est· dentro del area del fuente
+	// no mostrar si el mouse no est√° dentro del area del fuente
 	wxRect psrc = GetScreenRect();
 	wxPoint pmouse = wxGetMousePosition()-psrc.GetTopLeft();
 	if (pmouse.x<0||pmouse.y<0) { old_p = -1; return; }
@@ -2834,7 +2834,7 @@ void mxSource::OnEditForceAutoComplete(wxCommandEvent &evt) {
 	char chr = p>0?GetCharAt(p-1):' ';
 	HideCalltip();
 	int s=GetStyleAt(--p); char &c=chr;
-	II_BACK(p,II_IS_NOTHING_4(p)); p++; // por si estamos en una linea en blanco, y hay que completar algo que viene de la anterior (como una , en una lista de argumentos para una funciÛn)
+	II_BACK(p,II_IS_NOTHING_4(p)); p++; // por si estamos en una linea en blanco, y hay que completar algo que viene de la anterior (como una , en una lista de argumentos para una funci√≥n)
 	if (s==wxSTC_C_PREPROCESSOR) {
 		int ws=WordStartPosition(p,true);
 		if (chr=='#')
@@ -3253,10 +3253,10 @@ bool mxSource::IsComment(int pos) {
 
 
 /**
-* Lleva el cursor a una posiciÛn especÌfica, forzando su visualizaciÛn
-* Reemplaza al GotoPos original porque ese cuando se le da una posiciÛn
-* que no est· al comienzo de la linea hace scroll horizontal para centrarla
-* y es basatante incomodo (apareciÛ con wxWidgets-2.8.10?)
+* Lleva el cursor a una posici√≥n espec√≠fica, forzando su visualizaci√≥n
+* Reemplaza al GotoPos original porque ese cuando se le da una posici√≥n
+* que no est√° al comienzo de la linea hace scroll horizontal para centrarla
+* y es basatante incomodo (apareci√≥ con wxWidgets-2.8.10?)
 **/
 void mxSource::GotoPos(int pos) {
 	wxStyledTextCtrl::GotoPos(PositionFromLine(LineFromPosition(pos)));
@@ -3321,9 +3321,9 @@ void mxSource::OnModifyOnRO (wxStyledTextEvent &event) {
 		mxMessageDialog::mdAns ans =
 			mxMessageDialog(main_window,LANG(DEBUG_CANT_EDIT_WHILE_DEBUGGING,""
 											 "Por defecto, no se puede modificar el fuente mientras se encuentra\n"
-											 "depurando un programa, ya que de esta forma pierde la relaciÛn que\n"
-											 "existe entre la informaciÛn que brinda el depurador a partir del\n"
-											 "archivo binario, y el fuente que est· visualizando."))
+											 "depurando un programa, ya que de esta forma pierde la relaci√≥n que\n"
+											 "existe entre la informaci√≥n que brinda el depurador a partir del\n"
+											 "archivo binario, y el fuente que est√° visualizando."))
 				.Check1(LANG(DEBUG_ALLOW_EDIT_WHILE_DEBUGGING,"Permitir editar igualemente"),config->Debug.allow_edition)
 				.Title(LANG(GENERAL_WARNING,"Advertencia")).IconWarning().Run();
 		if (ans.check1) {
@@ -3599,7 +3599,7 @@ void mxSource::OnPainted (wxStyledTextEvent & event) {
 * del stc cuando se llama desde el evento de udateui. A cambio, para que igual sea
 * instantaneo se llama desde el evento painted, y para evitar que reentre mil veces
 * se guardan las ultimas posiciones y no se vuelve a llamar si son las mismas.
-* El problema es que est· recalculando el BraceMatch en cada paint.
+* El problema es que est√° recalculando el BraceMatch en cada paint.
 **/
 void mxSource::MyBraceHighLight (int b1, int b2) {
 	if (b1==brace_1&&b2==brace_2) return;
@@ -3837,9 +3837,9 @@ void mxSource::MultiSelController::ApplyRectEdit (mxSource *src) {
 		delta_for_next += sto.Len()-sfrom.Len();
 		if (tbeg<pbeg) { pbeg+=sto.Len()-sfrom.Len(); pend+=sto.Len()-sfrom.Len(); } // por si la que editamos no es la primera que aparece
 	}
-	// la selecciÛn ya no ser· rectangular
+	// la selecci√≥n ya no ser√° rectangular
 	m_was_rect_select=false;
-	// guardar la linea modificada como nueva referencia para la prÛxima ediciÛn
+	// guardar la linea modificada como nueva referencia para la pr√≥xima edici√≥n
 	this->SetEditRegion(src,m_line,pbeg,pend);	
 }
 
@@ -3900,10 +3900,10 @@ int mxSource::GetStatementStartPos(int pos, bool skip_coma, bool skip_white, boo
 							II_BACK(p_func_name,II_IS_NOTHING_4(p_func_name));
 							if (c!=','&&c!=':'&&c!='{') { // que no sea una lista de inicializadores en un constructor
 								pos = pos_match+1; // caso "main(){\n}else{\n"
-								break; // si era el par de llaves de una funcion, no seguir.... faltarÌa contemplar "namespace bla {...}"
+								break; // si era el par de llaves de una funcion, no seguir.... faltar√≠a contemplar "namespace bla {...}"
 							} else 
-								pos_match = p_func_name+1; // sin esto se mete a analizar dentro del parÈntesis
-							// el '{' del if anterior est· para cuando no era algo v·lido, por ejemplo, era un if mal escrito y por eso parecia un identificador
+								pos_match = p_func_name+1; // sin esto se mete a analizar dentro del par√©ntesis
+							// el '{' del if anterior est√° para cuando no era algo v√°lido, por ejemplo, era un if mal escrito y por eso parecia un identificador
 						}
 					}
 				}
@@ -4105,7 +4105,7 @@ void mxSource::MultiSelController::SetEditRegion(mxSource *src, int line, int pb
 mxSource::MultiSelController &mxSource::MultiSelController::BeginEdition(mxSource *src, bool rectangular, bool notify) { 
 	m_was_rect_select = rectangular;
 	m_is_on = true; 
-	if (notify) main_window->SetStatusText(LANG(MAINW_PRESS_ESC_TO_FINISH_RECT_EDIT,"Presione ESC o mueva el cursor de texto a otra linea para volver al modo de ediciÛn normal."));
+	if (notify) main_window->SetStatusText(LANG(MAINW_PRESS_ESC_TO_FINISH_RECT_EDIT,"Presione ESC o mueva el cursor de texto a otra linea para volver al modo de edici√≥n normal."));
 	return *this;
 }
 

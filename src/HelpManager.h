@@ -9,11 +9,11 @@ class pd_macro;
 class pd_class;
 
 /**
-* @brief Encapsula la generación de ayuda rápida.
+* @brief Encapsula la generaciÃ³n de ayuda rÃ¡pida.
 * 
-* Encapsula la generación de ayuda rápida. Carga y almacena los índices estándar, 
+* Encapsula la generaciÃ³n de ayuda rÃ¡pida. Carga y almacena los Ã­ndices estÃ¡ndar, 
 * y dialoga con el parser para generar sobre la marcha los items relacionados a 
-* los componentes del código del usuario.
+* los componentes del cÃ³digo del usuario.
 **/
 class HelpManager {
 private:

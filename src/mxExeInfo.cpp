@@ -67,8 +67,8 @@ wxPanel *mxExeInfo::CreateGeneralPanel (wxNotebook *notebook) {
 	sizer.BeginText( LANG(EXEINFO_LOCATION,"Ubicacion") )
 		.Value(m_fname.GetFullPath()).ReadOnly().EndText();
 	
-	sizer.BeginText( LANG(EXEINFO_SIZE,"Tamaño") ).Value(mxUT::BytesToHuman(m_fname.GetSize().ToDouble())).ReadOnly().EndText(text_size);
-	sizer.BeginText( LANG(EXEINFO_LAST_MOD_DATE,"Fecha última modifiación") ).Short()
+	sizer.BeginText( LANG(EXEINFO_SIZE,"TamaÃ±o") ).Value(mxUT::BytesToHuman(m_fname.GetSize().ToDouble())).ReadOnly().EndText(text_size);
+	sizer.BeginText( LANG(EXEINFO_LAST_MOD_DATE,"Fecha Ãºltima modifiaciÃ³n") ).Short()
 		.Value(m_fname.GetModificationTime().Format("%H:%M:%S - %d/%B/%Y")).ReadOnly().EndText(text_time);
 
 	bool show_updated = false, updated;
@@ -108,7 +108,7 @@ wxPanel *mxExeInfo::CreateGeneralPanel (wxNotebook *notebook) {
 				sizer.BeginCheck( LANG(EXEINFO_READONLY,"Solo lectura") )
 					.Value( !fitem->IsReadOnly() )./*ReadOnly().*/EndCheck();
 				if (fitem->GetCategory()==FT_HEADER || fitem->GetCategory()==FT_SOURCE)
-					sizer.BeginCheck( LANG(EXEINFO_IGNORE_SYMBOLS,"Ignorar símbolos en búsquedas") )
+					sizer.BeginCheck( LANG(EXEINFO_IGNORE_SYMBOLS,"Ignorar sÃ­mbolos en bÃºsquedas") )
 						.Value( !fitem->ShouldBeParsed() )./*ReadOnly().*/EndCheck();
 			}
 		}

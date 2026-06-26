@@ -13,14 +13,14 @@ If you don't see that file, download the sources' package or get access to the
 git repository from http://zinjai.sourceforge.net/index_en.php?page=descargas_en.php 
 
 
- Español
+ EspaÃ±ol
 =========
 
-Se distribuye bajo la Licencia Pública General v2 (ver guihelp/license.html).
+Se distribuye bajo la Licencia PÃºblica General v2 (ver guihelp/license.html).
 
-Abrir guihelp/about.html para más información para el usuario.
+Abrir guihelp/about.html para mÃ¡s informaciÃ³n para el usuario.
 
-Abrir compiling.txt para más información acerca de cómo compilar ZinjaI desde los
+Abrir compiling.txt para mÃ¡s informaciÃ³n acerca de cÃ³mo compilar ZinjaI desde los
 fuentes. Si no tiene este archivo, descargue el paquete de fuentes o acceda al repositorio 
 del proyecto desde http://zinjai.sourceforge.net/index.php?page=descargas.php
 

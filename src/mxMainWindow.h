@@ -66,9 +66,9 @@ struct CompilerTreeStruct {
 };
 
 /**
-* @brief Ventana principal de la aplicación
+* @brief Ventana principal de la aplicaciÃ³n
 * 
-* Representa la ventana principal de la aplicación. Hay sólo una instancia de esta
+* Representa la ventana principal de la aplicaciÃ³n. Hay sÃ³lo una instancia de esta
 * clase, que la crea mxApplication, y el puntero es main_window (variable global).
 **/
 class mxMainWindow : public wxFrame {
@@ -506,8 +506,8 @@ public:
 	void RunSource(mxSource *source);
 	void UpdateSymbols();
 	
-	void ShowInQuickHelpPanel(wxString &res, bool hide_compiler_tree=true); ///< carga el fuente de una pagina desde la cadena res en el panel de ayuda rápida y la muestra
-	void LoadInQuickHelpPanel(wxString file, bool hide_compiler_tree=true); ///< carga una pagina desde un archivo en el panel de ayuda rápida y lo muestra
+	void ShowInQuickHelpPanel(wxString &res, bool hide_compiler_tree=true); ///< carga el fuente de una pagina desde la cadena res en el panel de ayuda rÃ¡pida y la muestra
+	void LoadInQuickHelpPanel(wxString file, bool hide_compiler_tree=true); ///< carga una pagina desde un archivo en el panel de ayuda rÃ¡pida y lo muestra
 	
 public:
 	void OnMenuOpen(wxMenuEvent &evt);
@@ -537,7 +537,7 @@ public:
 	
 	void StartExecutionStuff (compile_and_run_struct_single *compile_and_run, wxString msg); 
 	
-	//! Componentes del árbol del explorador de archivos
+	//! Componentes del Ã¡rbol del explorador de archivos
 	struct explorer_tree_struct {
 		bool show_only_sources;
 		wxString path;
@@ -545,7 +545,7 @@ public:
 		wxTreeItemId selected_item, root;
 	} explorer_tree;
 	
-	//! Componentes del árbol de proyecto
+	//! Componentes del Ã¡rbol de proyecto
 	struct project_tree_struct {
 		wxTreeCtrl *treeCtrl;
 		wxTreeItemId selected_item, selected_parent;
@@ -568,14 +568,14 @@ public:
 		static wxString MakeLabel(const wxString &path);
 	} project_tree;
 	
-	//! Componentes del árbol de resultados de la compilación
+	//! Componentes del Ã¡rbol de resultados de la compilaciÃ³n
 	CompilerTreeStruct compiler_tree;
-	//! Componentes del árbol de resultados de la compilación
+	//! Componentes del Ã¡rbol de resultados de la compilaciÃ³n
 	mxExternCompilerOutput *extern_compiler_output;
 	//! this sizer will hold both compiler_tree.treeCtrl and extern_compiler_output, but only one could be visible at a given time
 	wxPanel *compiler_panel;
 
-	//! Componentes del árbol de simbolos
+	//! Componentes del Ã¡rbol de simbolos
 	struct symbols_tree_struct {
 		wxTreeCtrl *treeCtrl;
 	} symbols_tree; 

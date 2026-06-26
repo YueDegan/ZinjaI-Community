@@ -5,9 +5,9 @@
 class mxSource;
 
 /**
-* @brief Gestiona la impresiÛn de un fuente
+* @brief Gestiona la impresi√≥n de un fuente
 * 
-* Gestiona la impresiÛn de un fuente utilizando la infraestructura de impresiÛn
+* Gestiona la impresi√≥n de un fuente utilizando la infraestructura de impresi√≥n
 * de wxWidgets. Se encarga de calcular la cantidad de paginas, donde comienza
 * cada una, y dialogar con el mxSource para renderizarlas en el dc.
 * el codigo de esta clase esta basado en el ejemplo de stc que viene con 
@@ -24,12 +24,12 @@ public:
 	
 	//! evento: imprimir una pagina
 	bool OnPrintPage (int page);
-	//! evento: inicializar la impresiÛn
+	//! evento: inicializar la impresi√≥n
 	bool OnBeginDocument (int startPage, int endPage);
 	
-	//! determinar si existe una p·gina (fake)
+	//! determinar si existe una p√°gina (fake)
 	bool HasPage (int page);
-	//! evento: recuperar informaciÛn de la impresiÛn
+	//! evento: recuperar informaci√≥n de la impresi√≥n
 	void GetPageInfo (int *minPage, int *maxPage, int *selPageFrom, int *selPageTo);
 	
 	//! guarda en que indice del texto fuente comienza una determinada pagina
@@ -37,11 +37,11 @@ public:
 	
 private:
 	mxSource *m_source; ///< fuente a imprimir
-	int m_printed; ///< variable auxiliar para determinar hasta donde se "imprimiÛ" en GetPageInfo
+	int m_printed; ///< variable auxiliar para determinar hasta donde se "imprimi√≥" en GetPageInfo
 	int *m_pages; ///< guarda en que indice del texto fuente comienza cada pagina
-	int m_pages_len; ///< tamaÒo en memoria del arreglo de indices de comienzo para cada pagina
-	wxRect m_pageRect; ///< area de la p·gina completa
-	wxRect m_printRect; ///< area de impresiÛn
+	int m_pages_len; ///< tama√±o en memoria del arreglo de indices de comienzo para cada pagina
+	wxRect m_pageRect; ///< area de la p√°gina completa
+	wxRect m_printRect; ///< area de impresi√≥n
 	
 	bool PrintScaling (wxDC *dc);
 };

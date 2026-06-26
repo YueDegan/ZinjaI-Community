@@ -38,7 +38,7 @@ mxInspectionMatrix::mxInspectionMatrix(const wxString &expression, bool is_frame
 	SetSizer(mySizer);
 	
 	(di = DebuggerInspection::Create(expression,FlagIf(DIF_FRAMELESS,is_frameless)|DIF_AUTO_IMPROVE|DIF_FULL_OUTPUT,this,false))->Init();
-	// si la expresion correspondía a un puntero, preguntar cuantos elementos mostrar
+	// si la expresion correspondÃ­a a un puntero, preguntar cuantos elementos mostrar
 	if (!di->IsSimpleType() && !di->IsCompound()) {
 		wxString sn = mxGetTextFromUser(LANG(IMATRIX_ENTER_NUM,"Ingrese la cantidad de elementos a mostrar"),expression,"10",main_window);
 		long n; 
