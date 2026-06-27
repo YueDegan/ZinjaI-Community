@@ -13,23 +13,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # -------------------------
+      # Checkout
+      # -------------------------
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # -------------------------
-      # Install dependencies
+      # Install system deps
       # -------------------------
-      - name: Install system deps
-        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz
 
+      # -------------------------
+      # Setup Python
+      # -------------------------
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install MkDocs
+      # -------------------------
+      # Install MkDocs
+      # -------------------------
+      - name: Install MkDocs dependencies
         run: |
+          pip install --upgrade pip
           pip install mkdocs mkdocs-material mkdocstrings
+
+      # -------------------------
+      # Verify mkdocs.yml exists (DEBUG SAFE STEP)
+      # -------------------------
+      - name: Check MkDocs config
+        run: ls -la
 
       # -------------------------
       # Generate API docs (Doxygen)
@@ -38,13 +58,13 @@ jobs:
         run: doxygen Doxyfile
 
       # -------------------------
-      # Build MkDocs site
+      # Build MkDocs (FORZANDO CONFIG FILE)
       # -------------------------
       - name: Build MkDocs
-        run: mkdocs build
+        run: mkdocs build -f mkdocs.yml
 
       # -------------------------
-      # Deploy
+      # Deploy to GitHub Pages
       # -------------------------
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
