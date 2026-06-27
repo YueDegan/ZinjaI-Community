@@ -22,7 +22,16 @@ jobs:
           fetch-depth: 0
 
       # -------------------------
-      # Install system deps
+      # Debug workspace (CRÍTICO)
+      # -------------------------
+      - name: Debug workspace structure
+        run: |
+          pwd
+          ls -la
+          find . -name mkdocs.yml
+
+      # -------------------------
+      # Install system dependencies
       # -------------------------
       - name: Install system dependencies
         run: |
@@ -42,26 +51,20 @@ jobs:
       # -------------------------
       - name: Install MkDocs dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install mkdocs mkdocs-material mkdocstrings
 
       # -------------------------
-      # Verify mkdocs.yml exists (DEBUG SAFE STEP)
-      # -------------------------
-      - name: Check MkDocs config
-        run: ls -la
-
-      # -------------------------
-      # Generate API docs (Doxygen)
+      # Build Doxygen
       # -------------------------
       - name: Run Doxygen
         run: doxygen Doxyfile
 
       # -------------------------
-      # Build MkDocs (FORZANDO CONFIG FILE)
+      # Build MkDocs (ROBUSTO)
       # -------------------------
       - name: Build MkDocs
-        run: mkdocs build -f mkdocs.yml
+        run: mkdocs build -f $(find . -name mkdocs.yml | head -n 1)
 
       # -------------------------
       # Deploy to GitHub Pages
