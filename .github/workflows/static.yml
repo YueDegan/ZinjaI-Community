@@ -1,0 +1,53 @@
+name: Build and Deploy Docs (MkDocs + Doxygen)
+
+on:
+  push:
+    branches:
+      - community
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # -------------------------
+      # Install dependencies
+      # -------------------------
+      - name: Install system deps
+        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install MkDocs
+        run: |
+          pip install mkdocs mkdocs-material mkdocstrings
+
+      # -------------------------
+      # Generate API docs (Doxygen)
+      # -------------------------
+      - name: Run Doxygen
+        run: doxygen Doxyfile
+
+      # -------------------------
+      # Build MkDocs site
+      # -------------------------
+      - name: Build MkDocs
+        run: mkdocs build
+
+      # -------------------------
+      # Deploy
+      # -------------------------
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
