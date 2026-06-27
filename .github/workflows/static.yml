@@ -1,12 +1,19 @@
-name: Build and Deploy Docs (MkDocs + Doxygen)
+name: Deploy static content to Pages
 
 on:
   push:
-    branches:
-      - community
+    branches: ["community"]
+
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -16,22 +23,11 @@ jobs:
       # -------------------------
       # Checkout
       # -------------------------
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       # -------------------------
-      # Debug workspace (CRÍTICO)
-      # -------------------------
-      - name: Debug workspace structure
-        run: |
-          pwd
-          ls -la
-          find . -name mkdocs.yml
-
-      # -------------------------
-      # Install system dependencies
+      # Install system deps
       # -------------------------
       - name: Install system dependencies
         run: |
@@ -49,9 +45,8 @@ jobs:
       # -------------------------
       # Install MkDocs
       # -------------------------
-      - name: Install MkDocs dependencies
+      - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install mkdocs mkdocs-material mkdocstrings
 
       # -------------------------
@@ -61,16 +56,35 @@ jobs:
         run: doxygen Doxyfile
 
       # -------------------------
-      # Build MkDocs (ROBUSTO)
+      # Build MkDocs (IMPORTANT FIX)
       # -------------------------
       - name: Build MkDocs
-        run: mkdocs build -f $(find . -name mkdocs.yml | head -n 1)
+        run: mkdocs build -f mkdocs.yml --site-dir site
 
       # -------------------------
-      # Deploy to GitHub Pages
+      # VERIFY OUTPUT (CRITICAL DEBUG)
       # -------------------------
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Verify site output
+        run: |
+          ls -R site
+
+      # -------------------------
+      # Upload artifact for Pages
+      # -------------------------
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
