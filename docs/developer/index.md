@@ -36,24 +36,24 @@ Este documento no describe:
 
 ZinjaI está organizado en módulos funcionales independientes que interactúan entre sí.
 
-```text id="arch01"
-                 ┌──────────────┐
-                 │    Editor    │
-                 └──────┬───────┘
+``` none 
+                 ┌──────────────┐   
+                 │    Editor   │   
+                 └──────┬───────┘   
+                        │   
+                        ▼   
+               ┌─────────────────┐   
+               │ Autocompletado │   
+               └─────────────────┘   
                         │
                         ▼
                ┌─────────────────┐
-               │ Autocompletado  │
+               │    Parser      │
                └─────────────────┘
                         │
                         ▼
                ┌─────────────────┐
-               │    Parser       │
-               └─────────────────┘
-                        │
-                        ▼
-               ┌─────────────────┐
-               │ Sistema build   │
+               │ Sistema build  │
                └─────────────────┘
 ```
 
@@ -95,7 +95,7 @@ Los siguientes módulos y componentes componen el sistema ZinjaI:
 
 ## Flujo general del sistema
 
-```text id="flow01"
+``` text
 Usuario escribe código
         │
         ▼

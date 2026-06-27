@@ -10,17 +10,50 @@ repo_url: https://github.com/YueDegan/ZinjaI-Community
 # Navigation structure
 # -----------------------------
 nav:
-  - Home: docs/index.md
+  - Home: index.md
 
   - User Manual:
-      - Overview: docs/user/index.md
+      - Overview: user/index.md
 
   - Developer Manual:
-      - Overview: docs/developer/index.md
-      - Autocomp: docs/developer/autocomp/index.md
+      - Home: developer/index.md
+      - autocomp: developer/autocomp/index.md
+      - colours: developer/colours/index.md
+      - complements: developer/complements/index.md
+      - configs: developer/configs/index.md
+      - cppreference: developer/cppreference/index.md
+      - docs: developer/docs/docs.md
+      - guihelp: developer/guihelp/index.md
+      - imgs: developer/imgs/index.md
+      - lang: developer/lang/index.md
+      - parser: developer/parser/index.md
+      - samples: developer/samples/index.md
+      - skins: developer/skins/index.md
+      - src: developer/src/index.md
+      - src_extras: developer/src_extras/index.md
+      - templates: developer/templates/index.md
+      - third: developer/third/index.md
+      - toolchains: developer/toolchains/index.md
+      - git:
+          - .gitignore: developer/git/gitignore.md
+          - .gitattributes: developer/git/gitattributes.md
+      - build:
+          - compiling: developer/build/compiling.md
+          - makefile: developer/build/makefile.md
+      - project:
+          - mkdocs.yml: developer/project/mkdocs.md
+          - Doxyfile: developer/project/doxyfile.md
+          - zinjai.dir: developer/project/zinjai_dir.md
+          - requeriments.txt: developer/primary/requirements.md
+      - docs_misc:
+          - encoding_report: developer/docs_misc/encoding_report.md
+      - root_docs:
+          - README: developer/root_docs/readme.md
+          - readme_txt: developer/root_docs/readme_txt.md
+          - LICENSE: developer/root_docs/license.md
 
   - API Reference:
-      - Doxygen: docs/api/index.html
+      - Doxygen: api/index.html
 
 # -----------------------------
 # Theme configuration
@@ -66,7 +99,12 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
-  - pymdownx.highlight
+  - pymdownx.highlight:
+      anchor_linenums: false
+      pygments_lang_class: true
+      guess_lang: false
+  - pymdownx.escapeall:
+      hardbreak: true
   - pymdownx.inlinehilite
   - pymdownx.tabbed:
       alternate_style: true
