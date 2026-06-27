@@ -13,7 +13,7 @@ nav:
   - Home: index.md
 
   - User Manual:
-      - Overview: user/index.md
+      - Overview: https://zinjai.sourceforge.net/index.php?page=documentacion.php #user/index.md
 
   - Developer Manual:
       - HOME: developer/index.md
