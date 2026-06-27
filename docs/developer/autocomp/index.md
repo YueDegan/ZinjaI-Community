@@ -17,14 +17,14 @@ Actualmente el módulo contiene los siguientes archivos:
 | Archivo | Descripción |
 |---------|-------------|
 | [AAA_Directivas_de_Preprocesador](AAA_Directivas_de_Preprocesador.md) | Directivas del preprocesador de C/C++. |
-| [AAA_Estandar_C]() | Funciones y símbolos de la biblioteca estándar de C. |
+| [AAA_Estandar_C](AAA_Estandar_C.md) | Funciones y símbolos de la biblioteca estándar de C. |
 | [AAA_Estandar_Cpp]() | Biblioteca estándar de C++. |
 | [AAA_Estandar_Cpp_11]() | Componentes introducidos en C++11. |
 | [AAA_Palabras_Reservadas]() | Palabras reservadas del lenguaje C++. |
 | [AAA_Palabras_Reservadas_11]() | Palabras reservadas añadidas en C++11. |
 | [AAA_STL]() | Componentes de la STL clásica. |
 | [AAA_STL_11]() | Componentes de la STL incorporados en C++11. |
-| [OpenGL_gl]() | API principal de OpenGL. |
+| [OpenGL_gl]() | API principal de OpenGL. |git 
 | [OpenGL_glu]() | Biblioteca GLU. |
 | [OpenGL_glut]() | Biblioteca GLUT. |
 | [OpenGL_glx]() | Extensiones GLX. |
