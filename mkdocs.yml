@@ -1,0 +1,82 @@
+site_name: ZinjaI Community Documentation
+site_description: Unified documentation system for ZinjaI (User, Developer, API)
+site_author: ZinjaI Community
+site_url: https://yuedegan.github.io/ZinjaI-Community/
+
+repo_name: ZinjaI-Community
+repo_url: https://github.com/YueDegan/ZinjaI-Community
+
+# -----------------------------
+# Navigation structure
+# -----------------------------
+nav:
+  - Home: docs/index.md
+
+  - User Manual:
+      - Overview: docs/user/index.md
+
+  - Developer Manual:
+      - Overview: docs/developer/index.md
+      - Autocomp: docs/developer/autocomp/index.md
+
+  - API Reference:
+      - Doxygen: docs/api/index.html
+
+# -----------------------------
+# Theme configuration
+# -----------------------------
+theme:
+  name: material
+  language: es
+
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+      primary: blue
+      accent: light blue
+
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+      primary: blue
+      accent: cyan
+
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+
+# -----------------------------
+# Plugins
+# -----------------------------
+plugins:
+  - search
+
+# -----------------------------
+# Markdown extensions
+# -----------------------------
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+
+# -----------------------------
+# Extra settings
+# -----------------------------
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/YueDegan/ZinjaI-Community
