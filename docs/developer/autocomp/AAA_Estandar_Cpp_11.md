@@ -21,7 +21,6 @@ Archivo de texto plano.
 
 Características:
 
-- Codificación UTF-8.
 - Organizado por cabeceras de la biblioteca estándar.
 - Contiene declaraciones simplificadas de clases, funciones, tipos y constantes.
 - Incluye el espacio de nombres `std`.
@@ -102,7 +101,7 @@ Se presume que es consumido por el motor de autocompletado (`autocomp`) cuando e
 
 #### Flujo relacionado
 
-```text
+``` text
 Editor
     │
     ▼
