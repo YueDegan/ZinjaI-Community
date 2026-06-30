@@ -1,18 +1,18 @@
 <HTML><HEAD><TITLE>ZinjaI -  Installing GDB on Mac OS</TITLE></HEAD><BODY>
 <h4>Installing GDB on Mac OS</h4>
 
-<p>El depurador por defecto en los sistemas Mac OS modernos es lldb. Sin embargo, <em>ZinjaI</em> solo est· preparado para interactuar con gdb.</p>
+<p>El depurador por defecto en los sistemas Mac OS modernos es lldb. Sin embargo, <em>ZinjaI</em> solo est√° preparado para interactuar con gdb.</p>
 
-<p>Suponiendo que el sistema en el que se encuentra ya tiene correctamente instalado un compilador (gcc o llvm-clang, usualmente instalados a travÈs de XCode), <em>ZinjaI</em> puede automatizarle la descarga y compilaciÛn del depurador.</p>
+<p>Suponiendo que el sistema en el que se encuentra ya tiene correctamente instalado un compilador (gcc o llvm-clang, usualmente instalados a trav√©s de XCode), <em>ZinjaI</em> puede automatizarle la descarga y compilaci√≥n del depurador.</p>
 
-<p>Sin embargo, se requiere firmar digitalmente al ejecutable del depurador para que el sistema le otorgue los permisos necesarios para controlar a los programas a depurar. Lamentablemente, el proceso de generaciÛn de la firma necesaria no es simple y no est· automatizado. </p>
+<p>Sin embargo, se requiere firmar digitalmente al ejecutable del depurador para que el sistema le otorgue los permisos necesarios para controlar a los programas a depurar. Lamentablemente, el proceso de generaci√≥n de la firma necesaria no es simple y no est√° automatizado. </p>
 
-<p>A continuaciÛn se describen los pasos necesarios para instalar gdb y firmarlo adecuadamente con la ayuda de <em>ZinjaI</em>:</p>
+<p>A continuaci√≥n se describen los pasos necesarios para instalar gdb y firmarlo adecuadamente con la ayuda de <em>ZinjaI</em>:</p>
 
 <ol>
-<li><p>Puede lanzar el proceso nuevamente mediante <a href="action:gdb_on_mac">este enlace</a> un script en una terminal que intentar· descargar y compilar gdb, y lo asistir· en los ˙ltimos pasos del proceso de firmado.</p></li>
-<li><p>El script comenzar· a descargar y compilar gdb (necesitar· conexiÛn a Internet si es la primera vez que lo ejecuta).</p></li>
-<li><p>Mientras tanto, puede comenzar a generar una llave adecuada para firmar gdb. Utilice <a href="action:keychain_access">este enlace</a> para abrir el cuadro de configuraciÛn de <q>Accesso a Llaves</q> de sus sistema y siga las siguientes instrucciones:</p>
+<li><p>Puede lanzar el proceso nuevamente mediante <a href="action:gdb_on_mac">este enlace</a> un script en una terminal que intentar√° descargar y compilar gdb, y lo asistir√° en los √∫ltimos pasos del proceso de firmado.</p></li>
+<li><p>El script comenzar√° a descargar y compilar gdb (necesitar√° conexi√≥n a Internet si es la primera vez que lo ejecuta).</p></li>
+<li><p>Mientras tanto, puede comenzar a generar una llave adecuada para firmar gdb. Utilice <a href="action:keychain_access">este enlace</a> para abrir el cuadro de configuraci√≥n de <q>Accesso a Llaves</q> de sus sistema y siga las siguientes instrucciones:</p>
 
 <ol>
 <li>In Keychain Access&#39; list in the upper left hand corner of the window select <q>login</q>.</li>
@@ -28,10 +28,10 @@
 <li>In the keychain access dialog, drag <q>zinjai-gdb</q> back to <q>login</q>. </li>
 <li>Finally, you can close that window and hit enter one more time in the step one&#39;s terminal.</li>
 </ol></li>
-<li><p>Luego de finalizar con la compilaciÛn de gdb del paso 2, y la generaciÛn y aplicaciÛn del nuevo certificado del paso 3, zinjai intentar· reiniciar el servicio que gestiona estos accesos. En caso de que este ˙ltimo paso falle, deber· reiniciar su sistema para que los cambios tengan efecto.</p></li>
+<li><p>Luego de finalizar con la compilaci√≥n de gdb del paso 2, y la generaci√≥n y aplicaci√≥n del nuevo certificado del paso 3, zinjai intentar√° reiniciar el servicio que gestiona estos accesos. En caso de que este √∫ltimo paso falle, deber√° reiniciar su sistema para que los cambios tengan efecto.</p></li>
 </ol>
 
-<p>Si el proceso falla, igual puede utilizar ZinjaI para editar el cÛdigo, compilar, y ejecutar sus programas. Pero no podr· utilizar las funcionalidades del men˙ <q>DepuraciÛn</q>.</p>
+<p>Si el proceso falla, igual puede utilizar ZinjaI para editar el c√≥digo, compilar, y ejecutar sus programas. Pero no podr√° utilizar las funcionalidades del men√∫ <q>Depuraci√≥n</q>.</p>
 
 <p>Instructions based on: <a href="https://llvm.org/svn/llvm-project/lldb/trunk/docs/code-signing.txt">https://llvm.org/svn/llvm-project/lldb/trunk/docs/code-signing.txt</a></p>
 </BODY></HTML>

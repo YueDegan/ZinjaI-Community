@@ -28,7 +28,7 @@
 
 
 const char *lang_debug_finished[] = {
-	"<< La depuracion ha finalizado: código de salida: ",
+	"<< La depuracion ha finalizado: cÃ³digo de salida: ",
 	"<< Debugging session has finished: exit code: "
 };
 
@@ -62,7 +62,7 @@ int lang_idx=0;
 
 #if defined(_WIN32) || defined(__WIN32__)
 #else
-// esto es para que al enviar una señal en la terminal del runner (por ejemplo ctrl+c) se reenvie al hijo
+// esto es para que al enviar una seÃ±al en la terminal del runner (por ejemplo ctrl+c) se reenvie al hijo
 // hay 2 casos especiales, sigusr2 que la usa zinjai para indicar que debe matar al proceso hijo, cuando
 // se hace click en stop, porque si se mata la terminal y los hijos manejan sighup sin salir quedan
 // andando huerfanos, y la otra es sighup que se recibe cuando se quiere cerrar la terminal desde el gestor de ventanas

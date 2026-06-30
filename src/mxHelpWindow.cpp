@@ -5,7 +5,7 @@
 #include "mxMessageDialog.h"
 #include "mxMainWindow.h"
 
-#define ERROR_PAGE(page) wxString("<I>ERROR</I>: La pagina \"")<<page<<"\" no se encuentra. <br><br> La ayuda de <I>ZinjaI</I> aún está en contrucción."
+#define ERROR_PAGE(page) wxString("<I>ERROR</I>: La pagina \"")<<page<<"\" no se encuentra. <br><br> La ayuda de <I>ZinjaI</I> aÃºn estÃ¡ en contrucciÃ³n."
 #define _index "index.html"
 #include "ids.h"
 #include "mxSizers.h"
@@ -85,7 +85,7 @@ mxHelpWindow::mxHelpWindow(wxString file) : mxGenericHelpWindow(LANG(HELPW_CAPTI
 	LoadPage(file);
 	
 	wxBoxSizer *forum_sizer = new wxBoxSizer(wxHORIZONTAL); wxButton *button;
-	forum_sizer->Add(new wxStaticText(this,wxID_ANY,LANG(HELPW_FORUM_TEXT,"¿Lo que buscas no está en la ayuda, está desactualizado, erróneo o incompleto? ")),sizers->Center);
+	forum_sizer->Add(new wxStaticText(this,wxID_ANY,LANG(HELPW_FORUM_TEXT,"Â¿Lo que buscas no estÃ¡ en la ayuda, estÃ¡ desactualizado, errÃ³neo o incompleto? ")),sizers->Center);
 	forum_sizer->Add(button=new wxButton(this,mxID_HELPW_FORUM,LANG(HELPW_FORUM_BUTTON,"accede al Foro..."),wxDefaultPosition,wxDefaultSize,wxBU_EXACTFIT),sizers->Center);
 	button->Connect(wxEVT_COMMAND_BUTTON_CLICKED,wxCommandEventHandler(mxHelpWindow::OnForum),nullptr,this);
 	general_sizer->Add(forum_sizer,sizers->Right);
@@ -104,14 +104,14 @@ void mxHelpWindow::OnSearch(wxString value) {
 	}
 	unsigned char *bfound = new unsigned char[keywords.GetCount()]; // para marcar las palabras encontradas al buscar en el contenido linea por linea
 	html->SetPage(wxString("<HTML><HEAD></HEAD><BODY><I><B>")<<LANG(HELPW_SEARCH_SEARCHING,"Buscando...")<<"</B></I></BODY></HTML>");
-	wxArrayString already_searched; // archivos ya examinados, porque pueden aparecer más de una vez por estar en el indice con diferentes anchors
+	wxArrayString already_searched; // archivos ya examinados, porque pueden aparecer mÃ¡s de una vez por estar en el indice con diferentes anchors
 	for(HashStringTreeItem::iterator it = items.begin(), ed = items.end(); it!=ed; ++it) {
 		wxString title = tree->GetItemText(it->second), fname = it->first;
 		if (fname.Find('#')!=wxNOT_FOUND) fname = fname.BeforeFirst('#');
 		if (already_searched.Index(fname)!=wxNOT_FOUND) continue; 
 		else already_searched.Add(fname);
 		wxString result_line = wxString("<!--")<<_ZS(title)<<"--><LI><A href=\""<<it->first<<"\">"<<_ZW(title)<<"</A></LI>";
-		// ver si coincide en el título del ítem
+		// ver si coincide en el tÃ­tulo del Ã­tem
 		bool title_matches = true;
 		wxString utitle = title.MakeUpper();
 		for (unsigned int ik=0;ik<keywords.GetCount();ik++) {
@@ -147,7 +147,7 @@ void mxHelpWindow::OnSearch(wxString value) {
 	result << "<HTML><HEAD></HEAD><BODY>";
 	if (results_title.GetCount()) {
 		results_title.Sort();
-		result << wxString("<I><B>")<<LANG(HELPW_SEARCH_RESULTS_TITLE,"Coincidencias en el título:")<<"</B></I><UL>";
+		result << wxString("<I><B>")<<LANG(HELPW_SEARCH_RESULTS_TITLE,"Coincidencias en el tÃ­tulo:")<<"</B></I><UL>";
 		for (unsigned int i=0;i<results_title.GetCount();i++)
 			result<<results_title[i];
 		result<<"</UL>";
@@ -175,7 +175,7 @@ void mxHelpWindow::ShowIndex() {
 mxHelpWindow *mxHelpWindow::ShowHelp(wxString page, wxDialog *from_modal) {
 	
 	if (from_modal) {
-		if ( mxMessageDialog(from_modal,"Se cerrará este cuadro de diálogo (perdiendo los cambios)\n"
+		if ( mxMessageDialog(from_modal,"Se cerrarÃ¡ este cuadro de diÃ¡logo (perdiendo los cambios)\n"
 										"para poder acceder a la ventana de ayuda.")
 				.Title(LANG(GENERAL_WARNING,"Advertencia")).ButtonsOkCancel().IconWarning().Run().ok ) 
 		{

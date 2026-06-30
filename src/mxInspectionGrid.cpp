@@ -99,7 +99,7 @@ mxInspectionGrid::mxInspectionGrid(wxWindow *parent) : mxGrid(parent,IG_COLS_COU
 //	created=false;
 	
 	mxGrid::InitColumn(IG_COL_LEVEL,LANG(INSPECTGRID_LEVEL,"Nivel"),8);
-	mxGrid::InitColumn(IG_COL_EXPR,LANG(INSPECTGRID_EXPRESSION,"Expresión"),29);
+	mxGrid::InitColumn(IG_COL_EXPR,LANG(INSPECTGRID_EXPRESSION,"ExpresiÃ³n"),29);
 	mxGrid::InitColumn(IG_COL_TYPE,LANG(INSPECTGRID_TYPE,"Tipo"),12);
 	mxGrid::InitColumn(IG_COL_VALUE,LANG(INSPECTGRID_VALUE,"Valor"),27);
 	mxGrid::DoCreate();
@@ -197,7 +197,7 @@ void mxInspectionGrid::OnCellChange(wxGridEvent &event) {
 	int col = event.GetCol(), row = event.GetRow(); 
 	wxString new_value = wxGrid::GetCellValue(event.GetRow(),event.GetCol());
 	if (col==GetRealCol(IG_COL_EXPR)) {
-		mxIG_SideEffectUpdate sda(this); // la expresion podría haber modificado algo, esto actualiza toda la tabla
+		mxIG_SideEffectUpdate sda(this); // la expresion podrÃ­a haber modificado algo, esto actualiza toda la tabla
 		if ( AuxShouldExpand(new_value) ) {
 			wxArrayString arr; AuxShouldExpand(new_value,&arr);
 			if ( ModifyExpression(row,arr[0],last_return_had_shift_down,false) ) {
@@ -213,7 +213,7 @@ void mxInspectionGrid::OnCellChange(wxGridEvent &event) {
 		if (row<0||row>inspections.GetSize()||inspections[row].IsNull()) return;
 		if (inspections[row]->ModifyValue(new_value)) {
 			mxGrid::SetCellValue(row,IG_COL_VALUE,inspections[row]->GetValue());
-			DebuggerInspection::OnDebugPause(); // este cambio podría afectar a otras expresiones
+			DebuggerInspection::OnDebugPause(); // este cambio podrÃ­a afectar a otras expresiones
 		} else event.Veto();
 	}
 }
@@ -281,7 +281,7 @@ void mxInspectionGrid::ShowPopupMenu(int row, int col, bool at_mouse_pos) {
 		if (!sel_is_empty && (!sel_is_vo || !di->IsSimpleType())) extern_v->Append(mxID_INSPECTION_SHOW_IN_TABLE,LANG(INSPECTGRID_POPUP_SHOW_IN_TABLE,"Mostrar en &tabla separada..."));
 		if (!sel_is_empty) extern_v->Append(mxID_INSPECTION_SHOW_IN_TEXT,LANG(INSPECTGRID_POPUP_SHOW_IN_TEXT,"Mostrar en &ventana separada..."));
 		if (!sel_is_empty) extern_v->Append(mxID_INSPECTION_SHOW_IN_HISTORY,LANG(INSPECTGRID_POPUP_SHOW_IN_HISTORY,"Generar historial de valores..."));
-		if (debug->IsDebugging() && debug->IsPaused() && !sel_is_empty && sel_is_vo) extern_v->Append(mxID_INSPECTION_SHOW_IN_RTEDITOR,LANG(INSPECTGRID_POPUP_SHOW_IN_RTEDITOR,"Editar durante la ejecución..."));
+		if (debug->IsDebugging() && debug->IsPaused() && !sel_is_empty && sel_is_vo) extern_v->Append(mxID_INSPECTION_SHOW_IN_RTEDITOR,LANG(INSPECTGRID_POPUP_SHOW_IN_RTEDITOR,"Editar durante la ejecuciÃ³n..."));
 		if (sel_is_vo) extern_v->Append(mxID_INSPECTION_EXPLORE,LANG(INSPECTGRID_POPUP_EXPLORE,"&Explorar datos..."));
 	if (extern_v->GetMenuItemCount()) menu.AppendSubMenu(extern_v,LANG(INSPECTGRID_EXTERN_VISUALIZATION,"Otras &visualizaciones")); else delete extern_v;
 	
@@ -328,13 +328,13 @@ void mxInspectionGrid::ShowPopupMenu(int row, int col, bool at_mouse_pos) {
 	}
 //	if (sel_is_vo) {
 	wxMenu *imprv_submenu = new wxMenu;
-	if (sel_has_improved) imprv_submenu->Append(mxID_INSPECTION_IMPR_EXPOSE,LANG(INSPECTGRID_IMPRV_SHOW_IMPROVE,"Mostrar expresión mejorada"));
-	if (sel_has_improved) imprv_submenu->Append(mxID_INSPECTION_IMPR_DISCARD,LANG(INSPECTGRID_IMPRV_DONT_IMPROVE,"No mejorar expresión automáticamente"));
+	if (sel_has_improved) imprv_submenu->Append(mxID_INSPECTION_IMPR_EXPOSE,LANG(INSPECTGRID_IMPRV_SHOW_IMPROVE,"Mostrar expresiÃ³n mejorada"));
+	if (sel_has_improved) imprv_submenu->Append(mxID_INSPECTION_IMPR_DISCARD,LANG(INSPECTGRID_IMPRV_DONT_IMPROVE,"No mejorar expresiÃ³n automÃ¡ticamente"));
 	if (sel_is_single && sel_is_vo) imprv_submenu->Append(mxID_INSPECTION_IMPR_ADD_GENERAL,LANG(INSPECTGRID_IMPRV_ADD_FOR_THIS_TYPE_GENERAL,"Agregar mejora para este tipo (generales)..."));
 	if (project) if (sel_is_single && sel_is_vo) imprv_submenu->Append(mxID_INSPECTION_IMPR_ADD_PROJECT,LANG(INSPECTGRID_IMPRV_ADD_FOR_THIS_TYPE_PROJECT,"Agregar mejora para este tipo (proyecto)..."));
 	imprv_submenu->Append(mxID_INSPECTION_IMPR_CONF_GENERAL,LANG(INSPECTGRID_IMPRV_CONF_GENERAL,"Configurar (generales)..."));
 	if (project) imprv_submenu->Append(mxID_INSPECTION_IMPR_CONF_PROJECT,LANG(INSPECTGRID_IMPRV_CONF_PROYECT,"Configurar (proyecto)..."));
-	menu.AppendSubMenu(imprv_submenu,LANG(INSPECTGRID_IMPRV_SUBMENU,"Mejoras automáticas según tipo"));
+	menu.AppendSubMenu(imprv_submenu,LANG(INSPECTGRID_IMPRV_SUBMENU,"Mejoras automÃ¡ticas segÃºn tipo"));
 //	}
 	if (there_are_inspections) {
 		menu.AppendSeparator();
@@ -494,7 +494,7 @@ void mxInspectionGrid::OnDuplicate(wxCommandEvent &evt) {
 		InsertRows(sel[i]+1,1);
 		CreateInspection(sel[i]+1,di->GetExpression(),di->IsFrameless(),true);
 	}
-//	DebuggerInspection::OnDebugPause(); // la expresion podría haber modificado algo
+//	DebuggerInspection::OnDebugPause(); // la expresion podrÃ­a haber modificado algo
 }
 
 void mxInspectionGrid::OnFreeze(wxCommandEvent &evt) {
@@ -793,9 +793,9 @@ bool mxInspectionGrid::CreateInspection (int r, const wxString &expression, bool
 }
 
 void mxInspectionGrid::DeleteInspection (int r, bool for_reuse) {
-	if (inspections[r].di) inspections[r]->Destroy(); // si es una que ya existía
+	if (inspections[r].di) inspections[r]->Destroy(); // si es una que ya existÃ­a
 	if (for_reuse) {
-		inspections[r].Reset(); // para que OnFullTableUpdateBegin no la considere más
+		inspections[r].Reset(); // para que OnFullTableUpdateBegin no la considere mÃ¡s
 		inspections[r].expression_renderer->SetIconNull();
 	} else {
 		inspections.Remove(r); // quitar de la lista propia de inspecciones
@@ -851,14 +851,14 @@ void mxInspectionGrid::BreakCompoundInspection (int r) {
 }
 
 void mxInspectionGrid::OnReScope(wxCommandEvent &event) {
-	mxIG_SideEffectUpdate sda(this); // la expresion podría haber modificado algo, esto actualiza toda la tabla
+	mxIG_SideEffectUpdate sda(this); // la expresion podrÃ­a haber modificado algo, esto actualiza toda la tabla
 	std::vector<int> sel; mxGrid::GetSelectedRows(sel);
 	for(unsigned int i=0;i<sel.size();i++) 
 		ChangeFrameless(sel[i],false,false);
 }
 
 void mxInspectionGrid::OnSetFrameless (wxCommandEvent & evt) {
-	mxIG_SideEffectUpdate sda(this); // la expresion podría haber modificado algo, esto actualiza toda la tabla
+	mxIG_SideEffectUpdate sda(this); // la expresion podrÃ­a haber modificado algo, esto actualiza toda la tabla
 	std::vector<int> sel; mxGrid::GetSelectedRows(sel);
 	for(unsigned int i=0;i<sel.size();i++) 
 		ChangeFrameless(sel[i],true,false);
@@ -875,7 +875,7 @@ void mxInspectionGrid::ChangeFrameless (int r, bool frameless, bool full_table_u
 	// delete old inspection
 	DeleteInspection(r,true);
 	// create new one
-	mxIG_SideEffectUpdate sda(full_table_update?this:nullptr); // la expresion podría haber modificado algo, esto actualiza toda la tabla
+	mxIG_SideEffectUpdate sda(full_table_update?this:nullptr); // la expresion podrÃ­a haber modificado algo, esto actualiza toda la tabla
 	CreateInspection(r,old_expression,!was_frameless);
 }
 
@@ -946,7 +946,7 @@ void mxInspectionGrid::DiscardImprovedExpression (int r) {
 
 
 void mxInspectionGrid::OnExposeImprovedExpression (wxCommandEvent & event) {
-	mxIG_SideEffectUpdate sda(this); // la expresion podría haber modificado algo, esto actualiza toda la tabla
+	mxIG_SideEffectUpdate sda(this); // la expresion podrÃ­a haber modificado algo, esto actualiza toda la tabla
 	std::vector<int> sel; mxGrid::GetSelectedRows(sel);
 	for(unsigned int i=0;i<sel.size();i++) 
 		ExposeImprovedExpression(sel[i]);

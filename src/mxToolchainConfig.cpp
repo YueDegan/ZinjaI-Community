@@ -24,13 +24,13 @@ BEGIN_EVENT_TABLE(mxToolchainConfig, wxDialog)
 END_EVENT_TABLE()
 
 mxToolchainConfig::mxToolchainConfig(wxWindow *parent, const wxString &tc_name) 
-	: mxDialog(parent, LANG(TOOLCHAINS_CAPTION,"Personalizar herramientas de compilaci髇") ),
+	: mxDialog(parent, LANG(TOOLCHAINS_CAPTION,"Personalizar herramientas de compilaci贸n") ),
 	  m_toolchain(Toolchain::GetToolchain(tc_name))
 {
 	CreateSizer(this)
 		.BeginNotebook()
 			.AddPage(this,&mxToolchainConfig::CreatePanelGeneral, LANG(TOOLCHAINS_GENERAL_SETTINGS,"General"))
-			.AddPage(this,&mxToolchainConfig::CreatePanelFixed, LANG(TOOLCHAINS_FIXED_SETTINGS,"Configuraci髇 fija"))
+			.AddPage(this,&mxToolchainConfig::CreatePanelFixed, LANG(TOOLCHAINS_FIXED_SETTINGS,"Configuraci贸n fija"))
 			.AddPage(this,&mxToolchainConfig::CreatePanelArgs, LANG(TOOLCHAINS_USER_ARGUMENTS,"Argumentos configurables"))
 		.EndNotebook()
 		.BeginBottom().Help().Cancel().Ok().EndBottom(this)
@@ -44,7 +44,7 @@ void mxToolchainConfig::OnButtonOk (wxCommandEvent & event) {
 	tc.file = name->GetValue();
 	if (!tc.file.Len()) { 
 		mxMessageDialog(this,LANG(TOOLCHAINS_ERROR_EMPTY_NAME,"Debe completar el nombre."))
-			.Title(LANG(TOOLCHAINS_CAPTION,"Personalizar herramientas de compilaci髇")).IconError().Run(); 
+			.Title(LANG(TOOLCHAINS_CAPTION,"Personalizar herramientas de compilaci贸n")).IconError().Run(); 
 		return; 
 	}
 //	tc.desc = description->GetValue();
@@ -93,7 +93,7 @@ wxPanel * mxToolchainConfig::CreatePanelGeneral(wxNotebook *notebook) {
 	
 	wxArrayString array; for(int i=0;i<TC_COUNT;i++) array.Add("");
 	array[TC_CLANG] = "clang"; array[TC_EXTERN] = "extern"; array[TC_GCC] = "gcc"; array[TC_GCC_LIKE] = "gcc-like";
-	//	description = AddShortTextCtrl(sizer_1,panel_1,LANG(TOOLCHAINS_DESCRIPTION,"Descripci髇"),tc->desc);
+	//	description = AddShortTextCtrl(sizer_1,panel_1,LANG(TOOLCHAINS_DESCRIPTION,"Descripci贸n"),tc->desc);
 	sizer.BeginText( LANG(TOOLCHAINS_NAME,"Nombre de archivo") )
 		.Value(m_toolchain->file).Short().EndText(name);
 	sizer.BeginCombo( LANG(TOOLCHAINS_TYPE,"Tipo de herramienta") )
@@ -102,7 +102,7 @@ wxPanel * mxToolchainConfig::CreatePanelGeneral(wxNotebook *notebook) {
 		.Value(m_toolchain->base_path).Short().Button(mxID_TOOLCHAINS_BASE_PATH).EndText(base_path);
 	sizer.BeginText( LANG(TOOLCHAINS_BIN_PATH,"Directorios con ejecutables") )
 		.Value(m_toolchain->bin_path).Short().Button(mxID_TOOLCHAINS_BIN_PATHS).EndText(bin_path);
-	sizer.BeginText( LANG(TOOLCHAINS_BUILD_COMMAND,"Comando de construcci髇") )
+	sizer.BeginText( LANG(TOOLCHAINS_BUILD_COMMAND,"Comando de construcci贸n") )
 		.Value(m_toolchain->build_command).Short().RegisterIn(for_extern).EndText(build_command);
 	sizer.BeginText( LANG(TOOLCHAINS_CLEAN_COMMAND,"Comando de limpieza") )
 		.Value(m_toolchain->clean_command).Short().RegisterIn(for_extern).EndText(clean_command);
@@ -116,11 +116,11 @@ wxPanel * mxToolchainConfig::CreatePanelFixed (wxNotebook *notebook) {
 	
 	sizer.BeginText( LANG(TOOLCHAINS_C_COMMAND,"Comando del compilador C") )
 		.Value(m_toolchain->c_compiler).Short().RegisterIn(for_gcc).EndText(c_compiler);
-	sizer.BeginText( LANG(TOOLCHAINS_C_OPTIONS,"Argumentos para la compilaci髇 C") )
+	sizer.BeginText( LANG(TOOLCHAINS_C_OPTIONS,"Argumentos para la compilaci贸n C") )
 		.Value(m_toolchain->c_compiling_options).Short().RegisterIn(for_gcc).EndText(c_compiling_options);
 	sizer.BeginText( LANG(TOOLCHAINS_CPP_COMMAND,"Comando del compilador C++") )
 		.Value(m_toolchain->cpp_compiler).Short().RegisterIn(for_gcc).EndText(cpp_compiler);
-	sizer.BeginText( LANG(TOOLCHAINS_CPP_OPTIONS,"Argumentos para la compilaci髇 C++") )
+	sizer.BeginText( LANG(TOOLCHAINS_CPP_OPTIONS,"Argumentos para la compilaci贸n C++") )
 		.Value(m_toolchain->cpp_compiling_options).Short().RegisterIn(for_gcc).EndText(cpp_compiling_options);
 	sizer.BeginText( LANG(TOOLCHAINS_LINKER_COMMAND,"Comando del enlazador") )
 		.Value(m_toolchain->linker).Short().RegisterIn(for_gcc).EndText(linker);
@@ -128,9 +128,9 @@ wxPanel * mxToolchainConfig::CreatePanelFixed (wxNotebook *notebook) {
 		.Value(m_toolchain->c_linker_options).Short().RegisterIn(for_gcc).EndText(c_linker_options);
 	sizer.BeginText( LANG(TOOLCHAINS_LINKER_CPP_OPTIONS,"Argumentos para el enlazado C++") )
 		.Value(m_toolchain->cpp_linker_options).Short().RegisterIn(for_gcc).EndText(cpp_linker_options);
-	sizer.BeginText( LANG(TOOLCHAINS_DYNAMIC_LIB_LINKER,"Comando para enlazar libs. din醡icas") )
+	sizer.BeginText( LANG(TOOLCHAINS_DYNAMIC_LIB_LINKER,"Comando para enlazar libs. din谩micas") )
 		.Value(m_toolchain->dynamic_lib_linker).Short().RegisterIn(for_gcc).EndText(dynamic_lib_linker);
-	sizer.BeginText( LANG(TOOLCHAINS_STATIC_LIB_LINKER,"Comando para enlazar libs. est醫icas") )
+	sizer.BeginText( LANG(TOOLCHAINS_STATIC_LIB_LINKER,"Comando para enlazar libs. est谩ticas") )
 		.Value(m_toolchain->static_lib_linker).Short().RegisterIn(for_gcc).EndText(static_lib_linker);
 	
 	sizer.Set();

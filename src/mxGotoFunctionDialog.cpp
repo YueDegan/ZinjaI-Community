@@ -44,7 +44,7 @@ void mxGotoFunctionDialog::OnGoto(int pos, wxString key) {
 	// find selected item (list is alphabetically sorted, so order does not match m_results)
 	int i=0;
 	while (i<m_results.GetSize() && m_results[i].get_label()!=key) i++;
-	if (i==m_results.GetSize()) return; // no debería pasar, pero a veces pasa!!!
+	if (i==m_results.GetSize()) return; // no deberÄ·a pasar, pero a veces pasa!!!
 	if (i==-1) return;
 	gotoff_result &r=m_results[i];
 	Close(); 

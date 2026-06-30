@@ -18,7 +18,7 @@
 #define CFG_TEXT_WRITE_DN(name,what) fil.AddLine(wxString(name"=")<<mxUT::Text2Line(what));
 #include "mxFilename.h"
 
-//! Elementos de la configuraci髇 relacionados a la depuraci髇
+//! Elementos de la configuraci贸n relacionados a la depuraci贸n
 struct cfgDebug {
 	bool autohide_panels;
 	bool autohide_toolbars;
@@ -54,7 +54,7 @@ struct cfgDebug {
 	bool catch_throw;
 };
 
-//! Elementos de la configuraci髇 relacionados al aspecto del c骴igo
+//! Elementos de la configuraci贸n relacionados al aspecto del c贸digo
 struct cfgStyles {
 	wxString font_name;
 	int font_size;
@@ -62,7 +62,7 @@ struct cfgStyles {
 	int forced_dpi; ///< 0=guess
 };
 
-//! Elementos de la configuraci髇 relacionados al comportamiento de un fuente
+//! Elementos de la configuraci贸n relacionados al comportamiento de un fuente
 struct cfgSource {
  	bool smartIndent;
  	bool bracketInsertion;
@@ -86,10 +86,10 @@ struct cfgSource {
 	bool autotextEnabled;
 	bool autocloseStuff;
 	int alignComments;
-	int edgeColumn; ///< abs(edgeColumn) es la posici髇 de la linea gris que marca la columna 80, cuando es negativo no se muestra
+	int edgeColumn; ///< abs(edgeColumn) es la posici贸n de la linea gris que marca la columna 80, cuando es negativo no se muestra
 };
 
-//! Elementos de la configuraci髇 relacionados a la ejecuci髇
+//! Elementos de la configuraci贸n relacionados a la ejecuci贸n
 struct cfgRunning {
 	bool check_includes;
 	wxString cpp_compiler_options;
@@ -98,7 +98,7 @@ struct cfgRunning {
 	bool always_ask_args;
 };
 
-//! Elementos de la configuraci髇 relacionados al sistema de ayuda
+//! Elementos de la configuraci贸n relacionados al sistema de ayuda
 struct cfgHelp {
 //	wxString quickhelp_index;
 	wxString wxhelp_index;
@@ -109,7 +109,7 @@ struct cfgHelp {
 	bool show_extra_panels;
 };
 
-//! Elementos de la configuraci髇 relacionados a la inicializaci髇 y otros aspectos generales
+//! Elementos de la configuraci贸n relacionados a la inicializaci贸n y otros aspectos generales
 struct cfgInit {
 	int version;
 	wxString proxy;
@@ -152,17 +152,17 @@ struct cfgInit {
 	bool stop_compiling_on_error; ///< detener compilacion de un proyecto al encontrar un error
 	bool autohide_panels; ///< ocultar automaticamente los paneles dockeados en la ventana principal, y mostrar solo cuando el mouse se lleve al borde
 	bool fullpath_on_project_tree; ///< mostrar rutas relativas completas en el arbol de proyecto cuando es un proyecto
-	int max_jobs; ///< cantidad m醲ima de procesos (pasos) corriendo en paralelo al compilar un proyecto
+	int max_jobs; ///< cantidad m谩xima de procesos (pasos) corriendo en paralelo al compilar un proyecto
 	wxString colour_theme; ///< archivo de donde tomar el perfil de colores (si es "" se busca en .zinjai/colours.zcs, sino en zinjai/colours)
-	bool beautify_compiler_errors; ///< trata de arreglar los horribles mensajes de error del compilador cuando se usan templates (como todo stl) o cosas est醤dar de implemetaci髇 "rebuscada" (como strings)
+	bool beautify_compiler_errors; ///< trata de arreglar los horribles mensajes de error del compilador cuando se usan templates (como todo stl) o cosas est谩ndar de implemetaci贸n "rebuscada" (como strings)
 	bool use_cache_for_subcommands; ///< activa el uso de cache en mxUT::ExecComas, para no ejecutar a cada rato el mismo subcomando
 	wxString complements_timestamp; ///< last time we applied complements patchs to configuration, to avoid doing twice
 //#if defined(__APPLE__) && defined(__STC_ZASKAR)
-//	int mac_stc_zflags; ///< activa algunos parches en scintilla para corregir problemas espec韋icos en mac
+//	int mac_stc_zflags; ///< activa algunos parches en scintilla para corregir problemas espec铆ficos en mac
 //#endif
 };
 
-//! Elementos de la configuraci髇 relacionados a rutas de archivos y directorios
+//! Elementos de la configuraci贸n relacionados a rutas de archivos y directorios
 struct cfgFiles {
 	wxString temp_dir;
 	wxString skin_dir;
@@ -199,16 +199,16 @@ struct cfgCols {
 };
 
 /**
-* @brief Administra la configuraci髇 completa del sistema
+* @brief Administra la configuraci贸n completa del sistema
 *
 * Inicializacion:
-* 1) crearlo, esto carga los defaults para lo que 閘 gestiona
-* 2) LoadMainConfig(), carga las configuraciones de usuario para lo que 閘 
-*    gestiona, retorna false si no hab韆 nada, lo cual indica que es la primer
+* 1) crearlo, esto carga los defaults para lo que 茅l gestiona
+* 2) LoadMainConfig(), carga las configuraciones de usuario para lo que 茅l 
+*    gestiona, retorna false si no hab铆a nada, lo cual indica que es la primer
 *    corrida de zinjai para ese usuario
 * 2.5) aqui ya podemos mostrar el splash desde el mxApplication::OnOnInit
 * 3) InitThirdPartyConfig() crear utils, menu_data, e inicializar menu_data con 
-*    sus defaults porque los va a necesitar el paso 4, adem醩 hace los checkeos 
+*    sus defaults porque los va a necesitar el paso 4, adem谩s hace los checkeos 
 *    iniciales que miran si hay compilador, terminal, explorador, etc
 * 4) LoadThirdPartyConfig() cargar las conf de menues, toolbars y colores
 **/

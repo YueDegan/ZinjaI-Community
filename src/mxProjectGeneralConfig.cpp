@@ -52,7 +52,7 @@ mxProjectGeneralConfig::mxProjectGeneralConfig()
 	CreateSizer(this)
 		.BeginNotebook()
 			.AddPage(this,&mxProjectGeneralConfig::CreateTabGeneral, LANG(PROJECTCONFIG_TAB_GENERAL,"General"))
-			.AddPage(this,&mxProjectGeneralConfig::CreateTabAdvanced, LANG(PROJECTCONFIG_TAB_MORE,"M醩"))
+			.AddPage(this,&mxProjectGeneralConfig::CreateTabAdvanced, LANG(PROJECTCONFIG_TAB_MORE,"M谩s"))
 			.AddPage(this,&mxProjectGeneralConfig::CreateTabInfo, LANG(PROJECTCONFIG_TAB_INFO,"Info"))
 		.EndNotebook()
 		.BeginBottom().Help().Ok().Cancel().EndBottom(this)
@@ -94,11 +94,11 @@ wxPanel *mxProjectGeneralConfig::CreateTabGeneral(wxNotebook *notebook) {
 	
 	sizer.BeginText(LANG(PROJECTGENERAL_AUTOCOMP_EXTRA,"Indices de autocompletado adicionales"))
 		.Value(project->autocomp_extra).Button(mxID_PROJECT_CONFIG_AUTOCOMP_INDEXES).EndText(project_autocomp);
-	sizer.BeginText(LANG(PREFERENCES_WRITTING_AUTOCODES_FILE,"Archivo de definiciones de autoc骴igos"))
+	sizer.BeginText(LANG(PREFERENCES_WRITTING_AUTOCODES_FILE,"Archivo de definiciones de autoc贸digos"))
 		.Value(project->autocodes_file).Button(mxID_AUTOCODES_FILE).EndText(project_autocodes);
 	sizer.BeginText(LANG(PREFERENCES_DEBUG_GDB_MACROS_FILE,"Archivo de macros para gdb"))
 		.Value(project->macros_file).Button(mxID_DEBUG_MACROS).EndText(project_debug_macros);
-	sizer.BeginText(LANG(PROJECTGENERAL_CUSTOM_HELPPAGE,"P醙ina de ayuda personalizada"))
+	sizer.BeginText(LANG(PROJECTGENERAL_CUSTOM_HELPPAGE,"P谩gina de ayuda personalizada"))
 		.Bind(m_binder,project->help_page)/*.Button(mxID_PROJECT_CONFIG_CUSTOM_HELP)*/.EndText();
 //	tab_width->Enable(custom_tab->GetValue());
 //	tab_use_spaces->Enable(custom_tab->GetValue());
@@ -110,12 +110,12 @@ wxPanel *mxProjectGeneralConfig::CreateTabGeneral(wxNotebook *notebook) {
 wxPanel *mxProjectGeneralConfig::CreateTabAdvanced(wxNotebook *notebook) {
 	CreatePanelAndSizer sizer(notebook);
 		
-	sizer.BeginButton(LANG(PROJECTGENERAL_COMPILE_AND_RUN," Compilaci髇 y Ejecuci髇 (generales)... ")).Id(mxID_RUN_CONFIG).Expand().EndButton();
-	sizer.BeginButton(LANG(PROJECTGENERAL_BYSRC_OPTIONS," Opciones de Compilaci髇 (por fuente)... ")).Id(mxID_PROJECT_CONFIG_BYSRC).Expand().EndButton();
-	sizer.BeginButton(LANG(PROJECTGENERAL_AUTOIMPROVE_TEMPLATES," Mejora de inspecciones seg鷑 tipo... ")).Id(mxID_PROJECT_CONFIG_AUTOIMPROVE_TEMPLATES).Expand().EndButton();
-	sizer.BeginButton(LANG(PROJECTGENERAL_DOXYGEN," Configuraci髇 Doxygen... ")).Id(mxID_TOOLS_DOXY_CONFIG).Expand().EndButton();
-	sizer.BeginButton(LANG(PROJECTGENERAL_CPPCHECK," Configuraci髇 CppCheck... ")).Id(mxID_TOOLS_CPPCHECK_CONFIG).Expand().EndButton();
-	sizer.BeginButton(LANG(PROJECTGENERAL_WXFB," Integraci髇 con wxFormBuilder... ")).Id(mxID_TOOLS_WXFB_CONFIG).Expand().EndButton();
+	sizer.BeginButton(LANG(PROJECTGENERAL_COMPILE_AND_RUN," Compilaci贸n y Ejecuci贸n (generales)... ")).Id(mxID_RUN_CONFIG).Expand().EndButton();
+	sizer.BeginButton(LANG(PROJECTGENERAL_BYSRC_OPTIONS," Opciones de Compilaci贸n (por fuente)... ")).Id(mxID_PROJECT_CONFIG_BYSRC).Expand().EndButton();
+	sizer.BeginButton(LANG(PROJECTGENERAL_AUTOIMPROVE_TEMPLATES," Mejora de inspecciones seg煤n tipo... ")).Id(mxID_PROJECT_CONFIG_AUTOIMPROVE_TEMPLATES).Expand().EndButton();
+	sizer.BeginButton(LANG(PROJECTGENERAL_DOXYGEN," Configuraci贸n Doxygen... ")).Id(mxID_TOOLS_DOXY_CONFIG).Expand().EndButton();
+	sizer.BeginButton(LANG(PROJECTGENERAL_CPPCHECK," Configuraci贸n CppCheck... ")).Id(mxID_TOOLS_CPPCHECK_CONFIG).Expand().EndButton();
+	sizer.BeginButton(LANG(PROJECTGENERAL_WXFB," Integraci贸n con wxFormBuilder... ")).Id(mxID_TOOLS_WXFB_CONFIG).Expand().EndButton();
 	sizer.BeginButton(LANG(PROJECTGENERAL_CUSTOM_TOOLS," Herramientas Personalizadas... ")).Id(mxID_PROJECT_CONFIG_CUSTOM_TOOLS).Expand().EndButton();
 	sizer.BeginButton(LANG(PROJECTGENERAL_COMBINE_TEMPLATE," Combinar/Actualizar Plantilla... ")).Id(mxID_TOOLS_COMBINE_TEMPLATE).Expand().EndButton();
 	
@@ -127,9 +127,9 @@ wxPanel *mxProjectGeneralConfig::CreateTabInfo(wxNotebook *notebook) {
 	CreatePanelAndSizer sizer(notebook);
 	
 	sizer.BeginText(LANG(PROJECTGENERAL_ZPR_FILE,"Archivo de proyecto:")).Value(project->filename).ReadOnly().EndText();
-	sizer.BeginButton(LANG(PROJECTGENERAL_STATISTICS," Estad韘ticas... ")).Id(mxID_TOOLS_PROJECT_STATISTICS).Expand().EndButton();
+	sizer.BeginButton(LANG(PROJECTGENERAL_STATISTICS," Estad铆sticas... ")).Id(mxID_TOOLS_PROJECT_STATISTICS).Expand().EndButton();
 	sizer.BeginButton(LANG(PROJECTGENERAL_GRAPH," Grafo de archivos... ")).Id(mxID_TOOLS_DRAW_PROJECT).Expand().EndButton();
-	sizer.BeginButton(LANG(PROJECTGENERAL_LIZARD," An醠isis de complejidad... ")).Id(mxID_TOOLS_LIZARD_RUN).Expand().EndButton();
+	sizer.BeginButton(LANG(PROJECTGENERAL_LIZARD," An谩lisis de complejidad... ")).Id(mxID_TOOLS_LIZARD_RUN).Expand().EndButton();
 
 	sizer.SetAndFit();
 	return sizer.GetPanel();

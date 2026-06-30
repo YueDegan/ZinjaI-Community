@@ -42,7 +42,7 @@ private:
 		maBEGIN_SUBMENU=128, ///< indica el comienzo de un submenu
 		maEND_SUBMENU=256, ///< indica el final de un submenu
 		maSEPARATOR=512, ///< representa un separatod
-		maHIDDEN=1024, ///< este item no se agregará al menú
+		maHIDDEN=1024, ///< este item no se agregarÃ¡ al menÃº
 		maDEFAULT_SHORTCUT=2048 ///< if current shortcut is default one this setting won't de saved to shortcuts.zsc
 	};
 	
@@ -222,7 +222,7 @@ private:
 public:
 	void SetToolbarIconSize(int size=-1);
 	
-	//! Información sobre la posición y visibilidad de una barra de herramientas
+	//! InformaciÃ³n sobre la posiciÃ³n y visibilidad de una barra de herramientas
 	struct toolbarPosition {
 		bool top,left,right,visible; // docking position and visibility (if there's no true docking position, its floating)
 		long row/*,pos*/;

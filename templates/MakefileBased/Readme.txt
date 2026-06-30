@@ -1,9 +1,9 @@
- EspaÒol
+ Espa√±ol
 =========
 
-Este proyecto est· configurado para ser compilado utilizando un makefile. De esta forma, al intentar ejecutar o compilar desde ZinjaI, forma que las reglas y pasos del proceso de compilaciÛn no ser·n gestionados por ZinjaI, sino que en su lugar ser· invocada la herramienta make. 
+Este proyecto est√° configurado para ser compilado utilizando un makefile. De esta forma, al intentar ejecutar o compilar desde ZinjaI, forma que las reglas y pasos del proceso de compilaci√≥n no ser√°n gestionados por ZinjaI, sino que en su lugar ser√° invocada la herramienta make. 
 
-Hay dos perfiles de compilaciÛn, uno utilizando el comando "make" y el archivo "Makefile" (para sistemas GNU/Linux), y otro utilizando el comando "mingw32-make" y el archivo "Makefile.w32" (para sistemas basados en Windows). Todo esto se configura desde la pestaÒa "Secuencia" del cuadro de Opciones de CompilaciÛn y EjecuciÛn de Proyecto (men˙ EjecuciÛn->Opciones...). Ambos makefiles mencionados definen variables con los comando y argumentos de compilaciÛn, pero incluyen un tercer archivo (Makefile.common) donde se explicitan los fuentes a compilar y sus dependencias de forma com˙n a ambas configuraciones. Puede modificar completamente los makefiles, pero debe asegurarse de que el nombre ejecutable generado coincida con el definido en la pestaÒa General del cuadro de configuraciÛn, para que ZinjaI puede ejecutar correctamente el programa generado.
+Hay dos perfiles de compilaci√≥n, uno utilizando el comando "make" y el archivo "Makefile" (para sistemas GNU/Linux), y otro utilizando el comando "mingw32-make" y el archivo "Makefile.w32" (para sistemas basados en Windows). Todo esto se configura desde la pesta√±a "Secuencia" del cuadro de Opciones de Compilaci√≥n y Ejecuci√≥n de Proyecto (men√∫ Ejecuci√≥n->Opciones...). Ambos makefiles mencionados definen variables con los comando y argumentos de compilaci√≥n, pero incluyen un tercer archivo (Makefile.common) donde se explicitan los fuentes a compilar y sus dependencias de forma com√∫n a ambas configuraciones. Puede modificar completamente los makefiles, pero debe asegurarse de que el nombre ejecutable generado coincida con el definido en la pesta√±a General del cuadro de configuraci√≥n, para que ZinjaI puede ejecutar correctamente el programa generado.
 
 
  English

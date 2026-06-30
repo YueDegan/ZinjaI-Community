@@ -78,7 +78,7 @@ void BreakPointInfo::SetSource(mxSource *_source) {
 //		UpdateLineNumber(); // corregir nro de linea antes de perder la referencia
 		marker_handle=-1;  // cuando se cierra un source
 	} else { // viene de !null, cambia a otro !null
-		// nada, esto pasa cuando se cierra un mxSource que tiene m·s de una vista
+		// nada, esto pasa cuando se cierra un mxSource que tiene m√°s de una vista
 	}	
 	source=_source;
 }

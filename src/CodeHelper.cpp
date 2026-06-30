@@ -456,7 +456,7 @@ bool CodeHelper::AutocompleteGeneral(mxSource *source, wxString scope, wxString 
 	// agregar las palabras reservadas
 	AddReservedWords(typed);
 	
-	// agregar los argumentos de la función/método actual
+	// agregar los argumentos de la funciÃ³n/mÃ©todo actual
 	if (args && args->Len()) {
 		bool comillas=false, done=false; int parentesis=0;
 		wxString &s=*args; int al=s.Len(), la=0; s[al-1]=',';
@@ -467,7 +467,7 @@ bool CodeHelper::AutocompleteGeneral(mxSource *source, wxString scope, wxString 
 				if (c=='('||c=='['||c=='{') parentesis++;
 				else if (c==')'||c==']'||c=='}') parentesis--;
 				else if (!parentesis) {
-					if (c=='='||(c==','&&!done)) { // consideramos identificador lo que esté antes de una coma o de un igual (valores por defecto)... el done es para no considerar ambos en un mismo argumento
+					if (c=='='||(c==','&&!done)) { // consideramos identificador lo que estÃ© antes de una coma o de un igual (valores por defecto)... el done es para no considerar ambos en un mismo argumento
 						wxString id=ExtractIdentifierFromDeclaration(s.Mid(la+1,i-la-1));
 //						unsigned int CH_COMPARE(typed,id,i,l,max_str_dist);
 						if (ShouldAddToAutocomp(typed,len,id)) g_autocomp_list.Add(id,"$20","");
@@ -1209,7 +1209,7 @@ bool CodeHelper::GenerateAutocompletionIndex(wxString path, wxString filename) {
 
 /**
 * Recarga los indices de autocompletado solo si la nueva lista es diferente a la
-* actual. Se encarga además de evitar repetir elementos en la lista si viniensen
+* actual. Se encarga ademÃ¡s de evitar repetir elementos en la lista si viniensen
 * dados dos veces en el argumento. La lista actual esta guardada en actual_indexes
 * @param indexes cadena con la nueva lista de indices
 **/
@@ -1233,7 +1233,7 @@ void CodeHelper::ReloadIndexes() {
 }
 
 /**
-* Agrega indices de autocompletado. Se encarga además de evitar repetir elementos 
+* Agrega indices de autocompletado. Se encarga ademÃ¡s de evitar repetir elementos 
 * en la lista si viniensen dados dos veces, o indices ya cargados en el argumento. 
 * La lista actual esta guardada en actual_indexes.
 * @param indexes cadena con la lista de indices a agregar
@@ -1369,9 +1369,9 @@ void CodeHelper::TryToSuggestTemplateSolutionForLinkingErrors (const wxArrayStri
 		vals.Add(it->first);
 		++it;
 	}
-	mxMessageDialog::mdAns ans = mxMessageDialog(main_window,(LANG(CODEHELP_SUGGEST_TEMPLATE,"Los errores de compilación/enlazado podrían deberse a la falta de argumentos\n"
-										 "de compilación adecuados para las bibliotecas que utiliza.\n"
-										 "¿Desea que ZinjaI modifique automáticamente los argumentos en base a una plantilla?")))
+	mxMessageDialog::mdAns ans = mxMessageDialog(main_window,(LANG(CODEHELP_SUGGEST_TEMPLATE,"Los errores de compilaciÃ³n/enlazado podrÃ­an deberse a la falta de argumentos\n"
+										 "de compilaciÃ³n adecuados para las bibliotecas que utiliza.\n"
+										 "Â¿Desea que ZinjaI modifique automÃ¡ticamente los argumentos en base a una plantilla?")))
 									.Title(LANG(CODEHELP_COMPILATION_OR_LINKING_ERRORS,"Errores de compilacion/enlazado")).ButtonsYesNo().IconQuestion()
 									.Check1(LANG(CODEHELP_DONT_SHOW_AGAIN,"No volver a mostrar este mensaje"),false).Run();
 	if (ans.no) {

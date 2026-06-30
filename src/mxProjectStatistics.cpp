@@ -19,7 +19,7 @@ BEGIN_EVENT_TABLE(mxProjectStatistics, wxDialog)
 	EVT_TIMER(wxID_ANY,mxProjectStatistics::OnTimer)
 END_EVENT_TABLE()
 	
-mxProjectStatistics::mxProjectStatistics(wxWindow *parent) : wxDialog(parent, wxID_ANY, LANG(PROYSTATS_CAPTION,"Estadísticas del Proyecto"), wxDefaultPosition, wxSize(450,400) ,wxALWAYS_SHOW_SB | wxALWAYS_SHOW_SB | wxDEFAULT_FRAME_STYLE | wxSUNKEN_BORDER) {
+mxProjectStatistics::mxProjectStatistics(wxWindow *parent) : wxDialog(parent, wxID_ANY, LANG(PROYSTATS_CAPTION,"EstadÃ­sticas del Proyecto"), wxDefaultPosition, wxSize(450,400) ,wxALWAYS_SHOW_SB | wxALWAYS_SHOW_SB | wxDEFAULT_FRAME_STYLE | wxSUNKEN_BORDER) {
 	
 	project->UpdateSymbols();
 	
@@ -30,7 +30,7 @@ mxProjectStatistics::mxProjectStatistics(wxWindow *parent) : wxDialog(parent, wx
 	cant_headers = mxDialog::AddStaticText(mySizer,this,LANG(PROYSTATS_NUM_HEADERS,"Cabeceras"),"",true);
 	cant_sources = mxDialog::AddStaticText(mySizer,this,LANG(PROYSTATS_NUM_SOURCES,"Fuentes"),"",true);
 	cant_others = mxDialog::AddStaticText(mySizer,this,LANG(PROYSTATS_NUM_OTHERS,"Otros"),"",true);
-	total_size = mxDialog::AddStaticText(mySizer,this,LANG(PROYSTATS_DISK_USAGE,"Tamaño en Disco (*)"),"12");
+	total_size = mxDialog::AddStaticText(mySizer,this,LANG(PROYSTATS_DISK_USAGE,"TamaÃ±o en Disco (*)"),"12");
 	mxDialog::AddStaticText(mySizer,this,"");
 	cant_lines = mxDialog::AddStaticText(mySizer,this,LANG(PROYSTATS_LINES,"Lineas de Codigo"),"");
 	cant_class = mxDialog::AddStaticText(mySizer,this,LANG(PROYSTATS_NUM_CLASSES,"Clases Definidas"),"",true);

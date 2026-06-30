@@ -34,7 +34,7 @@ all:
 	@echo "clean y clean-bin se pueden correr sin especificar arquitectura (equivale"
 	@echo "a wine32, wine64 y lnx)"
 	@echo " "
-#	@echo "En caso de error, o para mas informacion, consultar la documentación"
+#	@echo "En caso de error, o para mas informacion, consultar la documentaci√≥n"
 #	@echo "adicional del directorio \"doc\"."
 #	@echo " "
 

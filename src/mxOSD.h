@@ -13,8 +13,8 @@ class wxButton;
 /**
 * @brief Clase para mostrar mensajes en pantalla tipo OSD
 * 
-* Esta clase se desarrolló inicialmente para mostrar mensajes de estado durante la
-* depuración, pero no se utiliza.
+* Esta clase se desarrollÃ³ inicialmente para mostrar mensajes de estado durante la
+* depuraciÃ³n, pero no se utiliza.
 **/
 class mxOSD : public wxDialog {
 private:

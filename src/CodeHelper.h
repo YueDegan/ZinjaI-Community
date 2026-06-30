@@ -45,11 +45,11 @@ extern MyAutocompList g_autocomp_list; /// @todo: move this inside CodeHelper
 /**
 * @brief encapsula las funciones relacionadas al autocompletado y los calltips
 * 
-* Esta clase funciona como interfáz para la información relacionada al autocompletado, 
-* los calltips, etc. Dicha información, la tiene en su mayoría el parser, pero
-* esta clase encapsula la comunicación con el parser para estos fines particulares
+* Esta clase funciona como interfÃ¡z para la informaciÃ³n relacionada al autocompletado, 
+* los calltips, etc. Dicha informaciÃ³n, la tiene en su mayorÃ­a el parser, pero
+* esta clase encapsula la comunicaciÃ³n con el parser para estos fines particulares
 * y genera ella los menues de autocompletado y los globos de calltips. Se encarga
-* además de cargar y procesar los cachés de autocompletados de funciones "estándar"
+* ademÃ¡s de cargar y procesar los cachÃ©s de autocompletados de funciones "estÃ¡ndar"
 * definidos por el usuario.
 **/
 class CodeHelper {

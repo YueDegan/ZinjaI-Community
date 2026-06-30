@@ -9,16 +9,16 @@
 #include <wx/msgdlg.h>
 #include "ZLog.h"
 
-////! Información acerca de una inspección en el depurador
+////! InformaciÃ³n acerca de una inspecciÃ³n en el depurador
 
 /// Tipo/estado de una inspeccion
 enum DEBUG_INSPECTION_EXPRESSION_TYPE {
 	DIT_GDB_COMMAND, ///< la expresion es en realidad una macro o comando para gdb
 	DIT_VARIABLE_OBJECT, ///< la expresion tienen un variable object asociado
-	DIT_PENDING, ///< la expresión creará un vo, pero su creación esta en cola para la próxima pausa
-	DIT_GHOST, ///< vo que no está en el mapa ni recibe actualizaciones, solo existe porque otras dependen de ella (num_children!=0, ver VOBreak)
-//	DIT_ABOUT_TO_BE_DELETED, ///< ya no debe ser procesada en la cola de eventos, porque está por ser efectivametne eliminada
-	DIT_ERROR ///< la expresión debía crear un vo, pero ocurrió un error al intentarlo
+	DIT_PENDING, ///< la expresiÃ³n crearÃ¡ un vo, pero su creaciÃ³n esta en cola para la prÃ³xima pausa
+	DIT_GHOST, ///< vo que no estÃ¡ en el mapa ni recibe actualizaciones, solo existe porque otras dependen de ella (num_children!=0, ver VOBreak)
+//	DIT_ABOUT_TO_BE_DELETED, ///< ya no debe ser procesada en la cola de eventos, porque estÃ¡ por ser efectivametne eliminada
+	DIT_ERROR ///< la expresiÃ³n debÃ­a crear un vo, pero ocurriÃ³ un error al intentarlo
 };
 
 #define DIF_FRAMELESS 1
@@ -41,7 +41,7 @@ enum DEBUG_INSPECTION_MESSAGE { DIMSG_PENDING, DIMSG_OUT_OF_SCOPE, DIMSG_ERROR }
 
 class DebuggerInspection;
 
-///< class base que heredarán los componentes visuales para ser notificados de los cambios en el estado de las inspecciones de forma individual
+///< class base que heredarÃ¡n los componentes visuales para ser notificados de los cambios en el estado de las inspecciones de forma individual
 class myDIEventHandler {
 //	bool m_owned_by_the_inspection; ///< if true, the inspections will do the delete
 public:
@@ -55,7 +55,7 @@ public:
 	virtual ~myDIEventHandler() {};
 };
 
-///< class base que heredarán los componentes visuales para ser notificados de los cambios en el estado de la depuracion
+///< class base que heredarÃ¡n los componentes visuales para ser notificados de los cambios en el estado de la depuracion
 class myDIGlobalEventHandler {
 	bool m_registered;
 public:
@@ -91,11 +91,11 @@ public:
 * @brief Clase para gestionar todo lo relacionado a las inspecciones a nivel zinjai-gdb (no interfaz de usuario)
 *
 * Esta clase representa en sus atributos regulares una inspeccion, que puede ser "consumida"
-* por cualquier componente de la interfaz. La inspeccion encapsula la comunicación con el depurador
+* por cualquier componente de la interfaz. La inspeccion encapsula la comunicaciÃ³n con el depurador
 * y la gestion de su estado interno en zinjai, para que las clases que la usan solo se preocupen
-* por cómo mostrarla. Además tiene métodos staticos para gestionar el conjunto completo de inspecciones
-* de forma de poner acá toda la comunicación con gdb que tenga que ver con inspecciones y que
-* DebugManager solo llame a un par de métodos y se desligue del tema.
+* por cÃ³mo mostrarla. AdemÃ¡s tiene mÃ©todos staticos para gestionar el conjunto completo de inspecciones
+* de forma de poner acÃ¡ toda la comunicaciÃ³n con gdb que tenga que ver con inspecciones y que
+* DebugManager solo llame a un par de mÃ©todos y se desligue del tema.
 **/
 struct DebuggerInspection {
 
@@ -131,7 +131,7 @@ struct DebuggerInspection {
 #	define __debug_log_message__(msg)
 #endif
 	
-	/// inspecciones a reestablecer al reiniciar la depuración, guarda todas las útiles para el usuario
+	/// inspecciones a reestablecer al reiniciar la depuraciÃ³n, guarda todas las Ãºtiles para el usuario
 	static SingleList<DebuggerInspection*> all_inspections;
 	
 	/// asocia los variable_objects (por nombre, como lo da gdb) a las instancias de esta clase que los representan internamente en ZinjaI
@@ -149,7 +149,7 @@ struct DebuggerInspection {
 	typedef void (DebuggerInspection::*pending_action)();
 	
 	/**
-	* Estructura para encolar acciones que se invoacn cuando el depurador esta ocupado y entonces deben pospuestas para la próxima pausa (ver ProcessPendingActions)
+	* Estructura para encolar acciones que se invoacn cuando el depurador esta ocupado y entonces deben pospuestas para la prÃ³xima pausa (ver ProcessPendingActions)
 	**/
 	struct DIPendingAction {
 		DebuggerInspection *inspection; ///< inspeccion a la que se refiere
@@ -173,7 +173,7 @@ struct DebuggerInspection {
 	/**
 	* @brief metodo a usar antes de intentar dialogar con gdb... 
 	*
-	* Si no se puede dialogar ahora (esta ejecutando), retorna falso y además
+	* Si no se puede dialogar ahora (esta ejecutando), retorna falso y ademÃ¡s
 	* encola el intento para que se intente nuevamente cuando se pueda (en la proxima pausa)
 	**/
 	bool TryToExec(pending_action action, bool requires_debug_pause) {
@@ -232,26 +232,26 @@ public:
 	static void OnDebugPause();
 	static void OnDebugStop();
 	
-	/// Actualiza todas las inspecciones (consultando a gdb, se debe invocar desde DebugManager cuando hay una pausa/interrupción en la ejecución)
+	/// Actualiza todas las inspecciones (consultando a gdb, se debe invocar desde DebugManager cuando hay una pausa/interrupciÃ³n en la ejecuciÃ³n)
 	static void UpdateAllVO(const wxString &voname="*");
 	static void UpdateAllManual();
 	
 	
 private:
-	DEBUG_INSPECTION_EXPRESSION_TYPE dit_type; ///< si es una vo, una macro, todavía no se creo, o fallo la creacion
+	DEBUG_INSPECTION_EXPRESSION_TYPE dit_type; ///< si es una vo, una macro, todavÃ­a no se creo, o fallo la creacion
 //	bool requieres_manual_update; ///< false, para los VOs comunes, true para los comandos gdb y para VOs que son intermediarios para otros VOs (helpers de compuestas)
 	// inf definida por el usuario/consumidor de la inspeccion
-	wxString expression; ///< expresión que está siendo inspeccionada
+	wxString expression; ///< expresiÃ³n que estÃ¡ siendo inspeccionada
 	wxString short_expression; ///< solo para expresiones hijas, contiene solo la parte hija, y no es valida como tal (ej, se descompuso x en x.a y x.b, expression tendria x.a/x.b, mientras que short_expression a/b), solo lo tienen quienes se generaron con Break
 	Flag flags; /// combinacion de DIF_FRAMELESS, DIF_IN_SCOPE, DIF_REQUIRES_MANUAL_UPDATE, DIF_DONT_USE_HELPER
 	wxString variable_object; ///< si es variable object (ver dit_type) guarda el nombre de la vo, sino el comando gdb que se evalua
-//	bool is_frameless; ///< si su valor está asociado a un frame/scope particular o no (en gdb se conocen como "floating" variable objects)
-	long thread_id, frame_id; ///< si no es frameless, aqui se guarda el scope al que está asociada
+//	bool is_frameless; ///< si su valor estÃ¡ asociado a un frame/scope particular o no (en gdb se conocen como "floating" variable objects)
+	long thread_id, frame_id; ///< si no es frameless, aqui se guarda el scope al que estÃ¡ asociada
 //	bool is_in_scope; ///< autoexplicativo (solo para vo, los comandos gdb siempre tendran true)
 //	bool is_frozen; ///< autoexplicativo (solo para vo, los comandos gdb siempre tendran true)
-	myDIEventHandler *consumer; ///< puntero a quien utiliza esta inspección, para notificarle los cambios
+	myDIEventHandler *consumer; ///< puntero a quien utiliza esta inspecciÃ³n, para notificarle los cambios
 	// informacion "calculada"
-	wxString value_type; ///< tipo de dato c/c++ del resultado de la expresión
+	wxString value_type; ///< tipo de dato c/c++ del resultado de la expresiÃ³n
 	long num_children; ///< si es una inspeccion compuesta, cantidad de "partes" (campos en un struct, elementos en un arreglo, etc)
 	wxString gdb_value; ///< valor tal como lo da gdb, sin alterar
 	DebuggerInspection *helper; ///< vo auxiliar para mostrar mejor este cuando es compuesto, helper sera responsable de actualizar this->gdb_value y generar sus eventos
@@ -259,7 +259,7 @@ private:
 	int di_children; ///< cantidad de vo hijos que dependen de este
 	GDB_VO_FORMAT vo_value_format; ///< con que formato debe gdb mostrar el valor, solo para tipos simples
 	
-	static void ErrorOnEvaluation(); ///< función auxiliar para mostrar el mensaje de error cuando al evaluar una expresion que requiere ejecucion de un operador esta ejecucion revienta
+	static void ErrorOnEvaluation(); ///< funciÃ³n auxiliar para mostrar el mensaje de error cuando al evaluar una expresion que requiere ejecucion de un operador esta ejecucion revienta
 	
 	void VODelete() {
 		__debug_log_method__;
@@ -330,7 +330,7 @@ private:
 			DeleteHelper();
 		// si no hay que intentar simplificar esta
 		if (flags.Get(DIF_DONT_USE_HELPER)) return false;
-		// si hay una mejora automática para este tipo
+		// si hay una mejora automÃ¡tica para este tipo
 		if (flags.Get(DIF_AUTO_IMPROVE)&&AutoImprove()) return true;
 		// si no tiene hijos, no necesita la inspeccion auxiliar
 		if (!IsCompound() && !flags.Get(DIF_FULL_OUTPUT)) return false;
@@ -447,7 +447,7 @@ private:
 	
 	void RecreateAllFramelessInspections(const wxString &expression);
 	
-	/// las instancias de los clientes de esta clase se construyen solo a través de Create (que usará este ctor)
+	/// las instancias de los clientes de esta clase se construyen solo a travÃ©s de Create (que usarÃ¡ este ctor)
 	DebuggerInspection(DEBUG_INSPECTION_EXPRESSION_TYPE type, const wxString &expr, const Flag &flags, myDIEventHandler *event_handler=nullptr) :
 		dit_type(type),
 		expression(expr),
@@ -487,7 +487,7 @@ private:
 		parent=nullptr;
 	}
 	
-	/// las instancias se destruyen a través de Destroy, esto evita que alguien de afuera le quiera hacer delete
+	/// las instancias se destruyen a travÃ©s de Destroy, esto evita que alguien de afuera le quiera hacer delete
 	~DebuggerInspection() {
 		__debug_log_method__;
 	}; 
@@ -523,8 +523,8 @@ public:
 	/**
 	* @brief registra la vo de una inspeccion en gdb, ver DebuggerInspection::Create
 	*
-	* @retval true si se completó la inicialización ahora (o si no era necesario 
-	* hacer nada), false si quedó pendiente para la próxima pausa
+	* @retval true si se completÃ³ la inicializaciÃ³n ahora (o si no era necesario 
+	* hacer nada), false si quedÃ³ pendiente para la prÃ³xima pausa
 	**/ 
 	bool Init() {
 		__debug_log_method__;
@@ -537,11 +537,11 @@ public:
 		return true;
 	}
 	
-	/// delete lógico, el real se hará en ProcessPendingActions (considera las dependencias, y funciona para cualquier tipo de inspeccion)
+	/// delete lÃ³gico, el real se harÃ¡ en ProcessPendingActions (considera las dependencias, y funciona para cualquier tipo de inspeccion)
 	void Destroy() {
 		__debug_log_method__;
 		if (dit_type==DIT_VARIABLE_OBJECT||dit_type==DIT_GHOST) { // si tenia una vo asociado....
-			// si tenía otra inspección auxiliar asociada, eliminar esa también
+			// si tenÃ­a otra inspecciÃ³n auxiliar asociada, eliminar esa tambiÃ©n
 			if (helper) DeleteHelper(); // poner en nullptr por si queda como DIT_GHOST
 			// si no tiene dependencias, eliminarla en gdb
 			if (di_children==0) {
@@ -552,11 +552,11 @@ public:
 			// eliminarla del mapa para que ya no reciba actualizaciones (si no estaba ya eliminada)
 			if (dit_type!=DIT_GHOST) {
 				auto it = vo2di_map.find(variable_object);
-				if (it!=vo2di_map.end()) vo2di_map.erase(it); // el if siempre debería dar true
+				if (it!=vo2di_map.end()) vo2di_map.erase(it); // el if siempre deberÃ­a dar true
 				else { ZLERR2("Inspection","Destroy: it==vo2di_map.end(): "<<variable_object); }
 			}
 		}
-		// quitarla de la lista total de inspecciones a reestablecer al reiniciar la depuración
+		// quitarla de la lista total de inspecciones a reestablecer al reiniciar la depuraciÃ³n
 		if (dit_type!=DIT_GHOST) all_inspections.Remove(all_inspections.Find(this));
 		// si quedan hijos que dependen de este, dejar como fantasma, sino hacerle el delete
 		dit_type=DIT_GHOST; // marco como ghost en ambos casos para que no procese mas eventos en ProcessPendingActions

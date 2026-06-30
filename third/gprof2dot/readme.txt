@@ -1,4 +1,4 @@
-gprof2dot is a tool for generating dot graphs (for graphviz) out of gprof's output, by José Fonseca, wich is distributed under the terms of GNU Lesser General Public License.
+gprof2dot is a tool for generating dot graphs (for graphviz) out of gprof's output, by JosÅ¥ Fonseca, wich is distributed under the terms of GNU Lesser General Public License.
 
 This tool is hosted at https://code.google.com/p/jrfonseca/wiki/Gprof2Dot, and was downloaded from its git repository (version 236207797e812bc452cf106a909f608710fa88c9).
 

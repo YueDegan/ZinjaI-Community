@@ -267,8 +267,8 @@ extern int _member_declaration( Class_t Class );
 extern int member_declarator_list( Class_t Class, Declaration_t Declaration );
 extern int member_declarator( Declarator_t Declarator );
 extern int f_enum( Declaration_t Declaration, Enum_t Enum );
-extern int enum_list( Enum_t Enum, char *scope ); /// scope agregado por Zaskar para saber en qué clase se declara el enum
-extern int enumerator( Enum_t Enum, char *scope ); /// scope agregado por Zaskar para saber en qué clase se declara el enum
+extern int enum_list( Enum_t Enum, char *scope ); /// scope agregado por Zaskar para saber en quÃ© clase se declara el enum
+extern int enumerator( Enum_t Enum, char *scope ); /// scope agregado por Zaskar para saber en quÃ© clase se declara el enum
 extern int operator_function_name( LongString *plstr );
 extern int conversion_type_name( LongString *plstr );
 extern int conversion_type_specifier( LongString *plstr );
@@ -6930,7 +6930,7 @@ extern int skip_member_macro( void )  /* 01.08.97 rigo */
             {
                break;
             }
-            else if( token( 0 ) == 0 ) // agregado por Zaskar para saber evitar loops infinitos en código mal escritos (donde falta cerrar los paréntesis del prototipo de un método en una clase)
+            else if( token( 0 ) == 0 ) // agregado por Zaskar para saber evitar loops infinitos en cÃ³digo mal escritos (donde falta cerrar los parÃ©ntesis del prototipo de un mÃ©todo en una clase)
             {
                break; // en of file
             }

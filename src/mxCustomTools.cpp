@@ -43,7 +43,7 @@ mxCustomTools::mxCustomTools(bool for_project, int cual)
 	sizer.BeginText( LANG(CUSTOM_TOOLS_COMMAND,"Comando") ).Button(mxID_CUSTOM_TOOLS_COMMAND).EndText(command_ctrl);
 	sizer.BeginText( LANG(CUSTOM_TOOLS_WORKDIR,"Directorio de trabajo") ).Button(mxID_CUSTOM_TOOLS_WORKDIR).EndText(workdir_ctrl);
 	
-	sizer.BeginCombo( LANG(CUSTOM_TOOLS_PRE,"Acción antes de ejecutar") )
+	sizer.BeginCombo( LANG(CUSTOM_TOOLS_PRE,"AcciÃ³n antes de ejecutar") )
 		.Add(LANG(CUSTOM_TOOLS_PRE_NONE,"Ninguna"))
 		.Add(LANG(CUSTOM_TOOLS_PRE_SAVE_ONE,"Guardar el fuente actual"))
 		.Add(LANG(CUSTOM_TOOLS_PRE_SAVE_ALL,"Guardar todos los fuentes abiertos"))
@@ -51,7 +51,7 @@ mxCustomTools::mxCustomTools(bool for_project, int cual)
 		.Add(LANG(CUSTOM_TOOLS_PRE_COMPILE,"Compilar el programa/proyecto"))
 		.EndCombo(pre_action_ctrl);
 	
-	sizer.BeginCheck( LANG(CUSTOM_TOOLS_ASYNC_EXEC,"Ejecución asíncrona") )
+	sizer.BeginCheck( LANG(CUSTOM_TOOLS_ASYNC_EXEC,"EjecuciÃ³n asÃ­ncrona") )
 		.Value(false).EndCheck(async_exec_ctrl);
 
 	sizer.BeginCombo( LANG(CUSTOM_TOOLS_OUTPUT,"Salidas (std y err)") )
@@ -61,7 +61,7 @@ mxCustomTools::mxCustomTools(bool for_project, int cual)
 		.Add(LANG(CUSTOM_TOOLS_OUTPUT_DIALOG,"En cuadro de dialogo"))
 		.Select(0).EndCombo(output_mode_ctrl);
 		
-	sizer.BeginCombo( LANG(CUSTOM_TOOLS_POST,"Acción luego de ejecutar:") )
+	sizer.BeginCombo( LANG(CUSTOM_TOOLS_POST,"AcciÃ³n luego de ejecutar:") )
 		.Add(LANG(CUSTOM_TOOLS_POST_NONE,"Ninguna"))
 		.Add(LANG(CUSTOM_TOOLS_POST_RELOAD_ONE,"Recargar fuente actual"))
 		.Add(LANG(CUSTOM_TOOLS_POST_RELOAD_ALL,"Recargar todos los fuentes"))
@@ -115,7 +115,7 @@ void mxCustomTools::OnButtonOk(wxCommandEvent &event) {
 	if (someone_ontoolbar && !menu_data->GetToolbarPosition(tb_id).visible && 
 		mxMessageDialog(this,
 						LANG(CUSTOM_TOOLS_SHOW_TOOLBAR,"La barra de herramientas \"Herramientas\" no esta visible.\n"
-													   "¿Desea activarla para ver los controles personalizados?")
+													   "Â¿Desea activarla para ver los controles personalizados?")
 					    ).Title(GetCaption()).ButtonsYesNo().Run().ok )
 	{
 		main_window->OnToggleToolbar(wx_id,tb_id,true);

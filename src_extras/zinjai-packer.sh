@@ -22,7 +22,7 @@ if ! test -e ./zinjai-packer.cfg; then
 	echo '# de wxWidgets, los binarios de gprof2dot, lizard, etc)' >> ./zinjai-packer.cfg
 	echo 'EXTRAFILES="extra-zinjai"' >> ./zinjai-packer.cfg
 	echo '' >> ./zinjai-packer.cfg
-	echo '# puede modificar aquí otras variables si fuera necesario' >> ./zinjai-packer.cfg
+	echo '# puede modificar aquĆ­ otras variables si fuera necesario' >> ./zinjai-packer.cfg
 	echo '#PATH=/home/usuario/wx/bin:$PATH' >> ./zinjai-packer.cfg
 	echo '' >> ./zinjai-packer.cfg
 	echo "Creado un archivo \"zinjai-packer.cfg\" de ejemplo. Verifique su contenido y'vuelva a ejecutar este script."

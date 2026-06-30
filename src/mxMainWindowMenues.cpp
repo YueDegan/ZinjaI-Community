@@ -1,7 +1,7 @@
 /**
 * @file mxMainWindowMenus
-* @brief Contiene las implementaciones de los métodos que gestionan la creación y 
-*        visualización de los menúes y barras de herramientas de la ventana principal
+* @brief Contiene las implementaciones de los mÃ©todos que gestionan la creaciÃ³n y 
+*        visualizaciÃ³n de los menÃºes y barras de herramientas de la ventana principal
 **/
 
 #include "mxMainWindow.h"

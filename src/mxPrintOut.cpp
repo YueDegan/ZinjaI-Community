@@ -8,9 +8,9 @@ wxPrintDialogData *g_printDialogData = nullptr;
 //wxPageSetupDialogData *pageSetupData = nullptr;
 
 /**
-* @brief Gestiona la impresi髇 de un fuente
+* @brief Gestiona la impresi贸n de un fuente
 * 
-* Gestiona la impresi髇 de un fuente utilizando la infraestructura de impresi髇
+* Gestiona la impresi贸n de un fuente utilizando la infraestructura de impresi贸n
 * de wxWidgets. Se encarga de calcular la cantidad de paginas, donde comienza
 * cada una, y dialogar con el mxSource para renderizarlas en el dc.
 * el codigo de esta clase esta basado en el ejemplo de stc que viene con 
@@ -139,14 +139,14 @@ bool mxPrintOut::PrintScaling (wxDC *dc){
 }
 
 /**
-* Recibe un numero de pagina y un entero con la posici髇 dentro del fuente
-* en donde comienza la impresi髇 de esa p醙ina, y los alamcena en una arreglo
-* para utilizarlo en OnPrintPage. Maneja adem醩 la memoria del arreglo donde
-* se guarda esta informaci髇 redimensionando e incializando cuando es necesario.
-* Este m閠odo es llamado por GetPageInfo.
+* Recibe un numero de pagina y un entero con la posici贸n dentro del fuente
+* en donde comienza la impresi贸n de esa p谩gina, y los alamcena en una arreglo
+* para utilizarlo en OnPrintPage. Maneja adem谩s la memoria del arreglo donde
+* se guarda esta informaci贸n redimensionando e incializando cuando es necesario.
+* Este m茅todo es llamado por GetPageInfo.
 * @param page numero de la pagina (wx las maneja en base 1, y asi se guardan)
 * @param start indice dentro del texto fuente (buffer del mxSource) donde 
-*        comienza esta p醙ina
+*        comienza esta p谩gina
 **/
 void mxPrintOut::SetPageStart(int page, int start) {
 	if (!m_pages) m_pages=new int[m_pages_len=10];

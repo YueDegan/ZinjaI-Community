@@ -25,7 +25,7 @@ BEGIN_EVENT_TABLE(mxComplementInstallerWindow, wxDialog)
 END_EVENT_TABLE()
 
 mxComplementInstallerWindow::mxComplementInstallerWindow(wxWindow *parent) 
-	: wxDialog(parent,wxID_ANY,LANG(COMPLEMENTS_CAPTION,"Instalación de Complementos"),wxDefaultPosition,wxDefaultSize) 
+	: wxDialog(parent,wxID_ANY,LANG(COMPLEMENTS_CAPTION,"InstalaciÃ³n de Complementos"),wxDefaultPosition,wxDefaultSize) 
 {
 	
 	wxBoxSizer *iSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -50,7 +50,7 @@ mxComplementInstallerWindow::mxComplementInstallerWindow(wxWindow *parent)
 	tSizer->Add(ok_button,sizers->Center);
 	tSizer->AddStretchSpacer();
 	mxDialog::AddStaticText(tSizer,this,LANG(COMPLEMENTS_INSTRUCCIONS_DOWNLOAD,""
-		"Si aún no descargó dicho archivo:" ));
+		"Si aÃºn no descargÃ³ dicho archivo:" ));
 	tSizer->Add(download_button,sizers->Center);
 	tSizer->AddStretchSpacer();
 	
@@ -69,7 +69,7 @@ mxComplementInstallerWindow::mxComplementInstallerWindow(wxWindow *parent)
 }
 
 void mxComplementInstallerWindow::OnOkButton (wxCommandEvent & evt) {
-	wxFileDialog dlg (this, LANG(COMPLEMENTS_CAPTION,"Instalación de Complementos"), config->Files.last_dir, " ", _T("Complement files (zcp)|*.zcp;*.ZCP;*.zip;*.ZIP|Any file (*)|*"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	wxFileDialog dlg (this, LANG(COMPLEMENTS_CAPTION,"InstalaciÃ³n de Complementos"), config->Files.last_dir, " ", _T("Complement files (zcp)|*.zcp;*.ZCP;*.zip;*.ZIP|Any file (*)|*"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	if (dlg.ShowModal() == wxID_OK) {
 		wxFileName fname=dlg.GetPath();
 		config->Files.last_dir=fname.GetPath();
@@ -128,9 +128,9 @@ void mxComplementInstallerWindow::Install(wxWindow *parent, wxString fname) {
 		;
 	
 	if (!writable) {
-		if (mxMessageDialog(parent,LANG(COMPLEMENTS_SUDO_WARNING,"ZinjaI está instalado en un directorio para el cual su usuario no\n"
-							 "tiene permisos de escritura. Se le solicitará confirmación y/o contraseña\n"
-							 "de root/administrador para continuar con la instalación. ¿Continuar?"))
+		if (mxMessageDialog(parent,LANG(COMPLEMENTS_SUDO_WARNING,"ZinjaI estÃ¡ instalado en un directorio para el cual su usuario no\n"
+							 "tiene permisos de escritura. Se le solicitarÃ¡ confirmaciÃ³n y/o contraseÃ±a\n"
+							 "de root/administrador para continuar con la instalaciÃ³n. Â¿Continuar?"))
 				.Title(LANG(GENERAL_WARNING,"Advertencia")).IconInfo().Run().no )
 		{
 			return;

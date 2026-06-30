@@ -140,7 +140,7 @@ bool DebugManager::Start(mxSource *source) {
 }
 
 bool DebugManager::Start(wxString workdir, wxString exe, wxString args, bool show_console, int wait_for_key) {
-	mxOSDGuard osd(main_window,project?LANG(OSD_STARTING_DEBUGGER,"Iniciando depuraciÛn..."):"");
+	mxOSDGuard osd(main_window,project?LANG(OSD_STARTING_DEBUGGER,"Iniciando depuraci√≥n..."):"");
 	ResetDebuggingStuff(); 
 	debug_patcher->Init(exe);
 #ifndef __WIN32__
@@ -149,7 +149,7 @@ bool DebugManager::Start(wxString workdir, wxString exe, wxString args, bool sho
 		if (wxFileName::FileExists(tty_file))
 			wxRemoveFile(tty_file);
 		tty_cmd<<config->Files.terminal_command<<" "<<config->Files.runner_command<<_T(" -tty ")<<tty_file;
-		tty_cmd.Replace("${TITLE}",LANG(GENERA_CONSOLE_CAPTION,"ZinjaI - Consola de Ejecucion")); // NO USAR ACENTOS, PUEDE ROMER EL X!!!! (me daba un segfault en la libICE al poner el Û en Ejeuci”n)
+		tty_cmd.Replace("${TITLE}",LANG(GENERA_CONSOLE_CAPTION,"ZinjaI - Consola de Ejecucion")); // NO USAR ACENTOS, PUEDE ROMER EL X!!!! (me daba un segfault en la libICE al poner el √≥ en Ejeuci√ìn)
 		wait_for_key_policy = wait_for_key;
 	//	mxUT::ParameterReplace(tty_cmd,_T("${ZINJAI_DIR}"),wxGetCwd());
 		tty_process = new wxProcess(main_window->GetEventHandler(),mxPROCESS_DEBUG);
@@ -173,7 +173,7 @@ bool DebugManager::Start(wxString workdir, wxString exe, wxString args, bool sho
 			debugging = false;
 			mxMessageDialog(main_window,LANG(DEBUG_ERROR_WITH_TERMINAL,""
 											 "Ha ocurrido un error al iniciar la terminal para la ejecucion.\n"
-											 "Compruebe que el campo \"Comando del terminal\" de la pestaÒa\n"
+											 "Compruebe que el campo \"Comando del terminal\" de la pesta√±a\n"
 											 "\"Rutas 2\" del cuadro de \"Preferencias\" sea correcto."))
 				.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
 			main_window->SetCompilingStatus(LANG(DEBUG_STATUS_INIT_ERROR,"Error al iniciar depuracion"));
@@ -244,8 +244,8 @@ bool DebugManager::Start(wxString workdir, wxString exe, wxString args, bool sho
 
 
 /**
-* Resetea los atributos utilizados durante la depuraciÛn (como lista de inspecciones,
-* banderas de estado, buffer para comunicaciÛn con el proceso de gdb, etc).
+* Resetea los atributos utilizados durante la depuraci√≥n (como lista de inspecciones,
+* banderas de estado, buffer para comunicaci√≥n con el proceso de gdb, etc).
 * Es llamada por Start y LoadCoreDump.
 **/
 
@@ -303,7 +303,7 @@ bool DebugManager::SpecialStart(mxSource *source, const wxString &gdb_command, c
 		if (ans.result.StartsWith("^error,")) {
 			ZLINF2("DebugManager","SpecialStart, Error on fisrt cmd: "<<gdb_command); 
 			ZLINF("DebugManager","SpecialStart, Error on fisrt cmd, ans contains ^error");
-			mxMessageDialog(main_window,wxString(LANG(DEBUG_SPECIAL_START_FAILED,"Ha ocurrido un error al iniciar la depuraciÛn:"))+debug->GetValueFromAns(ans.result,"msg",true,true))
+			mxMessageDialog(main_window,wxString(LANG(DEBUG_SPECIAL_START_FAILED,"Ha ocurrido un error al iniciar la depuraci√≥n:"))+debug->GetValueFromAns(ans.result,"msg",true,true))
 				.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
 			main_window->SetCompilingStatus(LANG(DEBUG_STATUS_INIT_ERROR,"Error al iniciar depuracion"));
 			Stop(); return false;
@@ -343,9 +343,9 @@ bool DebugManager::SpecialStart(mxSource *source, const wxString &gdb_command, c
 * Inicia el depurador cargando un volcado de memoria desde un archivo en lugar
 * de ejecutar el programa. Para generar estos dumps en GNU/Linux, ejecutar
 * "ulimit -c unlimited" en el shell; luego, al ejecutar un programa, si este
-* revienta por un segfault, genera un archivo core*. En esta funciÛn, si se
+* revienta por un segfault, genera un archivo core*. En esta funci√≥n, si se
 * recibe un mxSource se asume que es un programa simple, sino (source==nullptr)
-* que se trata de un proyecto. Esta opciÛn no est· disponible en la versiÛn
+* que se trata de un proyecto. Esta opci√≥n no est√° disponible en la versi√≥n
 * para Windows.
 * @param core_file la ruta completa al archivo core
 * @param source puntero al mxSource si es un programa simple, nullptr si es un proyecto
@@ -486,7 +486,7 @@ wxString DebugManager::HowDoesItRuns(bool raise_zinjai_window) {
 			m_on_pause_actions.pop_front();
 			action.action();
 			if (m_on_pause_actions.empty()) {
-				should_pause=false; // el usuario no generÛ la pausa, sino que era solo para colocar el breakpoint
+				should_pause=false; // el usuario no gener√≥ la pausa, sino que era solo para colocar el breakpoint
 				should_continue=true;
 			}
 		}
@@ -556,7 +556,7 @@ wxString DebugManager::HowDoesItRuns(bool raise_zinjai_window) {
 //			_DBG_LOG_CALL(Log(wxString()<<"NEW REASON: "<<ans));
 			if (GetValueFromAns(ans,"frame").Len()) {
 				mark = mxSTC_MARK_EXECPOINT;
-				state_text=LANG(DEBUG_STATUS_PAUSE_UNKNOWN_REASON,"EjecuciÛn interrumpida, causa desconocida.");
+				state_text=LANG(DEBUG_STATUS_PAUSE_UNKNOWN_REASON,"Ejecuci√≥n interrumpida, causa desconocida.");
 			}
 		}
 		if (mark) {
@@ -639,17 +639,17 @@ int DebugManager::LiveSetBreakPoint(BreakPointInfo *_bpi) {
 }
 
 /**
-* Coloca un pto de interrupciÛn en gdb
+* Coloca un pto de interrupci√≥n en gdb
 *
-* Le pide al depurador agregar un pto de interrupciÛn. Esta funciÛn se usa tanto 
+* Le pide al depurador agregar un pto de interrupci√≥n. Esta funci√≥n se usa tanto 
 * para proyectos como programas simples, y se llama desde mxSource::OnMarginClick,
 * DebugManager::HowDoesItRuns y ProjectManager::SetBreakpoints y 
 * DebugManager::SetBreakPoints. Si logra colocar el bp retorna su id, sino -1.
 *
-* Setea adem·s las propiedades adicionales si est·n definidas en el BreakPointInfo.
+* Setea adem√°s las propiedades adicionales si est√°n definidas en el BreakPointInfo.
 *
 * Antes de colocar el breakpoint se fija si es una direccion valida, porque
-* sino gdb lo coloca m·s adelante sin avisar.
+* sino gdb lo coloca m√°s adelante sin avisar.
 **/
 int DebugManager::SetBreakPoint(BreakPointInfo *_bpi, bool quiet) {
 	if (waiting || !debugging) return 0;
@@ -661,7 +661,7 @@ int DebugManager::SetBreakPoint(BreakPointInfo *_bpi, bool quiet) {
 	}
 	wxString ans = SendCommand(wxString("-break-insert \"\\\"")<<_bpi->fname<<":"<<_bpi->line_number+1<<"\\\"\"").result;
 	wxString num = GetSubValueFromAns(ans,"bkpt","number",true);
-	if (!num.Len()) { // a veces hay que poner dos barras (//) antes del nombre del archivo en vez de una (en los .h? øpor que?)
+	if (!num.Len()) { // a veces hay que poner dos barras (//) antes del nombre del archivo en vez de una (en los .h? ¬øpor que?)
 		wxString file=_bpi->fname;
 		int p = file.Find('/',true);
 		if (p!=wxNOT_FOUND) {
@@ -772,7 +772,7 @@ bool DebugManager::UpdateBacktrace(const BTInfo &stack, bool is_current) {
 		cant_levels++;
 	}
 	
-	// completar la columna de argumentos si es que est· visible
+	// completar la columna de argumentos si es que est√° visible
 	if (backtrace_shows_args) {
 		
 		if (!is_current) { // history mode
@@ -862,7 +862,7 @@ bool DebugManager::UpdateBacktrace(const BTInfo &stack, bool is_current) {
 		}
 	}
 	
-	// "limpiar" los renglones que sobran y seleccionar el frame actual, o el m·s cercano que tenga info de depuraciÛn
+	// "limpiar" los renglones que sobran y seleccionar el frame actual, o el m√°s cercano que tenga info de depuraci√≥n
 	current_frame_id = GetFrameID(0);
 	main_window->backtrace_ctrl->EndUpdate(true);
 	return true;
@@ -981,7 +981,7 @@ DebugManager::GDBAnswer &DebugManager::WaitAnswer(bool set_reset_running) {
 		bool Check() {
 			EXPECT(!running);
 			if ((wxDateTime::Now()-t0).GetSeconds()>=10) {
-				if (mxMessageDialog(main_window,"Alguna operaciÛn en el depurador est· tomando demasiado tiempo, desea interrumpirla?.")
+				if (mxMessageDialog(main_window,"Alguna operaci√≥n en el depurador est√° tomando demasiado tiempo, desea interrumpirla?.")
 					.Title("UPS!").IconWarning().ButtonsYesNo().Run().yes ) 
 				{
 					_DBG_LOG_CALL(Log(wxString()<<"\n<<<TIME OUT>>>\n"));
@@ -1132,10 +1132,10 @@ void DebugManager::SetBreakPoints(mxSource *source, bool quiet) {
 }
 
 /**
-* @brief Marca el punto actual del cÛdigo donde se encuentra el depurador
+* @brief Marca el punto actual del c√≥digo donde se encuentra el depurador
 *
 * Marca el punto donde se encuentra en el frame actual, borrando la marca anterior
-* si es que habÌa. Si se invoca sin argumentos borra la marca anterior y nada mas.
+* si es que hab√≠a. Si se invoca sin argumentos borra la marca anterior y nada mas.
 * La marca es la flecha en el margen, verde para ejecucion normal y en el frame
 * interior, amarillo para otro frame, rojo cuando se detuvo por un problema
 * irrecuperable, como un segfault.
@@ -1315,14 +1315,14 @@ void DebugManager::BacktraceClean() {
 }
 
 /**
-* @brief Busca la direcciÛn de memoria donde empiezan las instrucciones de una linea particular del codigo fuente
+* @brief Busca la direcci√≥n de memoria donde empiezan las instrucciones de una linea particular del codigo fuente
 *
 * Si gdb no reconoce la ubicacion devuelve una cadena vacia. Esta funcion sirve 
-* entre otras cosas para saber si es una ubicaciÛn v·lida, por ejemplo para
-* verificar antes de colocar los puntos de interrupciÛn.
+* entre otras cosas para saber si es una ubicaci√≥n v√°lida, por ejemplo para
+* verificar antes de colocar los puntos de interrupci√≥n.
 *
 * @param fname ruta del archivo, con cualquier barra (si es windows corrige)
-* @param line n˙mero de linea en base 0
+* @param line n√∫mero de linea en base 0
 **/
 wxString DebugManager::GetAddress(wxString fname, int line) {
 	if (waiting || !debugging) return "";
@@ -1343,10 +1343,10 @@ wxString DebugManager::GetAddress(wxString fname, int line) {
 }
 
 /**
-* @brief Hace un salto sin miramientos a alguna linea de cÛdigo
+* @brief Hace un salto sin miramientos a alguna linea de c√≥digo
 *
 * @param fname ruta del archivo, con cualquier barra (si es windows corrige)
-* @param line n˙mero de linea en base 0
+* @param line n√∫mero de linea en base 0
 **/
 bool DebugManager::Jump(wxString fname, int line) {
 	if (waiting || !debugging) return false;
@@ -1364,14 +1364,14 @@ bool DebugManager::Jump(wxString fname, int line) {
 }
 
 /**
-* @brief Busca la direcciÛn de memoria donde empiezan las instrucciones de una linea particular del codigo fuente
+* @brief Busca la direcci√≥n de memoria donde empiezan las instrucciones de una linea particular del codigo fuente
 *
 * Si gdb no reconoce la ubicacion devuelve una cadena vacia. Esta funcion sirve 
-* entre otras cosas para saber si es una ubicaciÛn v·lida, por ejemplo para
-* verificar antes de colocar los puntos de interrupciÛn.
+* entre otras cosas para saber si es una ubicaci√≥n v√°lida, por ejemplo para
+* verificar antes de colocar los puntos de interrupci√≥n.
 *
 * @param fname ruta del archivo, con cualquier barra (si es windows corrige)
-* @param line n˙mero de linea en base 0
+* @param line n√∫mero de linea en base 0
 *
 * @return true si la direccion dada en fname y line es valida y el depurador efectivamente
 *         se puso a ejecutar, false si la direccion no era valida o hubo algun error
@@ -1652,7 +1652,7 @@ bool DebugManager::EnableInverseExec() {
 			mxMessageDialog(main_window,LANG(DEBUG_ERROR_REVERSE,""
 											 "Ha ocurrido un error al intentar activar esta caracteristica.\n"
 											 "Para utilizarla debe instalar gdb version 7.0 o superior.\n"
-											 "Adem·s, no todas las plataformas soportan este tipo de ejecucion."))
+											 "Adem√°s, no todas las plataformas soportan este tipo de ejecucion."))
 				.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
 	}
 	return false;
@@ -1748,7 +1748,7 @@ void DebugManager::ShowBreakPointLocationErrorMessage (BreakPointInfo *_bpi) {
 		LANG(DEBUG_BAD_BREAKPOINT_WARNING_LOCATION,"Las posibles causas son:\n"
 			"* Fue colocado en un archivo que no se compila en el proyecto/programa.\n"
 			"* Fue colocado en una linea que no genera codigo ejecutable (ej: comentario).\n"
-			"* InformaciÛn de depuraciÛn desactualizada o inexistente. Intente recompilar\n"
+			"* Informaci√≥n de depuraci√≥n desactualizada o inexistente. Intente recompilar\n"
 			"   completamente el programa/proyecto, utilizando el item Limpiar del menu Ejecucion\n"
 			"   antes de depurar.\n"
 			"* Espacios o acentos en las rutas de los archivos fuente. Si sus directorios contienen\n"
@@ -1764,7 +1764,7 @@ void DebugManager::ShowBreakPointConditionErrorMessage (BreakPointInfo *_bpi) {
 	mxMessageDialog::mdAns res = mxMessageDialog(main_window,
 		wxString(LANG(DEBUG_BAD_BREAKPOINT_WARNING,"El depurador no pudo colocar un punto de interrupcion en:"))<<
 		"\n"<<_bpi->fname<<": "<<_bpi->line_number+1<<"\n"<<
-		LANG(DEBUG_BAD_BREAKPOINT_WARNING_CONDITION,"La condiciÛn ingresada no es v·lida."))
+		LANG(DEBUG_BAD_BREAKPOINT_WARNING_CONDITION,"La condici√≥n ingresada no es v√°lida."))
 		.Title(LANG(GENERAL_WARNING,"Aviso")).IconWarning().Check1("No volver a mostrar este mensaje",false).Run();
 	if (res.check1) show_breakpoint_error=false;
 }
@@ -1782,7 +1782,7 @@ bool DebugManager::GetSignals(std::vector<SignalHandlingInfo> & v) {
 	wxString info; v.clear();
 	if (debugging) {
 		if (waiting) {
-			mxMessageDialog(main_window,"Debe pausar o detener la ejecuciÛn para modificar el comportamiento ante seÒales.")
+			mxMessageDialog(main_window,"Debe pausar o detener la ejecuci√≥n para modificar el comportamiento ante se√±ales.")
 				.Title(LANG(GENERAL_ERROR,"Error")).IconInfo().Run(); 
 			return false;
 		} else {
@@ -1796,7 +1796,7 @@ bool DebugManager::GetSignals(std::vector<SignalHandlingInfo> & v) {
 	while (info.Contains('\n')) {
 		wxString line=info.BeforeFirst('\n');
 		info=info.AfterFirst('\n');
-		// para saber si esta linea es una seÒal o no, vemos si empieza con ~"XXX, con XXX may˙sculas 
+		// para saber si esta linea es una se√±al o no, vemos si empieza con ~"XXX, con XXX may√∫sculas 
 		// otras lineas son por ej la cabecera de la tabla (~"Signal...), lineas en blanco /~"\n"), o de ayuda (~"Use...)
 		if (! (line.Len()>4 && line[0]=='~' && line[1]=='\"' && (line[2]>='A'&&line[2]<='Z') && (line[3]>='A'&&line[3]<='Z') && (line[4]>='A'&&line[4]<='Z') ) ) continue;
 		line = mxUT::UnEscapeString(line.Mid(1),true);
@@ -1861,7 +1861,7 @@ bool DebugManager::Start_ConfigureGdb (bool check_for_symbols) {
 											   "en las opciones de enlazado, y recompile el proyecto si es necesario (Ejecucion->Limpiar\n"
 											   "y luego Ejecucion->Compilar)."))
 			.Check1(LANG(DEBUG_RUN_ANYWAY,"Ejecutar de todas fomas"),false)
-			.Check2(auto_solibs?"":LANG(PREFERENCES_DEBUG_LOAD_SHARED_LIBS_INFO,"Cargar informaciÛn de depuracion de bibliotecas externas"),true)
+			.Check2(auto_solibs?"":LANG(PREFERENCES_DEBUG_LOAD_SHARED_LIBS_INFO,"Cargar informaci√≥n de depuracion de bibliotecas externas"),true)
 			.Title(LANG(GENERAL_ERROR,"Error")).IconError().Run();
 		if (!ans.check1) {
 			SendCommandNW(_T("-gdb-exit"));
@@ -1898,7 +1898,7 @@ bool DebugManager::Start_ConfigureGdb (bool check_for_symbols) {
 #ifdef __WIN32__
 	if (config->Debug.no_debug_heap) SendCommand("set environment _NO_DEBUG_HEAP 1");
 #endif
-	// configurar comportamiento ante seÒales
+	// configurar comportamiento ante se√±ales
 	if (signal_handlers_state) {
 		for(unsigned int i=0;i<signal_handlers_state[0].size();i++) { 
 			if (signal_handlers_state[0][i]!=signal_handlers_state[1][i])

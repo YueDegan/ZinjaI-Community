@@ -1,6 +1,6 @@
 #include "mxBacktraceHistory.h"
 
-// por si mañana quiero que esta clase herede de un panel y contenga la lista
+// por si maÅ†ana quiero que esta clase herede de un panel y contenga la lista
 #define lista this 
 #include "mxMainWindow.h"
 #include "mxAUI.h"

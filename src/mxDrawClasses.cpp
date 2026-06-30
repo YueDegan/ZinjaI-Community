@@ -127,7 +127,7 @@ void mxDrawClasses::OnOkButton(wxCommandEvent &evt) {
 		if (dlg.ShowModal() != wxID_OK) return;
 		output=dlg.GetPath();
 	}
-	mxUT::ProcessGraph(gout,wich_command->GetStringSelection()=="fdp","",LANG(DRAW_CLASSES_TITLE,"JerarquÌa de Clases"));
+	mxUT::ProcessGraph(gout,wich_command->GetStringSelection()=="fdp","",LANG(DRAW_CLASSES_TITLE,"Jerarqu√≠a de Clases"));
 }
 
 /**

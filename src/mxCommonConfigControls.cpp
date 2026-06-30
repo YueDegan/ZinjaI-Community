@@ -15,7 +15,7 @@
 
 static wxStaticText *s_last_label; ///< guarda la ultima etiqueta que se uso en alguno de los AddAlgo
 static wxButton *s_last_button; ///< guarda el ultimo boton colocado por AddDirCtrl
-static wxBoxSizer *s_last_sizer; ///< guarda el último sizer creado por los AddAlgo
+static wxBoxSizer *s_last_sizer; ///< guarda el Ãºltimo sizer creado por los AddAlgo
 
 template<typename TSizer, typename TControl> template<typename wxCtrl_t, typename value_t> 
 void mxDialog::MainSizer::BaseControl<TSizer,TControl>::DoBind(wxCtrl_t *ctrl) {

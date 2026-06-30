@@ -13,7 +13,7 @@ class mxOpenSharedWindow;
 //! for receiving sources
 struct share_conection_c {
 	wxChar *source; ///< the source itself as plain text
-	wxString name; ///< nombre para mostrar en la pestaña del notebook
+	wxString name; ///< nombre para mostrar en la pestaÃ±a del notebook
 	long int len; ///< how long is the source text (-1 means len is still unknown)
 	long int count; ///< how much has we already receive 
 };
@@ -28,7 +28,7 @@ WX_DECLARE_HASH_MAP( wxString, source_share, wxStringHash, wxStringEqual, HashSt
 WX_DECLARE_VOIDPTR_HASH_MAP( share_conection_c, HashPtrClient );
 
 /**
-* @brief Administra la compartición de fuentes a travéz de una LAN
+* @brief Administra la comparticiÃ³n de fuentes a travÃ©z de una LAN
 **/
 class ShareManager {
 private:

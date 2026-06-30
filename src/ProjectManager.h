@@ -1,6 +1,6 @@
 /** 
 * @file ProjectManager.h
-* @brief Definición de la clase ProjectManager y otras relacionadas
+* @brief DefiniciÃ³n de la clase ProjectManager y otras relacionadas
 *
 * ProjectManager, compile_extra_step, doxygen_configuration, project_library, 
 * project_configuration, break_line_item, marked_line_item, project_file_item,
@@ -43,7 +43,7 @@ class BreakPointInfo;
 class mxSource;
 class mxOSDGuard;
 
-/// Posibles ubicaciones para un paso de compilación adicional en el proceso de construcción de un proceso
+/// Posibles ubicaciones para un paso de compilaciÃ³n adicional en el proceso de construcciÃ³n de un proceso
 enum ces_pos {
 	CES_BEFORE_SOURCES=0, ///< al principio de todo, antes de compilar los fuentes
 	CES_BEFORE_LIBS, ///< luego de compilar los fuentes, pero antes de enlazar las bibliotecas que genera el proyecto
@@ -54,12 +54,12 @@ enum ces_pos {
 
 /// Posibles tipos de Makefiles a generar
 enum MakefileTypeEnum {
-	MKTYPE_FULL, ///< el Makefile común, que contiene todo lo necesario
-	MKTYPE_OBJS, ///< uno que contine solo las reglas de los objetos, que no depende del perfil de compilación (y se llama siempre Makefile.common), es para incluir desde otro Makefile
-	MKTYPE_CONFIG ///< el que define las variables que dependen del perfil de compilación, y incluye al otro makefile que contiene la parte comun a todos los perfiles
+	MKTYPE_FULL, ///< el Makefile comÃºn, que contiene todo lo necesario
+	MKTYPE_OBJS, ///< uno que contine solo las reglas de los objetos, que no depende del perfil de compilaciÃ³n (y se llama siempre Makefile.common), es para incluir desde otro Makefile
+	MKTYPE_CONFIG ///< el que define las variables que dependen del perfil de compilaciÃ³n, y incluye al otro makefile que contiene la parte comun a todos los perfiles
 };
 
-/// mecanismo de ejecución para un proyecto
+/// mecanismo de ejecuciÃ³n para un proyecto
 enum ExecMethodEnum { 
 	EMETHOD_REGULAR=0, ///< zinjai launches executable directly
 	EMETHOD_WRAPPER=1, ///< zinjai launches a executable that launches the process (something working like "time" or "valgrind")
@@ -73,7 +73,7 @@ enum DebugSymbolsAction {
 	DBSACTION_STRIP=2
 };
 
-/// para indicar si se debe esperar una tecla antes de cerrar la consola una vez finalizada la ejecución de un proyecto
+/// para indicar si se debe esperar una tecla antes de cerrar la consola una vez finalizada la ejecuciÃ³n de un proyecto
 enum wait_for_key_t { 
 	WKEY_NEVER=0, 
 	WKEY_ON_ERROR=1, 
@@ -83,17 +83,17 @@ enum wait_for_key_t {
 struct compile_and_run_struct_single;
 
 /** 
-* @brief Paso de compilación adicional
+* @brief Paso de compilaciÃ³n adicional
 * 
-* Estructura que representa la información de un paso de compilación personalizado de una configuración.
-* Es contenida por la configuración, en forma de lista doblemente enlazada ad-hoc (sin primer nodo ficticio)
+* Estructura que representa la informaciÃ³n de un paso de compilaciÃ³n personalizado de una configuraciÃ³n.
+* Es contenida por la configuraciÃ³n, en forma de lista doblemente enlazada ad-hoc (sin primer nodo ficticio)
 **/
 struct compile_extra_step {
 	wxString deps; ///< archivos de los que depende este paso, puede incluir variables a reemplazar, para poder comparar y saber cuando no es necesario volver a ejecutarlo
 	wxString out; ///< archivo de salida de este paso, puede incluir variables a reemplazar, para poder comparar y saber cuando no es necesario volver a ejecutarlo, si esta en blanco se ejecuta siempre
 	wxString command; ///< comando que se ejecuta en este paso, puede incluir variables a reemplazar
 	wxString name; ///< nombre del paso, solo para mostrar en la interfaz
-	int pos; ///< un valor posible de ces_pos, indica donde va este paso en el proceso de construcción completo
+	int pos; ///< un valor posible de ces_pos, indica donde va este paso en el proceso de construcciÃ³n completo
 	compile_extra_step *next, *prev;
 	bool check_retval; ///< si debe verificar que el comando retorne 0 para saber si continuar o abortar la compilacion
 	bool hide_window; ///< si debe ocultar la ventana/consola donde se ejecuta
@@ -104,38 +104,38 @@ struct compile_extra_step {
 
 
 /** 
-* @brief Configuración para Doxygen de un proyecto
+* @brief ConfiguraciÃ³n para Doxygen de un proyecto
 * 
-* Estructura que representa la información para configurar doxygen. El archivo Doxyfile se regenera
-* cada vez que hay que generar la documentación, a partir de esta estructura. Existe, cuanto mucho 
+* Estructura que representa la informaciÃ³n para configurar doxygen. El archivo Doxyfile se regenera
+* cada vez que hay que generar la documentaciÃ³n, a partir de esta estructura. Existe, cuanto mucho 
 * una instancia (para el proyecto en curso). Se referencia con el puntero doxygen de
-* ProjectManager, que puede ser nullptr si no se ha definido la configuarción Doxygen para dicho proyecto
+* ProjectManager, que puede ser nullptr si no se ha definido la configuarciÃ³n Doxygen para dicho proyecto
 * Si el puntero es valido, y el atributo save es true, se graba en el archivo de proyecto
 **/
 struct doxygen_configuration {
 	
-	wxString name; ///< nombre del proyecto para mostrar en la documentación
-	wxString version; ///< versión del proyecto para mostrar en la documentación
-	wxString destdir; ///< directorio donde colocar la documentación generada
+	wxString name; ///< nombre del proyecto para mostrar en la documentaciÃ³n
+	wxString version; ///< versiÃ³n del proyecto para mostrar en la documentaciÃ³n
+	wxString destdir; ///< directorio donde colocar la documentaciÃ³n generada
 	wxString extra_files; ///< archivos adicionales a procesar, ademas de lo especificado por do_headers y do_cpps
 	wxString exclude_files; ///< archivos que no se deben procesar, aunque esten entre los fuentes o cpps
 	bool do_headers; ///< si debe procesar los archivos de cabeceras (.h) del proyecto
 	bool do_cpps; ///< si debe procesar los archivos fuentes (.cpp) del proyecto
-	bool hideundocs; ///< indica si no debe generar documentación para los elementos que no tengan sus respectivos comentarios
+	bool hideundocs; ///< indica si no debe generar documentaciÃ³n para los elementos que no tengan sus respectivos comentarios
 	bool save; ///< si se debe o no recordar esta conf (guardar en el archivo de proyecto)
-	bool latex; ///< indica si debe generar la documentación en formato Latex
-	bool html; ///< indica si debe generar la documentación en formato HTML
-	bool html_searchengine; ///< indica si debe inlcuir el motor de busqueda (basado en PHP) para la versíón HTML
-	bool html_navtree; ///< indica si debe generar un panel con un árbol de navegación en la versión HTML
+	bool latex; ///< indica si debe generar la documentaciÃ³n en formato Latex
+	bool html; ///< indica si debe generar la documentaciÃ³n en formato HTML
+	bool html_searchengine; ///< indica si debe inlcuir el motor de busqueda (basado en PHP) para la versÃ­Ã³n HTML
+	bool html_navtree; ///< indica si debe generar un panel con un Ã¡rbol de navegaciÃ³n en la versiÃ³n HTML
 	bool extra_static; ///< indica si deben incluirse funciones/variables static
 	bool extra_private; ///< indica si deben incluirse miembros/atributos privados
 	bool preprocess; ///< indica si debe habilitar o no el preprocesado (considerar macros)
 	bool use_in_quickhelp; ///< indica si se debe agregar el texto generado por doxygen a la ayuda rapida de zinjai
-	wxString lang; ///< indica el lenguaje en el cual se genera la documentación (English o Spanish)
+	wxString lang; ///< indica el lenguaje en el cual se genera la documentaciÃ³n (English o Spanish)
 	wxString base_path; ///< indica el path base para expresar los nombres de los archivos relativos a este
 	wxString extra_conf; ///< texto a incluir directamente y tal cual en el Doxyfile (para opciones no contempladas)
 	
-	//! inicializa la configuración con los valores por defecto
+	//! inicializa la configuraciÃ³n con los valores por defecto
 	doxygen_configuration(wxString aname) {
 		name = aname;
 		save = true;
@@ -158,7 +158,7 @@ struct doxygen_configuration {
 };
 
 /** 
-* @brief Configuración para corridas en Valgrind de un proyecto
+* @brief ConfiguraciÃ³n para corridas en Valgrind de un proyecto
 **/
 struct valgrind_configuration {
 	wxString arguments; ///< argumentos adicionales para pasarle a valgrind
@@ -167,23 +167,23 @@ struct valgrind_configuration {
 };
 
 /** 
-* @brief Configuración de la integración con wxFormBuilder para un proyecto
+* @brief ConfiguraciÃ³n de la integraciÃ³n con wxFormBuilder para un proyecto
 **/
 struct wxfb_configuration {
 	bool activate_integration;
 	bool autoupdate_projects;
-	bool temp_disabled; ///< si no está bien configurado el path a wxfb, este pasa a true para que no muestre una y otra vez el mensaje de error al querer actualizar
+	bool temp_disabled; ///< si no estÃ¡ bien configurado el path a wxfb, este pasa a true para que no muestre una y otra vez el mensaje de error al querer actualizar
 	bool update_class_list;
 	bool update_methods;
 	bool dont_show_base_classes_in_goto;
 	bool set_wxfb_sources_as_readonly;
 	// auxiliares para zinjai, no se guardan como opciones del proyecto ni los configura el usuario
 	bool ask_if_wxfb_is_missing;  ///< indica si avisar cuando no encuentra el ejecutable del wxFormBuilder
-	bool working; ///< indica si se esta actualmente regenerando algun proyecto wxfb (si wxfb está ejecutandose en segundo plano)
-	SingleList<wxString> projects; ///< nombres de archivos de proyecto wxfb asociados al proyecto zinjai en la categoría Otros (se carga en Project::WxfbGetFiles, full paths)
-	SingleList<wxString> sources; ///< nombres de archivos (sin extension, será .h o .cpp) asociados al proyecto generados automáticamente por wxfb, ordenados con relación a projects (se carga en Project::WxfbGetFiles, full paths)
+	bool working; ///< indica si se esta actualmente regenerando algun proyecto wxfb (si wxfb estÃ¡ ejecutandose en segundo plano)
+	SingleList<wxString> projects; ///< nombres de archivos de proyecto wxfb asociados al proyecto zinjai en la categorÃ­a Otros (se carga en Project::WxfbGetFiles, full paths)
+	SingleList<wxString> sources; ///< nombres de archivos (sin extension, serÃ¡ .h o .cpp) asociados al proyecto generados automÃ¡ticamente por wxfb, ordenados con relaciÃ³n a projects (se carga en Project::WxfbGetFiles, full paths)
 	
-	//! inicializa la configuración con los valores por defecto
+	//! inicializa la configuraciÃ³n con los valores por defecto
 	wxfb_configuration(bool enabled=true) :
 		activate_integration(enabled), 
 		autoupdate_projects(true),
@@ -197,11 +197,11 @@ struct wxfb_configuration {
 };
 
 /** 
-* @brief Configuración para CppCheck de un proyecto
+* @brief ConfiguraciÃ³n para CppCheck de un proyecto
 * 
-* Estructura que representa la información para configurar cppcheck. Existe, cuanto mucho 
+* Estructura que representa la informaciÃ³n para configurar cppcheck. Existe, cuanto mucho 
 * una instancia (para el proyecto en curso). Se referencia con el puntero cppcheck de
-* ProjectManager, que puede ser nullptr si no se ha definido la configuarción Doxygen para dicho proyecto
+* ProjectManager, que puede ser nullptr si no se ha definido la configuarciÃ³n Doxygen para dicho proyecto
 * Si el puntero es valido, y el atributo save es true, se graba en el archivo de proyecto
 **/
 struct cppcheck_configuration {
@@ -218,8 +218,8 @@ struct cppcheck_configuration {
 	wxString exclude_list; ///< lista de archivos del proyecto que no seran analizados
 	wxString additional_files; ///< lista de archivos no registrados en el proyecto a agregar para el analisis
 	bool parallelize; ///< run with "-j #" (same number of procs as when compiling)
-	bool save_in_project; ///< indica si hay que guardar esta configuración en el archivo de proyecto
-	//! inicializa la configuración con los valores por defecto
+	bool save_in_project; ///< indica si hay que guardar esta configuraciÃ³n en el archivo de proyecto
+	//! inicializa la configuraciÃ³n con los valores por defecto
 	cppcheck_configuration(bool do_save_in_project) {
 		exclude_headers=true;
 		copy_from_config=true;
@@ -233,7 +233,7 @@ struct cppcheck_configuration {
 class ProjectManager;
 
 /**
-* @brief Guarda información sobre una libreria a generar con el proyecto
+* @brief Guarda informaciÃ³n sobre una libreria a generar con el proyecto
 **/
 struct project_library {
 	wxString m_path; ///< directorio de salida (destino, puede contener variables como "${TEMP_DIR}")
@@ -256,9 +256,9 @@ struct project_library {
 };
 
 /** 
-* @brief Perfil de compilación y ejecución para un proyecto
+* @brief Perfil de compilaciÃ³n y ejecuciÃ³n para un proyecto
 * 
-* Estructura que representa la información de un perfil de compilacion (paths, banderas, librerias
+* Estructura que representa la informaciÃ³n de un perfil de compilacion (paths, banderas, librerias
 * nivel de info de debug, nivel de warnings, pasos personalizados, etc. Puede haber muchas por proyecto
 * (actualmente hasta 100). ProjectManager tiene un arreglo configurations (creado dinamicamente) para
 * guardarlas, y un contador configurations_count para saber la cantidad
@@ -272,12 +272,12 @@ struct project_configuration {
 	wxString toolchain; ///< nombre del toolchain que utiliza, o \<default\> para tomar el por defecto de zinjai
 	wxString toolchain_arguments[TOOLCHAIN_MAX_ARGS]; ///< argumentos para el Toolchain
 	
-	wxString working_folder; ///< directorio de trabajo para la ejecución
+	wxString working_folder; ///< directorio de trabajo para la ejecuciÃ³n
 	bool always_ask_args; ///< mostrar el dialogo que pide los argumentos antes de ejecutar
 	wxString args; ///< argumentos para la ejecucion
 	int exec_method; ///< como se debe ejecutar (las opciones estan en ExecMethodEnum)
 	wxString exec_script; ///< script para exec_method>0
-	int wait_for_key; ///< esperar una tecla antes de cerrar la consola luego de la ejecución (0=nunca, 1=solo en caso de error, 2=siempre)
+	int wait_for_key; ///< esperar una tecla antes de cerrar la consola luego de la ejecuciÃ³n (0=nunca, 1=solo en caso de error, 2=siempre)
 	wxString env_vars; ///< lista con valores para asignar o reemplazar en las variables de entorno antes de ejecutar
 	
 	wxString temp_folder; ///< directorio temporal donde poner los objetos de la compilacion
@@ -292,11 +292,11 @@ struct project_configuration {
 	int warnings_level; ///< nivel de advertencias a mostrar por el compilador: 0=ninguna 1=default 2=todas 3=extra
 	bool warnings_as_errors; ///< turn warning into errors (-Werror)
 	bool pedantic_errors; ///< forzar a cumplir el estandar (-pedantic-errors)
-	wxString std_c; ///< versión del estándar a utilizar para los fuentes C
-	wxString std_cpp; ///< versión del estándar a utilizar para los fuentes C++
-	int debug_level; ///< nivel de información de depuración a colocar al compilar: 0=g0 1=g1 2=g2
+	wxString std_c; ///< versiÃ³n del estÃ¡ndar a utilizar para los fuentes C
+	wxString std_cpp; ///< versiÃ³n del estÃ¡ndar a utilizar para los fuentes C++
+	int debug_level; ///< nivel de informaciÃ³n de depuraciÃ³n a colocar al compilar: 0=g0 1=g1 2=g2
 	int enable_lto; ///< enable link-time optimizations
-	int optimization_level; ///< nivel optimización para los binarios: 0=O0 1=O1 2=O2 3=O3 4=Os, 5=Og, 6=Ofast
+	int optimization_level; ///< nivel optimizaciÃ³n para los binarios: 0=O0 1=O1 2=O2 3=O3 4=Os, 5=Og, 6=Ofast
 	wxString linking_extra; ///< parametros adicionales para el enlazador (se llama a travez de gcc/g++, no directo)
 	wxString libraries_dirs; ///< rutas adicionales para buscar librerias (para pasar con -L)
 	wxString libraries; ///< librearias para enlazar (para pasar con -l)
@@ -308,7 +308,7 @@ struct project_configuration {
 	bool dont_generate_exe; ///< no generar ejecutable, solo bibliotecas
 	HashStringString *by_src_compiling_options; ///< argumentos de compilacion adicionales por fuente (solo guarda los fuentes que no usan la configuracion por defecto)
 	
-	//! inicializa la configuración con los valores por defecto
+	//! inicializa la configuraciÃ³n con los valores por defecto
 	project_configuration(wxString pname, wxString cname) {
 		by_src_compiling_options = new HashStringString();
 		backup=nullptr;
@@ -353,7 +353,7 @@ struct project_configuration {
 
 };
 
-//! Información acerca de una linea de código resaltada por el usuario
+//! InformaciÃ³n acerca de una linea de cÃ³digo resaltada por el usuario
 struct marked_line_item {
 	int line;
 	marked_line_item *next;
@@ -368,7 +368,7 @@ class project_library;
 /** 
 * @brief Representa un archivo de un proyecto
 * 
-* Representa un archivo de un proyecto. Funciona también como nodo para una lista
+* Representa un archivo de un proyecto. Funciona tambiÃ©n como nodo para una lista
 * enlazada. ProjectManager tiene los tres punteros que inician las tres listas (fuentes,
 * cabeceras y otros). Cada estructura guarda el nombre del archivo, sus listas breakpoints
 * y lineas resaltadas y algunas banderas.
@@ -422,9 +422,9 @@ private:
 	bool m_force_recompile; ///< indica que se debe recompilar independientemente de la fecha de modificacion (por ejemplo, si lo va a modificar un paso adicional)
 	project_library *m_lib; ///< a que biblioteca pertenece (no siempre es correcto, se rehace con analize_config)
 	bool m_read_only; ///< indica que se debe abrir como solo lectura (porque es generado por una herramienta externa)
-	bool m_hide_symbols; ///< indica si sus métodos y funciones se deben tener en cuenta para el cuadro "Ir a funcion/clase/método"
-	eFileType m_category; ///< indica en qué categoria de archivos está asociado al proyecto
-	wxString m_inherited_from; ///< si no está vacio indica que el archivo no es propio del proyecto actual, sino heredado de otro, del que dice (path relativo, podría ser además herencia indirecta)
+	bool m_hide_symbols; ///< indica si sus mÃ©todos y funciones se deben tener en cuenta para el cuadro "Ir a funcion/clase/mÃ©todo"
+	eFileType m_category; ///< indica en quÃ© categoria de archivos estÃ¡ asociado al proyecto
+	wxString m_inherited_from; ///< si no estÃ¡ vacio indica que el archivo no es propio del proyecto actual, sino heredado de otro, del que dice (path relativo, podrÃ­a ser ademÃ¡s herencia indirecta)
 	wxString compiling_options; ///< campo generado por AnaliceConfig, con las opciones finales y reales, ya procesadas
 	void Init() { // parte comun a ambos constructores
 		m_force_recompile=false;
@@ -444,19 +444,19 @@ private:
 
 enum ces_type{
 	CNS_VOID, ///< primer paso, ficticio, solo para inicializar la lista de pasos
-	CNS_SOURCE, ///< compilación un fuente del proyecto
-	CNS_BARRIER, ///< paso ficticio que no ejecuta nada, pero está para separar grupos de pasos paralelizables
-	CNS_EXTRA, ///< para pasos adicionales que configure el usuario en la pestaña "Secuencia"
+	CNS_SOURCE, ///< compilaciÃ³n un fuente del proyecto
+	CNS_BARRIER, ///< paso ficticio que no ejecuta nada, pero estÃ¡ para separar grupos de pasos paralelizables
+	CNS_EXTRA, ///< para pasos adicionales que configure el usuario en la pestaÃ±a "Secuencia"
 	CNS_LINK, ///< enlazado de una biblioteca o del ejecutable
-	CNS_ICON, ///< compilación del archivo de recursos que arma zinjai en windows para el manifest y/o el ícono
+	CNS_ICON, ///< compilaciÃ³n del archivo de recursos que arma zinjai en windows para el manifest y/o el Ã­cono
 	CNS_DEBUGSYM, ///< paso que extrae los simbolos de depuracion de un ejecutable o de una biblioteca a un archivo separado
 	CNS_EXTERN ///< para extern toolchains (llamar a make por ejemplo)
 };
 
 /** 
-* @brief Estructura que representa un paso genérico del proceso de compilación.
+* @brief Estructura que representa un paso genÃ©rico del proceso de compilaciÃ³n.
 * 
-* Estructura que representa un paso genérico del proceso de compilación. Puede contener
+* Estructura que representa un paso genÃ©rico del proceso de compilaciÃ³n. Puede contener
 * info para compilar un fuente normal, un paso personalizado, o enlazar. El ProyectManager 
 * tiene una lista de estos que empieza en first_compile_step (sin primer nodo ficticio).
 * Esta lista se arma en PrepareForBuilding, y cada vez que se llama a CompileNext se 
@@ -496,10 +496,10 @@ struct stripping_info {
 /** 
 * @brief Representa un proyecto
 * 
-* Contiene sus perfiles de ejecución y configuración, sus archivos, su información 
-* adicional, y encapsula todos los métodos específicos para admistrar, compilar y 
+* Contiene sus perfiles de ejecuciÃ³n y configuraciÃ³n, sus archivos, su informaciÃ³n 
+* adicional, y encapsula todos los mÃ©todos especÃ­ficos para admistrar, compilar y 
 * ejecutar proyectos. No se puede crear en blanco, sino que siempre a partir de un 
-* archivo. En la aplicación existe un puntero proyect que siempre apunta al proyecto 
+* archivo. En la aplicaciÃ³n existe un puntero proyect que siempre apunta al proyecto 
 * actual; o es nullptr si no hay proyecto abierto.
 **/
 class ProjectManager {
@@ -518,11 +518,11 @@ class ProjectManager {
 public:
 	time_t compile_startup_time;
 	std::function<void()> post_compile_action; ///< what to do if building finishes ok, is set in last CompileNext call
-	bool force_relink;	///< indica si debe reenlazar si o si en la proxima compilacion, aunque el exe esté al día
+	bool force_relink;	///< indica si debe reenlazar si o si en la proxima compilacion, aunque el exe estÃ© al dÃ­a
 
 private:
 	cppcheck_configuration *cppcheck; ///< configuracion para ejecutar cppcheck, nullptr si no esta definido en el proyecto
-	wxfb_configuration *wxfb; ///< configuración de la integración con wxfb (si es nullptr no está activada)
+	wxfb_configuration *wxfb; ///< configuraciÃ³n de la integraciÃ³n con wxfb (si es nullptr no estÃ¡ activada)
 	doxygen_configuration *doxygen; ///< configuracion para el Doxyfile, nullptr si no esta definido en el proyecto
 	valgrind_configuration *valgrind;
 public:
@@ -539,7 +539,7 @@ public:
 	wxString project_name; ///< el nombre bonito del proyecto
 	wxString filename; ///< el archivo del proyecto
 	wxString path; ///< la carpeta del proyecto
-	wxString help_page; ///< página de ayuda específica del proyecto/template
+	wxString help_page; ///< pÃ¡gina de ayuda especÃ­fica del proyecto/template
 
 	wxString autocomp_extra; ///< indices de autocompletado adicionales para este proyecto
 	wxString autocodes_file; ///< archivo con definiciones de autocodigos adicionales
@@ -565,12 +565,12 @@ public:
 	bool compile_was_ok; ///< indica si se arrastra algun error de compilacion de pasos anteriores
 	
 	wxString last_dir; ///< ultimo path utilizado por el usuario, para los cuadros de abrir...
-	bool modified; ///< indica si algo cambió en la configuración del proyecto
+	bool modified; ///< indica si algo cambiÃ³ en la configuraciÃ³n del proyecto
 	wxArrayString warnings; ///< advertencias generadas por ZinjaI que deben agregarse mas tarde al arbol de resultados
 	
 	project_configuration *GetConfig(wxString name); ///< busca una configuracion por nombre, y devuelve un puntero si la encuentra, nullptr si no
 	
-	bool GenerateDoxyfile(wxString fname); ///< escribe el archivo de configuración para Doxygen
+	bool GenerateDoxyfile(wxString fname); ///< escribe el archivo de configuraciÃ³n para Doxygen
 	wxString WxfbGetSourceFile(wxString fbp_file); ///< funcion auxiliar que devuelve el nombre (path+nombre, sin extension) de los archivos que genera el archivo .fbp que recibe
 	
 	ProjectManager(wxFileName filename); ///< loads a project from a file (just_created=true when its called from new project wizard)
@@ -612,32 +612,32 @@ public:
 	/// guarda todos los archivos del proyecto que esten abiertos
 	void SaveAll(bool save_project=true);
 	
-	/// arma el comando para ejecutar de un paso de compilación personalizado, reemplazando todas las variables de sus campos
+	/// arma el comando para ejecutar de un paso de compilaciÃ³n personalizado, reemplazando todas las variables de sus campos
 	wxString GetCustomStepCommand(const compile_extra_step *step, wxString mingw_dir, wxString &deps, wxString &output);
-	/// arma el comando para ejecutar de un paso de compilación personalizado, reemplazando todas las variables de sus campos
+	/// arma el comando para ejecutar de un paso de compilaciÃ³n personalizado, reemplazando todas las variables de sus campos
 	wxString GetCustomStepCommand(const compile_extra_step *step);
 	
 	/// Determina si el archivo item usa alguna de las macros de la lista macros
 	bool DependsOnMacro(project_file_item *item, wxArrayString &macros);
 	/// Guarda todo y marca cuales archivos hay que recompilar, devuelve falso si no hay que compilar ninguno ni reenlazar el ejecutable
 	bool PrepareForBuilding(project_file_item *only_one=nullptr);
-	/// Ejecuta el próximo paso para la construcción del proyecto
+	/// Ejecuta el prÃ³ximo paso para la construcciÃ³n del proyecto
 	long int CompileNext(compile_and_run_struct_single *compile_and_run, wxString &object_name);
-	/// Compila el archivo de recursos temporal del proyecto (generado por PrepareForBuilding), se invoca a través de CompileNext, no directamente
+	/// Compila el archivo de recursos temporal del proyecto (generado por PrepareForBuilding), se invoca a travÃ©s de CompileNext, no directamente
 	long int CompileIcon(compile_and_run_struct_single *compile_and_run, wxString icon_file);
-	/// Ejecuta un paso de compilación de un fuente del proyecto en la construcción de un proceso, se invoca a través de CompileNext, o del otro CompileFile, no directamente
+	/// Ejecuta un paso de compilaciÃ³n de un fuente del proyecto en la construcciÃ³n de un proceso, se invoca a travÃ©s de CompileNext, o del otro CompileFile, no directamente
 	long int CompileFile(compile_and_run_struct_single *compile_and_run, project_file_item *item);
-	/// Ejecuta un paso compilación adicional, se invoca a través de CompileNext, no directamente
+	/// Ejecuta un paso compilaciÃ³n adicional, se invoca a travÃ©s de CompileNext, no directamente
 	long int CompileExtra(compile_and_run_struct_single *compile_and_run, compile_extra_step *step);
-	/// Ejecuta el paso de enlazado del ejecutable o de una biblioteca que genera un proyecto, se invoca a través de CompileNext, no directamente
+	/// Ejecuta el paso de enlazado del ejecutable o de una biblioteca que genera un proyecto, se invoca a travÃ©s de CompileNext, no directamente
 	long int Link(compile_and_run_struct_single *compile_and_run, linking_info *info);
-	/// Ejecuta el paso de extracción de los simbolos de depuración a un archivo separado, se invoca a través de CompileNext, no directamente
+	/// Ejecuta el paso de extracciÃ³n de los simbolos de depuraciÃ³n a un archivo separado, se invoca a travÃ©s de CompileNext, no directamente
 	long int Strip(compile_and_run_struct_single *compile_and_run, stripping_info *info);
-	/// Ejecuta el comando de compilación para un toolchan externo (como make) (build=true compila, build=false limpia)
+	/// Ejecuta el comando de compilaciÃ³n para un toolchan externo (como make) (build=true compila, build=false limpia)
 	long int CompileWithExternToolchain(compile_and_run_struct_single *compile_and_run, bool build=true);
 
 	bool RenameFile(wxTreeItemId &tree_item, wxString new_name);
-	/// Compila un solo fuente del proyecto, preparando la configuración, fuera del proceso de construcción general
+	/// Compila un solo fuente del proyecto, preparando la configuraciÃ³n, fuera del proceso de construcciÃ³n general
 	long int CompileFile(compile_and_run_struct_single *compile_and_run, wxFileName filename);
 	
 	void SetFileReadOnly(project_file_item *item, bool read_only);
@@ -681,13 +681,13 @@ public:
 	/// Crea el archivo de control que indica que un proyecto wxfb ya ha sido renegenerado
 	bool CreateWxfbFlagFile(wxString flag_file_full_path);
 		
-	/// Agrega al proyecto un clase heredada de alguna de las diseñadas en wxFormBuilder
+	/// Agrega al proyecto un clase heredada de alguna de las diseÃ±adas en wxFormBuilder
 	bool WxfbNewClass(wxString base_name, wxString name);
-	/// Actualiza una clase heredada de alguna de las diseñadas en wxFormBuilder
+	/// Actualiza una clase heredada de alguna de las diseÃ±adas en wxFormBuilder
 	bool WxfbUpdateClass(wxString wxfb_class, wxString user_class);
 	/// Genera un makefile para el proyecto a partir de active_configuration
 	void ExportMakefile(wxString make_file, bool exec_comas, wxString mingw_dir, MakefileTypeEnum mktype, bool cmake_style=false);
-	/// Parsea la configuración del proyecto (active_configuration) para generar los argumentos necesarios para invocar al compilador
+	/// Parsea la configuraciÃ³n del proyecto (active_configuration) para generar los argumentos necesarios para invocar al compilador
 	void AnalizeConfig(wxString path, bool exec_comas, wxString mingw_dir, bool force=true);
 	/// Lanza el ejecutable
 	long int Run();
@@ -702,13 +702,13 @@ public:
 	void SetBreakpoints();
 	wxString GetExePath(bool shortpath=false, bool refresh_temp_folder=true, wxString path="${PROJECT_DIR}");
 	
-	/** @brief Agrega una biblioteca a construir de una configuración **/
+	/** @brief Agrega una biblioteca a construir de una configuraciÃ³n **/
 	project_library *AppendLibToBuild(project_configuration *conf);
 	
-	/** @brief Elimina una biblioteca a construir de una configuración **/
+	/** @brief Elimina una biblioteca a construir de una configuraciÃ³n **/
 	bool DeleteLibToBuild(project_configuration *conf, project_library *lib_to_del);
 	
-	/** @brief Elimina una biblioteca a construir de una configuración **/
+	/** @brief Elimina una biblioteca a construir de una configuraciÃ³n **/
 	project_library *GetLibToBuild(project_configuration *conf, wxString libname);
 	
 	/** @brief If there is a lib marked as default for new source in a configuration, returns that one, else returs nullptr **/
@@ -722,34 +722,34 @@ public:
 	/// @brief Guarda las asociaciones de los fuentes (puntero lib de project_file_item) en la configuracion que recibe
 	void SaveLibsAndSourcesAssociation(project_configuration *conf=nullptr);
 	
-	/** @brief Añade un paso de compilación personalizado a una configuración  **/
+	/** @brief AÃ±ade un paso de compilaciÃ³n personalizado a una configuraciÃ³n  **/
 	compile_extra_step *InsertExtraSteps(project_configuration *conf, wxString name, wxString cmd, int pos);
 	
-	/** @brief Mueve una paso de compilación personalizado hacia arriba o hacia abajo en la secuencia **/
+	/** @brief Mueve una paso de compilaciÃ³n personalizado hacia arriba o hacia abajo en la secuencia **/
 	void MoveExtraSteps(project_configuration *conf, compile_extra_step *step, bool up);
 	
-	/** @brief Busca un paso de compilación personalizado por nombre en una configuración **/
+	/** @brief Busca un paso de compilaciÃ³n personalizado por nombre en una configuraciÃ³n **/
 	compile_extra_step *GetExtraStep(project_configuration *conf, wxString name);
 	
-	/** @brief Elimina un paso de compilación personalizado de una configuración **/
+	/** @brief Elimina un paso de compilaciÃ³n personalizado de una configuraciÃ³n **/
 	bool DeleteExtraStep(project_configuration *conf, compile_extra_step *step);
 	
-	/** @brief Determina si debe ejecutarse o no un paso personalizado en la proxima compilación **/
+	/** @brief Determina si debe ejecutarse o no un paso personalizado en la proxima compilaciÃ³n **/
 	bool ShouldDoExtraStep(compile_extra_step *step);
 	
-	/** @brief Reemplaza nombre de proyecto y demás cosas por el nombre, para usar al crear desde un template **/
+	/** @brief Reemplaza nombre de proyecto y demÃ¡s cosas por el nombre, para usar al crear desde un template **/
 	void FixTemplateData(wxString name);
 	
 	/// @brief Activa o desactiva el uso de wxFormsBuilder para el proyecto y verifica si encuentra el ejecutable (de wxfb)
 	void ActivateWxfb(bool do_activate);
 	
-	/// @brief Devuelve la minima versión necesaria para que otro ZinjaI más viejo abra correctamente el proyecto
+	/// @brief Devuelve la minima versiÃ³n necesaria para que otro ZinjaI mÃ¡s viejo abra correctamente el proyecto
 	int GetRequiredVersion();
 	
 	/// @brief Actualiza el arbol de simbolos (parsea los abiertos y cerrados que se hayan modificado)
 	void UpdateSymbols();
 	
-	/// @brief Dibuja un grafo con las relaciones entre los fuentes como arcos y los tamaños como colores
+	/// @brief Dibuja un grafo con las relaciones entre los fuentes como arcos y los tamaÃ±os como colores
 	void DrawGraph();
 	
 	/// @brief Defines with project_configuration is the active one and inform main window to adecuate gui

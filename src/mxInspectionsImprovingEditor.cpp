@@ -23,7 +23,7 @@ BEGIN_EVENT_TABLE(mxInspectionsImprovingEditor,wxDialog)
 END_EVENT_TABLE()
 	
 mxInspectionsImprovingEditor::mxInspectionsImprovingEditor(wxWindow *parent, wxArrayString &a_from, wxArrayString &a_to, const wxString &type, const wxString &expr) 
-	: wxDialog(parent,wxID_ANY,"Reemplaza autom·tico de inspecciones",wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER) 
+	: wxDialog(parent,wxID_ANY,"Reemplaza autom√°tico de inspecciones",wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER) 
 {
 	
 	wxSizer *sizer=new wxBoxSizer(wxVERTICAL);

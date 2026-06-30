@@ -24,9 +24,9 @@ mxSignalsSettings::mxSignalsSettings():wxDialog(main_window,wxID_ANY,"Singnals h
 	wxScrolledWindow *scroll = new wxScrolledWindow(this,wxID_ANY);
 	wxFlexGridSizer *sizer = new wxFlexGridSizer(3);
 	sizer->SetFlexibleDirection(wxBOTH);
-//	sizer->Add(new wxStaticText(scroll,wxID_ANY,"Señal"));
+//	sizer->Add(new wxStaticText(scroll,wxID_ANY,"SeÃ±al"));
 //	sizer->Add(new wxStaticText(scroll,wxID_ANY,LANG(COLOURS_FRONT,"Recibir")),sizers->BA5_Center);
-//	sizer->Add(new wxStaticText(scroll,wxID_ANY,LANG(COLOURS_FRONT,"Ejecución")),sizers->BA5_Center);
+//	sizer->Add(new wxStaticText(scroll,wxID_ANY,LANG(COLOURS_FRONT,"EjecuciÃ³n")),sizers->BA5_Center);
 	scroll->SetScrollRate(10,10);
 	scroll->SetSizer(sizer);
 //	sizer->AddGrowableCol(0);
@@ -38,11 +38,11 @@ mxSignalsSettings::mxSignalsSettings():wxDialog(main_window,wxID_ANY,"Singnals h
 		lab->SetToolTip(vsig[i].name+": "+vsig[i].description);
 		sizer->Add(lab,sizers->BA5_Center);
 		checks_pass[i] = new wxCheckBox(scroll,wxID_ANY,"recibir");
-		checks_pass[i]->SetToolTip(wxString("permitir que el proceso reciba la señal ")<<vsig[i].name);
+		checks_pass[i]->SetToolTip(wxString("permitir que el proceso reciba la seÃ±al ")<<vsig[i].name);
 		checks_pass[i]->SetValue(vsig[i].pass);
 		sizer->Add(checks_pass[i],sizers->BA5_Center);
 		checks_stop[i] = new wxCheckBox(scroll,wxID_ANY,"pausar");
-		checks_stop[i]->SetToolTip(wxString("pausar la ejecución cuando se recibe la señal ")<<vsig[i].name);
+		checks_stop[i]->SetToolTip(wxString("pausar la ejecuciÃ³n cuando se recibe la seÃ±al ")<<vsig[i].name);
 		checks_stop[i]->SetValue(vsig[i].stop);
 		sizer->Add(checks_stop[i],sizers->BA5_Center);
 	}

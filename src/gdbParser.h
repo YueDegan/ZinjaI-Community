@@ -8,9 +8,9 @@
 /**
 * @brief Saltea una cadena completa
 *
-* Dada una posición (i) donde comienza una cadena (donde hay un \' o \")
-* avanza la posición hasta llegar al final de la misma (hasta llegar al 
-* \' o \" que cierre la cadena, allí queda i)
+* Dada una posiciÃ³n (i) donde comienza una cadena (donde hay un \' o \")
+* avanza la posiciÃ³n hasta llegar al final de la misma (hasta llegar al 
+* \' o \" que cierre la cadena, allÃ­ queda i)
 **/
 template<typename TString>
 void GdbParse_SkipString(const TString &s, int &i, int l) {
@@ -34,9 +34,9 @@ void GdbParse_SkipGenericList(const TString &s, int &i, int l) {
 /**
 * @brief Saltea la lista de argumentos del template
 *
-* Dada una posición(i) donde comienza una lista de argumentos de un template
-* (donde hay un <) avanza la posición hasta llegar al final de la misma
-* (hasta llegar al > que cierre la cadena, allí queda i)
+* Dada una posiciÃ³n(i) donde comienza una lista de argumentos de un template
+* (donde hay un <) avanza la posiciÃ³n hasta llegar al final de la misma
+* (hasta llegar al > que cierre la cadena, allÃ­ queda i)
 **/
 template<typename TString>
 void GdbParse_SkipTemplate(const TString &s, int &i, int l) {
@@ -51,8 +51,8 @@ void GccParse_SkipTemplateActualArgs(const TString &s, int &i, int l) {
 /**
 * @brief Saltea una lista completa
 *
-* Dada una posición donde comienza una lista (donde hay un '{')
-* avanza la posición hasta llegar al final de la misma.
+* Dada una posiciÃ³n donde comienza una lista (donde hay un '{')
+* avanza la posiciÃ³n hasta llegar al final de la misma.
 * Para determinar los limites de la lista (y sublistas dentro
 * de esta), los delimitares validos son {..}, [..] y (..), y
 * son todos equivalentes.
@@ -70,9 +70,9 @@ void GdbParse_SkipEmpty(const wxString &s, int &i, int l);
 /**
 * @brief Determina si el siguiente elemento es el comienzo de una lista
 *
-* A partir de la posición i, busca el primer caracter que no nulo (nulo=enter,
+* A partir de la posiciÃ³n i, busca el primer caracter que no nulo (nulo=enter,
 * tab,espacio) y returna true si este es una llave que abre una lisat ('{'), o
-* false si es otra cosa, o si se llegó al final de la cadena
+* false si es otra cosa, o si se llegÃ³ al final de la cadena
 **/
 bool GdbParse_IsList(const wxString &s, int &i, int l=-1);
 

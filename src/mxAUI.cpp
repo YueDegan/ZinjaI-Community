@@ -15,10 +15,10 @@ PaneConfig PaneConfig::m_configs[PaneId::Count];
 void PaneConfig::Init ( ) {
 //	for(int i=0;i<PaneId::Count;i++) m_configs[i].m_id = (PaneId::type)i;
 	
-	m_configs[PaneId::Compiler   ].Docked(Bottom).Layout(2,0).Actions(None,None,Hide).Titles(LANG(CAPTION_COMPILER_OUTPUT,"Resultados de la Compilación"),LANG(MAINW_AUTOHIDE_COMPILER,"Compilador")).MenuItem(mxID_VIEW_COMPILER_TREE);
-	m_configs[PaneId::QuickHelp  ].Docked(Bottom).Layout(2,2).Actions(None,None,Hide).Titles(LANG(CAPTION_QUIKHELP,"Búsqueda/Ayuda Rapida"),LANG(MAINW_AUTOHIDE_QUICKHELP,"Ayuda/Busqueda"));
+	m_configs[PaneId::Compiler   ].Docked(Bottom).Layout(2,0).Actions(None,None,Hide).Titles(LANG(CAPTION_COMPILER_OUTPUT,"Resultados de la CompilaciÃ³n"),LANG(MAINW_AUTOHIDE_COMPILER,"Compilador")).MenuItem(mxID_VIEW_COMPILER_TREE);
+	m_configs[PaneId::QuickHelp  ].Docked(Bottom).Layout(2,2).Actions(None,None,Hide).Titles(LANG(CAPTION_QUIKHELP,"BÃºsqueda/Ayuda Rapida"),LANG(MAINW_AUTOHIDE_QUICKHELP,"Ayuda/Busqueda"));
 	m_configs[PaneId::DebugMsgs  ].Docked(Bottom).Layout(2,3).Actions(Hide,Hide,None).Titles(LANG(CAPTION_DEBUGGER_LOG,"Mensajes del Depurador"),LANG(MAINW_AUTOHIDE_DEBUG_LOG,"Log Depurador"))/*.MenuItem(mxID_DEBUG_LOG_PANEL)*/;
-	m_configs[PaneId::Threads    ].Docked(Bottom).Layout(2,4).Actions(Hide,Hide,None).Titles(LANG(CAPTION_THREADLIST,"Hilos de Ejecución"),LANG(MAINW_AUTOHIDE_THREADS,"Hilos"))/*.MenuItem(mxID_DEBUG_THREADLIST)*/;
+	m_configs[PaneId::Threads    ].Docked(Bottom).Layout(2,4).Actions(Hide,Hide,None).Titles(LANG(CAPTION_THREADLIST,"Hilos de EjecuciÃ³n"),LANG(MAINW_AUTOHIDE_THREADS,"Hilos"))/*.MenuItem(mxID_DEBUG_THREADLIST)*/;
 	m_configs[PaneId::Backtrace  ].Docked(Bottom).Layout(2,5).Actions(Hide,Hide,Show).Titles(LANG(CAPTION_BACKTRACE,"Trazado Inverso"))/*.MenuItem(mxID_DEBUG_BACKTRACE)*/;
 	m_configs[PaneId::Inspections].Docked(Bottom).Layout(2,6).Actions(Hide,Hide,Show).Titles(LANG(CAPTION_INSPECTIONS,"Inspecciones"))/*.MenuItem(mxID_DEBUG_INSPECT)*/;
 	

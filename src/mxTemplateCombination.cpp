@@ -28,7 +28,7 @@ mxTemplateCombination::mxTemplateCombination(wxWindow *parent, wxString other_zp
 	m_sizer_profiles->AddGrowableCol(0,1);
 	m_sizer_profiles->AddGrowableCol(2,1);
 	m_sizer_profiles->Add(new wxStaticText(this,wxID_ANY,project->project_name,wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE),sizers->Exp0);
-	m_sizer_profiles->Add(new wxStaticText(this,wxID_ANY,LANG(TEMPLATECOMB_ACTION,"AcciÛn"),wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE),sizers->Exp0);
+	m_sizer_profiles->Add(new wxStaticText(this,wxID_ANY,LANG(TEMPLATECOMB_ACTION,"Acci√≥n"),wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE),sizers->Exp0);
 	m_sizer_profiles->Add(new wxStaticText(this,wxID_ANY,GetName(other_zpr),wxDefaultPosition,wxDefaultSize,wxALIGN_CENTRE),sizers->Exp0);
 	
 	int pc = GetProfiles(other_zpr,m_other_profiles);
@@ -42,20 +42,20 @@ mxTemplateCombination::mxTemplateCombination(wxWindow *parent, wxString other_zp
 	
 	opts_sizer.BeginSection(LANG(TEMPLATECOMB_PROFILE_FIELDS,"Campos a combinar/reemplazar por perfil:"))
 		.BeginCheck(LANG(PROJECTCONFIG_GENERAL_ENV_VARS,"Variables de entorno")).Value(true).EndCheck(m_merge_env_vars)
-		.BeginCheck(LANG(PROJECTCONFIG_COMPILING_EXTRA_ARGS,"Par·metros extra para la compilaciÛn")).Value(true).EndCheck(m_merge_comp_extra)
+		.BeginCheck(LANG(PROJECTCONFIG_COMPILING_EXTRA_ARGS,"Par√°metros extra para la compilaci√≥n")).Value(true).EndCheck(m_merge_comp_extra)
 		.BeginCheck(LANG(PROJECTCONFIG_COMPILING_MACROS,"Constantes de preprocesador")).Value(true).EndCheck(m_merge_macros)
 		.BeginCheck(LANG(PROJECTCONFIG_COMPILING_EXTRA_PATHS,"Directorios adicionales para buscar cabeceras")).Value(true).EndCheck(m_merge_headers)
-		.BeginCheck(LANG(PROJECTCONFIG_LINKING_EXTRA_ARGS,"Par·metros extra para el enlazado")).Value(true).EndCheck(m_merge_link_extra)
+		.BeginCheck(LANG(PROJECTCONFIG_LINKING_EXTRA_ARGS,"Par√°metros extra para el enlazado")).Value(true).EndCheck(m_merge_link_extra)
 		.BeginCheck(LANG(PROJECTCONFIG_LINKING_EXTRA_PATHS,"Directorios adicionales para buscar bibliotecas")).Value(true).EndCheck(m_merge_lib_dirs)
 		.BeginCheck(LANG(PROJECTCONFIG_LINKING_EXTRA_LIBS,"Bibliotecas a enlazar")).Value(true).EndCheck(m_merge_libraries)
 		.BeginCheck(LANG(PROJECTCONFIG_LIBS_TO_USE,"Bibliotecas del sistema a utilizar")).Value(true).EndCheck(m_merge_libs_to_use)
 #ifdef _ZINJAI_DEBUG
-		.BeginCheck(LANG(TEMPLATECOMB_CUSTOM_STEPS,"Pasos de compilaciÛn personalizados")).Value(true).EndCheck(m_merge_custom_steps)
+		.BeginCheck(LANG(TEMPLATECOMB_CUSTOM_STEPS,"Pasos de compilaci√≥n personalizados")).Value(true).EndCheck(m_merge_custom_steps)
 #endif
 		.EndSection();
 	opts_sizer.BeginSection(LANG(TEMPLATECOMB_GENERAL_FIELDS,"Opciones generales a combinar:"))
 		.BeginCheck(LANG(PROJECTGENERAL_AUTOCOMP_EXTRA,"Indices de autocompletado adicionales")).Value(true).EndCheck(m_merge_autocomp)
-		.BeginCheck(LANG(PROJECTGENERAL_AUTOIMPROVE_TEMPLATES," Mejora de inspecciones seg˙n tipo ")).Value(true).EndCheck(m_merge_inspections)
+		.BeginCheck(LANG(PROJECTGENERAL_AUTOIMPROVE_TEMPLATES," Mejora de inspecciones seg√∫n tipo ")).Value(true).EndCheck(m_merge_inspections)
 #ifdef _ZINJAI_DEBUG
 		.BeginCheck(LANG(MENUITEM_TOOLS_CUSTOM_TOOLS,"Herramientas Personalizables")).Value(true).EndCheck(m_merge_custom_tools)
 #endif

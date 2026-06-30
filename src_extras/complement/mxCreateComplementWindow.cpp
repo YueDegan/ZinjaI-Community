@@ -41,7 +41,7 @@ enum STEPS_CREATE {STEP_ASKING,STEP_ANALYSING,STEP_BUILDING,STEP_DONE,STEP_ABORT
 // devuelve true si el compresor puede seguir, false si debe abortar
 bool callback_create(wxString message, int progress) {
 	if (message.Len()) create_win->Notify(message);
-	return create_win->GetStep()!=STEP_ABORTING || wxYES!=wxMessageBox(SP("緿esea interrumpir el proceso?","Abort the process?"),SP("Generaci髇 de Complementos","Complement Generation"),wxYES_NO);
+	return create_win->GetStep()!=STEP_ABORTING || wxYES!=wxMessageBox(SP("驴Desea interrumpir el proceso?","Abort the process?"),SP("Generaci贸n de Complementos","Complement Generation"),wxYES_NO);
 }
 	
 
@@ -112,7 +112,7 @@ wxTextCtrl *addLongText(wxFrame *frame, wxBoxSizer *sizer, const wxString &label
 }
 
 mxCreateComplementWindow::mxCreateComplementWindow(wxString in_path, wxString out_fname, bool write_desc) 
-	: wxFrame(NULL,wxID_ANY,SP("Generaci髇 de complementos","Complement Generation"),wxDefaultPosition,wxDefaultSize)
+	: wxFrame(NULL,wxID_ANY,SP("Generaci贸n de complementos","Complement Generation"),wxDefaultPosition,wxDefaultSize)
 	, autoclose(false), step(STEP_ASKING), write_desc_ini(write_desc)
 {
 	create_win=this;
@@ -121,19 +121,19 @@ mxCreateComplementWindow::mxCreateComplementWindow(wxString in_path, wxString ou
 	SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
 	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 	folder = addPath(this,sizer,SP("Directorio con archivos a incluir:","Directory with files to be included:"),wxID_REPLACE);
-	text_en = addLongText(this,sizer,SP("Descripci髇 del complemento (ingles):","Complement's description (english):"));
-	text_es = addLongText(this,sizer,SP("Descripci髇 del complemento (espa駉l):","Complement's description (spanish):"));
+	text_en = addLongText(this,sizer,SP("Descripci贸n del complemento (ingles):","Complement's description (english):"));
+	text_es = addLongText(this,sizer,SP("Descripci贸n del complemento (espa帽ol):","Complement's description (spanish):"));
 	
 	text = new wxTextCtrl(this,wxID_ANY,"",wxDefaultPosition,wxDefaultSize,wxTE_MULTILINE|wxTE_READONLY);
 	text->SetMinSize(wxSize(400,200)); sizer->Add(text,wxSizerFlags().Proportion(1).Expand().Border(wxALL,5));
 	text->Hide();
 	
 	short_name = addShortText(this,sizer,SP("Nombre Corto: ","Short Name: "));
-	comp_version = addShortText(this,sizer,SP("Versi髇 del complemento: ","Complemnt's version: "));
-	req_version = addShortText(this,sizer,SP("Versi髇 de ZinjaI requerida: ","Required ZinjaI version: "));
-	close = addCheck(this,sizer,SP("Requiere cerrar ZinjaI durante la instalaci髇","Requires closing ZinjaI for correct installation"));
-	reset = addCheck(this,sizer,SP("Requiere reiniciar ZinjaI para completar la instalaci髇","Requires restarting ZinjaI after installation"));
-	check_details = addCheck(this,sizer,SP("Mostrar detalles durante la compresi髇","Show details while generating the zcp file"));
+	comp_version = addShortText(this,sizer,SP("Versi贸n del complemento: ","Complemnt's version: "));
+	req_version = addShortText(this,sizer,SP("Versi贸n de ZinjaI requerida: ","Required ZinjaI version: "));
+	close = addCheck(this,sizer,SP("Requiere cerrar ZinjaI durante la instalaci贸n","Requires closing ZinjaI for correct installation"));
+	reset = addCheck(this,sizer,SP("Requiere reiniciar ZinjaI para completar la instalaci贸n","Requires restarting ZinjaI after installation"));
+	check_details = addCheck(this,sizer,SP("Mostrar detalles durante la compresi贸n","Show details while generating the zcp file"));
 	dest = addPath(this,sizer,SP("Archivo de complemento a generar:","Ouput file:"),wxID_FIND);
 	
 	wxBoxSizer *but_sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -177,7 +177,7 @@ void mxCreateComplementWindow::OnButtonCreate (wxCommandEvent & evt) {
 	if (step==STEP_DONE) { _return; }
 	if (step==STEP_ASKING) {
 		wxString desc_en=text_en->GetValue(), desc_es=text_es->GetValue();
-		if (!desc_es.Len() && !desc_en.Len()) { wxMessageBox(SP("La descripci髇 no debe quedar en blanco.","You must complete at least one description."));  _return; }
+		if (!desc_es.Len() && !desc_en.Len()) { wxMessageBox(SP("La descripci贸n no debe quedar en blanco.","You must complete at least one description."));  _return; }
 		if (!desc_es.Len()) desc_es=desc_en;
 		else if (!desc_en.Len()) desc_en=desc_es;
 		if (!folder->GetValue().Len()) { wxMessageBox(SP("Falta especificar la carpeta de donde tomar los archivos.","You must specify the origin folder"));  _return; }
@@ -192,7 +192,7 @@ void mxCreateComplementWindow::OnButtonCreate (wxCommandEvent & evt) {
 		if (!req_version->GetValue().Len()) {
 			info.reqver=0;
 		} else if (!req_version->GetValue().ToLong(&info.reqver)) {
-			wxMessageBox(SP("El n鷐ero de versi髇 requerida no es correcto.","Wrong required version number.")); 
+			wxMessageBox(SP("El n煤mero de versi贸n requerida no es correcto.","Wrong required version number.")); 
 			_return;
 		}
 		info.closereq = close->GetValue();
@@ -200,7 +200,7 @@ void mxCreateComplementWindow::OnButtonCreate (wxCommandEvent & evt) {
 		if (!comp_version->GetValue().Len()) {
 			info.version=0;
 		} else if (!comp_version->GetValue().ToLong(&info.version)) {
-			wxMessageBox(SP("El n鷐ero de versi髇 del complemento no es correcto.","Wrong complement's version number."));
+			wxMessageBox(SP("El n煤mero de versi贸n del complemento no es correcto.","Wrong complement's version number."));
 			_return;
 		}
 		
@@ -229,12 +229,12 @@ void mxCreateComplementWindow::OnButtonCreate (wxCommandEvent & evt) {
 
 		step=STEP_BUILDING;
 		if (!CreateZip(callback_create,dest->GetValue(),folder->GetValue(),files)) { 
-			wxMessageBox(SP("Ha ocurrido un error durante la compresi髇 (CreateZip).","There's been a error while creating the complement file (CreateZip).")); 
+			wxMessageBox(SP("Ha ocurrido un error durante la compresi贸n (CreateZip).","There's been a error while creating the complement file (CreateZip).")); 
 			_return;
 		}
 		if (step==STEP_ABORTING) { _return; }
 		
-		Notify(SP("Generaci髇 Finalizada.","Generation completed."));
+		Notify(SP("Generaci贸n Finalizada.","Generation completed."));
 		if (autoclose) Close();
 		step=STEP_DONE; but_create->SetLabel(SP("Aceptar","Ok")); but_cancel->SetLabel(SP("Cerrar","Close")); but_create->Enable();
 	}

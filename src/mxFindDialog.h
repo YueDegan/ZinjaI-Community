@@ -43,7 +43,7 @@ public:
 	void ShowFind(mxSource *source);
 	void ShowReplace(mxSource *source);
 	void FindAll(const wxString &what);
-	bool MultifindAux(int count, const wxString &res); ///< función auxiliar para presentar los resultados de FindInSources y FindInProject
+	bool MultifindAux(int count, const wxString &res); ///< funciÃ³n auxiliar para presentar los resultados de FindInSources y FindInProject
 	void OnFindNextButton(wxCommandEvent &event);
 	void OnFindPrevButton(wxCommandEvent &event);
 	void OnReplaceButton(wxCommandEvent &event);

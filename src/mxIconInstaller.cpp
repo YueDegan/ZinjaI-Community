@@ -37,7 +37,7 @@ mxIconInstaller::mxIconInstaller(bool first_run):wxDialog(nullptr,wxID_ANY,LANG(
 	
 	wxBoxSizer *sizer=new wxBoxSizer(wxVERTICAL);
 	
-	if (first_run) sizer->Add(new wxStaticText(this,wxID_ANY,LANG(XDG_FIRST_TIME,"¿Desea crear un icono para acceder a ZinjaI desde el menu del sistema o el escritorio?")),sizers->BA5_Exp0);
+	if (first_run) sizer->Add(new wxStaticText(this,wxID_ANY,LANG(XDG_FIRST_TIME,"Â¿Desea crear un icono para acceder a ZinjaI desde el menu del sistema o el escritorio?")),sizers->BA5_Exp0);
 	
 	desktop = mxDialog::AddCheckBox(sizer,this,LANG(XDG_CREATE_DESKTOP,"Crear un icono en el escritorio"),false);
 	menu = mxDialog::AddCheckBox(sizer,this,LANG(XDG_CREATE_MENU,"Crear un icono en el menu (en la categoria Programacion/Desarrollo)"),xdg_found);

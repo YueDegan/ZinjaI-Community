@@ -1,22 +1,22 @@
 
-// Para generar esta documentaciÛn: Herramientas->Generar DocumentaciÛn->Generar
-// Hay que tener Doxygen instalado (www.doxygen.org) y configurado (pestaÒa 
-// "Rutas 2" del di·logo de Preferencias).
+// Para generar esta documentaci√≥n: Herramientas->Generar Documentaci√≥n->Generar
+// Hay que tener Doxygen instalado (www.doxygen.org) y configurado (pesta√±a 
+// "Rutas 2" del di√°logo de Preferencias).
 
 /**
 * 
-* @mainpage ZinjaI - DocumentaciÛn del CÛdigo Fuente
+* @mainpage ZinjaI - Documentaci√≥n del C√≥digo Fuente
 * 
-* @section Introduccion IntroducciÛn
+* @section Introduccion Introducci√≥n
 * 
-* Esta es la documentaciÛn del cÛdigo fuente del entorno. Actualmente se encuentra
-* incompleta, por lo que puede que muchos elementos no presenten su descripciÛn.
+* Esta es la documentaci√≥n del c√≥digo fuente del entorno. Actualmente se encuentra
+* incompleta, por lo que puede que muchos elementos no presenten su descripci√≥n.
 * 
-* Para ver la versiÛn de ZinjaI que generÛ estos documentos consulte #VERSION.
+* Para ver la versi√≥n de ZinjaI que gener√≥ estos documentos consulte #VERSION.
 *
 * Para obtener actualizaciones visite http://zinjai.sourceforge.net
 *
-* Para mayor informaciÛn zaskar_@yahoo.com.ar
+* Para mayor informaci√≥n zaskar_@yahoo.com.ar
 * 
 * Copyleft 2007-2016, por Pablo Novara
 * 

@@ -117,7 +117,7 @@ CompilerErrorsManager::CEMState CompilerErrorsManager::InitExtern(const wxString
 	return CommonInit(command,false);
 }
 
-/// hace m·s legibles errores reemplazando templates y tipos conocidos (como allocators, char_traits, etc)
+/// hace m√°s legibles errores reemplazando templates y tipos conocidos (como allocators, char_traits, etc)
 static void UnSTD(wxString &line) {
 	int p;
 	while ( (p=line.find("[with ")) != wxNOT_FOUND ) { // buscar argumentos actuales de plantillas "[with T1 = int; T2 = float]"

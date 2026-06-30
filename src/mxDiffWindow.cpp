@@ -154,7 +154,7 @@ void mxDiffWindow::DiffSourceFile(mxSource *src, wxString fname) {
 		main_window->ShowDiffSideBar(show_sidebar->GetValue(),show_tools->GetValue());
 	} else {
 		mxMessageDialog(main_window,LANG(DIFF_FILES_EQUAL,"Los archivos son iguales"))
-			.Title(LANG(DIFF_CAPTION,"Comparación")).IconInfo().Run();
+			.Title(LANG(DIFF_CAPTION,"ComparaciÃ³n")).IconInfo().Run();
 	}
 }
 
@@ -231,7 +231,7 @@ void mxDiffWindow::DiffTwoSources(mxSource *src1, mxSource *src2) {
 		main_window->ShowDiffSideBar(show_sidebar->GetValue(),show_tools->GetValue());
 	} else {
 		mxMessageDialog(this,LANG(DIFF_FILES_EQUAL,"Los archivos son iguales"))
-			.Title(LANG(DIFF_CAPTION,"Comparación")).IconInfo().Run();
+			.Title(LANG(DIFF_CAPTION,"ComparaciÃ³n")).IconInfo().Run();
 	}
 }
 

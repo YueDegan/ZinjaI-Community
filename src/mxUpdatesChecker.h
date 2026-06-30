@@ -15,7 +15,7 @@ class wxTextCtrl;
 * contenido (una linea que dice ZVERSION=AAAAMMDD) con la version actual del
 * entorno (config->Init.version). En caso de encontrar actualizaciones solo
 * provee enlaces al sitio de descarga y al registro de cambios, pero no gestiona
-* la descarga e instalación de la actualización
+* la descarga e instalaciÃ³n de la actualizaciÃ³n
 **/
 class mxUpdatesChecker : public wxDialog {
 private:

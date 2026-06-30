@@ -71,7 +71,7 @@ mxGenericHelpWindow::mxGenericHelpWindow(wxString title, bool use_tree):wxFrame 
 	wxBitmapButton *button_copy = new wxBitmapButton(panel, mxID_HELPW_COPY, bitmaps->GetBitmap(bdir+"help_copy.png"));
 	button_copy->SetToolTip(LANG(HELPW_COPY,"Copiar seleccion al portapapeles"));
 	m_button_atop = new wxBitmapButton(panel, mxID_HELPW_ALWAYS_ON_TOP, bitmaps->GetBitmap(bdir+"help_atop.png"));
-	m_button_atop->SetToolTip("Hacer que la ventana de ayuda permanezca siempre visible (siempre sobre las demás ventanas)");
+	m_button_atop->SetToolTip("Hacer que la ventana de ayuda permanezca siempre visible (siempre sobre las demÃ¡s ventanas)");
 	wxBitmapButton *button_print = new wxBitmapButton(panel, mxID_HELPW_PRINT, bitmaps->GetBitmap(bdir+"help_print.png"));
 	button_print->SetToolTip(LANG(HELPW_PRINT,"Imprimir pagina actual"));
 	topSizer->Add(m_button_index,sizers->BA2);
